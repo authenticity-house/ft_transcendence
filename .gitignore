@@ -1,1 +1,93 @@
+#### FE
+
 /FE/node_modules/
+
+#### BE
+
+# Environments
+BE/.env
+BE/.venv
+BE/env/
+BE/venv/
+BE/ENV/
+BE/env.bak/
+BE/venv.bak/
+
+
+# Database
+BE/*.sqlite3
+BE/*.db
+BE/db.sqlite3
+
+
+# IDE specific files
+BE/.vscode/
+BE/.idea/
+BE/*.pydevproject
+BE/*.pyc
+BE/*.pyo
+BE/*.pyd
+BE/*.swp
+BE/*.swo
+BE/*~
+
+
+BE/.DS_Store
+BE/**/.DS_Store
+BE/Thumbs.db
+
+ 
+# Django stuff:
+BE/*.log
+BE/local_settings.py
+BE/db.sqlite3
+BE/db.sqlite3-journal
+
+# Byte-compiled / optimized / DLL files
+BE/__pycache__/
+BE/*.py[cod]
+BE/*$py.class
+
+
+# Installer logs
+BE/pip-log.txt
+BE/pip-delete-this-directory.txt
+
+
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+BE/.idea/**/workspace.xml
+BE/.idea/**/tasks.xml
+BE/.idea/**/usage.statistics.xml
+BE/.idea/**/dictionaries
+BE/.idea/**/shelf
+
+# AWS User-specific
+BE/.idea/**/aws.xml
+
+# Generated files
+BE/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+BE/.idea/**/dataSources/
+BE/.idea/**/dataSources.ids
+BE/.idea/**/dataSources.local.xml
+BE/.idea/**/sqlDataSources.xml
+BE/.idea/**/dynamic.xml
+BE/.idea/**/uiDesigner.xml
+BE/.idea/**/dbnavigator.xml
+
+# Gradle
+BE/.idea/**/gradle.xml
+BE/.idea/**/libraries
+
+# CMake
+BE/cmake-build-*/
+
+# File-based project format
+BE/*.iws
+
+# Editor-based Rest Client
+BE/.idea/httpRequests
