@@ -4,6 +4,7 @@ black==24.2.0
 click==8.1.7
 dill==0.3.8
 Django==5.0.2
+django-environ==0.11.2
 isort==5.13.2
 mccabe==0.7.0
 mypy-extensions==1.0.0
