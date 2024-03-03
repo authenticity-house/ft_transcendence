@@ -45,8 +45,11 @@ BE/db.sqlite3-journal
 
 # Byte-compiled / optimized / DLL files
 BE/__pycache__/
+BE/backend/__pycache__
 BE/*.py[cod]
+BE/backend/*.py[cod]
 BE/*$py.class
+BE/backend/*$py.class
 
 
 # Installer logs
