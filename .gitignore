@@ -13,11 +13,22 @@ BE/ENV/
 BE/env.bak/
 BE/venv.bak/
 
+GAME/.env
+GAME/.venv
+GAME/env/
+GAME/venv/
+GAME/ENV/
+GAME/env.bak/
+GAME/venv.bak/
 
 # Database
 BE/*.sqlite3
 BE/*.db
 BE/db.sqlite3
+
+GAME/*.sqlite3
+GAME/*.db
+GAME/db.sqlite3
 
 
 # IDE specific files
@@ -31,17 +42,36 @@ BE/*.swp
 BE/*.swo
 BE/*~
 
+GAME/.vscode/
+GAME/.idea/
+GAME/*.pydevproject
+GAME/*.pyc
+GAME/*.pyo
+GAME/*.pyd
+GAME/*.swp
+GAME/*.swo
+GAME/*~
+
 
 BE/.DS_Store
 BE/**/.DS_Store
 BE/Thumbs.db
 
- 
+GAME/.DS_Store
+GAME/**/.DS_Store
+GAME/Thumbs.db
+
 # Django stuff:
 BE/*.log
 BE/local_settings.py
 BE/db.sqlite3
 BE/db.sqlite3-journal
+
+GAME/*.log
+GAME/local_settings.py
+GAME/db.sqlite3
+GAME/db.sqlite3-journal
+
 
 # Byte-compiled / optimized / DLL files
 BE/__pycache__/
@@ -51,10 +81,20 @@ BE/backend/*.py[cod]
 BE/*$py.class
 BE/backend/*$py.class
 
+GAME/__pycache__/
+GAME/game_server/__pycache__
+GAME/*.py[cod]
+GAME/game_server/*.py[cod]
+GAME/*$py.class
+GAME/game_server/*$py.class
+
 
 # Installer logs
 BE/pip-log.txt
 BE/pip-delete-this-directory.txt
+
+GAME/pip-log.txt
+GAME/pip-delete-this-directory.txt
 
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -67,11 +107,19 @@ BE/.idea/**/usage.statistics.xml
 BE/.idea/**/dictionaries
 BE/.idea/**/shelf
 
+GAME/.idea/**/workspace.xml
+GAME/.idea/**/tasks.xml
+GAME/.idea/**/usage.statistics.xml
+GAME/.idea/**/dictionaries
+GAME/.idea/**/shelf
+
 # AWS User-specific
 BE/.idea/**/aws.xml
+GAME/.idea/**/aws.xml
 
 # Generated files
 BE/.idea/**/contentModel.xml
+GAME/.idea/**/contentModel.xml
 
 # Sensitive or high-churn files
 BE/.idea/**/dataSources/
@@ -82,15 +130,29 @@ BE/.idea/**/dynamic.xml
 BE/.idea/**/uiDesigner.xml
 BE/.idea/**/dbnavigator.xml
 
+GAME/.idea/**/dataSources/
+GAME/.idea/**/dataSources.ids
+GAME/.idea/**/dataSources.local.xml
+GAME/.idea/**/sqlDataSources.xml
+GAME/.idea/**/dynamic.xml
+GAME/.idea/**/uiDesigner.xml
+GAME/.idea/**/dbnavigator.xml
+
 # Gradle
 BE/.idea/**/gradle.xml
 BE/.idea/**/libraries
 
+GAME/.idea/**/gradle.xml
+GAME/.idea/**/libraries
+
 # CMake
 BE/cmake-build-*/
+GAME/cmake-build-*/
 
 # File-based project format
 BE/*.iws
+GAME/*.iws
 
 # Editor-based Rest Client
 BE/.idea/httpRequests
+GAME/.idea/httpRequests
