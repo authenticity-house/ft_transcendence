@@ -2,7 +2,8 @@
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins=pylint_django --django-settings-module=backend.settings
+load-plugins=pylint_django
+django-settings-module=backend.settings
 
 # Analyse import fallback blocks. This can be used to support both Python 2 and
 # 3 compatible code, which means that the block might have code that exists
