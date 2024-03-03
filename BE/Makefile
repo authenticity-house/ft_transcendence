@@ -1,7 +1,8 @@
-
 all:
 	@make format
 	@make lint
+	@make type
+	@make test
 
 format:
 	@echo "Formatting code with black"
@@ -11,4 +12,12 @@ lint:
 	@echo "Linting code with pylint"
 	@venv/bin/pylint backend
 
-.PHONY: all format lint
+type:
+	@echo "Typechecking with mypy"
+	@venv/bin/mypy backend --ignore-missing-imports
+
+test:
+	@echo "Running Django unit tests"
+	@venv/bin/python manage.py test
+
+.PHONY: all format lint typecheck test
