@@ -10,11 +10,11 @@ format:
 
 lint:
 	@echo "Linting code with pylint"
-	@venv/bin/pylint game_server
+	@venv/bin/pylint game_server websocket
 
 type:
 	@echo "Typechecking with mypy"
-	@venv/bin/mypy game_server --ignore-missing-imports
+	@venv/bin/mypy game_server websocket --ignore-missing-imports
 
 test:
 	@echo "Running Django unit tests"
