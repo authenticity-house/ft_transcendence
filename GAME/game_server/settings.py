@@ -43,7 +43,7 @@ ALLOWED_HOSTS: List[str] = []
 INSTALLED_APPS = [
     "daphne",
     "channels",
-    "websocket"
+    "websocket",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
