@@ -1,3 +1,66 @@
 @import 'reset.css';
 
+@font-face {
+	font-family: 'GongGothicLight';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicLight.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GongGothicMedium';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GongGothicBold';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	font-family: 'GongGothicMedium', sans-serif;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: #ffffff;
+	background: var(--background, #141343);
+}
+
+.loading-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #141343;
+	z-index: 100;
+
+	/* animation */
+	transition: opacity 0.5s;
+}
+
+.hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.hello {
+	font-family: 'GongGothicBold', sans-serif;
+	font-size: 2rem;
+	line-height: 1.6;
+	color: #ffffff;
+}
+
 /* Path: FE/public/css/style.css */
