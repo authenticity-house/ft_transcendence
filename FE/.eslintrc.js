@@ -6,6 +6,12 @@ module.exports = {
 	},
 	extends: ['airbnb', 'plugin:prettier/recommended'],
 	rules: {
-		'prettier/prettier': 'error'
+		'prettier/prettier': 'error',
+		'import/prefer-default-export': 'off',
+		'import/extensions': ['off'],
+		'no-console': 'off',
+		'no-alert': 'off',
+		'no-restricted-globals': 'off',
+		'no-new': 'off'
 	}
 };
