@@ -1,0 +1,122 @@
+@font-face {
+	font-family: 'GongGothicLight';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicLight.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GongGothicMedium';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'GongGothicBold';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.display-medium60 {
+	font-family: 'GongGothicMedium';
+	font-size: 6rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.6rem;
+}
+
+.display-medium52 {
+	font-family: 'GongGothicMedium';
+	font-size: 5.2rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.52rem;
+}
+
+.display-medium48 {
+	font-family: 'GongGothicMedium';
+	font-size: 4.8rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.48rem;
+}
+
+.display-medium44 {
+	font-family: 'GongGothicMedium';
+	font-size: 4rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.44rem;
+}
+
+.display-medium20 {
+	font-family: 'GongGothicMedium';
+	font-size: 2rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.2rem;
+}
+
+.display-light32 {
+	font-family: 'GongGothicLight';
+	font-size: 3.2rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+.display-light28 {
+	font-family: 'GongGothicLight';
+	font-size: 2.8rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+.display-light24 {
+	font-family: 'GongGothicLight';
+	font-size: 2.4rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+.display-light20 {
+	font-family: 'GongGothicLight';
+	font-size: 2rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+.display-light18 {
+	font-family: 'GongGothicLight';
+	font-size: 1.8rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+.display-light16 {
+	font-family: 'GongGothicLight';
+	font-size: 1.6rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
+/* Path: FE/public/css/styles.css */
