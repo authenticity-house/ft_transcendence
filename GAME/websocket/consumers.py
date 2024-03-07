@@ -1,18 +1,23 @@
+import asyncio
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+from match.match_manager import MatchManager
 
 
-class GameConsumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
+class GameConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
 
-        self.send(
+        await self.send(
             text_data=json.dumps(
                 {"type": "connection_established", "message": "You are now connected!"}
             )
         )
 
-    def receive(self, text_data=None, bytes_data=None):
+        self.match_manager = MatchManager(self)
+        asyncio.create_task(self.match_manager.start_game())
+
+    async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
-        print("Message:", message)
+        key_set = text_data_json["key_set"]
+        await self.match_manager.local_move_paddles(key_set)

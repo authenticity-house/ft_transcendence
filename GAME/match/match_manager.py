@@ -1,5 +1,7 @@
+import asyncio
 import math
-from time import sleep
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .player import Player
 from .paddle import Paddle
@@ -9,17 +11,24 @@ from .constants import Position, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class MatchManager:
     def __init__(
-        self, total_score: int = 15, player1_name: str = "player1", player2_name: str = "player2"
+        self,
+        socket: AsyncWebsocketConsumer,
+        total_score: int = 15,
+        player1_name: str = "player1",
+        player2_name: str = "player2",
     ):
+        self.socket = socket
         self.TOTAL_SCORE = total_score  # pylint: disable=invalid-name
         self._player1: Player = Player(Paddle(Position.LEFT), Position.LEFT, player1_name)
         self._player2: Player = Player(Paddle(Position.RIGHT), Position.RIGHT, player2_name)
+
         self._ball: Ball = Ball()
         self._is_run = False
 
-    def start_game(self) -> None:
+    async def start_game(self) -> None:
         self.is_run = True
         while self.is_run:
+            # print("check!!")
             self.ball.move_pos()
 
             # 벽 충돌
@@ -28,10 +37,10 @@ class MatchManager:
 
             # 패들 충돌
             if self.player1.paddle.is_collides_with_ball(self.ball):
-                print("paddle reflect!")
+                print("left --------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player1.paddle)
             if self.player2.paddle.is_collides_with_ball(self.ball):
-                print("paddle reflect!")
+                print("right ---------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player2.paddle)
 
             # 오른쪽 득점
@@ -49,8 +58,19 @@ class MatchManager:
             if self.TOTAL_SCORE in (self.player1.score, self.player2.score):
                 self.end_game()
 
+            await self.socket.send(
+                text_data=json.dumps(
+                    {
+                        "ball": {"x": self.ball.x, "y": self.ball.y},
+                        "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
+                        "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
+                        "score": {"player1": self.player1.score, "player2": self.player2.score},
+                        "message": "data",
+                    }
+                )
+            )
             # FPS 설정 (60프레임)
-            sleep(1 / 60)
+            await asyncio.sleep(1 / 60)
 
     def end_game(self) -> None:
         self.is_run = True
@@ -67,10 +87,10 @@ class MatchManager:
         )
 
     def is_player1_scored(self) -> bool:
-        return SCREEN_WIDTH - self.ball.radius <= self.ball.x
+        return SCREEN_WIDTH / 2 - self.ball.radius <= self.ball.x
 
     def is_player2_scored(self) -> bool:
-        return self.ball.x <= -SCREEN_WIDTH + self.ball.radius
+        return self.ball.x <= -SCREEN_WIDTH / 2 + self.ball.radius
 
     def calculate_reflection(self, paddle: Paddle) -> float:
         relative_intersect_y = self.ball.y - paddle.y
@@ -79,13 +99,15 @@ class MatchManager:
         return bounce_angle
 
     def bounce_ball_off_paddle(self, paddle: Paddle) -> None:
+
         angle: float = self.calculate_reflection(paddle)
 
-        dx: float = math.cos(angle) * self.ball.speed * paddle.pos * -1
+        dx: float = math.cos(angle) * self.ball.speed * paddle.pos
         dy: float = math.sin(angle) * self.ball.speed
+        print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
 
-    def local_move_paddles(self, keys: set) -> None:
+    async def local_move_paddles(self, keys: list) -> None:
         for key in keys:
             if key == "w":
                 self.player1.paddle.move_paddle_up()
