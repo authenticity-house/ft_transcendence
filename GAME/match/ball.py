@@ -59,3 +59,7 @@ class Ball:
     @property
     def radius(self) -> float:
         return self._radius
+
+    @property
+    def speed(self) -> float:
+        return self._speed
