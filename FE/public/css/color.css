@@ -1,0 +1,35 @@
+.head_yellow_neon_15 {
+	box-shadow: 0rem 0rem 1.5rem 0rem #ffd164, 0rem 0rem 1.5rem 0rem #ffd164;
+}
+
+.head_pink_neon_15 {
+	box-shadow: 0rem 0rem 1.5rem 0rem #ff5d84, 0rem 0rem 1.5rem 0rem #ff5d84;
+}
+
+.head_blue_neon_15 {
+	box-shadow: 0rem 0rem 1.5rem 0rem #5ad7ff, 0rem 0rem 1.5rem 0rem #5ad7ff;
+}
+
+.head_white_neon_15 {
+	box-shadow: 0rem 0rem 1.5rem 0rem #ffffff, 0rem 0rem 1.5rem 0rem #ffffff;
+}
+
+.yellow_neon_10 {
+	text-shadow: 0rem 0rem 1rem #ffd164, 0rem 0rem 1rem #ffd164;
+}
+
+.pink_neon_10 {
+	text-shadow: 0rem 0rem 1rem #ff5d84, 0rem 0rem 1rem #ff5d84;
+}
+
+.blue_neon_10 {
+	text-shadow: 0rem 0rem 1rem #5ad7ff, 0rem 0rem 1rem #5ad7ff;
+}
+
+.white_neon_10 {
+	text-shadow: 0rem 0rem 1rem #ffffff, 0rem 0rem 1rem #ffffff;
+}
+
+.text_gray_neon {
+	text-shadow: 0rem 0rem 1rem #c7c7c7, 0rem 0rem 1rem #c7c7c7;
+}
