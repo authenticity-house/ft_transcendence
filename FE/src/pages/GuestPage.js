@@ -11,6 +11,11 @@ class GuestPage {
 						>게스트 로그인</span
 					>
 				</div>
+				<div class="game-button-container">
+					<button class="game-button head_blue_neon_15 blue_neon_10">
+						게임 시작
+					</button>
+				</div>
 				<button class="guest-button head_blue_neon_15 blue_neon_10">
 					로그인
 				</button>
@@ -22,6 +27,10 @@ class GuestPage {
 		const guestButton = document.querySelector('.guest-button');
 		guestButton.addEventListener('click', () => {
 			changeUrl('');
+		});
+		const gameButton = document.querySelector('.game-button');
+		gameButton.addEventListener('click', () => {
+			changeUrl('game');
 		});
 	}
 }

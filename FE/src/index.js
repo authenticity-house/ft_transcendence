@@ -1,5 +1,6 @@
 import LoginPage from './pages/LoginPage.js';
 import GuestPage from './pages/GuestPage.js';
+import GamePage from './pages/GamePage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -18,7 +19,8 @@ const homeLink = '/FE/public/';
 // routes object is used to change the page
 const routes = {
 	'': LoginPage,
-	guest: GuestPage
+	guest: GuestPage,
+	game: GamePage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
