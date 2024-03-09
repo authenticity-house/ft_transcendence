@@ -94,7 +94,7 @@ class MatchManager:
 
     def calculate_reflection(self, paddle: Paddle) -> float:
         relative_intersect_y = self.ball.y - paddle.y
-        normalized_relative_intersection_y = relative_intersect_y / (paddle.width / 2)
+        normalized_relative_intersection_y = relative_intersect_y / (paddle.height / 2)
         bounce_angle = normalized_relative_intersection_y * (math.pi / 2.5)
         return bounce_angle
 
@@ -102,7 +102,7 @@ class MatchManager:
 
         angle: float = self.calculate_reflection(paddle)
 
-        dx: float = math.cos(angle) * self.ball.speed * paddle.pos
+        dx: float = math.cos(angle) * self.ball.speed * paddle.pos * -1
         dy: float = math.sin(angle) * self.ball.speed
         print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
