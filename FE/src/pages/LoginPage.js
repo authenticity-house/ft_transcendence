@@ -1,6 +1,8 @@
+import { changeUrl } from '../index.js';
+
 const html = String.raw;
 
-class Login {
+class LoginPage {
 	template() {
 		return html`
 			<div class="login-container head_white_neon_15">
@@ -32,6 +34,28 @@ class Login {
 			</div>
 		`;
 	}
+
+	addEventListeners() {
+		const loginButton = document.querySelector('.login-button');
+		loginButton.addEventListener('click', () => {
+			console.log('로그인');
+		});
+
+		const signupLink = document.querySelector('.login-signup-link');
+		signupLink.addEventListener('click', () => {
+			console.log('회원가입');
+		});
+
+		const login42 = document.querySelector('.login-42');
+		login42.addEventListener('click', () => {
+			console.log('42 로그인');
+		});
+
+		const loginGuest = document.querySelector('.login-guest');
+		loginGuest.addEventListener('click', () => {
+			changeUrl('guest');
+		});
+	}
 }
 
-export default new Login();
+export default new LoginPage();

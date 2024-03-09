@@ -13,6 +13,7 @@ module.exports = {
 		'no-alert': 'off',
 		'no-restricted-globals': 'off',
 		'no-new': 'off',
-		'class-methods-use-this': 'off'
+		'class-methods-use-this': 'off',
+		'import/no-cycle': 'off'
 	}
 };
