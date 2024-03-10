@@ -5,6 +5,10 @@ from match.match_manager import MatchManager
 
 
 class GameConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.match_manager = None
+
     async def connect(self):
         await self.accept()
 
