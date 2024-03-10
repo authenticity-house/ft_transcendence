@@ -1,36 +1,44 @@
 import { changeUrl } from '../index.js';
+import BoldTitle from '../components/BoldTitle.js';
+import TextInputBox from '../components/TextInputBox.js';
+import ButtonMedium from '../components/ButtonMedium.js';
+import ButtonSmall from '../components/ButtonSmall.js';
 
 const html = String.raw;
 
 class LoginPage {
 	template() {
+		const titleComponent = new BoldTitle('로그인');
+		const textInputBoxId = new TextInputBox({ text: '아이디', button: false });
+		const textInputBoxPassword = new TextInputBox({
+			text: '비밀번호',
+			button: false
+		});
+		const loginButton = new ButtonMedium('로그인');
+		const login42 = new ButtonSmall('42 로그인');
+		const loginGuest = new ButtonSmall('게스트 로그인');
+
 		return html`
-			<div class="login-container head_white_neon_15">
-				<div class="login-title">
-					<span class="login-title-text display-medium48 yellow_neon_10"
-						>로그인</span
-					>
+			<div class="small-window head_white_neon_15">
+				${titleComponent.template()}
+
+				<div style="margin-bottom: 4rem">
+					${textInputBoxId.template()} ${textInputBoxPassword.template()}
 				</div>
-				<div class="login-input-container">
-					<div class="login-input-title display-medium20">아이디</div>
-					<input type="text" class="login-input" />
+
+				<div class="login-button" style="margin-bottom: 2rem">
+					${loginButton.template()}
 				</div>
-				<div class="login-input-container">
-					<div class="login-input-title display-medium20">비밀번호</div>
-					<input type="password" class="login-input" />
-				</div>
-				<button class="login-button head_blue_neon_15 blue_neon_10">
-					로그인
-				</button>
+
 				<div class="login-signup">
 					<span class="login-signup-link display-light20">회원가입</span>
 				</div>
-				<button class="login-42 head_blue_neon_15 blue_neon_10">
-					42 로그인
-				</button>
-				<button class="login-guest head_blue_neon_15 blue_neon_10">
-					게스트 로그인
-				</button>
+
+				<div class="login-42" style="margin-bottom: 2rem">
+					${login42.template()}
+				</div>
+
+				<div class="login-guest">${loginGuest.template()}</div>
 			</div>
 		`;
 	}
@@ -43,7 +51,7 @@ class LoginPage {
 
 		const signupLink = document.querySelector('.login-signup-link');
 		signupLink.addEventListener('click', () => {
-			console.log('회원가입');
+			changeUrl('register');
 		});
 
 		const login42 = document.querySelector('.login-42');
