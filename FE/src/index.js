@@ -3,6 +3,7 @@ import GuestPage from './pages/GuestPage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/RegisterPage.js';
 import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
+import GameSettingPage from './pages/GameSettingPage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -24,7 +25,8 @@ const routes = {
 	guest: GuestPage,
 	game: GamePage,
 	register: RegisterPage,
-	registerNickname: RegisterNicknamePage
+	registerNickname: RegisterNicknamePage,
+	gameSetting: GameSettingPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
