@@ -28,7 +28,6 @@ class MatchManager:
     async def start_game(self) -> None:
         self.is_run = True
         while self.is_run:
-            # print("check!!")
             self.ball.move_pos()
 
             # 벽 충돌
@@ -65,6 +64,7 @@ class MatchManager:
                         "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
                         "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
                         "score": {"player1": self.player1.score, "player2": self.player2.score},
+                        "type": "data",
                         "message": "data",
                     }
                 )
@@ -73,7 +73,7 @@ class MatchManager:
             await asyncio.sleep(1 / 60)
 
     def end_game(self) -> None:
-        self.is_run = True
+        self.is_run = False
 
     def update_score(self, player) -> None:
         player.increase_score()
