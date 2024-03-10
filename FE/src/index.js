@@ -1,6 +1,8 @@
 import LoginPage from './pages/LoginPage.js';
 import GuestPage from './pages/GuestPage.js';
 import GamePage from './pages/GamePage.js';
+import RegisterPage from './pages/RegisterPage.js';
+import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -20,7 +22,9 @@ const homeLink = '/FE/public/';
 const routes = {
 	'': LoginPage,
 	guest: GuestPage,
-	game: GamePage
+	game: GamePage,
+	register: RegisterPage,
+	registerNickname: RegisterNicknamePage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page

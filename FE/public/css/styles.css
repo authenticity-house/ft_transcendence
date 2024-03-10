@@ -72,7 +72,7 @@ button {
 	color: #fff;
 }
 
-button:hover {
+button:hover:not(.button-back-arrow-box) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -98,11 +98,11 @@ button:hover {
 	transition: opacity 0.5s;
 }
 
-.login-container {
+.small-window {
 	display: flex;
 	width: 80rem;
 	height: 88rem;
-	padding: 5rem 18.6rem;
+	padding: 2.2rem 2.8rem;
 	flex-direction: column;
 	align-items: center;
 
@@ -114,43 +114,65 @@ button:hover {
 	background: rgba(255, 255, 255, 0);
 }
 
-.login-title {
+/* components - BoldTitle */
+.bold-title {
 	display: flex;
-	width: 16.6rem;
 	flex-direction: column;
 	align-items: center;
-	gap: 1rem;
 	padding-top: 3.5rem;
 	padding-bottom: 5.9rem;
 }
 
-.login-title-text {
-	color: #fff;
-	text-align: center;
-}
-
-.login-input-container {
+/* components - TextInputBox */
+.text-inputbox-container {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
+	/* justify-content: center; */
 	gap: 1rem;
 	padding-bottom: 2rem;
+	width: 70rem;
+}
+.text-inputbox-button-container {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	/* justify-content: center; */
+	gap: 1rem;
+	padding-bottom: 2rem;
+	width: 70rem;
+}
+.text-container {
+	display: flex;
+	align-items: flex-start;
 	width: 40rem;
+	height: 2.5rem;
+}
+.text-button-container {
+	display: flex;
+	align-items: flex-start;
+	width: 55rem;
+	height: 2.5rem;
+}
+.input-size {
+	width: 40rem;
+	height: 6rem;
+}
+.input-button-container {
+	display: flex;
+	gap: 3rem;
+}
+.input-button {
+	width: 12rem;
+	height: 6rem;
+	font-size: 2.8rem;
 }
 
-.login-input-title {
-	color: #fff;
-	text-align: center;
-}
-
-.login-input {
-	width: 100%;
-}
-
-.login-button {
+/* components - ButtonMedium */
+.button-medium {
 	width: 40rem;
 	height: 8rem;
-	margin: 2rem 0rem;
+	/* margin: 2rem 0rem; */
 	font-size: 2.8rem;
 }
 
@@ -168,12 +190,22 @@ button:hover {
 	cursor: pointer;
 }
 
-.login-42,
-.login-guest {
+/* components - ButtonSmall */
+.button-small {
 	width: 24rem;
 	height: 6rem;
-	margin-bottom: 2rem;
 	font-size: 2.4rem;
 }
 
+/* components - ButtonBackArrow */
+.button-back-arrow-box {
+	display: flex;
+	border: none;
+	width: 5rem;
+}
+
+.button-back-arrow-box:hover {
+	color: #141343;
+	cursor: pointer;
+}
 /* Path: FE/public/css/style.css */
