@@ -41,6 +41,9 @@ ALLOWED_HOSTS: List[str] = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    "channels",
+    "websocket",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -78,7 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "game_server.wsgi.application"
-
+ASGI_APPLICATION = "game_server.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
