@@ -209,3 +209,59 @@ button:hover:not(.button-back-arrow-box) {
 	cursor: pointer;
 }
 /* Path: FE/public/css/style.css */
+
+
+
+
+/* GameSettingPage*/
+.button-head-count{
+	display: flex;
+	width: 28rem;
+	padding: 21.2px 0px 21.8px 0px;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.head-count-container{
+	display: flex;
+	width: 60rem;
+	height: 8rem;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 4rem;
+}
+
+.game-setting-nickname-container{
+	display: flex;
+	width: 60rem;
+	height: 36rem;
+	padding: 5.2rem 3.5rem 6.8rem 5rem;
+	justify-content: flex-end;
+	align-items: flex-start;
+
+	gap: 35px;
+
+	border-radius: 1rem;
+	border: 2px solid #FFF;
+}
+
+.game-setting-content-container{
+	display: flex;
+	width: 60rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 5rem;
+}
+
+.game-setting-container{
+	display: flex;
+	padding: 1rem;
+	margin-top: 6rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	align-self: stretch;
+}
+
+/* GameSettingPage*/
