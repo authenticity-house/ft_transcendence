@@ -30,7 +30,7 @@ class GuestPage {
 		});
 		const gameButton = document.querySelector('.game-button');
 		gameButton.addEventListener('click', () => {
-			changeUrl('game');
+			changeUrl('gameSetting');
 		});
 	}
 }
