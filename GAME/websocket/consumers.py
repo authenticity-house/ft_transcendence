@@ -34,13 +34,15 @@ class GameConsumer(AsyncWebsocketConsumer):
                 key_set = msg_data["key_set"]
                 self.match_manager.keys = set(key_set)
 
-            elif msg_subtype == "session_info": # 게임 초기 정보
-                print(msg_data["battle_mode"])
-                print(msg_data["total_score"])
-                print(msg_data["battle_mode"])
-                print(msg_data["level"])
-                print(msg_data["color"]["paddle"])
-                print(msg_data["color"]["background"])
+            elif msg_subtype == "session_info":  # 게임 초기 정보
+                self.match_manager = MatchManager(socket=self, total_score=msg_data["total_score"])
+
+                # print(msg_data["battle_mode"]) -> 토너먼트 미구현
+                # 로컬이라 플레이어 이름 정보 저장 미구현
+                # 레벨, 패들색, 배경색 정보 저장 미구현
+                # print(msg_data["level"])
+                # print(msg_data["color"]["paddle"])
+                # print(msg_data["color"]["background"])
 
                 await self.send(
                     text_data=json.dumps(
@@ -75,15 +77,14 @@ class GameConsumer(AsyncWebsocketConsumer):
                                     "height": 0.5,
                                 },
                                 "nickname": {
-                                    "player1": "wonyang",
-                                    "player2": "jeongmin"
-                                }
+                                    "player1": self.match_manager.player1.name,
+                                    "player2": self.match_manager.player2.name,
+                                },
                             },
                         }
                     )
                 )
             elif msg_subtype == "match_start":
-                self.match_manager = MatchManager(self)
                 self.game_session = asyncio.create_task(self.match_manager.start_game())
 
     async def disconnect(self, code):
