@@ -8,6 +8,8 @@ class AttackStat:
 
         self._power_up: int = 0
 
+        self._key_cnt_list: list = []
+
     def get_attack_type(self) -> int:
         """0: 공격형 / 1: 방어형 / 2: 혼합형 중 하나를 반환"""
         if self._defensive_style < self._offensive_style:
@@ -16,12 +18,21 @@ class AttackStat:
             return 1
         return 2
 
+    def get_key_cnt_avg(self) -> float:
+        cnt = len(self._key_cnt_list)
+        if cnt == 0:
+            return 0
+        return sum(self._key_cnt_list) / cnt
+
     def update_pos_cnt(self, paddle_y: float, ball_y: float) -> None:
         # 패들 상단(1/4) / 중앙(1/2) / 하단(1/4) 부딪힌 경우 판단
         if paddle_y - self._paddle_div_four <= ball_y <= paddle_y + self._paddle_div_four:
             self.increase_defensive_style()
         else:
             self.increase_offensive_style()
+
+    def store_key_cnt(self, cnt: int) -> None:
+        self._key_cnt_list.append(cnt)
 
     def increase_power_up_cnt(self) -> None:
         self._power_up += 1

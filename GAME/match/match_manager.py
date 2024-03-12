@@ -26,7 +26,7 @@ class MatchManager:
 
         self._ball: Ball = Ball()
         self._is_run = False
-        self._keys: list = []
+        self._keys: set = set()
 
         self._start_date: dt = timezone.now()
         self._end_date: dt = None
@@ -60,6 +60,8 @@ class MatchManager:
             if self.is_player2_scored():
                 print("player2 win!")
                 self.update_score(self.player2)
+                self.player1.store_key_cnt()
+                self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = 0
                 self.reset()
@@ -68,6 +70,8 @@ class MatchManager:
             if self.is_player1_scored():
                 print("player1 win!")
                 self.update_score(self.player1)
+                self.player1.store_key_cnt()
+                self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = 0
                 self.reset()
@@ -171,6 +175,13 @@ class MatchManager:
             if key == "ArrowDown":
                 self.player2.paddle.move_paddle_down()
 
+    def local_update_key_cnt(self, keys: set) -> None:
+        for key in keys:
+            if key in ["w", "s"]:
+                self.player1.increase_key_cnt()
+            elif key in ["ArrowUp", "ArrowDown"]:
+                self.player2.increase_key_cnt()
+
     def get_play_time(self) -> str:
         if self._end_date is None:
             self._end_date = dt.datetime.now()
@@ -220,4 +231,6 @@ class MatchManager:
 
     @keys.setter
     def keys(self, keys: set) -> None:
+        new_down_key: set = keys - self._keys
+        self.local_update_key_cnt(new_down_key)
         self._keys = keys
