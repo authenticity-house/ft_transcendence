@@ -211,8 +211,6 @@ button:hover:not(.button-back-arrow-box) {
 /* Path: FE/public/css/style.css */
 
 
-
-
 /* GameSettingPage*/
 .button-head-count{
 	display: flex;
@@ -223,14 +221,13 @@ button:hover:not(.button-back-arrow-box) {
 	flex-shrink: 0;
 }
 
-.head-count-container{
+.horizontal-button-container{
 	display: flex;
 	width: 60rem;
-	height: 8rem;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: flex-start;
-	gap: 4rem;
 }
+
 
 .game-setting-nickname-container{
 	display: flex;
@@ -254,14 +251,45 @@ button:hover:not(.button-back-arrow-box) {
 	gap: 5rem;
 }
 
+.vertical-button-container{
+	display: flex;
+	height: 15rem;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .game-setting-container{
 	display: flex;
-	padding: 1rem;
-	margin-top: 6rem;
 	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
-	gap: 1rem;
 	align-self: stretch;
 }
 
+.game-setting-window{
+	display: flex;
+	width: 80rem;
+	height: 88rem;
+	padding: 7rem;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 1rem;
+	flex-shrink: 0;
+	border-radius: 3rem;
+	border: 0.4rem solid #FFF;
+	background: rgba(255, 255, 255, 0.00);
+}
 /* GameSettingPage*/
+
+/* GameSettingDetailed */
+
+.button-select{
+	width: 16rem;
+	height: 10rem;
+	padding: 4rem 6rem;
+	font-size: 2.4rem;
+	border-radius: 3rem;
+	border: 0.2rem solid #FFF;
+}
+/* GameSettingDetailed */
