@@ -1,13 +1,29 @@
 from .paddle import Paddle
+from .attack_stat import AttackStat
 from .constants import Position
 
 
 class Player:
     def __init__(self, paddle: Paddle, pos: Position, name: str, score: int = 0) -> None:
-        self._paddle = paddle
-        self._pos = pos
-        self._name = name
-        self._score = score
+        self._paddle: Paddle = paddle
+        self._pos: Position = pos
+        self._name: str = name
+        self._score: int = score
+        self._key_cnt: int = 0
+
+        self._attack_stat: AttackStat = AttackStat(paddle.height)
+
+    def get_match_stat(self) -> dict[str, str | int]:
+        stat_data: dict[str, str | int] = {
+            "nickname": self.name,
+            "score": self.score,
+            "attack_type": self._attack_stat.get_attack_type(),
+            "power_up_cnt": self._attack_stat.power_up,
+            "key_cnt": 155,
+            "attack_pos": 3,
+        }
+
+        return stat_data
 
     def increase_score(self) -> None:
         self._score += 1
