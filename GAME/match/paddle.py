@@ -1,11 +1,13 @@
+from typing import Final
+
 from .ball import Ball
 from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, Position
 
 
 class Paddle:
-    PADDLE_SPEED: float = 0.05
-    PADDLE_DEFAULT_WIDTH: float = 0.1
-    PADDLE_DEFAULT_HEIGHT: float = 0.5
+    PADDLE_SPEED: Final = 0.05
+    PADDLE_DEFAULT_WIDTH: Final = 0.1
+    PADDLE_DEFAULT_HEIGHT: Final = 0.5
 
     def __init__(
         self,

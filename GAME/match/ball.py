@@ -1,14 +1,17 @@
+from typing import Final
+
 import math
 import random
 
 
 class Ball:
-    BALL_SPEED: float = 0.06
-    BALL_RADIUS: float = 0.04
+    BALL_SPEED: Final = 0.06
+    BALL_RADIUS: Final = 0.04
 
     def __init__(self, speed: float = BALL_SPEED, radius: float = BALL_RADIUS) -> None:
+        self.DEFAULT_BALL_SPEED: Final = speed  # pylint: disable=invalid-name
+
         self._radius: float = radius
-        self.DEFAULT_BALL_SPEED = speed  # pylint: disable=invalid-name
         self._speed: float = speed
         self._x: float = 0
         self._y: float = 0
