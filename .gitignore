@@ -79,16 +79,16 @@ GAME/db.sqlite3-journal
 BE/__pycache__/
 BE/backend/__pycache__
 BE/*.py[cod]
-BE/backend/*.py[cod]
-BE/*$py.class
-BE/backend/*$py.class
+BE/**/__pycache__/
+BE/**/*.py[cod]
+BE/**/*$py.class
 
 GAME/__pycache__/
 GAME/game_server/__pycache__
 GAME/*.py[cod]
-GAME/game_server/*.py[cod]
-GAME/*$py.class
-GAME/game_server/*$py.class
+GAME/**/__pycache__/
+GAME/**/*.py[cod]
+GAME/**/*$py.class
 
 
 # Installer logs
