@@ -1,11 +1,29 @@
+from typing import Final
+
 from .ball import Ball
 from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, Position
 
 
+def calculate_bounds_rect(x: float, y: float, width: float, height: float) -> list:
+    left_x = x - width / 2
+    right_x = x + width / 2
+    top_y = y + height / 2
+    bottom_y = y - height / 2
+    return [left_x, right_x, top_y, bottom_y]
+
+
+def calculate_bounds_circle(x: float, y: float, radius: float) -> list:
+    left_x: float = x - radius
+    right_x: float = x + radius
+    top_y: float = y + radius
+    bottom_y: float = y - radius
+    return [left_x, right_x, top_y, bottom_y]
+
+
 class Paddle:
-    PADDLE_SPEED: float = 0.05
-    PADDLE_DEFAULT_WIDTH: float = 0.1
-    PADDLE_DEFAULT_HEIGHT: float = 0.5
+    PADDLE_SPEED: Final = 0.05
+    PADDLE_DEFAULT_WIDTH: Final = 0.1
+    PADDLE_DEFAULT_HEIGHT: Final = 0.5
 
     def __init__(
         self,
@@ -38,23 +56,18 @@ class Paddle:
 
     def is_collides_with_ball(self, ball: Ball) -> bool:
         """공과 패들의 충돌 여부를 반환"""
-        ball_left_x: float = ball.x - ball.radius
-        ball_right_x: float = ball.x + ball.radius
-        ball_top_y: float = ball.y + ball.radius
-        ball_bottom_y: float = ball.y - ball.radius
+        LEFT, RIGHT, TOP, BOTTOM = 0, 1, 2, 3  # pylint: disable=invalid-name
 
-        paddle_left_x: float = self._x - self._width / 2
-        paddle_right_x: float = self._x + self._width / 2
-        paddle_top_y: float = self._y + self._height / 2
-        paddle_bottom_y: float = self._y - self._height / 2
+        ball_bounds: list = calculate_bounds_circle(ball.x, ball.y, ball.radius)
+        paddle_bounds: list = calculate_bounds_rect(self.x, self.y, self._width, self._height)
 
         if not (
-            ball_left_x <= paddle_right_x <= ball_right_x
-            or ball_left_x <= paddle_left_x <= ball_right_x
+            ball_bounds[LEFT] <= paddle_bounds[RIGHT] <= ball_bounds[RIGHT]
+            or ball_bounds[LEFT] <= paddle_bounds[LEFT] <= ball_bounds[RIGHT]
         ):
             return False
 
-        if paddle_top_y < ball_bottom_y or ball_top_y < paddle_bottom_y:
+        if paddle_bounds[TOP] < ball_bounds[BOTTOM] or ball_bounds[TOP] < paddle_bounds[BOTTOM]:
             return False
 
         return (ball.dx < 0) == (self.pos < 0)

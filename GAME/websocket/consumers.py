@@ -26,7 +26,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         msg = json.loads(text_data)
         msg_type, msg_subtype, msg_data = msg["type"], msg["subtype"], msg["data"]
         if msg_type == "game" and msg_subtype == "key_down":
-            key_set = msg_data["key_set"]
+            key_set: set = set(msg_data["key_set"])
             self.match_manager.keys = key_set
 
     async def disconnect(self, code):
