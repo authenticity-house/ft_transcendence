@@ -14,7 +14,6 @@ class GameSettingPage {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalSmallButton = new VerticalSmallButton(virticalbuttonConfigs);
-
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">

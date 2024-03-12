@@ -19,6 +19,28 @@ class GameSettingPage {
 			{ text: '어려움', classes: 'button-select' }
 		];
 		const level = new HorizontalHeadCount(levelConfigs, '54rem');
+		const paddleColor = new HorizontalHeadCount(
+			[{ text: 'D9D9D9', classes: 'button-select' }],
+			'54rem'
+		);
+		const backColor = new HorizontalHeadCount(
+			[{ text: 'ffffff', classes: 'button-select' }],
+			'54rem'
+		);
+		const virticalbuttonConfigs = [
+			{
+				text: '초기화',
+				classes: 'button-reset-complete head_blue_neon_15 blue_neon_10'
+			},
+			{
+				text: '완료',
+				classes: 'button-reset-complete head_blue_neon_15 blue_neon_10'
+			}
+		];
+		const verticalSmallButton = new HorizontalHeadCount(
+			virticalbuttonConfigs,
+			'51rem'
+		);
 
 		return html`
 			<div class="game-setting-window head_white_neon_15">
@@ -26,25 +48,28 @@ class GameSettingPage {
 					<div class="game-setting-content-container">
 						<div>${point.template()}</div>
 						<div>${level.template()}</div>
+						<div>${paddleColor.template()}</div>
+						<div>${backColor.template()}</div>
 					</div>
+					<div class="verticalButton">${verticalSmallButton.template()}</div>
 				</div>
 			</div>
 		`;
 	}
 
 	addEventListeners() {
-		const detailedButton = document.querySelector(
+		const resetButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
-		detailedButton.addEventListener('click', () => {
+		resetButton.addEventListener('click', () => {
 			changeUrl('gameSettingDetailed');
 		});
 
-		const startButton = document.querySelector(
+		const backButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
-		startButton.addEventListener('click', () => {
-			changeUrl('game');
+		backButton.addEventListener('click', () => {
+			changeUrl('gameSettingPage');
 		});
 	}
 }

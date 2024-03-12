@@ -292,4 +292,13 @@ button:hover:not(.button-back-arrow-box) {
 	border-radius: 3rem;
 	border: 0.2rem solid #FFF;
 }
+
+.button-reset-complete{
+	display: flex;
+	width: 240px;
+	padding: 16px 0px;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+}
 /* GameSettingDetailed */
