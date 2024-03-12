@@ -1,16 +1,21 @@
 const html = String.raw;
 
 class VerticalSmallButton {
-	constructor(textL, textR) {
-		this.textL = textL;
-		this.textR = textR;
+	constructor(buttonConfigs, height) {
+		this.buttonConfigs = buttonConfigs;
+		this.height = height;
 	}
 
 	template() {
+		const buttonsHtml = this.buttonConfigs
+			.map((config) => {
+				const fullClass = `button-small ${config.classes}`;
+				return html` <button class="${fullClass}">${config.text}</button> `;
+			})
+			.join('');
 		return html`
-			<div class="head-count-container">
-				<button class="button-head-count">${this.textL}</button>
-				<button class="button-head-count">${this.textR}</button>
+			<div class="vertical-button-container" style="width: ${this.width};">
+				${buttonsHtml}
 			</div>
 		`;
 	}

@@ -1,16 +1,22 @@
 const html = String.raw;
 
 class HorizontalHeadCount {
-	constructor(textL, textR) {
-		this.textL = textL;
-		this.textR = textR;
+	constructor(buttonConfigs, width) {
+		this.buttonConfigs = buttonConfigs;
+		this.width = width;
 	}
 
 	template() {
+		const buttonsHtml = this.buttonConfigs
+			.map((config) => {
+				const fullClass = `button-head-count ${config.classes || ''}`;
+				return html`<button class="${fullClass}">${config.text}</button>`;
+			})
+			.join('');
+
 		return html`
-			<div class="head-count-container">
-				<button class="button-head-count">${this.textL}</button>
-				<button class="button-head-count">${this.textR}</button>
+			<div class="horizontal-button-container" style="width: ${this.width};">
+				${buttonsHtml}
 			</div>
 		`;
 	}
