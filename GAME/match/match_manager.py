@@ -26,6 +26,7 @@ class MatchManager:
 
         self._ball: Ball = Ball()
         self._is_run = False
+        self._keys: list = []
 
         self._start_date: dt = timezone.now()
         self._end_date: dt = None
@@ -39,6 +40,7 @@ class MatchManager:
         rally_cnt: int = 0
         while self.is_run:
             self.ball.move_pos()
+            self.local_move_paddles()
 
             # 벽 충돌
             if self.is_ball_colliding_with_wall():
@@ -158,8 +160,8 @@ class MatchManager:
         print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
 
-    async def local_move_paddles(self, keys: list) -> None:
-        for key in keys:
+    def local_move_paddles(self) -> None:
+        for key in self.keys:
             if key == "w":
                 self.player1.paddle.move_paddle_up()
             if key == "s":
@@ -209,5 +211,13 @@ class MatchManager:
         return self._is_run
 
     @is_run.setter
-    def is_run(self, is_run) -> None:
+    def is_run(self, is_run: bool) -> None:
         self._is_run = is_run
+
+    @property
+    def keys(self) -> set:
+        return self._keys
+
+    @keys.setter
+    def keys(self, keys: set) -> None:
+        self._keys = keys
