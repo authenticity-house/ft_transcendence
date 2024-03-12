@@ -8,17 +8,21 @@ class Ball:
 
     def __init__(self, speed: float = BALL_SPEED, radius: float = BALL_RADIUS) -> None:
         self._radius: float = radius
+        self.DEFAULT_BALL_SPEED = speed  # pylint: disable=invalid-name
         self._speed: float = speed
         self._x: float = 0
         self._y: float = 0
         self._dx: float = 0
         self._dy: float = 0
 
+        self._max_speed_list: list = []
+
         self.reset()
 
     def reset(self) -> None:
         self._x = 0
         self._y = 0
+        self._speed = self.DEFAULT_BALL_SPEED
 
         angle: float = math.pi / 2 + random.random() * math.pi
         self._dx = math.cos(angle) * self._speed
@@ -31,6 +35,17 @@ class Ball:
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
         self._dy = new_dy
+
+    def update_max_speed_list(self) -> None:
+        self._max_speed_list.append(self.speed)
+
+    def get_max_speed_stat(self) -> list:
+        """[최대, 평균, 최소] 공 최대 속도 리스트 반환"""
+
+        max_value, min_value = max(self.max_speed_list), min(self.max_speed_list)
+        avg_value = sum(self.max_speed_list) / len(self.max_speed_list)
+
+        return [max_value, avg_value, min_value]
 
     @property
     def x(self) -> float:
@@ -63,3 +78,7 @@ class Ball:
     @property
     def speed(self) -> float:
         return self._speed
+
+    @property
+    def max_speed_list(self) -> list:
+        return self._max_speed_list
