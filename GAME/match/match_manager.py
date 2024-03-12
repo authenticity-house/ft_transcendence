@@ -24,11 +24,13 @@ class MatchManager:
 
         self._ball: Ball = Ball()
         self._is_run = False
+        self._keys: list = []
 
     async def start_game(self) -> None:
         self.is_run = True
         while self.is_run:
             self.ball.move_pos()
+            self.local_move_paddles()
 
             # 벽 충돌
             if self.is_ball_colliding_with_wall():
@@ -64,7 +66,7 @@ class MatchManager:
                         "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
                         "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
                         "score": {"player1": self.player1.score, "player2": self.player2.score},
-                        "type": "data",
+                        "type": "game",
                         "message": "data",
                     }
                 )
@@ -107,8 +109,8 @@ class MatchManager:
         print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
 
-    async def local_move_paddles(self, keys: list) -> None:
-        for key in keys:
+    def local_move_paddles(self) -> None:
+        for key in self.keys:
             if key == "w":
                 self.player1.paddle.move_paddle_up()
             if key == "s":
@@ -138,5 +140,13 @@ class MatchManager:
         return self._is_run
 
     @is_run.setter
-    def is_run(self, is_run) -> None:
+    def is_run(self, is_run: bool) -> None:
         self._is_run = is_run
+
+    @property
+    def keys(self) -> set:
+        return self._keys
+
+    @keys.setter
+    def keys(self, keys: set) -> None:
+        self._keys = keys

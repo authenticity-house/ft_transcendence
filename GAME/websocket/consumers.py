@@ -23,9 +23,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.game_session = asyncio.create_task(self.match_manager.start_game())
 
     async def receive(self, text_data=None, bytes_data=None):
-        text_data_json = json.loads(text_data)
-        key_set = text_data_json["key_set"]
-        await self.match_manager.local_move_paddles(key_set)
+        msg = json.loads(text_data)
+        msg_type, msg_subtype, msg_data = msg["type"], msg["subtype"], msg["data"]
+        if msg_type == "game" and msg_subtype == "key_down":
+            key_set = msg_data["key_set"]
+            self.match_manager.keys = key_set
 
     async def disconnect(self, code):
         # code: 1000 정상 종료 1001 상대방이 떠남 1002 프로토콜 오류 (로깅 시 사용)
