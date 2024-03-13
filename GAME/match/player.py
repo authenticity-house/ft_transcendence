@@ -24,6 +24,9 @@ class Player:
 
         return stat_data
 
+    def update_attack_type(self, ball_y: float) -> None:
+        self._attack_stat.update_attack_type(self._paddle.y, ball_y)
+
     def store_key_cnt(self) -> None:
         self._attack_stat.store_key_cnt(self._key_cnt)
         self._key_cnt = 0

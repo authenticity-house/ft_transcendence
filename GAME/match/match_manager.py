@@ -50,10 +50,12 @@ class MatchManager:
             if self.player1.paddle.is_collides_with_ball(self.ball):
                 print("left --------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player1.paddle)
+                self.player1.update_attack_type(self.ball.y)
                 rally_cnt += 1
             if self.player2.paddle.is_collides_with_ball(self.ball):
                 print("right ---------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player2.paddle)
+                self.player2.update_attack_type(self.ball.y)
                 rally_cnt += 1
 
             # 오른쪽 득점

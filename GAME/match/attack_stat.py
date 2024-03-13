@@ -24,7 +24,7 @@ class AttackStat:
             return 0
         return sum(self._key_cnt_list) / cnt
 
-    def update_pos_cnt(self, paddle_y: float, ball_y: float) -> None:
+    def update_attack_type(self, paddle_y: float, ball_y: float) -> None:
         # 패들 상단(1/4) / 중앙(1/2) / 하단(1/4) 부딪힌 경우 판단
         if paddle_y - self._paddle_div_four <= ball_y <= paddle_y + self._paddle_div_four:
             self.increase_defensive_style()
