@@ -1,9 +1,12 @@
+from typing import Final
+
 from .constants import SCREEN_HEIGHT
 
 
 class AttackStat:
+    SCREEN_DIV_SIX: Final = SCREEN_HEIGHT / 6
+
     def __init__(self, paddle_height: float) -> None:
-        self._screen_div_six: float = SCREEN_HEIGHT / 6
         self._paddle_div_four: float = paddle_height / 4
 
         self._offensive_style: int = 0
@@ -56,7 +59,7 @@ class AttackStat:
             self.increase_offensive_style()
 
     def update_attack_pos(self, ball_y: float):
-        screen_div_six: float = self._screen_div_six
+        screen_div_six: float = AttackStat.SCREEN_DIV_SIX
 
         if screen_div_six < ball_y:
             self.increase_attack_pos("top")
