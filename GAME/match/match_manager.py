@@ -174,7 +174,6 @@ class MatchManager:
 
         dx: float = math.cos(angle) * self.ball.speed * paddle.pos * -1
         dy: float = math.sin(angle) * self.ball.speed
-        print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
 
     def local_move_paddles(self) -> None:
