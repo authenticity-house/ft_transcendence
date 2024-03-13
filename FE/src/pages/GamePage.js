@@ -33,9 +33,9 @@ class GamePage {
 	}
 
 	addEventListeners() {
-		const INIT_BALL_SPEED = 0.02;
-		const REFLECT_SPEED = 0.04;
-		const PADDLE_SPEED = 0.03;
+		const INIT_BALL_SPEED = 0.05;
+		const REFLECT_SPEED = 0.1;
+		const PADDLE_SPEED = 0.07;
 		const WIN_SCORE = '10';
 
 		// get score element with querySelector
@@ -288,7 +288,7 @@ class GamePage {
 
 		// Create an animation
 		const animate = () => {
-			frame += 1;
+			frame += 2;
 
 			if (winner === 1) {
 				camera.lookAt(paddleMesh1.position);
