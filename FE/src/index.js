@@ -1,10 +1,12 @@
 import LoginPage from './pages/LoginPage.js';
-import GuestPage from './pages/GuestPage.js';
+import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/RegisterPage.js';
 import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
+
 import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingDetailed from './pages/GameSettingDetailed.js';
+import MatchModePage from './pages/MatchModePage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -23,12 +25,13 @@ const homeLink = '/FE/public/';
 // routes object is used to change the page
 const routes = {
 	'': LoginPage,
-	guest: GuestPage,
-	game: GamePage,
 	register: RegisterPage,
 	registerNickname: RegisterNicknamePage,
 	gameSetting: GameSettingPage,
-	gameSettingDetailed: GameSettingDetailed
+	gameSettingDetailed: GameSettingDetailed,
+	play: PlayModePage,
+	match: MatchModePage,
+	game: GamePage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
