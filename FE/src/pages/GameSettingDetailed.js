@@ -1,6 +1,7 @@
 import { changeUrl } from '../index.js';
 import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
 import VerticalSmallButton from '../components/VerticalSmallButton.js';
+import { ActivateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
@@ -8,14 +9,14 @@ class GameSettingDetailed {
 	template() {
 		const pointConfigs = [
 			{ text: '5', classes: 'button-select' },
-			{ text: '1000', classes: 'button-select' },
-			{ text: '10', classes: 'button-select' }
+			{ text: '10', classes: 'button-select selected' },
+			{ text: '15', classes: 'button-select' }
 		];
 		const point = new HorizontalHeadCount(pointConfigs, '54rem');
 
 		const levelConfigs = [
 			{ text: '쉬움', classes: 'button-select' },
-			{ text: '100000', classes: 'button-select' },
+			{ text: '보통', classes: 'button-select selected' },
 			{ text: '어려움', classes: 'button-select' }
 		];
 		const level = new HorizontalHeadCount(levelConfigs, '54rem');
@@ -46,11 +47,15 @@ class GameSettingDetailed {
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
 					<div class="game-setting-content-container wide-element-66">
-						<div class="horizontal-button-container wide-element-66">
+						<div
+							class="horizontal-button-container activate-button wide-element-66"
+						>
 							<p class="text-subtitle-1">승점</p>
 							<div>${point.template()}</div>
 						</div>
-						<div class="horizontal-button-container wide-element-66">
+						<div
+							class="horizontal-button-container activate-button wide-element-66"
+						>
 							<p class="text-subtitle-1">난이도</p>
 							<div>${level.template()}</div>
 						</div>
@@ -70,6 +75,7 @@ class GameSettingDetailed {
 	}
 
 	addEventListeners() {
+		ActivateButtons('.activate-button');
 		const resetButton = document.querySelector(
 			'.horizontalButton button:nth-child(1)'
 		);
@@ -77,10 +83,10 @@ class GameSettingDetailed {
 			changeUrl('gameSettingDetailed');
 		});
 
-		const backButton = document.querySelector(
+		const confirmButton = document.querySelector(
 			'.horizontalButton button:nth-child(2)'
 		);
-		backButton.addEventListener('click', () => {
+		confirmButton.addEventListener('click', () => {
 			changeUrl('gameSetting');
 		});
 	}

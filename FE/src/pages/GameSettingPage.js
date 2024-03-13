@@ -1,12 +1,16 @@
 import { changeUrl } from '../index.js';
 import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
 import VerticalSmallButton from '../components/VerticalSmallButton.js';
+import { ActivateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
 class GameSettingPage {
 	template() {
-		const horizonbuttonConfigs = [{ text: '1vs1' }, { text: '토너먼트' }];
+		const horizonbuttonConfigs = [
+			{ text: '1vs1', classes: 'selected' },
+			{ text: '토너먼트' }
+		];
 		const horizontalHeadCount = new HorizontalHeadCount(
 			horizonbuttonConfigs,
 			'60rem'
@@ -35,19 +39,7 @@ class GameSettingPage {
 	addEventListeners() {
 		/* 1vs1 토너먼트 */
 
-		const oneOnOne = document.querySelector(
-			'.horizontalButton button:first-child'
-		);
-		oneOnOne.addEventListener('click', () => {
-			changeUrl('gameSettingDetailed');
-		});
-
-		const tournament = document.querySelector(
-			'.horizontalButton button:first-child'
-		);
-		tournament.addEventListener('click', () => {
-			changeUrl('gameSettingDetailed');
-		});
+		ActivateButtons('.horizontalButton');
 
 		/* 세부설정 시작 */
 		const detailedButton = document.querySelector(

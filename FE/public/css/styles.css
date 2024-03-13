@@ -363,4 +363,15 @@ button:hover:not(.button-back-arrow-box) {
 .wide-element-66{
 	width: 66rem;
 }
+
+.selected {
+	box-shadow: 0px 0px 15px 0px #FF5D84, 0px 0px 15px 0px #FF5D84;
+	text-shadow: 0px 0px 10px #FF5D84, 0px 0px 10px #FF5D84;
+	font-family: "esamanru OTF";
+	font-size: 24px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+}
+
 /* GameSettingDetailed */
