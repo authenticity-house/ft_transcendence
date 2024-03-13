@@ -130,6 +130,7 @@ class MatchManager:
         )
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> int:
+        self.ball.increase_speed()
         self.bounce_ball_off_paddle(owner.paddle)
         owner.update_attack_type(self.ball.y)
         other.update_attack_pos(self.ball.y)
