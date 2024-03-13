@@ -206,31 +206,31 @@ class GamePage {
 		const keyDownList = new Set();
 
 		document.addEventListener('keydown', (event) => {
-			if (event.key === 'w') {
+			if (event.code === 'KeyW') {
 				keyDownList.add('w');
 			}
-			if (event.key === 's') {
+			if (event.code === 'KeyS') {
 				keyDownList.add('s');
 			}
-			if (event.key === 'ArrowUp') {
+			if (event.code === 'ArrowUp') {
 				keyDownList.add('ArrowUp');
 			}
-			if (event.key === 'ArrowDown') {
+			if (event.code === 'ArrowDown') {
 				keyDownList.add('ArrowDown');
 			}
 		});
 
 		document.addEventListener('keyup', (event) => {
-			if (event.key === 'w') {
+			if (event.code === 'KeyW') {
 				keyDownList.delete('w');
 			}
-			if (event.key === 's') {
+			if (event.code === 'KeyS') {
 				keyDownList.delete('s');
 			}
-			if (event.key === 'ArrowUp') {
+			if (event.code === 'ArrowUp') {
 				keyDownList.delete('ArrowUp');
 			}
-			if (event.key === 'ArrowDown') {
+			if (event.code === 'ArrowDown') {
 				keyDownList.delete('ArrowDown');
 			}
 		});
