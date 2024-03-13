@@ -19,13 +19,16 @@ class Player:
             "attack_type": self._attack_stat.get_attack_type(),
             "power_up_cnt": self._attack_stat.power_up,
             "key_cnt": self._attack_stat.get_key_cnt_avg(),
-            "attack_pos": 3,
+            "attack_pos": self._attack_stat.get_attack_pos(),
         }
 
         return stat_data
 
     def update_attack_type(self, ball_y: float) -> None:
         self._attack_stat.update_attack_type(self._paddle.y, ball_y)
+
+    def update_attack_pos(self, ball_y: float) -> None:
+        self._attack_stat.update_attack_pos(ball_y)
 
     def store_key_cnt(self) -> None:
         self._attack_stat.store_key_cnt(self._key_cnt)

@@ -51,17 +51,20 @@ class MatchManager:
                 print("left --------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player1.paddle)
                 self.player1.update_attack_type(self.ball.y)
+                self.player2.update_attack_pos(self.ball.y)
                 rally_cnt += 1
             if self.player2.paddle.is_collides_with_ball(self.ball):
                 print("right ---------- paddle reflect!")
                 self.bounce_ball_off_paddle(self.player2.paddle)
                 self.player2.update_attack_type(self.ball.y)
+                self.player1.update_attack_pos(self.ball.y)
                 rally_cnt += 1
 
             # 오른쪽 득점
             if self.is_player2_scored():
                 print("player2 win!")
                 self.update_score(self.player2)
+                self.player2.update_attack_type(self.ball.y)
                 self.player1.store_key_cnt()
                 self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
@@ -72,6 +75,7 @@ class MatchManager:
             if self.is_player1_scored():
                 print("player1 win!")
                 self.update_score(self.player1)
+                self.player1.update_attack_type(self.ball.y)
                 self.player1.store_key_cnt()
                 self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
