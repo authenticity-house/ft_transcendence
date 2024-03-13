@@ -187,7 +187,7 @@ class GamePage {
 		scene.add(pointLight);
 
 		// Set the camera position
-		camera.position.z = 3;
+		camera.position.z = 4;
 
 		// Load a font for ready text
 		const fontLoader = new FontLoader();
@@ -310,7 +310,7 @@ class GamePage {
 				camera.position.x = 0;
 				camera.position.y = 0;
 				camera.position.z =
-					2.5 +
+					3.5 +
 					Math.sin((3 / 2) * Math.PI + ((frame - 200) / 100) * Math.PI) *
 						(1 / 2);
 				camera.lookAt(0, 0, 0);
