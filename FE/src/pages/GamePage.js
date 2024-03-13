@@ -501,6 +501,9 @@ class GamePage {
 			websocket.send(JSON.stringify(message));
 		}
 
+		const player1Score = document.querySelector('.player1');
+		const player2Score = document.querySelector('.player2');
+
 		// 화면 렌더링
 		function renderThreeJs(data) {
 			frame += 2;
@@ -555,6 +558,9 @@ class GamePage {
 			paddleLightGroup1.position.y = paddle1.y;
 			paddleMesh2.position.y = paddle2.y;
 			paddleLightGroup2.position.y = paddle2.y;
+
+			player1Score.textContent = score.player1;
+			player2Score.textContent = score.player2;
 
 			ballLight.position.copy(ballMesh.position);
 
@@ -634,6 +640,8 @@ class GamePage {
 								type: 'disconnect',
 								message: 'plz!'
 							};
+							player1Score.textContent = message.data.player1.score;
+							player2Score.textContent = message.data.player2.score;
 							websocket.send(JSON.stringify(disconnectMessage));
 						}
 						break;
