@@ -55,13 +55,13 @@ class MatchManager:
                 rally_cnt += self.handle_paddle_collision(self.player2, self.player1)
 
             # 오른쪽 득점
-            if self.is_player2_scored():
+            if self.is_player2_score():
                 print("player2 win!")
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = self.handle_scoring(self.player2, self.player1)
 
             # 왼쪽 득점
-            if self.is_player1_scored():
+            if self.is_player1_score():
                 print("player1 win!")
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = self.handle_scoring(self.player1, self.player2)
@@ -156,10 +156,10 @@ class MatchManager:
             or half_width - self.ball.radius <= self.ball.y
         )
 
-    def is_player1_scored(self) -> bool:
+    def is_player1_score(self) -> bool:
         return SCREEN_WIDTH / 2 - self.ball.radius <= self.ball.x
 
-    def is_player2_scored(self) -> bool:
+    def is_player2_score(self) -> bool:
         return self.ball.x <= -SCREEN_WIDTH / 2 + self.ball.radius
 
     def calculate_reflection(self, paddle: Paddle) -> float:
