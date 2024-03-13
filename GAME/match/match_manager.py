@@ -166,9 +166,9 @@ class MatchManager:
 
     def local_move_paddles(self) -> None:
         for key in self.keys:
-            if key == "w":
+            if key == "KeyW":
                 self.player1.paddle.move_paddle_up()
-            if key == "s":
+            if key == "KeyS":
                 self.player1.paddle.move_paddle_down()
             if key == "ArrowUp":
                 self.player2.paddle.move_paddle_up()
@@ -177,7 +177,7 @@ class MatchManager:
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:
-            if key in ["w", "s"]:
+            if key in ["KeyW", "KeyS"]:
                 self.player1.increase_key_cnt()
             elif key in ["ArrowUp", "ArrowDown"]:
                 self.player2.increase_key_cnt()
