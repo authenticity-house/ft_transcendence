@@ -15,7 +15,7 @@ class HorizontalHeadCount {
 			.join('');
 
 		return html`
-			<div class="horizontal-button-container" style="width: ${this.width};">
+			<div class="horizontal-button-container" style="width: ${this.width}">
 				${buttonsHtml}
 			</div>
 		`;

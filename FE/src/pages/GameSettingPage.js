@@ -7,7 +7,10 @@ const html = String.raw;
 class GameSettingPage {
 	template() {
 		const horizonbuttonConfigs = [{ text: '1vs1' }, { text: '토너먼트' }];
-		const horizontalHeadCount = new HorizontalHeadCount(horizonbuttonConfigs);
+		const horizontalHeadCount = new HorizontalHeadCount(
+			horizonbuttonConfigs,
+			'60rem'
+		);
 
 		const virticalbuttonConfigs = [
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },

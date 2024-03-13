@@ -4,7 +4,7 @@ import VerticalSmallButton from '../components/VerticalSmallButton.js';
 
 const html = String.raw;
 
-class GameSettingPage {
+class GameSettingDetailed {
 	template() {
 		const pointConfigs = [
 			{ text: '5', classes: 'button-select' },
@@ -37,7 +37,7 @@ class GameSettingPage {
 				classes: 'button-reset-complete head_blue_neon_15 blue_neon_10'
 			}
 		];
-		const verticalSmallButton = new HorizontalHeadCount(
+		const horizontalButton = new HorizontalHeadCount(
 			virticalbuttonConfigs,
 			'51rem'
 		);
@@ -45,13 +45,25 @@ class GameSettingPage {
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
-					<div class="game-setting-content-container">
-						<div>${point.template()}</div>
-						<div>${level.template()}</div>
-						<div>${paddleColor.template()}</div>
-						<div>${backColor.template()}</div>
+					<div class="game-setting-content-container wide-element-66">
+						<div class="horizontal-button-container wide-element-66">
+							<p class="text-subtitle-1">승점</p>
+							<div>${point.template()}</div>
+						</div>
+						<div class="horizontal-button-container wide-element-66">
+							<p class="text-subtitle-1">난이도</p>
+							<div>${level.template()}</div>
+						</div>
+						<div class="horizontal-button-container wide-element-66">
+							<p class="text-subtitle-1">패들색</p>
+							<div>${paddleColor.template()}</div>
+						</div>
+						<div class="horizontal-button-container wide-element-66">
+							<p class="text-subtitle-1">배경색</p>
+							<div>${backColor.template()}</div>
+						</div>
 					</div>
-					<div class="verticalButton">${verticalSmallButton.template()}</div>
+					<div class="horizontalButton">${horizontalButton.template()}</div>
 				</div>
 			</div>
 		`;
@@ -59,19 +71,19 @@ class GameSettingPage {
 
 	addEventListeners() {
 		const resetButton = document.querySelector(
-			'.verticalButton button:nth-child(1)'
+			'.horizontalButton button:nth-child(1)'
 		);
 		resetButton.addEventListener('click', () => {
 			changeUrl('gameSettingDetailed');
 		});
 
 		const backButton = document.querySelector(
-			'.verticalButton button:nth-child(2)'
+			'.horizontalButton button:nth-child(2)'
 		);
 		backButton.addEventListener('click', () => {
-			changeUrl('gameSettingPage');
+			changeUrl('gameSetting');
 		});
 	}
 }
 
-export default new GameSettingPage();
+export default new GameSettingDetailed();
