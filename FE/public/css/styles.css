@@ -241,6 +241,7 @@ button:hover:not(.button-back-arrow-box) {
 	height: 18rem;
 	/* margin: 2rem 0rem; */
 	font-size: 5.2rem;
+	border-radius: 3rem;
 }
 
 .back-arrow-container {
