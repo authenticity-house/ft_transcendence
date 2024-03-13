@@ -6,7 +6,7 @@ import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
 
-class Register {
+class RegisterPage {
 	template() {
 		const titleComponent = new BoldTitle('회원가입');
 		const textInputBoxId = new TextInputBox({ text: '아이디', button: true });
@@ -30,13 +30,7 @@ class Register {
 					${nextButton.template()}
 				</div>
 
-				<div
-					class="back-arrow-container"
-					style="display: flex; justify-content: flex-start; 
-					align-items: flex-end; width: 100%; height: 100%;"
-				>
-					${backButton.template()}
-				</div>
+				<div class="back-arrow-container">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -53,4 +47,4 @@ class Register {
 	}
 }
 
-export default new Register();
+export default new RegisterPage();

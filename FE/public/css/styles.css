@@ -208,4 +208,46 @@ button:hover:not(.button-back-arrow-box) {
 	color: #141343;
 	cursor: pointer;
 }
+
+.border-style-none {
+	border-style: none;
+}
+
+.select-container {
+	display: flex;
+	width: 80rem;
+	height: 88rem;
+	padding: 2.2rem 2.8rem;
+	flex-direction: column;
+	align-items: center;
+
+	flex-shrink: 0;
+	margin-top: 7.4rem;
+}
+
+.select-wrapper {
+	display: flex;
+	width: 70rem;
+	height: 36rem;
+	margin: 9rem 0;
+	justify-content: center;
+	align-items: center;
+}
+
+/* components - ButtonLarge */
+.button-large {
+	display: flex;
+	width: 54rem;
+	height: 18rem;
+	/* margin: 2rem 0rem; */
+	font-size: 5.2rem;
+}
+
+.back-arrow-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	width: 100%;
+	height: 100%;
+}
 /* Path: FE/public/css/style.css */
