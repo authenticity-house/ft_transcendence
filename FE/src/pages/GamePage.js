@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { OrbitControls } from '../../node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 import { changeUrl } from '../index.js';
 
@@ -8,17 +9,42 @@ const html = String.raw;
 class GamePage {
 	template() {
 		return html`
-			<div class="game-container"></div>
-			<div class="return-button">
-				<button class="return-button__button">Return</button>
+			<div
+				id="score"
+				style="
+					display: flex;
+					justify-content: center;
+					color: white;
+					font-size: 48px;
+					margin: 10px;
+					"
+			>
+				<div class="player1 score" style="margin-right: 40px">0</div>
+				<div>:</div>
+				<div class="player2 score" style="margin-left: 40px">0</div>
 			</div>
+			<div
+				class="game-container"
+				style="display: flex; justify-content: center"
+			></div>
+			<div class="result" style="display: flex; justify-content: center"></div>
+			<button class="return-button" style="margin: 30px">Return</button>
 		`;
 	}
 
 	addEventListeners() {
+		const INIT_BALL_SPEED = 0.02;
+		const REFLECT_SPEED = 0.04;
+		const PADDLE_SPEED = 0.03;
+		const WIN_SCORE = '10';
+
+		// get score element with querySelector
+		const player1Score = document.querySelector('.player1');
+		const player2Score = document.querySelector('.player2');
+
 		// Create a scene
 		const scene = new THREE.Scene();
-		scene.background = new THREE.Color(0x222222);
+		scene.background = new THREE.Color(0x141343);
 
 		// Create a camera
 		const camera = new THREE.PerspectiveCamera(
@@ -32,8 +58,9 @@ class GamePage {
 		const renderer = new THREE.WebGLRenderer({
 			antialias: true
 		});
-		renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+		renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 
+		// Append the renderer to the game-container
 		const gameContainer = document.querySelector('.game-container');
 		gameContainer.appendChild(renderer.domElement);
 
@@ -121,7 +148,7 @@ class GamePage {
 			i <= paddleMesh1.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.2, 100);
+			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
 			paddleLight.position.set(-2.8, i, 0.2);
 			paddleLightGroup1.add(paddleLight);
 		}
@@ -131,7 +158,7 @@ class GamePage {
 			i <= paddleMesh2.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.2, 100);
+			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
 			paddleLight.position.set(2.8, i, 0.2);
 			paddleLightGroup2.add(paddleLight);
 		}
@@ -159,16 +186,13 @@ class GamePage {
 		pointLight.position.set(0, 0, 1);
 		scene.add(pointLight);
 
-		// Create a controls
-		const controls = new OrbitControls(camera, renderer.domElement);
-
 		// Set the camera position
 		camera.position.z = 3;
 
 		// Set the ball movement
 		// seed from PI / 2 to 3 * PI / 2
-		const seed = Math.PI / 2 + Math.random() * Math.PI;
-		const ballSpeed = 0.06;
+		let ballSpeed = 0;
+		let seed = Math.PI * (3 / 4) + (Math.random() * Math.PI) / 2;
 		const direction = new THREE.Vector3(
 			Math.cos(seed) * ballSpeed,
 			Math.sin(seed) * ballSpeed,
@@ -178,7 +202,7 @@ class GamePage {
 		// Set the paddle movement
 		// mesh1 moves key W and S
 		// mesh2 moves key UP and DOWN
-		const paddleSpeed = 0.05;
+		const paddleSpeed = PADDLE_SPEED;
 		const keyDownList = new Set();
 
 		document.addEventListener('keydown', (event) => {
@@ -227,11 +251,85 @@ class GamePage {
 			return bounceAngle;
 		};
 
+		// Load a font for ready text
+		const fontLoader = new FontLoader();
+
+		fontLoader.load('fonts/esamanru_medium.typeface.json', (font) => {
+			const textGeometry = new TextGeometry('Ready', {
+				font,
+				size: 0.4,
+				height: 0.1,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 0.03,
+				bevelSize: 0.01,
+				bevelOffset: 0,
+				bevelSegments: 1
+			});
+			const textMaterial = new THREE.MeshPhysicalMaterial({
+				color: 0xffffff,
+				metalness: 0.5,
+				roughness: 0.5,
+				clearcoat: 1,
+				clearcoatRoughness: 0.5,
+				emissive: 0xff00ff,
+				emissiveIntensity: 0.5
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.visible = false;
+			textMesh.position.x = -0.96;
+			textMesh.position.y = -0.13;
+			textMesh.position.z = 0.5;
+			scene.add(textMesh);
+		});
+
+		let frame = 0;
+		let winner = 0;
+
 		// Create an animation
 		const animate = () => {
-			requestAnimationFrame(animate);
+			frame += 1;
 
-			controls.update();
+			if (winner === 1) {
+				camera.lookAt(paddleMesh1.position);
+			}
+			if (winner === 2) {
+				camera.lookAt(paddleMesh2.position);
+			}
+
+			// Camera movement
+			if (frame < 200) {
+				camera.position.x = -4;
+				camera.position.y = -1 + (frame / 200) * 2;
+				camera.lookAt(paddleMesh1.position);
+			}
+			if (frame >= 200 && frame < 400) {
+				camera.position.x = 4;
+				camera.position.y = 1 - ((frame - 200) / 200) * 2;
+				camera.lookAt(paddleMesh2.position);
+			}
+			if (frame >= 400 && frame <= 600) {
+				camera.position.x = 0;
+				camera.position.y = 0;
+				camera.position.z =
+					2.5 +
+					Math.sin((3 / 2) * Math.PI + ((frame - 400) / 200) * Math.PI) *
+						(1 / 2);
+				camera.lookAt(0, 0, 0);
+				if (frame === 400) {
+					scene.children[scene.children.length - 1].visible = true;
+				}
+				if (frame >= 550 && frame < 600 && frame % 8 === 0) {
+					scene.children[scene.children.length - 1].visible =
+						!scene.children[scene.children.length - 1].visible;
+				}
+				if (frame === 600) {
+					scene.children[scene.children.length - 1].visible = false;
+					ballSpeed = INIT_BALL_SPEED;
+					direction.x = Math.cos(seed) * ballSpeed;
+					direction.y = Math.sin(seed) * ballSpeed;
+				}
+			}
 
 			// Ball movement
 			ballMesh.position.add(direction);
@@ -241,8 +339,49 @@ class GamePage {
 			if (ballMesh.position.y <= -2 || ballMesh.position.y >= 2) {
 				reflect('y');
 			}
+
 			if (ballMesh.position.x <= -3 || ballMesh.position.x >= 3) {
-				reflect('x');
+				seed = Math.PI * (3 / 4) + (Math.random() * Math.PI) / 2;
+				ballSpeed = INIT_BALL_SPEED;
+				direction.x = Math.cos(seed) * ballSpeed;
+				direction.y = Math.sin(seed) * ballSpeed;
+				if (ballMesh.position.x <= -3) {
+					player2Score.textContent = Number(player2Score.textContent) + 1;
+				}
+				if (ballMesh.position.x >= 3) {
+					player1Score.textContent = Number(player1Score.textContent) + 1;
+					direction.x *= -1;
+				}
+				ballMesh.position.x = 0;
+				ballMesh.position.y = 0;
+
+				if (
+					player1Score.textContent === WIN_SCORE ||
+					player2Score.textContent === WIN_SCORE
+				) {
+					ballSpeed = 0;
+					direction.x = Math.cos(seed) * ballSpeed;
+					direction.y = Math.sin(seed) * ballSpeed;
+
+					// print winner
+					const result = document.querySelector('.result');
+					const winnerContainer = document.createElement('div');
+					winnerContainer.style =
+						'color: white; font-size: 2rem; margin: 10px;';
+					if (player1Score.textContent === WIN_SCORE) {
+						winnerContainer.textContent = 'Player 1 wins!';
+						camera.position.x = -4;
+						camera.position.z = 3;
+						winner = 1;
+					}
+					if (player2Score.textContent === WIN_SCORE) {
+						winnerContainer.textContent = 'Player 2 wins!';
+						camera.position.x = 4;
+						camera.position.z = 3;
+						winner = 2;
+					}
+					result.appendChild(winnerContainer);
+				}
 			}
 
 			// Ball reflection on paddle
@@ -254,6 +393,7 @@ class GamePage {
 				direction.x < 0
 			) {
 				const angle = calculateReflection(paddleMesh1);
+				ballSpeed = REFLECT_SPEED;
 				direction.x = Math.cos(angle) * ballSpeed;
 				direction.y = Math.sin(angle) * ballSpeed;
 			}
@@ -265,6 +405,7 @@ class GamePage {
 				direction.x > 0
 			) {
 				const angle = calculateReflection(paddleMesh2);
+				ballSpeed = REFLECT_SPEED;
 				direction.x = Math.cos(angle) * ballSpeed * -1;
 				direction.y = Math.sin(angle) * ballSpeed;
 			}
@@ -296,6 +437,8 @@ class GamePage {
 			}
 
 			renderer.render(scene, camera);
+
+			requestAnimationFrame(animate);
 		};
 
 		animate();
@@ -305,7 +448,7 @@ class GamePage {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 
-			renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+			renderer.setSize(window.innerWidth / 1.58, window.innerHeight / 1.8);
 		});
 
 		// Return to the main page
