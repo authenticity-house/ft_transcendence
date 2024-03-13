@@ -1,11 +1,23 @@
 import { changeUrl } from '../index.js';
 import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
-import VerticalSmallButton from '../components/VerticalSmallButton.js';
 import { ActivateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
+function createColorPickerComponent(colorCode, pickerId, buttonId) {
+	const colorPicker = `<input type="color" id="${pickerId}" value="${colorCode}" style="visibility:hidden; width:0; height:0;"/>`;
+	const colorDisplayButton = `<button class="button-select" id="${buttonId}" onclick="document.getElementById('${pickerId}').click()">${colorCode}</button>`;
+	const colorDisplay = `<div class="color-display" style="background-color:${colorCode}; width:6rem; height:6rem; display:inline-block;"></div>`;
+
+	return { colorPicker, colorDisplayButton, colorDisplay };
+}
+
 class GameSettingDetailed {
+	constructor() {
+		this.paddleColorCode = '#D9D9D9';
+		this.backColorCode = '#D9D9D9';
+	}
+
 	template() {
 		const pointConfigs = [
 			{ text: '5', classes: 'button-select' },
@@ -20,14 +32,18 @@ class GameSettingDetailed {
 			{ text: '어려움', classes: 'button-select' }
 		];
 		const level = new HorizontalHeadCount(levelConfigs, '54rem');
-		const paddleColor = new HorizontalHeadCount(
-			[{ text: 'D9D9D9', classes: 'button-select' }],
-			'54rem'
+
+		const paddleColor = createColorPickerComponent(
+			this.paddleColorCode,
+			'paddleColorPicker',
+			'paddleColorButton'
 		);
-		const backColor = new HorizontalHeadCount(
-			[{ text: 'ffffff', classes: 'button-select' }],
-			'54rem'
+		const backColor = createColorPickerComponent(
+			this.backColorCode,
+			'backColorPicker',
+			'backColorButton'
 		);
+
 		const virticalbuttonConfigs = [
 			{
 				text: '초기화',
@@ -46,26 +62,26 @@ class GameSettingDetailed {
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
-					<div class="game-setting-content-container wide-element-66">
-						<div
-							class="horizontal-button-container activate-button wide-element-66"
-						>
+					<div class="game-setting-content-container width-66">
+						<div class="horizontal-button-container activate-button width-66">
 							<p class="text-subtitle-1">승점</p>
 							<div>${point.template()}</div>
 						</div>
-						<div
-							class="horizontal-button-container activate-button wide-element-66"
-						>
+						<div class="horizontal-button-container activate-button width-66">
 							<p class="text-subtitle-1">난이도</p>
 							<div>${level.template()}</div>
 						</div>
-						<div class="horizontal-button-container wide-element-66">
+						<div class="horizontal-button-container width-66">
 							<p class="text-subtitle-1">패들색</p>
-							<div>${paddleColor.template()}</div>
+							<div class="horizontal-button-container width-54">
+								${paddleColor.colorPicker}${paddleColor.colorDisplayButton}${paddleColor.colorDisplay}
+							</div>
 						</div>
-						<div class="horizontal-button-container wide-element-66">
+						<div class="horizontal-button-container width-66">
 							<p class="text-subtitle-1">배경색</p>
-							<div>${backColor.template()}</div>
+							<div class="horizontal-button-container width-54">
+								${backColor.colorPicker}${backColor.colorDisplayButton}${backColor.colorDisplay}
+							</div>
 						</div>
 					</div>
 					<div class="horizontalButton">${horizontalButton.template()}</div>
@@ -88,6 +104,27 @@ class GameSettingDetailed {
 		);
 		confirmButton.addEventListener('click', () => {
 			changeUrl('gameSetting');
+		});
+
+		const paddleColorPicker = document.getElementById('paddleColorPicker');
+		paddleColorPicker.addEventListener('change', (e) => {
+			this.paddleColorCode = e.target.value;
+			document.getElementById('paddleColorButton').textContent =
+				this.paddleColorCode;
+			document.querySelector(
+				'#paddleColorButton + .color-display'
+			).style.backgroundColor = this.paddleColorCode;
+		});
+
+		// 배경색 선택기 이벤트 리스너 (예시로 추가한 배경색 코드 변수를 사용해야 합니다)
+		const backColorPicker = document.getElementById('backColorPicker');
+		backColorPicker.addEventListener('change', (e) => {
+			this.backColorCode = e.target.value;
+			document.getElementById('backColorButton').textContent =
+				this.backColorCode;
+			document.querySelector(
+				'#backColorButton + .color-display'
+			).style.backgroundColor = this.backColorCode;
 		});
 	}
 }

@@ -360,8 +360,11 @@ button:hover:not(.button-back-arrow-box) {
 	letter-spacing: 0.24rem;
 }
 
-.wide-element-66{
+.width-66{
 	width: 66rem;
+}
+.width-54{
+	width: 54rem;
 }
 
 .selected {
