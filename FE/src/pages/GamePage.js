@@ -286,7 +286,7 @@ class GamePage {
 
 		// 화면 렌더링
 		function renderThreeJs(data) {
-			frame += 2;
+			frame += 1;
 
 			// if (winner === 1) {
 			// 	camera.lookAt(paddleMesh1.position);
@@ -296,32 +296,32 @@ class GamePage {
 			// }
 
 			// Camera movement
-			if (frame < 200) {
+			if (frame < 100) {
 				camera.position.x = -4;
-				camera.position.y = -1 + (frame / 200) * 2;
+				camera.position.y = -1 + (frame / 100) * 2;
 				camera.lookAt(paddleMesh1.position);
 			}
-			if (frame >= 200 && frame < 400) {
+			if (frame >= 100 && frame < 200) {
 				camera.position.x = 4;
-				camera.position.y = 1 - ((frame - 200) / 200) * 2;
+				camera.position.y = 1 - ((frame - 100) / 100) * 2;
 				camera.lookAt(paddleMesh2.position);
 			}
-			if (frame >= 400 && frame <= 600) {
+			if (frame >= 200 && frame <= 300) {
 				camera.position.x = 0;
 				camera.position.y = 0;
 				camera.position.z =
 					2.5 +
-					Math.sin((3 / 2) * Math.PI + ((frame - 400) / 200) * Math.PI) *
+					Math.sin((3 / 2) * Math.PI + ((frame - 200) / 100) * Math.PI) *
 						(1 / 2);
 				camera.lookAt(0, 0, 0);
-				if (frame === 400) {
+				if (frame === 200) {
 					scene.children[scene.children.length - 1].visible = true;
 				}
-				if (frame >= 550 && frame < 600 && frame % 8 === 0) {
+				if (frame >= 275 && frame < 300 && frame % 4 === 0) {
 					scene.children[scene.children.length - 1].visible =
 						!scene.children[scene.children.length - 1].visible;
 				}
-				if (frame === 600) {
+				if (frame === 300) {
 					scene.children[scene.children.length - 1].visible = false;
 					// ballSpeed = INIT_BALL_SPEED;
 					// direction.x = Math.cos(seed) * ballSpeed;
