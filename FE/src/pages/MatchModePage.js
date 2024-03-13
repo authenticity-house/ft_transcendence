@@ -6,8 +6,8 @@ const html = String.raw;
 
 class MatchModePage {
 	template() {
-		const duelButton = new ButtonLarge('1 vs 1');
-		const tournamentButton = new ButtonLarge('토너먼트');
+		const duelButton = new ButtonLarge('1 vs 1', false);
+		const tournamentButton = new ButtonLarge('토너먼트', true);
 		const backButton = new ButtonBackArrow();
 
 		return html`

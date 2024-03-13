@@ -6,8 +6,8 @@ const html = String.raw;
 
 class PlayModePage {
 	template() {
-		const localButton = new ButtonLarge('LOCAL');
-		const onlineButton = new ButtonLarge('ONLINE');
+		const localButton = new ButtonLarge('LOCAL', false);
+		const onlineButton = new ButtonLarge('ONLINE', true);
 		const backButton = new ButtonBackArrow();
 
 		return html`
