@@ -21,7 +21,9 @@ class GameSettingPage {
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
-						<div>${horizontalHeadCount.template()}</div>
+						<div class="horizontalButton">
+							${horizontalHeadCount.template()}
+						</div>
 						<div class="game-setting-nickname-container"></div>
 					</div>
 					<div class="verticalButton">${verticalSmallButton.template()}</div>
@@ -31,8 +33,25 @@ class GameSettingPage {
 	}
 
 	addEventListeners() {
+		/* 1vs1 토너먼트 */
+
+		const oneOnOne = document.querySelector(
+			'.horizontalButton button:first-child'
+		);
+		oneOnOne.addEventListener('click', () => {
+			changeUrl('gameSettingDetailed');
+		});
+
+		const tournament = document.querySelector(
+			'.horizontalButton button:first-child'
+		);
+		tournament.addEventListener('click', () => {
+			changeUrl('gameSettingDetailed');
+		});
+
+		/* 세부설정 시작 */
 		const detailedButton = document.querySelector(
-			'.verticalButton button:first-child'
+			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
 			changeUrl('gameSettingDetailed');
@@ -41,7 +60,7 @@ class GameSettingPage {
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
-		startButton.addEventListener('click', () => {
+		startButton.addEventListener('click', () => {ㄴ
 			changeUrl('game');
 		});
 	}
