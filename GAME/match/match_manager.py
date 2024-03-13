@@ -49,44 +49,22 @@ class MatchManager:
             # 패들 충돌
             if self.player1.paddle.is_collides_with_ball(self.ball):
                 print("left --------- paddle reflect!")
-                self.bounce_ball_off_paddle(self.player1.paddle)
-                self.player1.update_attack_type(self.ball.y)
-                self.player2.update_attack_pos(self.ball.y)
-                rally_cnt += 1
+                rally_cnt += self.handle_paddle_collision(self.player1, self.player2)
             if self.player2.paddle.is_collides_with_ball(self.ball):
                 print("right ---------- paddle reflect!")
-                self.bounce_ball_off_paddle(self.player2.paddle)
-                self.player2.update_attack_type(self.ball.y)
-                self.player1.update_attack_pos(self.ball.y)
-                rally_cnt += 1
+                rally_cnt += self.handle_paddle_collision(self.player2, self.player1)
 
             # 오른쪽 득점
             if self.is_player2_scored():
                 print("player2 win!")
-                self.update_score(self.player2)
-                self.player2.update_attack_type(self.ball.y)
-                self.player1.store_key_cnt()
-                self.player2.store_key_cnt()
-                self.player1.update_score_trend()
-                self.player2.update_score_trend()
-                self.player2.update_score_pos(self.ball.x, self.ball.y)
                 self._rally_count_list.append(rally_cnt)
-                rally_cnt = 0
-                self.reset()
+                rally_cnt = self.handle_scoring(self.player2, self.player1)
 
             # 왼쪽 득점
             if self.is_player1_scored():
                 print("player1 win!")
-                self.update_score(self.player1)
-                self.player1.update_attack_type(self.ball.y)
-                self.player1.store_key_cnt()
-                self.player2.store_key_cnt()
-                self.player1.update_score_trend()
-                self.player2.update_score_trend()
-                self.player1.update_score_pos(self.ball.x, self.ball.y)
                 self._rally_count_list.append(rally_cnt)
-                rally_cnt = 0
-                self.reset()
+                rally_cnt = self.handle_scoring(self.player1, self.player2)
 
             if self.TOTAL_SCORE in (self.player1.score_point, self.player2.score_point):
                 await self.end_game()
@@ -144,6 +122,26 @@ class MatchManager:
                 }
             )
         )
+
+    def handle_paddle_collision(self, owner: Player, other: Player) -> int:
+        self.bounce_ball_off_paddle(owner.paddle)
+        owner.update_attack_type(self.ball.y)
+        other.update_attack_pos(self.ball.y)
+
+        return 1
+
+    def handle_scoring(self, winner: Player, other: Player) -> int:
+        self.update_score(winner)
+        winner.update_attack_type(self.ball.y)
+        winner.update_score_pos(self.ball.x, self.ball.y)
+        winner.store_key_cnt()
+        winner.update_score_trend()
+
+        other.store_key_cnt()
+        other.update_score_trend()
+
+        self.reset()
+        return 0
 
     def update_score(self, player) -> None:
         player.increase_score()
@@ -217,7 +215,7 @@ class MatchManager:
 
         return [max_value, avg_value, min_value]
 
-    def reset(self):
+    def reset(self) -> None:
         self.ball.reset()
 
     @property
