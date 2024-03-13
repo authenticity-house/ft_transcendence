@@ -4,7 +4,7 @@ class ButtonBackArrow {
 	template() {
 		return html`
 			<button class="button-back-arrow-box">
-				<img src="image/Vector.svg" alt="back" style="width: 4rem" />
+				<img src="image/back-arrow.svg" alt="back" style="width: 4rem" />
 			</button>
 		`;
 	}

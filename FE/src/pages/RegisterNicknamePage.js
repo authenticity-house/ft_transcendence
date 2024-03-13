@@ -22,13 +22,7 @@ class RegisterNicknamePage {
 				<div class="register-next" style="margin-top: 35rem">
 					${nextButton.template()}
 				</div>
-				<div
-					class="back-arrow-container"
-					style="display: flex; justify-content: flex-start; 
-        align-items: flex-end; width: 100%; height: 100%;"
-				>
-					${backButton.template()}
-				</div>
+				<div class="back-arrow-container">${backButton.template()}</div>
 			</div>
 		`;
 	}
