@@ -60,7 +60,7 @@ class GameSettingPage {
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
-		startButton.addEventListener('click', () => {ㄴ
+		startButton.addEventListener('click', () => {
 			changeUrl('game');
 		});
 	}

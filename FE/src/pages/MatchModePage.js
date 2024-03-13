@@ -26,7 +26,7 @@ class MatchModePage {
 	addEventListeners() {
 		const game = document.querySelector('.button-click-duel');
 		game.addEventListener('click', () => {
-			changeUrl('game');
+			changeUrl('gameSetting');
 		});
 		const tournament = document.querySelector('.button-click-tournament');
 		tournament.addEventListener('click', () => {
