@@ -67,6 +67,9 @@ class MatchManager:
                 self.player2.update_attack_type(self.ball.y)
                 self.player1.store_key_cnt()
                 self.player2.store_key_cnt()
+                self.player1.update_score_trend()
+                self.player2.update_score_trend()
+                self.player2.update_score_pos(self.ball.x, self.ball.y)
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = 0
                 self.reset()
@@ -78,11 +81,14 @@ class MatchManager:
                 self.player1.update_attack_type(self.ball.y)
                 self.player1.store_key_cnt()
                 self.player2.store_key_cnt()
+                self.player1.update_score_trend()
+                self.player2.update_score_trend()
+                self.player1.update_score_pos(self.ball.x, self.ball.y)
                 self._rally_count_list.append(rally_cnt)
                 rally_cnt = 0
                 self.reset()
 
-            if self.TOTAL_SCORE in (self.player1.score, self.player2.score):
+            if self.TOTAL_SCORE in (self.player1.score_point, self.player2.score_point):
                 await self.end_game()
             else:
                 data = {
@@ -90,8 +96,8 @@ class MatchManager:
                     "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
                     "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
                     "score": {
-                        "player1": self.player1.score,
-                        "player2": self.player2.score,
+                        "player1": self.player1.score_point,
+                        "player2": self.player2.score_point,
                         "latest": 1,
                     },
                 }
@@ -120,7 +126,10 @@ class MatchManager:
             "max_ball_speed": self.ball.get_max_speed_stat(),
             "player1": self.player1.get_match_stat(),
             "player2": self.player2.get_match_stat(),
-            "graph": {},
+            "graph": {
+                "player1": self.player1.get_graph_stat(),
+                "player2": self.player2.get_graph_stat(),
+            },
         }
         print(data)
 
