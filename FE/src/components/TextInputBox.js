@@ -5,6 +5,8 @@ class TextInputBox {
 	constructor(options) {
 		this.text = options.text; // string
 		this.button = options.button; // boolean
+		if (this.text === '비밀번호') this.type = 'password';
+		else this.type = 'text';
 	}
 
 	template() {
@@ -14,7 +16,7 @@ class TextInputBox {
 					<div class="text-container">
 						<p class="display-medium20">${this.text}</p>
 					</div>
-					<input type="text" class="input-size" />
+					<input type=${this.type} class="input-size" />
 				</div>
 			`;
 		}

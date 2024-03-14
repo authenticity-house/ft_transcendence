@@ -35,8 +35,11 @@ class MatchManager:
 
     async def start_game(self) -> None:
         """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
-        self.is_run = True
+        for _ in range(300):
+            self.local_move_paddles()
+            await self.send_data()
 
+        self.is_run = True
         rally_cnt: int = 0
         while self.is_run:
             self.ball.move_pos()
@@ -49,59 +52,52 @@ class MatchManager:
             # 패들 충돌
             if self.player1.paddle.is_collides_with_ball(self.ball):
                 print("left --------- paddle reflect!")
-                self.bounce_ball_off_paddle(self.player1.paddle)
-                rally_cnt += 1
+                rally_cnt += self.handle_paddle_collision(self.player1, self.player2)
             if self.player2.paddle.is_collides_with_ball(self.ball):
                 print("right ---------- paddle reflect!")
-                self.bounce_ball_off_paddle(self.player2.paddle)
-                rally_cnt += 1
+                rally_cnt += self.handle_paddle_collision(self.player2, self.player1)
 
             # 오른쪽 득점
-            if self.is_player2_scored():
+            if self.is_player2_score():
                 print("player2 win!")
-                self.update_score(self.player2)
-                self.player1.store_key_cnt()
-                self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
-                rally_cnt = 0
-                self.reset()
+                rally_cnt = self.handle_scoring(self.player2, self.player1)
 
             # 왼쪽 득점
-            if self.is_player1_scored():
+            if self.is_player1_score():
                 print("player1 win!")
-                self.update_score(self.player1)
-                self.player1.store_key_cnt()
-                self.player2.store_key_cnt()
                 self._rally_count_list.append(rally_cnt)
-                rally_cnt = 0
-                self.reset()
+                rally_cnt = self.handle_scoring(self.player1, self.player2)
 
-            if self.TOTAL_SCORE in (self.player1.score, self.player2.score):
+            if self.TOTAL_SCORE in (self.player1.score_point, self.player2.score_point):
                 await self.end_game()
             else:
-                data = {
-                    "ball": {"status": "in", "x": self.ball.x, "y": self.ball.y},
-                    "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
-                    "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
-                    "score": {
-                        "player1": self.player1.score,
-                        "player2": self.player2.score,
-                        "latest": 1,
-                    },
+                await self.send_data()
+
+    async def send_data(self) -> None:
+        data = {
+            "ball": {"status": "in", "x": self.ball.x, "y": self.ball.y},
+            "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
+            "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
+            "score": {
+                "player1": self.player1.score_point,
+                "player2": self.player2.score_point,
+                "latest": 1,
+            },
+        }
+        await self.socket.send(
+            text_data=json.dumps(
+                {
+                    "type": "game",
+                    "subtype": "match_run",
+                    "message": "local match running!",
+                    "match_id": 1,
+                    "data": data,
                 }
-                await self.socket.send(
-                    text_data=json.dumps(
-                        {
-                            "type": "game",
-                            "subtype": "match_run",
-                            "message": "local match running!",
-                            "match_id": 1,
-                            "data": data,
-                        }
-                    )
-                )
-            # FPS 설정 (60프레임)
-            await asyncio.sleep(1 / 60)
+            )
+        )
+        # FPS 설정 (60프레임)
+        await asyncio.sleep(1 / 60)
 
     async def end_game(self) -> None:
         self.is_run = False
@@ -114,7 +110,10 @@ class MatchManager:
             "max_ball_speed": self.ball.get_max_speed_stat(),
             "player1": self.player1.get_match_stat(),
             "player2": self.player2.get_match_stat(),
-            "graph": {},
+            "graph": {
+                "player1": self.player1.get_graph_stat(),
+                "player2": self.player2.get_graph_stat(),
+            },
         }
         print(data)
 
@@ -130,6 +129,27 @@ class MatchManager:
             )
         )
 
+    def handle_paddle_collision(self, owner: Player, other: Player) -> int:
+        self.ball.increase_speed()
+        self.bounce_ball_off_paddle(owner.paddle)
+        owner.update_attack_type(self.ball.y)
+        other.update_attack_pos(self.ball.y)
+
+        return 1
+
+    def handle_scoring(self, winner: Player, other: Player) -> int:
+        self.update_score(winner)
+        winner.update_attack_type(self.ball.y)
+        winner.update_score_pos(self.ball.x, self.ball.y)
+        winner.store_key_cnt()
+        winner.update_score_trend()
+
+        other.store_key_cnt()
+        other.update_score_trend()
+
+        self.reset()
+        return 0
+
     def update_score(self, player) -> None:
         player.increase_score()
         self._last_scored_time = timezone.now()
@@ -143,10 +163,10 @@ class MatchManager:
             or half_width - self.ball.radius <= self.ball.y
         )
 
-    def is_player1_scored(self) -> bool:
+    def is_player1_score(self) -> bool:
         return SCREEN_WIDTH / 2 - self.ball.radius <= self.ball.x
 
-    def is_player2_scored(self) -> bool:
+    def is_player2_score(self) -> bool:
         return self.ball.x <= -SCREEN_WIDTH / 2 + self.ball.radius
 
     def calculate_reflection(self, paddle: Paddle) -> float:
@@ -161,14 +181,13 @@ class MatchManager:
 
         dx: float = math.cos(angle) * self.ball.speed * paddle.pos * -1
         dy: float = math.sin(angle) * self.ball.speed
-        print(angle, dx, dy)
         self.ball.update_direction(dx, dy)
 
     def local_move_paddles(self) -> None:
         for key in self.keys:
-            if key == "w":
+            if key == "KeyW":
                 self.player1.paddle.move_paddle_up()
-            if key == "s":
+            if key == "KeyS":
                 self.player1.paddle.move_paddle_down()
             if key == "ArrowUp":
                 self.player2.paddle.move_paddle_up()
@@ -177,7 +196,7 @@ class MatchManager:
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:
-            if key in ["w", "s"]:
+            if key in ["KeyW", "KeyS"]:
                 self.player1.increase_key_cnt()
             elif key in ["ArrowUp", "ArrowDown"]:
                 self.player2.increase_key_cnt()
@@ -202,7 +221,7 @@ class MatchManager:
 
         return [max_value, avg_value, min_value]
 
-    def reset(self):
+    def reset(self) -> None:
         self.ball.reset()
 
     @property
