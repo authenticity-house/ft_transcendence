@@ -5,10 +5,11 @@ import random
 
 
 class Ball:
-    BALL_SPEED: Final = 0.06
+    INIT_BALL_SPEED: Final = 0.02
+    REFLECT_BALL_SPEED: Final = 0.04
     BALL_RADIUS: Final = 0.04
 
-    def __init__(self, speed: float = BALL_SPEED, radius: float = BALL_RADIUS) -> None:
+    def __init__(self, speed: float = REFLECT_BALL_SPEED, radius: float = BALL_RADIUS) -> None:
         self.DEFAULT_BALL_SPEED: Final = speed  # pylint: disable=invalid-name
 
         self._radius: float = radius
@@ -25,15 +26,21 @@ class Ball:
     def reset(self) -> None:
         self._x = 0
         self._y = 0
-        self._speed = self.DEFAULT_BALL_SPEED
+        self._speed = Ball.INIT_BALL_SPEED
 
-        angle: float = math.pi / 2 + random.random() * math.pi
+        angle: float = math.pi * (3 / 4) + (random.random() * math.pi) / 2
         self._dx = math.cos(angle) * self._speed
         self._dy = math.sin(angle) * self._speed
 
     def move_pos(self) -> None:
         self._x += self._dx
         self._y += self._dy
+
+    def increase_speed(self) -> None:
+        if self._speed == Ball.INIT_BALL_SPEED:
+            self._speed = self.DEFAULT_BALL_SPEED
+            return
+        self._speed += 0.005
 
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
