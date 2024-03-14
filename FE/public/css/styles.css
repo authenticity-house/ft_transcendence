@@ -377,4 +377,16 @@ button:hover:not(.button-back-arrow-box) {
 	line-height: normal;
 }
 
+.color-picker-hidden {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.color-display {
+	width: 6rem;
+	height: 6rem;
+	display: inline-block;
+}
+
 /* GameSettingDetailed */
