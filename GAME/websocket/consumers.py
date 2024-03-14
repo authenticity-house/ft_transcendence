@@ -6,7 +6,7 @@ from match.match_manager import MatchManager
 
 class GameConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
-        super().__init__(args, kwargs)
+        super().__init__(*args, **kwargs)
         self.match_manager = None
         self.game_session = None
 
