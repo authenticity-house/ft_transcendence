@@ -33,15 +33,9 @@ class GameSettingDetailed {
 	template() {
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
-		const scoreSelectedIndex = parseInt(this.score, 10);
-		const levelSelectedIndex = parseInt(this.level, 10);
 
-		const scoreConfigs = createConfig(scoreTexts, 'button-select', [
-			scoreSelectedIndex
-		]);
-		const levelConfigs = createConfig(levelTexts, 'button-select', [
-			levelSelectedIndex
-		]);
+		const scoreConfigs = createConfig(scoreTexts, 'button-select', this.score);
+		const levelConfigs = createConfig(levelTexts, 'button-select', this.level);
 
 		const score = new HorizontalHeadCount(scoreConfigs, '54rem');
 		const level = new HorizontalHeadCount(levelConfigs, '54rem');
