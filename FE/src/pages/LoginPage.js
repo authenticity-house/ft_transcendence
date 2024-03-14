@@ -8,7 +8,7 @@ const html = String.raw;
 
 class LoginPage {
 	template() {
-		const titleComponent = new BoldTitle('로그인');
+		const titleComponent = new BoldTitle('로그인', 'yellow');
 		const textInputBoxId = new TextInputBox({ text: '아이디', button: false });
 		const textInputBoxPassword = new TextInputBox({
 			text: '비밀번호',
@@ -56,7 +56,7 @@ class LoginPage {
 
 		const login42 = document.querySelector('.login-42');
 		login42.addEventListener('click', () => {
-			console.log('42 로그인');
+			changeUrl('duelstats');
 		});
 
 		const loginGuest = document.querySelector('.login-guest');
