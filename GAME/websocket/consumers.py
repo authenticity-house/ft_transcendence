@@ -1,6 +1,9 @@
 import asyncio
 import json
+from json.decoder import JSONDecodeError
+
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.exceptions import StopConsumer
 from match.match_manager import MatchManager
 
 
@@ -12,80 +15,102 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await self.accept()
+        await self.send_message("connection_established", "You are now connected!")
+
+    async def receive(self, text_data=None, bytes_data=None):
+        try:
+            msg = json.loads(text_data)
+            await self.handle_message(msg)
+        except JSONDecodeError:
+            await self.send_error("Invalid JSON format")
+        except KeyError as e:
+            await self.send_error(f"Missing key: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            await self.send_error(f"Unexpect exception: {e}")
+
+    async def handle_message(self, msg):
+        msg_type = msg.get("type")
+
+        if msg_type == "disconnect":
+            await self.close(code=1000)
+
+        elif msg_type == "game":
+            await self.handle_game_message(msg)
+
+    async def handle_game_message(self, msg):
+        msg_subtype = msg.get("subtype", "")
+        msg_data = msg.get("data", {})
+
+        if msg_subtype == "key_down":
+            try:
+                key_set = msg_data["key_set"]
+                self.match_manager.keys = set(key_set)
+            except KeyError:
+                await self.send_error("key_set not provided")
+
+        elif msg_subtype == "session_info":
+            await self.initialize_session(msg_data)
+
+        elif msg_subtype == "match_start":
+            self.game_session = asyncio.create_task(self.match_manager.start_game())
+
+    # 세션 초기화 로직
+    async def initialize_session(self, msg_data):
+        total_score = msg_data.get("total_score")
+        # msg_data["battle_mode"] 여기서 보고 토너먼트, 1대1 분기
+
+        # 레벨 정보는 MatchManager가 받아서 알맞은 패들 크기, 공속도 설정하기
+        self.match_manager = MatchManager(socket=self, total_score=total_score)
+        # 추가 설정 및 초기화 로직
+        await self.send_initial_settings(msg_data)
+
+    # 초기 설정 메시지 전송 로직
+    async def send_initial_settings(self, msg_data):
+        color_info = msg_data.get("color")
+        paddle_color = color_info["paddle"]
+        background_color = color_info["background"]
+        # 아직 공 색 정보는 클라이언트에게 안받음
 
         await self.send(
             text_data=json.dumps(
-                {"type": "connection_established", "message": "You are now connected!"}
+                {
+                    "type": "game",
+                    "subtype": "match_init_setting",
+                    "message": "",
+                    "match_id": 123,
+                    "data": {
+                        "battle_mode": msg_data.get("battle_mode"),
+                        "color": {
+                            "paddle": paddle_color,
+                            "background": background_color,
+                            "ball": "#FFFFFF",
+                        },
+                        "ball": {
+                            "status": "in",
+                            "x": 0.0,
+                            "y": 0.0,
+                            "radius": 0.04,
+                        },
+                        "paddle1": {
+                            "x": -2.8,
+                            "y": 0.0,
+                            "width": 0.1,
+                            "height": 0.5,
+                        },
+                        "paddle2": {
+                            "x": 2.8,
+                            "y": 0.0,
+                            "width": 0.1,
+                            "height": 0.5,
+                        },
+                        "nickname": {
+                            "player1": self.match_manager.player1.name,
+                            "player2": self.match_manager.player2.name,
+                        },
+                    },
+                }
             )
         )
-
-    async def receive(self, text_data=None, bytes_data=None):
-        msg = json.loads(text_data)
-        msg_type = msg["type"]
-
-        if msg_type == "disconnect":
-            print("client: disconnect plz")
-            await self.close(code=1000)
-
-        if msg_type == "game":
-            msg_subtype, msg_data = msg["subtype"], msg["data"]
-
-            if msg_subtype == "key_down":
-                key_set = msg_data["key_set"]
-                self.match_manager.keys = set(key_set)
-
-            elif msg_subtype == "session_info":  # 게임 초기 정보
-                self.match_manager = MatchManager(socket=self, total_score=msg_data["total_score"])
-
-                # print(msg_data["battle_mode"]) -> 토너먼트 미구현
-                # 로컬이라 플레이어 이름 정보 저장 미구현
-                # 레벨, 패들색, 배경색 정보 저장 미구현
-                # print(msg_data["level"])
-                # print(msg_data["color"]["paddle"])
-                # print(msg_data["color"]["background"])
-
-                await self.send(
-                    text_data=json.dumps(
-                        {
-                            "type": "game",
-                            "subtype": "match_init_setting",
-                            "message": "",
-                            "match_id": 123,
-                            "data": {
-                                "battle_mode": 1,
-                                "color": {
-                                    "paddle": "#FFFFFF",
-                                    "background": "#FFFFFF",
-                                    "ball": "#FFFFFF",
-                                },
-                                "ball": {
-                                    "status": "in",
-                                    "x": 0.0,
-                                    "y": 0.0,
-                                    "radius": 0.04,
-                                },
-                                "paddle1": {
-                                    "x": -2.8,
-                                    "y": 0.0,
-                                    "width": 0.1,
-                                    "height": 0.5,
-                                },
-                                "paddle2": {
-                                    "x": 2.8,
-                                    "y": 0.0,
-                                    "width": 0.1,
-                                    "height": 0.5,
-                                },
-                                "nickname": {
-                                    "player1": self.match_manager.player1.name,
-                                    "player2": self.match_manager.player2.name,
-                                },
-                            },
-                        }
-                    )
-                )
-            elif msg_subtype == "match_start":
-                self.game_session = asyncio.create_task(self.match_manager.start_game())
 
     async def disconnect(self, code):
         # code: 1000 정상 종료 1001 상대방이 떠남 1002 프로토콜 오류 (로깅 시 사용)
@@ -94,5 +119,23 @@ class GameConsumer(AsyncWebsocketConsumer):
             try:
                 await self.game_session
             except asyncio.CancelledError:
-                # 게임 세션 취소 성공
-                pass
+                pass  # 게임 세션 취소 성공
+
+    async def send_message(self, subtype, message, data=None):
+        msg = {
+            "type": "game",
+            "subtype": subtype,
+            "message": message,
+            "data": data or {},
+        }
+        await self.send(text_data=json.dumps(msg))
+
+    async def send_error(self, error_message):
+        try:
+            await self.send_message("error", error_message)
+        except Exception as e:
+            print(f"Error sending message: {e}")
+        finally:
+            await self.disconnect(1002)
+            await self.close()
+            raise StopConsumer()

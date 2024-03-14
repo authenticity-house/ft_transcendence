@@ -405,12 +405,14 @@ class GamePage {
 			websocket.onmessage = (event) => {
 				const message = JSON.parse(event.data);
 				switch (message.type) {
-					case 'connection_established':
-						sendGameSessionInfo();
-						break;
+					// case 'connection_established':
+					// 	sendGameSessionInfo();
+					// 	break;
 
 					case 'game':
-						if (message.subtype === 'match_init_setting') {
+						if (message.subtype === 'connection_established') {
+							sendGameSessionInfo();
+						} else if (message.subtype === 'match_init_setting') {
 							sendGameStartRequest();
 						} else if (message.subtype === 'match_run') {
 							renderThreeJs(message.data);
@@ -423,6 +425,8 @@ class GamePage {
 							player1Score.textContent = message.data.player1.score;
 							player2Score.textContent = message.data.player2.score;
 							websocket.send(JSON.stringify(disconnectMessage));
+						} else if (message.subtype === 'error') {
+							console.log("server: " + message.message);
 						}
 						break;
 
