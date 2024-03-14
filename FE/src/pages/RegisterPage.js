@@ -8,7 +8,7 @@ const html = String.raw;
 
 class RegisterPage {
 	template() {
-		const titleComponent = new BoldTitle('회원가입');
+		const titleComponent = new BoldTitle('회원가입', 'yellow');
 		const textInputBoxId = new TextInputBox({ text: '아이디', button: true });
 		const textInputBoxPassword = new TextInputBox({
 			text: '비밀번호',
