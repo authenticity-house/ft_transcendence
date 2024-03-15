@@ -4,6 +4,9 @@ all:
 	@make type
 	@make test
 
+run:
+	venv/bin/python manage.py runserver
+
 format:
 	@echo "Formatting code with black"
 	@venv/bin/black --line-length 100 .
@@ -22,4 +25,4 @@ test:
 	@echo "Running Django unit tests"
 	@venv/bin/python manage.py test
 
-.PHONY: all format lint typecheck test
+.PHONY: all format lint typecheck test run
