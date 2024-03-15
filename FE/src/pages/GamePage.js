@@ -158,7 +158,6 @@ class GamePage {
 			i += 0.1
 		) {
 			// GameSetting에서 가져온 값
-			// const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
 			const paddleLight = new THREE.PointLight(
 				this.initial.color.paddle,
 				0.1,
@@ -174,7 +173,6 @@ class GamePage {
 			i += 0.1
 		) {
 			// GameSetting에서 가져온 값
-			// const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
 			const paddleLight = new THREE.PointLight(
 				this.initial.color.paddle,
 				0.1,
@@ -272,22 +270,8 @@ class GamePage {
 		};
 
 		// 게임 서버로 게임 초기 정보 전송
-		// function sendGameSessionInfo() {
 		const sendGameSessionInfo = () => {
 			const message = {
-				// type: 'game',
-				// subtype: 'session_info',
-				// message: '',
-				// data: {
-				// 	battle_mode: 1,
-				// 	total_score: 2,
-				// 	level: 2,
-				// 	color: {
-				// 		paddle: '#FFFFFF',
-				// 		background: '#FFFFFF'
-				// 	}
-				// }
-				// data: this.data
 				type: 'game',
 				subtype: 'session_info',
 				message: '',
