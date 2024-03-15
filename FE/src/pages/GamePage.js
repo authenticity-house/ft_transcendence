@@ -51,7 +51,8 @@ class GamePage {
 
 		// Create a scene
 		const scene = new THREE.Scene();
-		scene.background = new THREE.Color(0x141343);
+		// GameSetting에서 가져온 값
+		scene.background = new THREE.Color(this.initial.color.background);
 
 		// Create a camera
 		const camera = new THREE.PerspectiveCamera(
@@ -135,7 +136,8 @@ class GamePage {
 			roughness: 0.5,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
-			emissive: 0x0000ff,
+			// emissive: 0x0000ff,
+			emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -155,7 +157,13 @@ class GamePage {
 			i <= paddleMesh1.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			// GameSetting에서 가져온 값
+			// const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			const paddleLight = new THREE.PointLight(
+				this.initial.color.paddle,
+				0.1,
+				100
+			);
 			paddleLight.position.set(-2.8, i, 0.2);
 			paddleLightGroup1.add(paddleLight);
 		}
@@ -165,7 +173,13 @@ class GamePage {
 			i <= paddleMesh2.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			// GameSetting에서 가져온 값
+			// const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			const paddleLight = new THREE.PointLight(
+				this.initial.color.paddle,
+				0.1,
+				100
+			);
 			paddleLight.position.set(2.8, i, 0.2);
 			paddleLightGroup2.add(paddleLight);
 		}
