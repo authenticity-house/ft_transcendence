@@ -45,6 +45,12 @@ export const changeUrl = (url) => {
 	routes[url].addEventListeners();
 };
 
+export const changeUrlData = (url, data) => {
+	history.pushState(null, null, `${homeLink}${url}`);
+	root.innerHTML = routes[url].template(data);
+	routes[url].addEventListeners();
+};
+
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
 	const url = window.location.href.split('/').pop();

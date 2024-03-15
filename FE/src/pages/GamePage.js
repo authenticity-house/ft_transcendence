@@ -7,7 +7,14 @@ import { changeUrl } from '../index.js';
 const html = String.raw;
 
 class GamePage {
-	template() {
+	constructor() {
+		this.initial = {};
+	}
+
+	template(initial) {
+		this.initial = initial;
+		this.initial.total_score *= 5;
+
 		return html`
 			<div
 				id="score"
@@ -251,23 +258,35 @@ class GamePage {
 		};
 
 		// 게임 서버로 게임 초기 정보 전송
-		function sendGameSessionInfo() {
+		// function sendGameSessionInfo() {
+		const sendGameSessionInfo = () => {
 			const message = {
+				// type: 'game',
+				// subtype: 'session_info',
+				// message: '',
+				// data: {
+				// 	battle_mode: 1,
+				// 	total_score: 2,
+				// 	level: 2,
+				// 	color: {
+				// 		paddle: '#FFFFFF',
+				// 		background: '#FFFFFF'
+				// 	}
+				// }
+				// data: this.data
 				type: 'game',
 				subtype: 'session_info',
 				message: '',
-				data: {
-					battle_mode: 1,
-					total_score: 4,
-					level: 2,
-					color: {
-						paddle: '#FFFFFF',
-						background: '#FFFFFF'
-					}
-				}
+				data: this.initial
 			};
+			console.log(
+				message.data.total_score,
+				message.data.level,
+				message.data.color.paddle,
+				message.data.color.background
+			);
 			websocket.send(JSON.stringify(message));
-		}
+		};
 
 		// 게임 서버로 매치 시작 요청 전송
 		function sendGameStartRequest() {

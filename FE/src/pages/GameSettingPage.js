@@ -1,4 +1,4 @@
-import { changeUrl } from '../index.js';
+import { changeUrlData } from '../index.js';
 import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
 import VerticalSmallButton from '../components/VerticalSmallButton.js';
 import { ActivateButtons } from '../components/ActivateButtons.js';
@@ -6,7 +6,20 @@ import { ActivateButtons } from '../components/ActivateButtons.js';
 const html = String.raw;
 
 class GameSettingPage {
-	template() {
+	constructor() {
+		this.data = {
+			battle_mode: 1,
+			total_score: 2,
+			level: 2,
+			color: {
+				paddle: '#FFFFFF',
+				background: '#FFFFFF'
+			}
+		};
+	}
+
+	template(data = this.data) {
+		this.data = data;
 		const horizonbuttonConfigs = [
 			{ text: '1vs1', classes: 'selected' },
 			{ text: '토너먼트' }
@@ -46,14 +59,17 @@ class GameSettingPage {
 			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
-			changeUrl('gameSettingDetailed');
+			changeUrlData('gameSettingDetailed', this.data);
 		});
 
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
 		startButton.addEventListener('click', () => {
-			changeUrl('game');
+			// if (this.data.total_score === 1) this.data.total_score = 5;
+			// else if (this.data.total_score === 2) this.data.total_score = 10;
+			// else if (this.data.total_score === 3) this.data.total_score = 15;
+			changeUrlData('game', this.data);
 		});
 	}
 }

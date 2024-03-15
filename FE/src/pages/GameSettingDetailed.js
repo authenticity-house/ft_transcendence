@@ -18,35 +18,38 @@ function createButtonConfigs(buttonTexts, classes) {
 function createConfig(texts, classesPrefix, selectedIndices) {
 	return texts.map((text, index) => ({
 		text,
-		classes: `${classesPrefix}${selectedIndices.includes(index + 1) ? ' selected' : ''}`
+		classes: `${classesPrefix}${selectedIndices === index + 1 ? ' selected' : ''}`
 	}));
 }
 
 class GameSettingDetailed {
-	constructor() {
-		this.score = '2';
-		this.level = '2';
-		this.paddleColorCode = '#D9D9D9';
-		this.backColorCode = '#D9D9D9';
-	}
-
-	template() {
+	template(initial) {
+		this.data = initial;
+		// console.log(this.data.total_score, this.data.level);
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
 
-		const scoreConfigs = createConfig(scoreTexts, 'button-select', this.score);
-		const levelConfigs = createConfig(levelTexts, 'button-select', this.level);
+		const scoreConfigs = createConfig(
+			scoreTexts,
+			'button-select',
+			this.data.total_score
+		);
+		const levelConfigs = createConfig(
+			levelTexts,
+			'button-select',
+			this.data.level
+		);
 
 		const score = new HorizontalHeadCount(scoreConfigs, '54rem');
 		const level = new HorizontalHeadCount(levelConfigs, '54rem');
 
 		const paddleColor = createColorPicker(
-			this.paddleColorCode,
+			this.data.color.paddle,
 			'paddleColorPicker',
 			'paddleColorButton'
 		);
 		const backColor = createColorPicker(
-			this.backColorCode,
+			this.data.color.background,
 			'backColorPicker',
 			'backColorButton'
 		);
@@ -104,11 +107,11 @@ class GameSettingDetailed {
 					});
 					clickedBtn.classList.add('selected');
 					if (index === 0) {
-						this.score = String(btnIndex + 1);
+						this.data.total_score = btnIndex + 1;
 					} else if (index === 1) {
-						this.level = String(btnIndex + 1);
+						this.data.level = btnIndex + 1;
 					}
-					console.log(this.score, this.level);
+					// console.log(this.data.total_score, this.data.level);
 				});
 			});
 		});
@@ -119,40 +122,45 @@ class GameSettingDetailed {
 
 		const paddleColorPicker = document.getElementById('paddleColorPicker');
 		paddleColorPicker.addEventListener('change', (e) => {
-			this.paddleColorCode = e.target.value;
+			this.data.color.paddle = e.target.value;
 			document.getElementById('paddleColorButton').textContent =
-				this.paddleColorCode;
+				this.data.color.paddle;
 			document.querySelector(
 				'#paddleColorButton + .color-display'
-			).style.backgroundColor = this.paddleColorCode;
+			).style.backgroundColor = this.data.color.paddle;
 		});
 
 		const backColorPicker = document.getElementById('backColorPicker');
 		backColorPicker.addEventListener('change', (e) => {
-			this.backColorCode = e.target.value;
+			this.data.color.background = e.target.value;
 			document.getElementById('backColorButton').textContent =
-				this.backColorCode;
+				this.data.color.background;
 			document.querySelector(
 				'#backColorButton + .color-display'
-			).style.backgroundColor = this.backColorCode;
+			).style.backgroundColor = this.data.color.background;
 		});
 
 		const resetButton = document.querySelector(
 			'.horizontalButton button:nth-child(1)'
 		);
 		resetButton.addEventListener('click', () => {
-			this.score = '2';
-			this.level = '2';
-			this.paddleColorCode = '#D9D9D9';
-			this.backColorCode = '#D9D9D9';
-			changeUrl('gameSettingDetailed');
+			const newData = {
+				battle_mode: 1,
+				total_score: 2,
+				level: 2,
+				color: {
+					paddle: '#FFFFFF',
+					background: '#FFFFFF'
+				}
+			};
+			changeUrl('gameSettingDetailed', newData);
 		});
 
 		const confirmButton = document.querySelector(
 			'.horizontalButton button:nth-child(2)'
 		);
 		confirmButton.addEventListener('click', () => {
-			changeUrl('gameSetting');
+			changeUrl('gameSetting', this.data);
 		});
 	}
 }
