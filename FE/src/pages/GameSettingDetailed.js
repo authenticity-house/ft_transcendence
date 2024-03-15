@@ -1,5 +1,5 @@
 import { changeUrl } from '../index.js';
-import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
+import HorizontalButton from '../components/HorizontalButton.js';
 
 const html = String.raw;
 
@@ -39,8 +39,8 @@ class GameSettingDetailed {
 			this.data.level
 		);
 
-		const score = new HorizontalHeadCount(scoreConfigs, '54rem');
-		const level = new HorizontalHeadCount(levelConfigs, '54rem');
+		const score = new HorizontalButton(scoreConfigs, '54rem');
+		const level = new HorizontalButton(levelConfigs, '54rem');
 
 		const paddleColor = createColorPicker(
 			this.data.color.paddle,
@@ -60,7 +60,7 @@ class GameSettingDetailed {
 			buttonTexts,
 			buttonClasses
 		);
-		const horizontalButton = new HorizontalHeadCount(
+		const horizontalButton = new HorizontalButton(
 			virticalbuttonConfigs,
 			'51rem'
 		);

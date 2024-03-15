@@ -1,6 +1,6 @@
 import { changeUrlData } from '../index.js';
-import HorizontalHeadCount from '../components/HorizontalHeadCount.js';
-import VerticalSmallButton from '../components/VerticalSmallButton.js';
+import HorizontalButton from '../components/HorizontalButton.js';
+import VerticalButton from '../components/VerticalButton.js';
 import { ActivateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
@@ -32,7 +32,7 @@ class GameSettingPage {
 			{ text: '1vs1', classes: 'selected' },
 			{ text: '토너먼트' }
 		];
-		const horizontalHeadCount = new HorizontalHeadCount(
+		const horizontalButton = new HorizontalButton(
 			horizonbuttonConfigs,
 			'60rem'
 		);
@@ -41,17 +41,15 @@ class GameSettingPage {
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
-		const verticalSmallButton = new VerticalSmallButton(virticalbuttonConfigs);
+		const verticalButton = new VerticalButton(virticalbuttonConfigs);
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
-						<div class="horizontalButton">
-							${horizontalHeadCount.template()}
-						</div>
+						<div class="horizontalButton">${horizontalButton.template()}</div>
 						<div class="game-setting-nickname-container"></div>
 					</div>
-					<div class="verticalButton">${verticalSmallButton.template()}</div>
+					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
 			</div>
 		`;

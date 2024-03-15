@@ -1,6 +1,6 @@
 const html = String.raw;
 
-class VerticalSmallButton {
+class VerticalButton {
 	constructor(buttonConfigs, height) {
 		this.buttonConfigs = buttonConfigs;
 		this.height = height;
@@ -21,4 +21,4 @@ class VerticalSmallButton {
 	}
 }
 
-export default VerticalSmallButton;
+export default VerticalButton;

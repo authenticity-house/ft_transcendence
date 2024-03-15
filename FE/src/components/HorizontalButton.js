@@ -1,6 +1,6 @@
 const html = String.raw;
 
-class HorizontalHeadCount {
+class HorizontalButton {
 	constructor(buttonConfigs, width) {
 		this.buttonConfigs = buttonConfigs;
 		this.width = width;
@@ -22,4 +22,4 @@ class HorizontalHeadCount {
 	}
 }
 
-export default HorizontalHeadCount;
+export default HorizontalButton;
