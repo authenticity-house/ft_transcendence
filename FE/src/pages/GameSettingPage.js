@@ -12,8 +12,8 @@ class GameSettingPage {
 			total_score: 2,
 			level: 2,
 			color: {
-				paddle: '#FFFFFF',
-				background: '#FFFFFF'
+				paddle: '#FFD164',
+				background: '#141343'
 			}
 		};
 		this.data = { ...this.initialData };

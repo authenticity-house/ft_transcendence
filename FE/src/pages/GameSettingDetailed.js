@@ -6,9 +6,8 @@ const html = String.raw;
 function createColorPicker(colorCode, pickerId, buttonId) {
 	const colorPicker = `<input type="color" id="${pickerId}" value="${colorCode}" class="color-picker-hidden"/>`;
 	const colorDisplayButton = `<button class="button-select" id="${buttonId}" onclick="document.getElementById('${pickerId}').click()">${colorCode}</button>`;
-	const colorDisplay = `<div class="color-display" style="background-color:${colorCode};"></div>`;
 
-	return { colorPicker, colorDisplayButton, colorDisplay };
+	return { colorPicker, colorDisplayButton };
 }
 
 function createButtonConfigs(buttonTexts, classes) {
@@ -79,15 +78,31 @@ class GameSettingDetailed {
 							<div>${level.template()}</div>
 						</div>
 						<div class="horizontal-button-container width-66">
-							<p class="text-subtitle-1">패들색</p>
-							<div class="horizontal-button-container width-54">
-								${paddleColor.colorPicker}${paddleColor.colorDisplayButton}${paddleColor.colorDisplay}
+							<!-- 패들색/배경색 선택 title 및 버튼 -->
+							<div class="vertical-button-container height-25">
+								<div class="horizontal-button-container width-28">
+									<p class="text-subtitle-1">패들색</p>
+									<div class="horizontal-button-container">
+										${paddleColor.colorPicker}${paddleColor.colorDisplayButton}
+									</div>
+								</div>
+								<div class="horizontal-button-container width-28">
+									<p class="text-subtitle-1">배경색</p>
+									<div class="horizontal-button-container">
+										${backColor.colorPicker}${backColor.colorDisplayButton}
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="horizontal-button-container width-66">
-							<p class="text-subtitle-1">배경색</p>
-							<div class="horizontal-button-container width-54">
-								${backColor.colorPicker}${backColor.colorDisplayButton}${backColor.colorDisplay}
+							<!-- 패들색/배경색 표시 -->
+							<div
+								class="color-display-back"
+								id="backgroundDisplay"
+								style="background-color: ${this.data.color.background};"
+							>
+								<div
+									class="color-display-paddle"
+									style="background-color: ${this.data.color.paddle};"
+								></div>
 							</div>
 						</div>
 					</div>
@@ -111,7 +126,6 @@ class GameSettingDetailed {
 					} else if (index === 1) {
 						this.data.level = btnIndex + 1;
 					}
-					// console.log(this.data.total_score, this.data.level);
 				});
 			});
 		});
@@ -125,9 +139,14 @@ class GameSettingDetailed {
 			this.data.color.paddle = e.target.value;
 			document.getElementById('paddleColorButton').textContent =
 				this.data.color.paddle;
-			document.querySelector(
-				'#paddleColorButton + .color-display'
-			).style.backgroundColor = this.data.color.paddle;
+			document
+				.getElementById('backgroundDisplay')
+				.querySelector('.color-display-paddle').style.backgroundColor =
+				this.data.color.paddle;
+			document
+				.getElementById('backgroundDisplay')
+				.querySelector('.color-display-paddle').style.boxShadow =
+				`0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this.data.color.paddle}`;
 		});
 
 		const backColorPicker = document.getElementById('backColorPicker');
@@ -135,9 +154,8 @@ class GameSettingDetailed {
 			this.data.color.background = e.target.value;
 			document.getElementById('backColorButton').textContent =
 				this.data.color.background;
-			document.querySelector(
-				'#backColorButton + .color-display'
-			).style.backgroundColor = this.data.color.background;
+			document.getElementById('backgroundDisplay').style.backgroundColor =
+				this.data.color.background;
 		});
 
 		const resetButton = document.querySelector(
@@ -149,8 +167,8 @@ class GameSettingDetailed {
 				total_score: 2,
 				level: 2,
 				color: {
-					paddle: '#FFFFFF',
-					background: '#FFFFFF'
+					paddle: '#FFD164',
+					background: '#141343'
 				}
 			};
 			changeUrl('gameSettingDetailed', newData);

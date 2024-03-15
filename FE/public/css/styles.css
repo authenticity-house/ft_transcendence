@@ -484,6 +484,14 @@ td {
 	width: 54rem;
 }
 
+.width-28{
+	width: 28rem;
+}
+
+.height-25{
+	height: 25rem;
+}
+
 .selected {
 	box-shadow: 0px 0px 15px 0px #FF5D84, 0px 0px 15px 0px #FF5D84;
 	text-shadow: 0px 0px 10px #FF5D84, 0px 0px 10px #FF5D84;
@@ -500,10 +508,26 @@ td {
 	height: 0;
 }
 
-.color-display {
+/* .color-display {
 	width: 6rem;
 	height: 6rem;
 	display: inline-block;
+} */
+.color-display-back{
+	display: flex;
+	width: 300px;
+	height: 250px;
+	padding: 65px 30px 65px 240px;
+	justify-content: flex-end;
+	align-items: center;
+	background: var(--gray, #C7C7C7);
 }
-
+.color-display-paddle{
+	width: 30px;
+	height: 120px;
+	flex-shrink: 0;
+	background: var(--yellow, #FFD164);
+	/* yellow_neon_10 */
+	box-shadow: 0px 0px 10px 0px #FFD164, 0px 0px 10px 0px #FFD164;
+}
 /* GameSettingDetailed */
