@@ -7,7 +7,7 @@ const html = String.raw;
 
 class GameSettingPage {
 	constructor() {
-		this.data = {
+		this.initialData = {
 			battle_mode: 1,
 			total_score: 2,
 			level: 2,
@@ -16,10 +16,18 @@ class GameSettingPage {
 				background: '#FFFFFF'
 			}
 		};
+		this.data = { ...this.initialData };
+	}
+
+	resetData() {
+		this.data = JSON.parse(JSON.stringify(this.initialData));
 	}
 
 	template(data = this.data) {
 		this.data = data;
+		if (data == null) this.resetData();
+		else this.data = data;
+
 		const horizonbuttonConfigs = [
 			{ text: '1vs1', classes: 'selected' },
 			{ text: '토너먼트' }
@@ -50,11 +58,7 @@ class GameSettingPage {
 	}
 
 	addEventListeners() {
-		/* 1vs1 토너먼트 */
-
 		ActivateButtons('.horizontalButton');
-
-		/* 세부설정 시작 */
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
@@ -66,9 +70,6 @@ class GameSettingPage {
 			'.verticalButton button:nth-child(2)'
 		);
 		startButton.addEventListener('click', () => {
-			// if (this.data.total_score === 1) this.data.total_score = 5;
-			// else if (this.data.total_score === 2) this.data.total_score = 10;
-			// else if (this.data.total_score === 3) this.data.total_score = 15;
 			changeUrlData('game', this.data);
 		});
 	}

@@ -445,7 +445,7 @@ class GamePage {
 							player2Score.textContent = message.data.player2.score;
 							websocket.send(JSON.stringify(disconnectMessage));
 						} else if (message.subtype === 'error') {
-							console.log("server: " + message.message);
+							console.log(`server: ${message.message}`);
 						}
 						break;
 
