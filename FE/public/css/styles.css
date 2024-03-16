@@ -375,7 +375,7 @@ td {
 .button-head-count{
 	display: flex;
 	width: 28rem;
-	padding: 21.2px 0px 21.8px 0px;
+	padding: 2.12rem 0rem 2.18rem 0rem;
 	justify-content: center;
 	align-items: center;
 	flex-shrink: 0;
@@ -396,10 +396,9 @@ td {
 	justify-content: flex-end;
 	align-items: center;
 
-	gap: 35px;
-
+	gap: 3.5rem;
 	border-radius: 1rem;
-	border: 2px solid #FFF;
+	border: 0.2rem solid #FFF;
 }
 
 .game-setting-content-container{
@@ -456,8 +455,8 @@ td {
 
 .button-reset-complete{
 	display: flex;
-	width: 240px;
-	padding: 16px 0px;
+	width: 24rem;
+	padding: 1.6rem 0rem;
 	justify-content: center;
 	align-items: center;
 	flex-shrink: 0;
@@ -469,7 +468,6 @@ td {
 	width: 8rem;
 	color: #FFF;
 	text-align: center;
-	font-family: "esamanru OTF";
 	font-size: 2.4rem;
 	font-style: normal;
 	font-weight: 300;
@@ -493,10 +491,9 @@ td {
 }
 
 .selected {
-	box-shadow: 0px 0px 15px 0px #FF5D84, 0px 0px 15px 0px #FF5D84;
-	text-shadow: 0px 0px 10px #FF5D84, 0px 0px 10px #FF5D84;
-	font-family: "esamanru OTF";
-	font-size: 24px;
+	box-shadow: 0rem 0rem 1.5rem 0rem #FF5D84, 0rem 0rem 1.5rem 0rem #FF5D84;
+	text-shadow: 0rem 0rem 1rem #FF5D84, 0rem 0rem 1rem #FF5D84;
+	font-size: 2.4rem;
 	font-style: normal;
 	font-weight: 300;
 	line-height: normal;
@@ -508,26 +505,19 @@ td {
 	height: 0;
 }
 
-/* .color-display {
-	width: 6rem;
-	height: 6rem;
-	display: inline-block;
-} */
 .color-display-back{
 	display: flex;
-	width: 300px;
-	height: 250px;
-	padding: 65px 30px 65px 240px;
+	width: 30rem;
+	height: 25rem;
+	padding: 6.5rem 3rem 6.5rem 24rem;
 	justify-content: flex-end;
 	align-items: center;
-	background: var(--gray, #C7C7C7);
 }
 .color-display-paddle{
-	width: 30px;
-	height: 120px;
+	width: 3rem;
+	height: 12rem;
 	flex-shrink: 0;
-	background: var(--yellow, #FFD164);
 	/* yellow_neon_10 */
-	box-shadow: 0px 0px 10px 0px #FFD164, 0px 0px 10px 0px #FFD164;
+	/* box-shadow: 0px 0px 10px 0px #FFD164, 0px 0px 10px 0px #FFD164; */
 }
 /* GameSettingDetailed */
