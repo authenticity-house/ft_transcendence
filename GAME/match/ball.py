@@ -3,6 +3,8 @@ from typing import Final
 import math
 import random
 
+from .constants import SCREEN_HEIGHT
+
 
 class Ball:
     INIT_BALL_SPEED: Final = 0.02
@@ -35,6 +37,12 @@ class Ball:
     def move_pos(self) -> None:
         self._x += self._dx
         self._y += self._dy
+
+        ball_y_bound = self.ball_y_bound
+        if ball_y_bound <= self._y:
+            self._y = ball_y_bound
+        elif self._y <= -ball_y_bound:
+            self._y = -ball_y_bound
 
     def increase_speed(self) -> None:
         if self._speed == Ball.INIT_BALL_SPEED:
@@ -92,3 +100,8 @@ class Ball:
     @property
     def max_speed_list(self) -> list:
         return self._max_speed_list
+
+    @property
+    def ball_y_bound(self) -> float:
+        """실제 멤버변수 getter가 아닌 계산 값 반환"""
+        return SCREEN_HEIGHT / 2 - self._radius
