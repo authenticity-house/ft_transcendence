@@ -97,11 +97,13 @@ class GameSettingDetailed {
 							<div
 								class="color-display-back"
 								id="backgroundDisplay"
-								style="background-color: ${this.data.color.background};"
+								style="background-color: ${this.data.color.background}"
 							>
 								<div
 									class="color-display-paddle"
-									style="background-color: ${this.data.color.paddle};"
+									style="background-color: ${this.data.color.paddle};
+									box-shadow: 0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this
+										.data.color.paddle};"
 								></div>
 							</div>
 						</div>
