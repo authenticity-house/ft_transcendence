@@ -51,8 +51,7 @@ class GamePage {
 
 		// Create a scene
 		const scene = new THREE.Scene();
-		// GameSetting에서 가져온 값
-		scene.background = new THREE.Color(this.initial.color.background);
+		scene.background = new THREE.Color('#141343');
 
 		// Create a camera
 		const camera = new THREE.PerspectiveCamera(
@@ -79,7 +78,8 @@ class GamePage {
 		const line = new THREE.LineSegments(edges, lineMaterial);
 		const plane = new THREE.PlaneGeometry(6, 4);
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
-			color: 0x000000,
+			// color: 0x000000,
+			color: this.initial.color.background,
 			metalness: 0.5,
 			roughness: 0.5,
 			clearcoat: 1,
