@@ -51,7 +51,7 @@ class GamePage {
 
 		// Create a scene
 		const scene = new THREE.Scene();
-		scene.background = new THREE.Color('#141343');
+		scene.background = new THREE.Color(0x141343);
 
 		// Create a camera
 		const camera = new THREE.PerspectiveCamera(
