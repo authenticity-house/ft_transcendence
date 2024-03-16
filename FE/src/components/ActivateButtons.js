@@ -1,4 +1,4 @@
-export function ActivateButtons(containerSelector) {
+export function activateButtons(containerSelector) {
 	document.querySelectorAll(containerSelector).forEach((container) => {
 		container.querySelectorAll('button').forEach((btn) => {
 			btn.addEventListener('click', (event) => {

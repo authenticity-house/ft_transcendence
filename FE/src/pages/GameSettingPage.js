@@ -1,7 +1,7 @@
 import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
-import { ActivateButtons } from '../components/ActivateButtons.js';
+import { activateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
@@ -56,7 +56,7 @@ class GameSettingPage {
 	}
 
 	addEventListeners() {
-		ActivateButtons('.horizontalButton');
+		activateButtons('.horizontalButton');
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);

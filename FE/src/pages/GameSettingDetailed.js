@@ -112,7 +112,7 @@ class GameSettingDetailed {
 		`;
 	}
 
-	ActivateButtons(containerSelector) {
+	activateButtons(containerSelector) {
 		document.querySelectorAll(containerSelector).forEach((container, index) => {
 			container.querySelectorAll('button').forEach((btn, btnIndex) => {
 				btn.addEventListener('click', (event) => {
@@ -132,7 +132,7 @@ class GameSettingDetailed {
 	}
 
 	addEventListeners() {
-		this.ActivateButtons('.activate-button');
+		this.activateButtons('.activate-button');
 
 		const paddleColorPicker = document.getElementById('paddleColorPicker');
 		paddleColorPicker.addEventListener('change', (e) => {
