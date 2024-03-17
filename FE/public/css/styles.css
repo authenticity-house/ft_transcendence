@@ -33,7 +33,7 @@ body {
 header {
 	display: flex;
 	width: 100%;
-	height: 24rem;
+	height: 28rem;
 	padding: 0.2rem 0rem;
 	justify-content: center;
 	align-items: center;
@@ -251,4 +251,273 @@ button:hover:not(.button-back-arrow-box) {
 	width: 100%;
 	height: 100%;
 }
+
+.medium-window {
+	display: flex;
+	width: 100rem;
+	height: 88rem;
+	padding: 2.2rem 2.8rem;
+
+	flex-direction: column;
+	align-items: center;
+
+	flex-shrink: 0;
+	margin-top: 7.4rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #fff;
+	background: rgba(255, 255, 255, 0);
+}
+
+.medium-window-container {
+	display: flex;
+	width: 86rem;
+	height: 55rem;
+	padding: 5rem;
+
+	flex-direction: column;
+	align-items: center;
+
+	border: 2px solid #fff;
+	border-radius: 1rem;
+
+	overflow-y: scroll;
+	scroll-behavior: smooth;
+}
+
+.score-board-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 74rem;
+	height: 3.5rem;
+}
+
+.score-board-wrapper {
+	display: flex;
+	justify-content: space-between;
+	width: 15rem;
+}
+
+.divider {
+	border: 0.1rem solid #b8b8b8;
+	width: 100%;
+	margin: 3rem 0;
+}
+
+td {
+	text-align: center;
+}
+
+.basic-stats-container {
+	display: flex;
+	justify-content: space-between;
+	width: 74rem;
+	height: 22rem;
+}
+
+.match-date-time-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 34rem;
+	height: 11rem;
+	padding: 2rem;
+	border-radius: 10px;
+	border: 1px solid #dcdcdc;
+}
+
+.table-line-margin-bottom {
+	margin-bottom: 3rem;
+}
+
+.basic-table-tr-spacer {
+	height: 3rem;
+}
+
+.basic-stats-container td:nth-child(even) {
+	width: 6rem;
+}
+
+.match-rally-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 36rem;
+	height: 22rem;
+	padding: 2rem;
+	border-radius: 10px;
+	border: 1px solid #dcdcdc;
+}
+
+.special-stats-container {
+	display: flex;
+	justify-content: center;
+	width: 74rem;
+	height: auto;
+}
+
+.special-table-tr-spacer {
+	height: 3.6rem;
+}
+
+.special-stats-container td:nth-child(even) {
+	width: 14rem;
+}
+
+.special-stats-container td:nth-child(odd) {
+	width: 20rem;
+}
+
 /* Path: FE/public/css/style.css */
+
+
+/* GameSettingPage*/
+.button-head-count{
+	display: flex;
+	width: 28rem;
+	padding: 2.12rem 0rem 2.18rem 0rem;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.horizontal-button-container{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+
+.game-setting-nickname-container{
+	display: flex;
+	width: 60rem;
+	height: 36rem;
+	padding: 5.2rem 3.5rem 6.8rem 5rem;
+	justify-content: flex-end;
+	align-items: center;
+
+	gap: 3.5rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #FFF;
+}
+
+.game-setting-content-container{
+	display: flex;
+	width: 60rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 5rem;
+}
+
+.vertical-button-container{
+	display: flex;
+	height: 15rem;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.game-setting-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	align-self: stretch;
+	flex-shrink: 0;
+	align-self: stretch;
+}
+
+.game-setting-window{
+	display: flex;
+	width: 80rem;
+	height: 88rem;
+	padding: 7rem;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 1rem;
+	flex-shrink: 0;
+	border-radius: 3rem;
+	border: 0.4rem solid #FFF;
+	background: rgba(255, 255, 255, 0.00);
+}
+/* GameSettingPage*/
+
+/* GameSettingDetailed */
+
+.button-select{
+	width: 16rem;
+	height: 10rem;
+	/*padding: 4rem 6rem;*/
+	font-size: 2.4rem;
+	border-radius: 3rem;
+	border: 0.2rem solid #FFF;
+}
+
+.button-reset-complete{
+	display: flex;
+	width: 24rem;
+	padding: 1.6rem 0rem;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+/* light-24px-10% */
+.text-subtitle-1
+{
+	width: 8rem;
+	color: #FFF;
+	text-align: center;
+	font-size: 2.4rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	letter-spacing: 0.24rem;
+}
+
+.width-66{
+	width: 66rem;
+}
+.width-54{
+	width: 54rem;
+}
+
+.width-28{
+	width: 28rem;
+}
+
+.height-25{
+	height: 25rem;
+}
+
+.selected {
+	box-shadow: 0rem 0rem 1.5rem 0rem #FF5D84, 0rem 0rem 1.5rem 0rem #FF5D84;
+	text-shadow: 0rem 0rem 1rem #FF5D84, 0rem 0rem 1rem #FF5D84;
+	font-size: 2.4rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+}
+
+.color-picker-hidden {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+.color-display-back{
+	display: flex;
+	width: 30rem;
+	height: 25rem;
+	padding: 6.5rem 3rem 6.5rem 24rem;
+	justify-content: flex-end;
+	align-items: center;
+}
+.color-display-paddle{
+	width: 3rem;
+	height: 12rem;
+	flex-shrink: 0;
+	/* yellow_neon_10 */
+	/* box-shadow: 0px 0px 10px 0px #FFD164, 0px 0px 10px 0px #FFD164; */
+}
+/* GameSettingDetailed */

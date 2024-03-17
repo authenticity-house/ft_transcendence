@@ -7,7 +7,14 @@ import { changeUrl } from '../index.js';
 const html = String.raw;
 
 class GamePage {
-	template() {
+	constructor() {
+		this.initial = {};
+	}
+
+	template(initial) {
+		this.initial = initial;
+		this.initial.total_score *= 5;
+
 		return html`
 			<div
 				id="score"
@@ -71,7 +78,8 @@ class GamePage {
 		const line = new THREE.LineSegments(edges, lineMaterial);
 		const plane = new THREE.PlaneGeometry(6, 4);
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
-			color: 0x000000,
+			// color: 0x000000,
+			color: this.initial.color.background,
 			metalness: 0.5,
 			roughness: 0.5,
 			clearcoat: 1,
@@ -128,7 +136,8 @@ class GamePage {
 			roughness: 0.5,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
-			emissive: 0x0000ff,
+			// emissive: 0x0000ff,
+			emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -148,7 +157,12 @@ class GamePage {
 			i <= paddleMesh1.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			// GameSetting에서 가져온 값
+			const paddleLight = new THREE.PointLight(
+				this.initial.color.paddle,
+				0.1,
+				100
+			);
 			paddleLight.position.set(-2.8, i, 0.2);
 			paddleLightGroup1.add(paddleLight);
 		}
@@ -158,7 +172,12 @@ class GamePage {
 			i <= paddleMesh2.position.y + 0.25;
 			i += 0.1
 		) {
-			const paddleLight = new THREE.PointLight(0x0000ff, 0.1, 100);
+			// GameSetting에서 가져온 값
+			const paddleLight = new THREE.PointLight(
+				this.initial.color.paddle,
+				0.1,
+				100
+			);
 			paddleLight.position.set(2.8, i, 0.2);
 			paddleLightGroup2.add(paddleLight);
 		}
@@ -251,23 +270,21 @@ class GamePage {
 		};
 
 		// 게임 서버로 게임 초기 정보 전송
-		function sendGameSessionInfo() {
+		const sendGameSessionInfo = () => {
 			const message = {
 				type: 'game',
 				subtype: 'session_info',
 				message: '',
-				data: {
-					battle_mode: 1,
-					total_score: 4,
-					level: 2,
-					color: {
-						paddle: '#FFFFFF',
-						background: '#FFFFFF'
-					}
-				}
+				data: this.initial
 			};
+			console.log(
+				message.data.total_score,
+				message.data.level,
+				message.data.color.paddle,
+				message.data.color.background
+			);
 			websocket.send(JSON.stringify(message));
-		}
+		};
 
 		// 게임 서버로 매치 시작 요청 전송
 		function sendGameStartRequest() {
@@ -405,12 +422,14 @@ class GamePage {
 			websocket.onmessage = (event) => {
 				const message = JSON.parse(event.data);
 				switch (message.type) {
-					case 'connection_established':
-						sendGameSessionInfo();
-						break;
+					// case 'connection_established':
+					// 	sendGameSessionInfo();
+					// 	break;
 
 					case 'game':
-						if (message.subtype === 'match_init_setting') {
+						if (message.subtype === 'connection_established') {
+							sendGameSessionInfo();
+						} else if (message.subtype === 'match_init_setting') {
 							sendGameStartRequest();
 						} else if (message.subtype === 'match_run') {
 							renderThreeJs(message.data);
@@ -423,6 +442,8 @@ class GamePage {
 							player1Score.textContent = message.data.player1.score;
 							player2Score.textContent = message.data.player2.score;
 							websocket.send(JSON.stringify(disconnectMessage));
+						} else if (message.subtype === 'error') {
+							console.log(`server: ${message.message}`);
 						}
 						break;
 

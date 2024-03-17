@@ -8,7 +8,7 @@ const html = String.raw;
 
 class RegisterNicknamePage {
 	template() {
-		const titleComponent = new BoldTitle('회원가입');
+		const titleComponent = new BoldTitle('회원가입', 'yellow');
 		const textInputBoxNickname = new TextInputBox({
 			text: '닉네임',
 			button: true

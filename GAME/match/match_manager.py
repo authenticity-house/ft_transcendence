@@ -156,11 +156,11 @@ class MatchManager:
         self.ball.update_max_speed_list()
 
     def is_ball_colliding_with_wall(self) -> bool:
-        """벽 충돌 확인"""
-        half_width = SCREEN_HEIGHT / 2
-        return (
-            self.ball.y <= -half_width + self.ball.radius
-            or half_width - self.ball.radius <= self.ball.y
+        """벽과 공의 충돌 여부 확인"""
+        ball_y_bound = self.ball.ball_y_bound
+
+        return (self.ball.y <= -ball_y_bound and self.ball.dy < 0) or (
+            ball_y_bound <= self.ball.y and 0 < self.ball.dy
         )
 
     def is_player1_score(self) -> bool:

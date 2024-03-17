@@ -3,7 +3,11 @@ import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/RegisterPage.js';
 import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
+
+import GameSettingPage from './pages/GameSettingPage.js';
+import GameSettingDetailed from './pages/GameSettingDetailed.js';
 import MatchModePage from './pages/MatchModePage.js';
+import DuelStatsPage from './pages/DuelStatsPage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -24,9 +28,12 @@ const routes = {
 	'': LoginPage,
 	register: RegisterPage,
 	registerNickname: RegisterNicknamePage,
+	gameSetting: GameSettingPage,
+	gameSettingDetailed: GameSettingDetailed,
 	play: PlayModePage,
 	match: MatchModePage,
-	game: GamePage
+	game: GamePage,
+	duelstats: DuelStatsPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
@@ -37,6 +44,12 @@ routes[''].addEventListeners();
 export const changeUrl = (url) => {
 	history.pushState(null, null, `${homeLink}${url}`);
 	root.innerHTML = routes[url].template();
+	routes[url].addEventListeners();
+};
+
+export const changeUrlData = (url, data) => {
+	history.pushState(null, null, `${homeLink}${url}`);
+	root.innerHTML = routes[url].template(data);
 	routes[url].addEventListeners();
 };
 
