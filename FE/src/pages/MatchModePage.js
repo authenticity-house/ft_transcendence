@@ -1,4 +1,4 @@
-import { changeUrl } from '../index.js';
+import { changeUrl, changeUrlData } from '../index.js';
 import ButtonLarge from '../components/ButtonLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
@@ -26,7 +26,7 @@ class MatchModePage {
 	addEventListeners() {
 		const game = document.querySelector('.button-click-duel');
 		game.addEventListener('click', () => {
-			changeUrl('game');
+			changeUrlData('gameSetting', null);
 		});
 		const tournament = document.querySelector('.button-click-tournament');
 		tournament.addEventListener('click', () => {
