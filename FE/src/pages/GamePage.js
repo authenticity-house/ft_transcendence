@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
-import { changeUrl } from '../index.js';
+import { changeUrl, changeUrlData } from '../index.js';
 
 const html = String.raw;
 
@@ -80,8 +80,8 @@ class GamePage {
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
 			// color: 0x000000,
 			color: this.initial.color.background,
-			metalness: 0.5,
-			roughness: 0.5,
+			// metalness: 0.5,
+			// roughness: 1,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
 			side: THREE.DoubleSide
@@ -124,7 +124,7 @@ class GamePage {
 		scene.add(ballMesh);
 
 		// Create a light emitting from the ball
-		const ballLight = new THREE.PointLight(0xffff00, 0.5, 100);
+		const ballLight = new THREE.PointLight(0xffff00, 0.3, 100);
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
@@ -197,7 +197,7 @@ class GamePage {
 		paddleMesh2.position.x = 2.8;
 
 		// Create a ambientLight
-		const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 2);
 		scene.add(ambientLight);
 
 		// Create a pointLight
@@ -435,6 +435,7 @@ class GamePage {
 							renderThreeJs(message.data);
 						} else if (message.subtype === 'match_end') {
 							console.log('match_end');
+							console.log(message);
 							const disconnectMessage = {
 								type: 'disconnect',
 								message: 'plz!'
@@ -442,6 +443,7 @@ class GamePage {
 							player1Score.textContent = message.data.player1.score;
 							player2Score.textContent = message.data.player2.score;
 							websocket.send(JSON.stringify(disconnectMessage));
+							changeUrlData('duelstats', message.data);
 						} else if (message.subtype === 'error') {
 							console.log(`server: ${message.message}`);
 						}
