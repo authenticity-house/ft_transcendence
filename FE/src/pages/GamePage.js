@@ -78,10 +78,10 @@ class GamePage {
 		const line = new THREE.LineSegments(edges, lineMaterial);
 		const plane = new THREE.PlaneGeometry(6, 4);
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
-			// color: 0x000000,
-			color: this.initial.color.background,
-			// metalness: 0.5,
-			// roughness: 1,
+			color: 0x000000,
+			// color: this.initial.color.background,
+			metalness: 0.5,
+			roughness: 0.5,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
 			side: THREE.DoubleSide
@@ -136,8 +136,8 @@ class GamePage {
 			roughness: 0.5,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
-			// emissive: 0x0000ff,
-			emissive: this.initial.color.paddle,
+			emissive: 0x0000ff,
+			// emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -151,39 +151,6 @@ class GamePage {
 		// Create lights for the paddles
 		const paddleLightGroup1 = new THREE.Group();
 		const paddleLightGroup2 = new THREE.Group();
-
-		for (
-			let i = paddleMesh1.position.y - 0.25;
-			i <= paddleMesh1.position.y + 0.25;
-			i += 0.1
-		) {
-			// GameSetting에서 가져온 값
-			const paddleLight = new THREE.PointLight(
-				this.initial.color.paddle,
-				0.1,
-				100
-			);
-			paddleLight.position.set(-2.8, i, 0.2);
-			paddleLightGroup1.add(paddleLight);
-		}
-
-		for (
-			let i = paddleMesh2.position.y - 0.25;
-			i <= paddleMesh2.position.y + 0.25;
-			i += 0.1
-		) {
-			// GameSetting에서 가져온 값
-			const paddleLight = new THREE.PointLight(
-				this.initial.color.paddle,
-				0.1,
-				100
-			);
-			paddleLight.position.set(2.8, i, 0.2);
-			paddleLightGroup2.add(paddleLight);
-		}
-
-		scene.add(paddleLightGroup1);
-		scene.add(paddleLightGroup2);
 
 		// Set the position of the ball
 		ballMesh.position.x = 0;
@@ -286,8 +253,48 @@ class GamePage {
 			websocket.send(JSON.stringify(message));
 		};
 
+		// 게임 서버가 보내온 게임 초기 정보 세팅
 		// 게임 서버로 매치 시작 요청 전송
-		function sendGameStartRequest() {
+		function sendGameStartRequest(data) {
+			const { color } = data;
+
+			planeMaterial.color.set(color.background);
+			paddleMaterial.emissive.set(color.paddle);
+			for (
+				let i = paddleMesh1.position.y - 0.25;
+				i <= paddleMesh1.position.y + 0.25;
+				i += 0.1
+			) {
+				// GameSetting에서 가져온 값
+				const paddleLight = new THREE.PointLight(
+					color.paddle,
+					// 0xffffff,
+					0.1,
+					100
+				);
+				paddleLight.position.set(-2.8, i, 0.2);
+				paddleLightGroup1.add(paddleLight);
+			}
+
+			for (
+				let i = paddleMesh2.position.y - 0.25;
+				i <= paddleMesh2.position.y + 0.25;
+				i += 0.1
+			) {
+				// GameSetting에서 가져온 값
+				const paddleLight = new THREE.PointLight(
+					color.paddle,
+					// 0xffffff,
+					0.1,
+					100
+				);
+				paddleLight.position.set(2.8, i, 0.2);
+				paddleLightGroup2.add(paddleLight);
+			}
+
+			scene.add(paddleLightGroup1);
+			scene.add(paddleLightGroup2);
+
 			const message = {
 				type: 'game',
 				subtype: 'match_start',
@@ -430,7 +437,7 @@ class GamePage {
 						if (message.subtype === 'connection_established') {
 							sendGameSessionInfo();
 						} else if (message.subtype === 'match_init_setting') {
-							sendGameStartRequest();
+							sendGameStartRequest(message.data);
 						} else if (message.subtype === 'match_run') {
 							renderThreeJs(message.data);
 						} else if (message.subtype === 'match_end') {
