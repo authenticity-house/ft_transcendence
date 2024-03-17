@@ -190,7 +190,7 @@ class DuelStatsPage {
 										<td></td>
 										<td>${maxRally}</td>
 										<td></td>
-										<td>${maxMaxBallSpeed}</td>
+										<td>${maxMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
@@ -206,7 +206,7 @@ class DuelStatsPage {
 										<td></td>
 										<td>${minRally}</td>
 										<td></td>
-										<td>${minMaxBallSpeed}</td>
+										<td>${minMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 								</tbody>
 							</table>
