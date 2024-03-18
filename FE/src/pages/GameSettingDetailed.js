@@ -48,7 +48,7 @@ class GameSettingDetailed {
 			'paddleColorButton'
 		);
 		const ballColor = createColorPicker(
-			this.data.color.background,
+			this.data.color.ball,
 			'ballColorPicker',
 			'ballColorButton'
 		);
@@ -151,11 +151,11 @@ class GameSettingDetailed {
 
 		const ballColorPicker = document.getElementById('ballColorPicker');
 		ballColorPicker.addEventListener('change', (e) => {
-			this.data.color.background = e.target.value;
+			this.data.color.ball = e.target.value;
 			document.getElementById('ballColorButton').textContent =
-				this.data.color.background;
+				this.data.color.ball;
 			document.querySelector('.color-display-ball').style.backgroundColor =
-				this.data.color.background;
+				this.data.color.ball;
 			document.querySelector('.color-display-ball').style.boxShadow =
 				`0rem 0rem 1.5rem 0rem ${this.data.color.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball}`;
 		});
@@ -170,7 +170,7 @@ class GameSettingDetailed {
 				level: 2,
 				color: {
 					paddle: '#5AD7FF',
-					background: '#FFD164'
+					ball: '#FFD164'
 				}
 			};
 			changeUrl('gameSettingDetailed', newData);
