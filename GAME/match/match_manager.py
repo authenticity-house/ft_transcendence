@@ -103,6 +103,10 @@ class MatchManager:
         self.is_run = False
         self._end_date = timezone.now()
 
+        for _ in range(180):
+            self.local_move_paddles()
+            await self.send_data()
+
         data = {
             "date": self._start_date.strftime("%Y-%m-%d"),
             "play_time": self.get_play_time(),
