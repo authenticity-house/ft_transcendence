@@ -14,6 +14,8 @@ module.exports = {
 		'no-restricted-globals': 'off',
 		'no-new': 'off',
 		'class-methods-use-this': 'off',
-		'import/no-cycle': 'off'
+		'import/no-cycle': 'off',
+		'no-restricted-syntax': 'off',
+		'no-continue': 'off'
 	}
 };
