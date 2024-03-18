@@ -518,14 +518,14 @@ td {
 }
 
 .color-display-paddle {
-	width: 3rem;
+	width: 2rem;
 	height: 12rem;
 }
 
 .color-display-ball {
 	width: 4rem;
 	height: 4rem;
-	border-radius: 8rem;
+	border-radius: 2rem;
 }
 /* GameSettingDetailed */
 

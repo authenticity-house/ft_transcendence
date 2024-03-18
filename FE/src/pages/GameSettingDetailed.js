@@ -98,15 +98,14 @@ class GameSettingDetailed {
 								<div
 									class="color-display-paddle"
 									style="background-color: ${this.data.color.paddle};
-									box-shadow: 0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this
-										.data.color.paddle};"
+									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
+										.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle};"
 								></div>
 								<div
 									class="color-display-ball"
-									style="background-color: ${this.data.color.background};
-									box-shadow: 0px 0px 10px 0px ${this.data.color
-										.background}, 0px 0px 10px 0px ${this.data.color
-										.background};"
+									style="background-color: ${this.data.color.ball};
+									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
+										.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball};"
 								></div>
 							</div>
 						</div>
@@ -147,7 +146,7 @@ class GameSettingDetailed {
 			document.querySelector('.color-display-paddle').style.backgroundColor =
 				this.data.color.paddle;
 			document.querySelector('.color-display-paddle').style.boxShadow =
-				`0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this.data.color.paddle}`;
+				`0rem 0rem 1.5rem 0rem ${this.data.color.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle}`;
 		});
 
 		const ballColorPicker = document.getElementById('ballColorPicker');
@@ -158,7 +157,7 @@ class GameSettingDetailed {
 			document.querySelector('.color-display-ball').style.backgroundColor =
 				this.data.color.background;
 			document.querySelector('.color-display-ball').style.boxShadow =
-				`0px 0px 10px 0px ${this.data.color.background}, 0px 0px 10px 0px ${this.data.color.background}`;
+				`0rem 0rem 1.5rem 0rem ${this.data.color.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball}`;
 		});
 
 		const resetButton = document.querySelector(

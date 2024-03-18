@@ -152,13 +152,13 @@ class GamePage {
 		const paddleLightGroup1 = new THREE.Group();
 		const paddleLightGroup2 = new THREE.Group();
 
-		function addPaddleLights(paddleMesh, paddleLightGroup, paddleColor) {
+		function addPaddleLights(paddleMesh, paddleLightGroup) {
 			for (
 				let i = paddleMesh.position.y - 0.25;
 				i <= paddleMesh.position.y + 0.25;
 				i += 0.1
 			) {
-				const paddleLight = new THREE.PointLight(paddleColor, 0.1, 100);
+				const paddleLight = new THREE.PointLight(0xffffff, 0.1, 100);
 				paddleLight.position.set(
 					paddleMesh === paddleMesh1 ? -2.8 : 2.8,
 					i,
@@ -167,9 +167,14 @@ class GamePage {
 				paddleLightGroup.add(paddleLight);
 			}
 		}
+		function changePaddleLightColor(paddleLightGroup, paddleColor) {
+			paddleLightGroup.children.forEach((paddleLight) => {
+				paddleLight.color.set(paddleColor);
+			});
+		}
 
-		// addPaddleLights(paddleMesh1, paddleLightGroup1, 0x0000ff);
-		// addPaddleLights(paddleMesh2, paddleLightGroup2, 0x0000ff);
+		addPaddleLights(paddleMesh1, paddleLightGroup1);
+		addPaddleLights(paddleMesh2, paddleLightGroup2);
 
 		scene.add(paddleLightGroup1);
 		scene.add(paddleLightGroup2);
@@ -280,7 +285,13 @@ class GamePage {
 		function sendGameStartRequest(data) {
 			const { color } = data;
 
-			paddleMaterial.emissive.set(color.paddle);
+			paddleMesh1.material.emissive.set(color.paddle);
+			paddleMesh2.material.emissive.set(color.paddle);
+			changePaddleLightColor(paddleLightGroup1, color.paddle);
+			changePaddleLightColor(paddleLightGroup2, color.paddle);
+
+			ballMesh.material.emissive.set(color.ball);
+			ballLight.color.set(color.ball);
 			// for (
 			// 	let i = paddleMesh1.position.y - 0.25;
 			// 	i <= paddleMesh1.position.y + 0.25;
@@ -313,8 +324,8 @@ class GamePage {
 			// 	paddleLightGroup2.add(paddleLight);
 			// }
 
-			addPaddleLights(paddleMesh1, paddleLightGroup1, color.paddle);
-			addPaddleLights(paddleMesh2, paddleLightGroup2, color.paddle);
+			// addPaddleLights(paddleMesh1, paddleLightGroup1, color.paddle);
+			// addPaddleLights(paddleMesh2, paddleLightGroup2, color.paddle);
 
 			// scene.add(paddleLightGroup1);
 			// scene.add(paddleLightGroup2);
