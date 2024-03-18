@@ -8,6 +8,7 @@ import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingDetailed from './pages/GameSettingDetailed.js';
 import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
+import TournamentPage from './pages/TournamentPage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -33,7 +34,8 @@ const routes = {
 	play: PlayModePage,
 	match: MatchModePage,
 	game: GamePage,
-	duelstats: DuelStatsPage
+	duelstats: DuelStatsPage,
+	tournament: TournamentPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
@@ -44,6 +46,9 @@ routes[''].addEventListeners();
 export const changeUrl = (url) => {
 	history.pushState(null, null, `${homeLink}${url}`);
 	root.innerHTML = routes[url].template();
+	if (typeof routes[url].mount === 'function') {
+		routes[url].mount();
+	}
 	routes[url].addEventListeners();
 };
 
