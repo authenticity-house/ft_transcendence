@@ -7,8 +7,8 @@ from .constants import SCREEN_HEIGHT
 
 
 class Ball:
-    INIT_BALL_SPEED: Final = 0.02
-    REFLECT_BALL_SPEED: Final = 0.04
+    INIT_BALL_SPEED: Final = 0.04
+    REFLECT_BALL_SPEED: Final = 0.06
     BALL_RADIUS: Final = 0.04
 
     def __init__(self, speed: float = REFLECT_BALL_SPEED, radius: float = BALL_RADIUS) -> None:

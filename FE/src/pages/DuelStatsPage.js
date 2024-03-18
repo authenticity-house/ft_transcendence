@@ -5,15 +5,32 @@ import ButtonSmall from '../components/ButtonSmall.js';
 const html = String.raw;
 
 class DuelStatsPage {
-	template() {
+	template(data) {
+		const attackTypeList = ['공격형', '방어형', '혼합형'];
+		const attackPosList = ['상단', '중단', '하단', '전체'];
 		/* Mock Data - api 가져오기 */
-		const leftPlayer = '종식';
-		const rightPlayer = '원식';
-		const leftScore = 9;
-		const rightScore = 4;
-		const matchDate = '2024년 3월 4일';
-		const matchTime = '13분 40초';
-		const winPlayer = `${leftPlayer} WIN!`;
+		const leftPlayer = data ? data.player1.nickname : '플레이어1';
+		const rightPlayer = data ? data.player2.nickname : '플레이어2';
+		const leftScore = data ? data.player1.score : 0;
+		const rightScore = data ? data.player2.score : 0;
+		const matchDate = data ? data.date : '2021-03-17';
+		const matchTime = data ? data.play_time : '00:00:01';
+		const winPlayer =
+			leftScore > rightScore ? `${leftPlayer} WIN!` : `${rightPlayer} WIN!`;
+		const maxRally = data ? data.rally[0] : 0;
+		const maxMaxBallSpeed = data ? data.max_ball_speed[0] : 0;
+		const avgRally = data ? data.rally[1] : 0;
+		const avgMaxBallSpeed = data ? data.max_ball_speed[1] : 0;
+		const minRally = data ? data.rally[2] : 0;
+		const minMaxBallSpeed = data ? data.max_ball_speed[2] : 0;
+		const attackType1 = data ? data.player1.attack_type : 0;
+		const attackType2 = data ? data.player2.attack_type : 0;
+		const powerUpCnt1 = data ? data.player1.power_up_cnt : 0;
+		const powerUpCnt2 = data ? data.player2.power_up_cnt : 0;
+		const keyCnt1 = data ? data.player1.key_cnt : 0;
+		const keyCnt2 = data ? data.player2.key_cnt : 0;
+		const attackPos1 = data ? data.player1.attack_pos : 0;
+		const attackPos2 = data ? data.player2.attack_pos : 0;
 
 		/* Components */
 		const titlComponent = new BoldTitle(winPlayer, 'pink');
@@ -65,25 +82,25 @@ class DuelStatsPage {
 									<tr>
 										<td>최대</td>
 										<td></td>
-										<td>32</td>
+										<td>${maxRally}</td>
 										<td></td>
-										<td>45</td>
+										<td>${maxMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
 										<td>평균</td>
 										<td></td>
-										<td>23</td>
+										<td>${avgRally.toFixed(2)}</td>
 										<td></td>
-										<td>20</td>
+										<td>${avgMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
 										<td>최소</td>
 										<td></td>
-										<td>1</td>
+										<td>${minRally}</td>
 										<td></td>
-										<td>10</td>
+										<td>${minMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -94,43 +111,43 @@ class DuelStatsPage {
 						<table>
 							<tbody>
 								<tr class="display-light24">
-									<td>종식종식종식</td>
+									<td>${leftPlayer}</td>
 									<td></td>
 									<td>.</td>
 									<td></td>
-									<td>원식</td>
+									<td>${rightPlayer}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>공격형</td>
+									<td>${attackTypeList[attackType1]}</td>
 									<td></td>
 									<td>공격성향</td>
 									<td></td>
-									<td>방어형</td>
+									<td>${attackTypeList[attackType2]}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>7</td>
+									<td>${powerUpCnt1}</td>
 									<td></td>
 									<td>파워업 공격 횟수</td>
 									<td></td>
-									<td>5</td>
+									<td>${powerUpCnt2}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>155</td>
+									<td>${keyCnt1.toFixed(2)}</td>
 									<td></td>
 									<td>평균 키 입력 횟수</td>
 									<td></td>
-									<td>100</td>
+									<td>${keyCnt2.toFixed(2)}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>하단</td>
+									<td>${attackPosList[attackPos1]}</td>
 									<td></td>
 									<td>주요 공격 위치</td>
 									<td></td>
-									<td>상단</td>
+									<td>${attackPosList[attackPos2]}</td>
 								</tr>
 							</tbody>
 						</table>
