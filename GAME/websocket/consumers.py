@@ -12,9 +12,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.match_manager = None
         self.game_session = None
+        self.connected = False
 
     async def connect(self):
         await self.accept()
+        self.connected = True
         await self.send_message("connection_established", "You are now connected!")
 
     async def receive(self, text_data=None, bytes_data=None):
@@ -113,6 +115,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
     async def disconnect(self, code):
+        self.connected = False
         # code: 1000 정상 종료 1001 상대방이 떠남 1002 프로토콜 오류 (로깅 시 사용)
         if self.game_session:
             self.game_session.cancel()
@@ -122,6 +125,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                 pass  # 게임 세션 취소 성공
 
     async def send_message(self, subtype, message, data=None):
+        if not self.connected:
+            print("GameConsumer: WebSocket is not connected. Message not sent.")
+            return
+
         msg = {
             "type": "game",
             "subtype": subtype,
@@ -131,6 +138,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(msg))
 
     async def send_error(self, error_message):
+        if not self.connected:
+            print("GameConsumer: WebSocket is not connected. Error message not sent.")
+            return
+
         try:
             await self.send_message("error", error_message)
         except Exception as e:
