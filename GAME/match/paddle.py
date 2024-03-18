@@ -4,12 +4,28 @@ from .ball import Ball
 from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, Position
 
 
-def calculate_bounds_rect(x: float, y: float, width: float, height: float) -> list:
-    left_x = x - width / 2
-    right_x = x + width / 2
-    top_y = y + height / 2
-    bottom_y = y - height / 2
+def calculate_bounds_rect(
+    x: float, y: float, width: float, height: float, ball_radius: float
+) -> list:
+    left_x = x - (width / 2 + ball_radius)
+    right_x = x + (width / 2 + ball_radius)
+    top_y = y + (height / 2 + ball_radius)
+    bottom_y = y - (height / 2 + ball_radius)
     return [left_x, right_x, top_y, bottom_y]
+
+
+def line_intersect(
+    x1: float, y1: float, x2: float, y2: float, x3: float, y3: float, x4: float, y4: float
+) -> bool:
+    """선분 (x1, y1)-(x2, y2)와 선분 (x3, y3)-(x4, y4)가 교차하는지 확인"""
+
+    def ccw(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float) -> float:
+        return x1 * y2 + x2 * y3 + x3 * y1 - x2 * y1 - x3 * y2 - x1 * y3 > 0
+
+    case1: bool = ccw(x1, y1, x2, y2, x3, y3) != ccw(x1, y1, x2, y2, x4, y4)
+    case2: bool = ccw(x1, y1, x3, y3, x4, y4) != ccw(x2, y2, x3, y3, x4, y4)
+
+    return case1 and case2
 
 
 def calculate_bounds_circle(x: float, y: float, radius: float) -> list:
@@ -56,21 +72,43 @@ class Paddle:
 
     def is_collides_with_ball(self, ball: Ball) -> bool:
         """공과 패들의 충돌 여부를 반환"""
-        LEFT, RIGHT, TOP, BOTTOM = 0, 1, 2, 3  # pylint: disable=invalid-name
 
-        ball_bounds: list = calculate_bounds_circle(ball.x, ball.y, ball.radius)
-        paddle_bounds: list = calculate_bounds_rect(self.x, self.y, self._width, self._height)
-
-        if not (
-            ball_bounds[LEFT] <= paddle_bounds[RIGHT] <= ball_bounds[RIGHT]
-            or ball_bounds[LEFT] <= paddle_bounds[LEFT] <= ball_bounds[RIGHT]
-        ):
+        # 공이 부딪히는 방향 확인
+        if ball.dx * self.pos < 0:
             return False
 
-        if paddle_bounds[TOP] < ball_bounds[BOTTOM] or ball_bounds[TOP] < paddle_bounds[BOTTOM]:
-            return False
+        # 공의 이전 좌표
+        prev_ball_x, prev_ball_y = ball.x - ball.dx, ball.y - ball.dy
+        # 패들 테두리 좌표
+        paddle_bounds: list = calculate_bounds_rect(self.x, self.y, self._width, self._height, ball.radius)
 
-        return (ball.dx < 0) == (self.pos < 0)
+        for i in range(2):
+            if line_intersect(
+                prev_ball_x,
+                prev_ball_y,
+                ball.x,
+                ball.y,
+                paddle_bounds[i],
+                paddle_bounds[2],
+                paddle_bounds[i],
+                paddle_bounds[3],
+            ):
+                return True
+
+        for i in range(2, 4):
+            if line_intersect(
+                prev_ball_x,
+                prev_ball_y,
+                ball.x,
+                ball.y,
+                paddle_bounds[0],
+                paddle_bounds[i],
+                paddle_bounds[1],
+                paddle_bounds[i],
+            ):
+                return True
+
+        return False
 
     @property
     def x(self) -> float:
