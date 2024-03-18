@@ -7,7 +7,7 @@ const html = String.raw;
 class MatchModePage {
 	template() {
 		const duelButton = new ButtonLarge('1 vs 1', false);
-		const tournamentButton = new ButtonLarge('토너먼트', true);
+		const tournamentButton = new ButtonLarge('토너먼트', false);
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -30,7 +30,7 @@ class MatchModePage {
 		});
 		const tournament = document.querySelector('.button-click-tournament');
 		tournament.addEventListener('click', () => {
-			console.log('tournament button click!');
+			changeUrl('tournament');
 		});
 		const back = document.querySelector('.back-arrow-container');
 		back.addEventListener('click', () => {

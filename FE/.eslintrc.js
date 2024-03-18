@@ -14,6 +14,10 @@ module.exports = {
 		'no-restricted-globals': 'off',
 		'no-new': 'off',
 		'class-methods-use-this': 'off',
-		'import/no-cycle': 'off'
+		'import/no-cycle': 'off',
+		// 이후 제거 고민해보기. continue, for .. of 사용을 위한 부분
+		'no-restricted-syntax': 'off',
+		'no-continue': 'off'
+		//
 	}
 };
