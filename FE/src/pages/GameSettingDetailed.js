@@ -48,7 +48,7 @@ class GameSettingDetailed {
 			'paddleColorButton'
 		);
 		const ballColor = createColorPicker(
-			this.data.color.ball,
+			this.data.color.background,
 			'ballColorPicker',
 			'ballColorButton'
 		);
@@ -103,9 +103,10 @@ class GameSettingDetailed {
 								></div>
 								<div
 									class="color-display-ball"
-									style="background-color: ${this.data.color.ball};
-									box-shadow: 0px 0px 10px 0px ${this.data.color.ball}, 0px 0px 10px 0px ${this
-										.data.color.ball};"
+									style="background-color: ${this.data.color.background};
+									box-shadow: 0px 0px 10px 0px ${this.data.color
+										.background}, 0px 0px 10px 0px ${this.data.color
+										.background};"
 								></div>
 							</div>
 						</div>
@@ -151,13 +152,13 @@ class GameSettingDetailed {
 
 		const ballColorPicker = document.getElementById('ballColorPicker');
 		ballColorPicker.addEventListener('change', (e) => {
-			this.data.color.ball = e.target.value;
+			this.data.color.background = e.target.value;
 			document.getElementById('ballColorButton').textContent =
-				this.data.color.ball;
+				this.data.color.background;
 			document.querySelector('.color-display-ball').style.backgroundColor =
-				this.data.color.ball;
+				this.data.color.background;
 			document.querySelector('.color-display-ball').style.boxShadow =
-				`0px 0px 10px 0px ${this.data.color.ball}, 0px 0px 10px 0px ${this.data.color.ball}`;
+				`0px 0px 10px 0px ${this.data.color.background}, 0px 0px 10px 0px ${this.data.color.background}`;
 		});
 
 		const resetButton = document.querySelector(
@@ -170,7 +171,7 @@ class GameSettingDetailed {
 				level: 2,
 				color: {
 					paddle: '#5AD7FF',
-					ball: '#FFD164'
+					background: '#FFD164'
 				}
 			};
 			changeUrl('gameSettingDetailed', newData);

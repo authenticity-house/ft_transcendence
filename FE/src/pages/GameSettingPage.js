@@ -13,7 +13,7 @@ class GameSettingPage {
 			level: 2,
 			color: {
 				paddle: '#5AD7FF',
-				ball: '#FFD164'
+				background: '#FFD164'
 			}
 		};
 		this.data = { ...this.initialData };

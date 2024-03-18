@@ -152,6 +152,28 @@ class GamePage {
 		const paddleLightGroup1 = new THREE.Group();
 		const paddleLightGroup2 = new THREE.Group();
 
+		function addPaddleLights(paddleMesh, paddleLightGroup, paddleColor) {
+			for (
+				let i = paddleMesh.position.y - 0.25;
+				i <= paddleMesh.position.y + 0.25;
+				i += 0.1
+			) {
+				const paddleLight = new THREE.PointLight(paddleColor, 0.1, 100);
+				paddleLight.position.set(
+					paddleMesh === paddleMesh1 ? -2.8 : 2.8,
+					i,
+					0.2
+				);
+				paddleLightGroup.add(paddleLight);
+			}
+		}
+
+		// addPaddleLights(paddleMesh1, paddleLightGroup1, 0x0000ff);
+		// addPaddleLights(paddleMesh2, paddleLightGroup2, 0x0000ff);
+
+		scene.add(paddleLightGroup1);
+		scene.add(paddleLightGroup2);
+
 		// Set the position of the ball
 		ballMesh.position.x = 0;
 		ballMesh.position.y = 0;
@@ -258,42 +280,44 @@ class GamePage {
 		function sendGameStartRequest(data) {
 			const { color } = data;
 
-			planeMaterial.color.set(color.background);
 			paddleMaterial.emissive.set(color.paddle);
-			for (
-				let i = paddleMesh1.position.y - 0.25;
-				i <= paddleMesh1.position.y + 0.25;
-				i += 0.1
-			) {
-				// GameSetting에서 가져온 값
-				const paddleLight = new THREE.PointLight(
-					color.paddle,
-					// 0xffffff,
-					0.1,
-					100
-				);
-				paddleLight.position.set(-2.8, i, 0.2);
-				paddleLightGroup1.add(paddleLight);
-			}
+			// for (
+			// 	let i = paddleMesh1.position.y - 0.25;
+			// 	i <= paddleMesh1.position.y + 0.25;
+			// 	i += 0.1
+			// ) {
+			// 	// GameSetting에서 가져온 값
+			// 	const paddleLight = new THREE.PointLight(
+			// 		color.paddle,
+			// 		// 0xffffff,
+			// 		0.1,
+			// 		100
+			// 	);
+			// 	paddleLight.position.set(-2.8, i, 0.2);
+			// 	paddleLightGroup1.add(paddleLight);
+			// }
 
-			for (
-				let i = paddleMesh2.position.y - 0.25;
-				i <= paddleMesh2.position.y + 0.25;
-				i += 0.1
-			) {
-				// GameSetting에서 가져온 값
-				const paddleLight = new THREE.PointLight(
-					color.paddle,
-					// 0xffffff,
-					0.1,
-					100
-				);
-				paddleLight.position.set(2.8, i, 0.2);
-				paddleLightGroup2.add(paddleLight);
-			}
+			// for (
+			// 	let i = paddleMesh2.position.y - 0.25;
+			// 	i <= paddleMesh2.position.y + 0.25;
+			// 	i += 0.1
+			// ) {
+			// 	// GameSetting에서 가져온 값
+			// 	const paddleLight = new THREE.PointLight(
+			// 		color.paddle,
+			// 		// 0xffffff,
+			// 		0.1,
+			// 		100
+			// 	);
+			// 	paddleLight.position.set(2.8, i, 0.2);
+			// 	paddleLightGroup2.add(paddleLight);
+			// }
 
-			scene.add(paddleLightGroup1);
-			scene.add(paddleLightGroup2);
+			addPaddleLights(paddleMesh1, paddleLightGroup1, color.paddle);
+			addPaddleLights(paddleMesh2, paddleLightGroup2, color.paddle);
+
+			// scene.add(paddleLightGroup1);
+			// scene.add(paddleLightGroup2);
 
 			const message = {
 				type: 'game',
