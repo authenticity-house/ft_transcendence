@@ -82,7 +82,6 @@ class GameConsumer(AsyncWebsocketConsumer):
                         "battle_mode": msg_data.get("battle_mode"),
                         "color": {
                             "paddle": paddle_color,
-                            "background": "0x000000",
                             "ball": ball_color,
                         },
                         "ball": {
