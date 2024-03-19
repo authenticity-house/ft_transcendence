@@ -508,19 +508,26 @@ td {
 
 .color-display-back {
 	display: flex;
-	width: 30rem;
 	height: 25rem;
-	padding: 6.5rem 3rem 6.5rem 24rem;
-	justify-content: flex-end;
+	padding: 6.5rem 7.5rem;
+	justify-content: center;
 	align-items: center;
+	gap: 8rem;
+	border: 0.2rem solid var(--white, #FFF);
+	background: #000;
 }
+
 .color-display-paddle {
-	width: 3rem;
+	width: 2rem;
 	height: 12rem;
-	flex-shrink: 0;
-	/* yellow_neon_10 */
-	/* box-shadow: 0px 0px 10px 0px #FFD164, 0px 0px 10px 0px #FFD164; */
 }
+
+.color-display-ball {
+	width: 4rem;
+	height: 4rem;
+	border-radius: 2rem;
+}
+/* GameSettingDetailed */
 
 /* Tournament */
 .tournament-bracket {
@@ -595,4 +602,3 @@ td {
 	border-top: 0.3rem dotted #ffffff;
 }
 
-/* GameSettingDetailed */
