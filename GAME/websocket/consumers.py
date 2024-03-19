@@ -14,9 +14,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         super().__init__(*args, **kwargs)
         self.match_manager = None
         self.game_session = None
+        self.connected = False
 
     async def connect(self):
         await self.accept()
+        self.connected = True
         await self.send_message("connection_established", "You are now connected!")
 
     async def receive(self, text_data=None, bytes_data=None):
@@ -70,55 +72,46 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def send_initial_settings(self, msg_data):
         color_info = msg_data.get("color")
         paddle_color = color_info["paddle"]
-        background_color = color_info["background"]
+        ball_color = color_info["ball"]
         # 아직 공 색 정보는 클라이언트에게 안받음
 
         ball: Ball = self.match_manager.ball
         player1: Player = self.match_manager.player1
         player2: Player = self.match_manager.player2
 
-        await self.send(
-            text_data=json.dumps(
-                {
-                    "type": "game",
-                    "subtype": "match_init_setting",
-                    "message": "",
-                    "match_id": 123,
-                    "data": {
-                        "battle_mode": msg_data.get("battle_mode"),
-                        "color": {
-                            "paddle": paddle_color,
-                            "background": background_color,
-                            "ball": "#FFFFFF",
-                        },
-                        "ball": {
-                            "status": "in",
-                            "x": ball.x,
-                            "y": ball.y,
-                            "radius": ball.radius,
-                        },
-                        "paddle1": {
-                            "x": player1.paddle.x,
-                            "y": player1.paddle.y,
-                            "width": player1.paddle.width,
-                            "height": player1.paddle.height,
-                        },
-                        "paddle2": {
-                            "x": player2.paddle.x,
-                            "y": player2.paddle.y,
-                            "width": player2.paddle.width,
-                            "height": player2.paddle.height,
-                        },
-                        "nickname": {
-                            "player1": player1.name,
-                            "player2": player2.name,
-                        },
-                    },
-                }
-            )
-        )
+        data = {
+            "battle_mode": msg_data.get("battle_mode"),
+            "color": {
+                "paddle": paddle_color,
+                "ball": ball_color,
+            },
+            "ball": {
+                "status": "in",
+                "x": ball.x,
+                "y": ball.y,
+                "radius": ball.radius,
+            },
+            "paddle1": {
+                "x": player1.paddle.x,
+                "y": player1.paddle.y,
+                "width": player1.paddle.width,
+                "height": player1.paddle.height,
+            },
+            "paddle2": {
+                "x": player2.paddle.x,
+                "y": player2.paddle.y,
+                "width": player2.paddle.width,
+                "height": player2.paddle.height,
+            },
+            "nickname": {
+                "player1": player1.name,
+                "player2": player2.name,
+            },
+        }
+        await self.send_message("match_init_setting", "", data)
 
     async def disconnect(self, code):
+        self.connected = False
         # code: 1000 정상 종료 1001 상대방이 떠남 1002 프로토콜 오류 (로깅 시 사용)
         if self.game_session:
             self.game_session.cancel()
@@ -126,8 +119,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                 await self.game_session
             except asyncio.CancelledError:
                 pass  # 게임 세션 취소 성공
+        await super().disconnect(code)
 
     async def send_message(self, subtype, message, data=None):
+        if not self.connected:
+            print("GameConsumer: WebSocket is not connected. Message not sent.")
+            return
+
         msg = {
             "type": "game",
             "subtype": subtype,
@@ -137,9 +135,13 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps(msg))
 
     async def send_error(self, error_message):
+        if not self.connected:
+            print("GameConsumer: WebSocket is not connected. Error message not sent.")
+            return
+
         try:
             await self.send_message("error", error_message)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Error sending message: {e}")
         finally:
             await self.disconnect(1002)

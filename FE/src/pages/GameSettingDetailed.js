@@ -47,10 +47,10 @@ class GameSettingDetailed {
 			'paddleColorPicker',
 			'paddleColorButton'
 		);
-		const backColor = createColorPicker(
-			this.data.color.background,
-			'backColorPicker',
-			'backColorButton'
+		const ballColor = createColorPicker(
+			this.data.color.ball,
+			'ballColorPicker',
+			'ballColorButton'
 		);
 
 		const buttonTexts = ['초기화', '완료'];
@@ -87,23 +87,25 @@ class GameSettingDetailed {
 									</div>
 								</div>
 								<div class="horizontal-button-container width-28">
-									<p class="text-subtitle-1">배경색</p>
+									<p class="text-subtitle-1">공색</p>
 									<div class="horizontal-button-container">
-										${backColor.colorPicker}${backColor.colorDisplayButton}
+										${ballColor.colorPicker}${ballColor.colorDisplayButton}
 									</div>
 								</div>
 							</div>
 							<!-- 패들색/배경색 표시 -->
-							<div
-								class="color-display-back"
-								id="backgroundDisplay"
-								style="background-color: ${this.data.color.background}"
-							>
+							<div class="color-display-back">
 								<div
 									class="color-display-paddle"
 									style="background-color: ${this.data.color.paddle};
-									box-shadow: 0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this
-										.data.color.paddle};"
+									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
+										.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle};"
+								></div>
+								<div
+									class="color-display-ball"
+									style="background-color: ${this.data.color.ball};
+									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
+										.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball};"
 								></div>
 							</div>
 						</div>
@@ -141,23 +143,21 @@ class GameSettingDetailed {
 			this.data.color.paddle = e.target.value;
 			document.getElementById('paddleColorButton').textContent =
 				this.data.color.paddle;
-			document
-				.getElementById('backgroundDisplay')
-				.querySelector('.color-display-paddle').style.backgroundColor =
+			document.querySelector('.color-display-paddle').style.backgroundColor =
 				this.data.color.paddle;
-			document
-				.getElementById('backgroundDisplay')
-				.querySelector('.color-display-paddle').style.boxShadow =
-				`0px 0px 10px 0px ${this.data.color.paddle}, 0px 0px 10px 0px ${this.data.color.paddle}`;
+			document.querySelector('.color-display-paddle').style.boxShadow =
+				`0rem 0rem 1.5rem 0rem ${this.data.color.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle}`;
 		});
 
-		const backColorPicker = document.getElementById('backColorPicker');
-		backColorPicker.addEventListener('change', (e) => {
-			this.data.color.background = e.target.value;
-			document.getElementById('backColorButton').textContent =
-				this.data.color.background;
-			document.getElementById('backgroundDisplay').style.backgroundColor =
-				this.data.color.background;
+		const ballColorPicker = document.getElementById('ballColorPicker');
+		ballColorPicker.addEventListener('change', (e) => {
+			this.data.color.ball = e.target.value;
+			document.getElementById('ballColorButton').textContent =
+				this.data.color.ball;
+			document.querySelector('.color-display-ball').style.backgroundColor =
+				this.data.color.ball;
+			document.querySelector('.color-display-ball').style.boxShadow =
+				`0rem 0rem 1.5rem 0rem ${this.data.color.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball}`;
 		});
 
 		const resetButton = document.querySelector(
@@ -169,8 +169,8 @@ class GameSettingDetailed {
 				total_score: 2,
 				level: 2,
 				color: {
-					paddle: '#FFD164',
-					background: '#141343'
+					paddle: '#5AD7FF',
+					ball: '#FFD164'
 				}
 			};
 			changeUrl('gameSettingDetailed', newData);
