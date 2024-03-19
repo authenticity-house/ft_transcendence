@@ -15,11 +15,11 @@ class MatchManager:
         self,
         socket,
         total_score: int = 15,
-        player1_name: str = "player1",
-        player2_name: str = "player2",
         paddle_height: float = Paddle.PADDLE_DEFAULT_HEIGHT,
         ball_speed: float = Ball.REFLECT_BALL_SPEED,
         ball_accel_speed: float = Ball.ACCEL_BALL_SPEED,
+        player1_name: str = "player1",
+        player2_name: str = "player2",
     ):
         self.socket = socket
         self.TOTAL_SCORE = total_score  # pylint: disable=invalid-name
@@ -40,10 +40,10 @@ class MatchManager:
         self._rally_count_list: list = []
 
     async def start_game(self) -> None:
-        """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
-        for _ in range(300):
-            self.local_move_paddles()
-            await self.send_data()
+        # """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
+        # for _ in range(300):
+        #     self.local_move_paddles()
+        #     await self.send_data()
 
         self.is_run = True
         rally_cnt: int = 0
@@ -78,9 +78,9 @@ class MatchManager:
             if self.TOTAL_SCORE in (self.player1.score_point, self.player2.score_point):
                 await self.end_game()
             else:
-                await self.send_data()
+                await self.get_send_data()
 
-    async def send_data(self) -> None:
+    def get_send_data(self) -> dict:
         data = {
             "ball": self.ball.get_stat_data(),
             "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
@@ -91,15 +91,31 @@ class MatchManager:
                 "latest": 1,
             },
         }
+        return data
+        #
+        # await self.socket.send_message("match_run", "local match running!", data)
+        # # FPS 설정 (60프레임)
+        # await asyncio.sleep(1 / 60)
 
-        await self.socket.send_message("match_run", "local match running!", data)
-        # FPS 설정 (60프레임)
-        await asyncio.sleep(1 / 60)
+    def get_stat_data(self):
+        data = {
+            "date": self._start_date.strftime("%Y-%m-%d"),
+            "play_time": self.get_play_time(),
+            "rally": self.get_rally_cnt_stat(),
+            "max_ball_speed": self.ball.get_max_speed_stat(),
+            "player1": self.player1.get_match_stat(),
+            "player2": self.player2.get_match_stat(),
+            "graph": {
+                "player1": self.player1.get_graph_stat(),
+                "player2": self.player2.get_graph_stat(),
+            },
+        }
+        return data
 
     async def end_game(self) -> None:
         self.is_run = False
         self._end_date = timezone.now()
-
+        return
         data = {
             "date": self._start_date.strftime("%Y-%m-%d"),
             "play_time": self.get_play_time(),

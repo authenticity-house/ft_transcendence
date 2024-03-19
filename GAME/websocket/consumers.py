@@ -111,6 +111,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         }
         await self.send_message("match_init_setting", "", data)
 
+    async def run_game_session(self):
+        pass
+
     async def disconnect(self, code):
         self.connected = False
         # code: 1000 정상 종료 1001 상대방이 떠남 1002 프로토콜 오류 (로깅 시 사용)
