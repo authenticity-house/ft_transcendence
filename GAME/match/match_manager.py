@@ -1,5 +1,4 @@
 import asyncio
-import math
 import json
 import datetime as dt
 from django.utils import timezone
@@ -8,7 +7,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .player import Player
 from .paddle import Paddle
 from .ball import Ball
-from .constants import Position, SCREEN_HEIGHT, SCREEN_WIDTH
+from .constants import Position, SCREEN_WIDTH
 
 
 class MatchManager:
@@ -46,14 +45,14 @@ class MatchManager:
             self.local_move_paddles()
 
             # 벽 충돌
-            if self.is_ball_colliding_with_wall():
-                self.ball.update_direction(self.ball.dx, -self.ball.dy)
+            if self.ball.is_colliding_with_wall():
+                self.ball.bounce_off_wall()
 
             # 패들 충돌
-            if self.player1.paddle.is_collides_with_ball(self.ball):
+            if self.ball.is_collides_with_paddle(self.player1.paddle):
                 print("left --------- paddle reflect!")
                 rally_cnt += self.handle_paddle_collision(self.player1, self.player2)
-            if self.player2.paddle.is_collides_with_ball(self.ball):
+            if self.ball.is_collides_with_paddle(self.player2.paddle):
                 print("right ---------- paddle reflect!")
                 rally_cnt += self.handle_paddle_collision(self.player2, self.player1)
 
@@ -76,7 +75,7 @@ class MatchManager:
 
     async def send_data(self) -> None:
         data = {
-            "ball": {"status": "in", "x": self.ball.x, "y": self.ball.y},
+            "ball": self.ball.get_stat_data(),
             "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
             "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
             "score": {
@@ -131,7 +130,7 @@ class MatchManager:
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> int:
         self.ball.increase_speed()
-        self.bounce_ball_off_paddle(owner.paddle)
+        self.ball.bounce_off_paddle(owner.paddle)
         owner.update_attack_type(self.ball.y)
         other.update_attack_pos(self.ball.y)
 
@@ -155,33 +154,11 @@ class MatchManager:
         self._last_scored_time = timezone.now()
         self.ball.update_max_speed_list()
 
-    def is_ball_colliding_with_wall(self) -> bool:
-        """벽과 공의 충돌 여부 확인"""
-        ball_y_bound = self.ball.ball_y_bound
-
-        return (self.ball.y <= -ball_y_bound and self.ball.dy < 0) or (
-            ball_y_bound <= self.ball.y and 0 < self.ball.dy
-        )
-
     def is_player1_score(self) -> bool:
         return SCREEN_WIDTH / 2 - self.ball.radius <= self.ball.x
 
     def is_player2_score(self) -> bool:
         return self.ball.x <= -SCREEN_WIDTH / 2 + self.ball.radius
-
-    def calculate_reflection(self, paddle: Paddle) -> float:
-        relative_intersect_y = self.ball.y - paddle.y
-        normalized_relative_intersection_y = relative_intersect_y / (paddle.height / 2)
-        bounce_angle = normalized_relative_intersection_y * (math.pi / 3)
-        return bounce_angle
-
-    def bounce_ball_off_paddle(self, paddle: Paddle) -> None:
-
-        angle: float = self.calculate_reflection(paddle)
-
-        dx: float = math.cos(angle) * self.ball.speed * paddle.pos * -1
-        dy: float = math.sin(angle) * self.ball.speed
-        self.ball.update_direction(dx, dy)
 
     def local_move_paddles(self) -> None:
         for key in self.keys:
