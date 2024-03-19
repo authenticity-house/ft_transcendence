@@ -2,22 +2,7 @@ from typing import Final
 
 from .ball import Ball
 from .constants import SCREEN_WIDTH, SCREEN_HEIGHT, Position
-
-
-def calculate_bounds_rect(x: float, y: float, width: float, height: float) -> list:
-    left_x = x - width / 2
-    right_x = x + width / 2
-    top_y = y + height / 2
-    bottom_y = y - height / 2
-    return [left_x, right_x, top_y, bottom_y]
-
-
-def calculate_bounds_circle(x: float, y: float, radius: float) -> list:
-    left_x: float = x - radius
-    right_x: float = x + radius
-    top_y: float = y + radius
-    bottom_y: float = y - radius
-    return [left_x, right_x, top_y, bottom_y]
+from .coor_util import Point, calculate_bounds_rect, line_intersect
 
 
 class Paddle:
@@ -56,21 +41,34 @@ class Paddle:
 
     def is_collides_with_ball(self, ball: Ball) -> bool:
         """공과 패들의 충돌 여부를 반환"""
-        LEFT, RIGHT, TOP, BOTTOM = 0, 1, 2, 3  # pylint: disable=invalid-name
 
-        ball_bounds: list = calculate_bounds_circle(ball.x, ball.y, ball.radius)
-        paddle_bounds: list = calculate_bounds_rect(self.x, self.y, self._width, self._height)
-
-        if not (
-            ball_bounds[LEFT] <= paddle_bounds[RIGHT] <= ball_bounds[RIGHT]
-            or ball_bounds[LEFT] <= paddle_bounds[LEFT] <= ball_bounds[RIGHT]
-        ):
+        # 공이 부딪히는 방향 확인
+        if ball.dx * self.pos < 0:
             return False
 
-        if paddle_bounds[TOP] < ball_bounds[BOTTOM] or ball_bounds[TOP] < paddle_bounds[BOTTOM]:
-            return False
+        # 공의 이전 좌표
+        prev_ball_x, prev_ball_y = ball.x - ball.dx, ball.y - ball.dy
+        seg1_start = Point(prev_ball_x, prev_ball_y)
+        seg1_end = Point(ball.x, ball.y)
 
-        return (ball.dx < 0) == (self.pos < 0)
+        # 패들 테두리 좌표
+        paddle_bounds: list = calculate_bounds_rect(
+            Point(self.x, self.y), self._width, self._height, ball.radius
+        )
+
+        for i in range(2):
+            seg2_start = Point(paddle_bounds[i], paddle_bounds[2])
+            seg2_end = Point(paddle_bounds[i], paddle_bounds[3])
+            if line_intersect(seg1_start, seg1_end, seg2_start, seg2_end):
+                return True
+
+        for i in range(2, 4):
+            seg2_start = Point(paddle_bounds[0], paddle_bounds[i])
+            seg2_end = Point(paddle_bounds[1], paddle_bounds[i])
+            if line_intersect(seg1_start, seg1_end, seg2_start, seg2_end):
+                return True
+
+        return False
 
     @property
     def x(self) -> float:
