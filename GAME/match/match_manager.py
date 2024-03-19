@@ -5,6 +5,8 @@ import datetime as dt
 from django.utils import timezone
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+# from websocket.consumers import GameConsumer
+
 from .player import Player
 from .paddle import Paddle
 from .ball import Ball
@@ -14,7 +16,7 @@ from .constants import Position, SCREEN_HEIGHT, SCREEN_WIDTH
 class MatchManager:
     def __init__(
         self,
-        socket: AsyncWebsocketConsumer,
+        socket,
         total_score: int = 15,
         player1_name: str = "player1",
         player2_name: str = "player2",
@@ -85,17 +87,8 @@ class MatchManager:
                 "latest": 1,
             },
         }
-        await self.socket.send(
-            text_data=json.dumps(
-                {
-                    "type": "game",
-                    "subtype": "match_run",
-                    "message": "local match running!",
-                    "match_id": 1,
-                    "data": data,
-                }
-            )
-        )
+
+        await self.socket.send_message("match_run", "local match running!", data)
         # FPS 설정 (60프레임)
         await asyncio.sleep(1 / 60)
 
@@ -117,17 +110,7 @@ class MatchManager:
         }
         print(data)
 
-        await self.socket.send(
-            text_data=json.dumps(
-                {
-                    "type": "game",
-                    "subtype": "match_end",
-                    "message": "local match end!",
-                    "match_id": 1,
-                    "data": data,
-                }
-            )
-        )
+        await self.socket.send_message("match_end", "local match end!", data)
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> int:
         self.ball.increase_speed()

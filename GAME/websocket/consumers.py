@@ -79,46 +79,37 @@ class GameConsumer(AsyncWebsocketConsumer):
         player1: Player = self.match_manager.player1
         player2: Player = self.match_manager.player2
 
-        await self.send(
-            text_data=json.dumps(
-                {
-                    "type": "game",
-                    "subtype": "match_init_setting",
-                    "message": "",
-                    "match_id": 123,
-                    "data": {
-                        "battle_mode": msg_data.get("battle_mode"),
-                        "color": {
-                            "paddle": paddle_color,
-                            "background": background_color,
-                            "ball": "#FFFFFF",
-                        },
-                        "ball": {
-                            "status": "in",
-                            "x": ball.x,
-                            "y": ball.y,
-                            "radius": ball.radius,
-                        },
-                        "paddle1": {
-                            "x": player1.paddle.x,
-                            "y": player1.paddle.y,
-                            "width": player1.paddle.width,
-                            "height": player1.paddle.height,
-                        },
-                        "paddle2": {
-                            "x": player2.paddle.x,
-                            "y": player2.paddle.y,
-                            "width": player2.paddle.width,
-                            "height": player2.paddle.height,
-                        },
-                        "nickname": {
-                            "player1": player1.name,
-                            "player2": player2.name,
-                        },
-                    },
-                }
-            )
-        )
+        data = {
+            "battle_mode": msg_data.get("battle_mode"),
+            "color": {
+                "paddle": paddle_color,
+                "background": background_color,
+                "ball": "#FFFFFF",
+            },
+            "ball": {
+                "status": "in",
+                "x": ball.x,
+                "y": ball.y,
+                "radius": ball.radius,
+            },
+            "paddle1": {
+                "x": player1.paddle.x,
+                "y": player1.paddle.y,
+                "width": player1.paddle.width,
+                "height": player1.paddle.height,
+            },
+            "paddle2": {
+                "x": player2.paddle.x,
+                "y": player2.paddle.y,
+                "width": player2.paddle.width,
+                "height": player2.paddle.height,
+            },
+            "nickname": {
+                "player1": player1.name,
+                "player2": player2.name,
+            },
+        }
+        await self.send_message("match_init_setting", "", data)
 
     async def disconnect(self, code):
         self.connected = False
