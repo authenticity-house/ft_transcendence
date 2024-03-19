@@ -56,7 +56,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.initialize_session(msg_data)
 
         elif msg_subtype == "match_start":
-            self.game_session = asyncio.create_task(self.match_manager.start_game())
+            self.game_session = asyncio.create_task(self.run_game_session())
 
     # 세션 초기화 로직
     async def initialize_session(self, msg_data):
@@ -64,7 +64,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         # msg_data["battle_mode"] 여기서 보고 토너먼트, 1대1 분기
 
         # 레벨 정보는 MatchManager가 받아서 알맞은 패들 크기, 공속도 설정하기
-        self.match_manager = MatchManager(socket=self, total_score=total_score)
+        self.match_manager = MatchManager(total_score=total_score)
         # 추가 설정 및 초기화 로직
         await self.send_initial_settings(msg_data)
 
@@ -112,7 +112,33 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send_message("match_init_setting", "", data)
 
     async def run_game_session(self):
-        pass
+        """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
+        mm: MatchManager = self.match_manager
+
+        # READY 애니메이션
+        for _ in range(300):
+            data = mm.get_annimation_frame()
+            await self.send_message("match_run", "ready annimation", data)
+            await asyncio.sleep(1 / 60)
+
+        # 매치 프레임 전송
+        while True:
+            mm.update_frame()
+            if mm.is_match_end:
+                break
+            data = mm.get_match_frame()
+            await self.send_message("match_run", "run local 1vs1 match", data)
+            await asyncio.sleep(1 / 60)
+
+        # WINNER 애니메이션
+        for _ in range(180):
+            data = mm.get_annimation_frame()
+            await self.send_message("match_run", "winner annimation", data)
+            await asyncio.sleep(1 / 60)
+
+        # 매치 통계 전송
+        data = mm.get_match_stat()
+        await self.send_message("match_end", "local match end!", data)
 
     async def disconnect(self, code):
         self.connected = False
