@@ -472,8 +472,8 @@ class GamePage {
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
 			const disconnectMessage = {
-				type: 'disconnect',
-				message: 'I\'m leaving!'
+				type: "disconnect",
+				message: "I'm leaving!"
 			};
 			websocket.send(JSON.stringify(disconnectMessage));
 			websocket.close();
