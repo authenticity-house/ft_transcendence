@@ -17,13 +17,20 @@ class MatchManager:
         total_score: int = 15,
         player1_name: str = "player1",
         player2_name: str = "player2",
+        paddle_height: float = Paddle.PADDLE_DEFAULT_HEIGHT,
+        ball_speed: float = Ball.REFLECT_BALL_SPEED,
+        ball_accel_speed: float = Ball.ACCEL_BALL_SPEED,
     ):
         self.socket = socket
         self.TOTAL_SCORE = total_score  # pylint: disable=invalid-name
-        self._player1: Player = Player(Paddle(Position.LEFT), Position.LEFT, player1_name)
-        self._player2: Player = Player(Paddle(Position.RIGHT), Position.RIGHT, player2_name)
+        self._player1: Player = Player(
+            Paddle(Position.LEFT, paddle_height), Position.LEFT, player1_name
+        )
+        self._player2: Player = Player(
+            Paddle(Position.RIGHT, paddle_height), Position.RIGHT, player2_name
+        )
 
-        self._ball: Ball = Ball()
+        self._ball: Ball = Ball(ball_speed, ball_accel_speed)
         self._is_run = False
         self._keys: set = set()
 

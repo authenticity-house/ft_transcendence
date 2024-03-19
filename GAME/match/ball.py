@@ -11,14 +11,16 @@ from .paddle import Paddle
 class Ball:
     INIT_BALL_SPEED: Final = 0.04
     REFLECT_BALL_SPEED: Final = 0.06
-    ADD_BALL_SPEED: Final = 0.005
+    ACCEL_BALL_SPEED: Final = 0.005
     BALL_RADIUS: Final = 0.04
 
-    def __init__(self, speed: float = REFLECT_BALL_SPEED, radius: float = BALL_RADIUS) -> None:
+    def __init__(
+        self, speed: float = REFLECT_BALL_SPEED, accel_speed: float = ACCEL_BALL_SPEED
+    ) -> None:
         self.DEFAULT_BALL_SPEED: Final = speed  # pylint: disable=invalid-name
 
-        self._radius: float = radius
         self._speed: float = speed
+        self._accel_speed: float = accel_speed
         self._x: float = 0
         self._y: float = 0
         self._dx: float = 0
@@ -51,7 +53,7 @@ class Ball:
         if self._speed == Ball.INIT_BALL_SPEED:
             self._speed = self.DEFAULT_BALL_SPEED
             return
-        self._speed += Ball.ADD_BALL_SPEED
+        self._speed += self._accel_speed
 
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
@@ -151,11 +153,7 @@ class Ball:
 
     @property
     def radius(self) -> float:
-        return self._radius
-
-    @property
-    def speed(self) -> float:
-        return self._speed
+        return Ball.BALL_RADIUS
 
     @property
     def max_speed_list(self) -> list:
@@ -163,5 +161,5 @@ class Ball:
 
     @property
     def ball_y_bound(self) -> float:
-        """실제 멤버변수 getter가 아닌 계산 값 반환"""
-        return SCREEN_HEIGHT / 2 - self._radius
+        """실제 멤버 변수가 아닌 계산 값 반환"""
+        return SCREEN_HEIGHT / 2 - self.radius

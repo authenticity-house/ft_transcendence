@@ -12,14 +12,12 @@ class Paddle:
     def __init__(
         self,
         pos: Position,
-        speed: float = PADDLE_SPEED,
-        width: float = PADDLE_DEFAULT_WIDTH,
         height: float = PADDLE_DEFAULT_HEIGHT,
+        speed: float = PADDLE_SPEED,
     ) -> None:
         self._pos: Position = pos
-        self._speed: float = speed
-        self._width: float = width
         self._height: float = height
+        self._speed: float = speed
         self._x: float = SCREEN_WIDTH / 2 * 0.933 * pos.value
         self._y: float = 0
 
@@ -39,7 +37,7 @@ class Paddle:
             self._y = -1 * (SCREEN_HEIGHT / 2 - self._height / 2)
 
     def get_edges(self, ball_radius: float) -> list:
-        return calculate_bounds_rect(Point(self.x, self.y), self._width, self._height, ball_radius)
+        return calculate_bounds_rect(Point(self.x, self.y), self.width, self._height, ball_radius)
 
     @property
     def x(self) -> float:
@@ -59,7 +57,7 @@ class Paddle:
 
     @property
     def width(self) -> float:
-        return self._width
+        return Paddle.PADDLE_DEFAULT_WIDTH
 
     @property
     def height(self) -> float:
