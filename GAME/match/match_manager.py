@@ -1,9 +1,7 @@
 import asyncio
 import math
-import json
 import datetime as dt
 from django.utils import timezone
-from channels.generic.websocket import AsyncWebsocketConsumer
 
 # from websocket.consumers import GameConsumer
 

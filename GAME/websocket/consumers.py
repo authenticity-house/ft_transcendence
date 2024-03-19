@@ -141,7 +141,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         try:
             await self.send_message("error", error_message)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             print(f"Error sending message: {e}")
         finally:
             await self.disconnect(1002)
