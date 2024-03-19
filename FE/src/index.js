@@ -5,6 +5,7 @@ import RegisterPage from './pages/RegisterPage.js';
 import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
 
 import GameSettingPage from './pages/GameSettingPage.js';
+import GameSettingTournament from './pages/GameSettingTournament.js';
 import GameSettingDetailed from './pages/GameSettingDetailed.js';
 import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
@@ -30,6 +31,7 @@ const routes = {
 	register: RegisterPage,
 	registerNickname: RegisterNicknamePage,
 	gameSetting: GameSettingPage,
+	gameSettingTournament: GameSettingTournament,
 	gameSettingDetailed: GameSettingDetailed,
 	play: PlayModePage,
 	match: MatchModePage,
