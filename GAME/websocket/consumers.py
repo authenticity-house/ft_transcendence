@@ -115,25 +115,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
         mm: MatchManager = self.match_manager
 
-        # READY 애니메이션
-        for _ in range(300):
-            data = mm.get_annimation_frame()
-            await self.send_message("match_run", "ready annimation", data)
-            await asyncio.sleep(1 / 60)
-
         # 매치 프레임 전송
-        while True:
-            mm.update_frame()
-            if mm.is_match_end:
-                break
-            data = mm.get_match_frame()
-            await self.send_message("match_run", "run local 1vs1 match", data)
-            await asyncio.sleep(1 / 60)
-
-        # WINNER 애니메이션
-        for _ in range(180):
-            data = mm.get_annimation_frame()
-            await self.send_message("match_run", "winner annimation", data)
+        for message in mm.get_match_frame():
+            await self.send_message(*message)
             await asyncio.sleep(1 / 60)
 
         # 매치 통계 전송

@@ -1,4 +1,5 @@
 import datetime as dt
+from typing import Iterator
 from django.utils import timezone
 
 from .player import Player
@@ -63,13 +64,29 @@ class MatchManager:
             self._rally_count_list.append(self._rally_cnt)
             self.handle_scoring(self.player1, self.player2)
 
-    def get_annimation_frame(self) -> dict:
+    def get_animation_frame(self) -> dict:
         self.local_move_paddles()
         return self.get_send_data()
 
-    def get_match_frame(self) -> None:
-        self._end_date = timezone.now()
-        return self.get_send_data()
+    def get_match_frame(self) -> Iterator[tuple[str, str, dict]]:
+        # READY 애니메이션
+        for _ in range(300):
+            data = self.get_animation_frame()
+            yield "match_run", "ready animation", data
+
+        # 매치 진행
+        while True:
+            self.update_frame()
+            if self.is_match_end:
+                self._end_date = timezone.now()
+                break
+            data = self.get_send_data()
+            yield "match_run", "run local 1vs1 match", data
+
+        # WINNER 애니메이션
+        for _ in range(180):
+            data = self.get_animation_frame()
+            yield "match_run", "winner animation", data
 
     def get_send_data(self) -> dict:
         data = {
