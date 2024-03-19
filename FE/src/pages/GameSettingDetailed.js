@@ -87,7 +87,7 @@ class GameSettingDetailed {
 									</div>
 								</div>
 								<div class="horizontal-button-container width-28">
-									<p class="text-subtitle-1">공 색</p>
+									<p class="text-subtitle-1">공색</p>
 									<div class="horizontal-button-container">
 										${ballColor.colorPicker}${ballColor.colorDisplayButton}
 									</div>
