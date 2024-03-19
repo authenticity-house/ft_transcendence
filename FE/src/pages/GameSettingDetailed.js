@@ -1,4 +1,4 @@
-import { changeUrl } from '../index.js';
+import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 
 const html = String.raw;
@@ -24,7 +24,7 @@ function createConfig(texts, classesPrefix, selectedIndices) {
 class GameSettingDetailed {
 	template(initial) {
 		this.data = initial;
-		// console.log(this.data.total_score, this.data.level);
+
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
 
@@ -164,7 +164,7 @@ class GameSettingDetailed {
 			'.horizontalButton button:nth-child(1)'
 		);
 		resetButton.addEventListener('click', () => {
-			const newData = {
+			this.data = {
 				battle_mode: 1,
 				total_score: 2,
 				level: 2,
@@ -173,14 +173,14 @@ class GameSettingDetailed {
 					ball: '#FFD164'
 				}
 			};
-			changeUrl('gameSettingDetailed', newData);
+			changeUrlData('gameSettingDetailed', this.data);
 		});
 
 		const confirmButton = document.querySelector(
 			'.horizontalButton button:nth-child(2)'
 		);
 		confirmButton.addEventListener('click', () => {
-			changeUrl('gameSetting', this.data);
+			changeUrlData('gameSetting', this.data);
 		});
 	}
 }

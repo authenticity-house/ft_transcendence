@@ -16,16 +16,10 @@ class GameSettingPage {
 				ball: '#FFD164'
 			}
 		};
-		this.data = { ...this.initialData };
 	}
 
-	resetData() {
-		this.data = JSON.parse(JSON.stringify(this.initialData));
-	}
-
-	template(data = this.data) {
-		this.data = data;
-		if (data == null) this.resetData();
+	template(data) {
+		if (data == null) this.data = this.initialData;
 		else this.data = data;
 
 		const horizonbuttonConfigs = [
