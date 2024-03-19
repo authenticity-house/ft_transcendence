@@ -79,7 +79,6 @@ class GamePage {
 		const plane = new THREE.PlaneGeometry(6, 4);
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
 			color: 0x000000,
-			// color: this.initial.color.background,
 			metalness: 0.5,
 			roughness: 0.5,
 			clearcoat: 1,
@@ -108,6 +107,7 @@ class GamePage {
 		lineDashed.computeLineDistances();
 		scene.add(lineDashed);
 
+		// --------------------- ball -------------------------
 		// Create a ball
 		const ball = new THREE.SphereGeometry(0.04, 32, 32);
 		const ballMaterial = new THREE.MeshPhysicalMaterial({
@@ -128,6 +128,7 @@ class GamePage {
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
+		// --------------------- paddle -------------------------
 		// Create a paddle
 		const paddle = new THREE.BoxGeometry(0.1, 0.5, 0.1);
 		const paddleMaterial = new THREE.MeshPhysicalMaterial({
@@ -137,7 +138,6 @@ class GamePage {
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
 			emissive: 0x0000ff,
-			// emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -179,6 +179,7 @@ class GamePage {
 		scene.add(paddleLightGroup1);
 		scene.add(paddleLightGroup2);
 
+		// ---------------------------------------------------
 		// Set the position of the ball
 		ballMesh.position.x = 0;
 		ballMesh.position.y = 0;
@@ -292,43 +293,6 @@ class GamePage {
 
 			ballMesh.material.emissive.set(color.ball);
 			ballLight.color.set(color.ball);
-			// for (
-			// 	let i = paddleMesh1.position.y - 0.25;
-			// 	i <= paddleMesh1.position.y + 0.25;
-			// 	i += 0.1
-			// ) {
-			// 	// GameSetting에서 가져온 값
-			// 	const paddleLight = new THREE.PointLight(
-			// 		color.paddle,
-			// 		// 0xffffff,
-			// 		0.1,
-			// 		100
-			// 	);
-			// 	paddleLight.position.set(-2.8, i, 0.2);
-			// 	paddleLightGroup1.add(paddleLight);
-			// }
-
-			// for (
-			// 	let i = paddleMesh2.position.y - 0.25;
-			// 	i <= paddleMesh2.position.y + 0.25;
-			// 	i += 0.1
-			// ) {
-			// 	// GameSetting에서 가져온 값
-			// 	const paddleLight = new THREE.PointLight(
-			// 		color.paddle,
-			// 		// 0xffffff,
-			// 		0.1,
-			// 		100
-			// 	);
-			// 	paddleLight.position.set(2.8, i, 0.2);
-			// 	paddleLightGroup2.add(paddleLight);
-			// }
-
-			// addPaddleLights(paddleMesh1, paddleLightGroup1, color.paddle);
-			// addPaddleLights(paddleMesh2, paddleLightGroup2, color.paddle);
-
-			// scene.add(paddleLightGroup1);
-			// scene.add(paddleLightGroup2);
 
 			const message = {
 				type: 'game',
