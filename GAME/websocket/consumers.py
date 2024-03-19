@@ -120,6 +120,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 await self.game_session
             except asyncio.CancelledError:
                 pass  # 게임 세션 취소 성공
+        await super().disconnect(code)
 
     async def send_message(self, subtype, message, data=None):
         if not self.connected:
