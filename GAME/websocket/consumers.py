@@ -5,6 +5,8 @@ from json.decoder import JSONDecodeError
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import StopConsumer
 from match.match_manager import MatchManager
+from match.player import Player
+from match.ball import Ball
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -71,6 +73,10 @@ class GameConsumer(AsyncWebsocketConsumer):
         background_color = color_info["background"]
         # 아직 공 색 정보는 클라이언트에게 안받음
 
+        ball: Ball = self.match_manager.ball
+        player1: Player = self.match_manager.player1
+        player2: Player = self.match_manager.player2
+
         await self.send(
             text_data=json.dumps(
                 {
@@ -87,25 +93,25 @@ class GameConsumer(AsyncWebsocketConsumer):
                         },
                         "ball": {
                             "status": "in",
-                            "x": 0.0,
-                            "y": 0.0,
-                            "radius": 0.04,
+                            "x": ball.x,
+                            "y": ball.y,
+                            "radius": ball.radius,
                         },
                         "paddle1": {
-                            "x": -2.8,
-                            "y": 0.0,
-                            "width": 0.1,
-                            "height": 0.5,
+                            "x": player1.paddle.x,
+                            "y": player1.paddle.y,
+                            "width": player1.paddle.width,
+                            "height": player1.paddle.height,
                         },
                         "paddle2": {
-                            "x": 2.8,
-                            "y": 0.0,
-                            "width": 0.1,
-                            "height": 0.5,
+                            "x": player2.paddle.x,
+                            "y": player2.paddle.y,
+                            "width": player2.paddle.width,
+                            "height": player2.paddle.height,
                         },
                         "nickname": {
-                            "player1": self.match_manager.player1.name,
-                            "player2": self.match_manager.player2.name,
+                            "player1": player1.name,
+                            "player2": player2.name,
                         },
                     },
                 }
