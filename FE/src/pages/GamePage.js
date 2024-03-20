@@ -1,3 +1,5 @@
+/* eslint-disable no-void */
+
 import * as THREE from 'three';
 import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
@@ -16,35 +18,20 @@ class GamePage {
 		this.initial.total_score *= 5;
 
 		return html`
-			<div
-				id="score"
-				style="
-					display: flex;
-					justify-content: center;
-					color: white;
-					font-size: 48px;
-					margin: 10px;
-					"
-			>
-				<div class="player1 score" style="margin-right: 40px">0</div>
-				<div>:</div>
-				<div class="player2 score" style="margin-left: 40px">0</div>
+			<div class="game-header">
+				<div class="player1-name display-light32"></div>
+				<div class="score-container display-medium48">
+					<div class="player1">0</div>
+					<div>:</div>
+					<div class="player2">0</div>
+				</div>
+				<div class="player2-name display-light32"></div>
 			</div>
 			<div
 				class="game-container"
 				style="position: relative; display: flex; justify-content: center"
 			>
-				<div
-					class="result"
-					style="position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; display: none;"
-				>
-					<div
-						class="winner pink_neon_10"
-						style="color: white; font-size: 48px;"
-					>
-						Winner!
-					</div>
-				</div>
+				<div class="game-result display-medium48 pink_neon_10">Winner!</div>
 			</div>
 
 			<button class="return-button" style="margin: 30px">Return</button>
@@ -284,12 +271,6 @@ class GamePage {
 				message: '',
 				data: this.initial
 			};
-			console.log(
-				message.data.total_score,
-				message.data.level,
-				message.data.color.paddle,
-				message.data.color.background
-			);
 			websocket.send(JSON.stringify(message));
 		};
 
@@ -306,6 +287,12 @@ class GamePage {
 			ballMesh.material.emissive.set(color.ball);
 			ballLight.color.set(color.ball);
 
+			const player1Name = document.querySelector('.player1-name');
+			const player2Name = document.querySelector('.player2-name');
+
+			player1Name.textContent = data.nickname.player1;
+			player2Name.textContent = data.nickname.player2;
+
 			const message = {
 				type: 'game',
 				subtype: 'match_start',
@@ -316,13 +303,13 @@ class GamePage {
 			websocket.send(JSON.stringify(message));
 		}
 
-		// 게임 종료 시 winner 설정
 		const player1Score = document.querySelector('.player1');
 		const player2Score = document.querySelector('.player2');
 
+		// 게임 종료 시 winner 설정
 		let winner = 0;
 
-		const result = document.querySelector('.result');
+		const gameResult = document.querySelector('.game-result');
 		const totalScore = this.initial.total_score;
 
 		// 화면 렌더링
@@ -379,20 +366,30 @@ class GamePage {
 			paddleMesh2.position.y = paddle2.y;
 			paddleLightGroup2.position.y = paddle2.y;
 
-			player1Score.textContent = score.player1;
-			player2Score.textContent = score.player2;
+			if (Number(player1Score.textContent) !== score.player1) {
+				player1Score.classList.remove('score_transition');
+				void player1Score.offsetWidth;
+				player1Score.textContent = score.player1;
+				player1Score.classList.add('score_transition');
+			}
+			if (Number(player2Score.textContent) !== score.player2) {
+				player2Score.classList.remove('score_transition');
+				void player2Score.offsetWidth;
+				player2Score.textContent = score.player2;
+				player2Score.classList.add('score_transition');
+			}
 
 			ballLight.position.copy(ballMesh.position);
 
 			if (winner === 1) {
 				camera.position.x = -4;
 				camera.lookAt(paddleMesh1.position);
-				result.style.display = 'block';
+				gameResult.style.display = 'block';
 			}
 			if (winner === 2) {
 				camera.position.x = 4;
 				camera.lookAt(paddleMesh2.position);
-				result.style.display = 'block';
+				gameResult.style.display = 'block';
 			}
 
 			renderer.render(scene, camera);
@@ -469,7 +466,6 @@ class GamePage {
 							renderThreeJs(message.data);
 						} else if (message.subtype === 'match_end') {
 							console.log('match_end');
-							console.log(message);
 							const disconnectMessage = {
 								type: 'disconnect',
 								message: 'plz!'
