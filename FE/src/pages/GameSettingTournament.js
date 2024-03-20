@@ -47,15 +47,66 @@ class GameSettingTournament {
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
-						<div class="game-setting-nickname-container"></div>
+						<!-- 인원수 선택 및 닉네임 설정 -->
+						<div class="game-setting-tournament-container">
+							<div class="game-setting-number-container">
+								<!-- 게임 인원수 선택 -->
+								<p class="text-subtitle-1 width-14">참여인원</p>
+								<div class="num-block skin-1">
+									<div class="num-in">
+										<span class="minus"></span>
+										<input type="text" class="in-num" value="4" readonly="" />
+										<span class="plus"></span>
+									</div>
+								</div>
+							</div>
+							<!-- 닉네임 입력 -->
+							<div class="game-setting-nickname-container">
+								<div class="text-subtitle-1 width-14">닉네임 입력</div>
+							</div>
+						</div>
+						<div class="verticalButton">${verticalButton.template()}</div>
 					</div>
-					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
 			</div>
 		`;
 	}
 
 	addEventListeners() {
+		function updateButtonsState(numBlock, count) {
+			const minusButton = numBlock.querySelector('.minus');
+			const plusButtons = numBlock.querySelectorAll('.plus');
+
+			if (count <= 1) minusButton.classList.add('dis');
+			else minusButton.classList.remove('dis');
+
+			plusButtons.forEach((plusButton) => {
+				if (count >= 8) plusButton.classList.add('dis');
+				else plusButton.classList.remove('dis');
+			});
+		}
+
+		function handleSpanClick() {
+			const input = this.closest('.num-block').querySelector('input.in-num');
+			let count = parseInt(input.value, 10);
+
+			if (this.classList.contains('minus')) {
+				count = count - 1 < 1 ? 1 : count - 1;
+			} else if (this.classList.contains('plus')) {
+				count = count + 1 > 8 ? 8 : count + 1;
+			}
+			input.value = count;
+			input.dispatchEvent(new Event('change'));
+
+			updateButtonsState(this.closest('.num-block'), count);
+
+			return false; // preventDefault 역할
+		}
+
+		document.querySelectorAll('.num-in span').forEach((span) => {
+			span.addEventListener('click', handleSpanClick);
+		});
+
 		activateButtons('.horizontalButton');
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
