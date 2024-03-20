@@ -2,6 +2,7 @@ import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import { activateButtons } from '../components/ActivateButtons.js';
+import InputNickname from '../components/InputNickname.js';
 
 const html = String.raw;
 
@@ -42,6 +43,9 @@ class GameSettingTournament {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
+
+		const inputNickname1 = new InputNickname(1, 4);
+		const inputNickname2 = new InputNickname(5, 8);
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
@@ -52,7 +56,7 @@ class GameSettingTournament {
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
 								<p class="text-subtitle-1 width-14">참여인원</p>
-								<div class="num-block skin-1">
+								<div class="num-block head-count">
 									<div class="num-in">
 										<span class="minus"></span>
 										<input type="text" class="in-num" value="4" readonly="" />
@@ -60,9 +64,20 @@ class GameSettingTournament {
 									</div>
 								</div>
 							</div>
-							<!-- 닉네임 입력 -->
+							<!-- 닉네임 입력 테두리 -->
 							<div class="game-setting-nickname-container">
-								<div class="text-subtitle-1 width-14">닉네임 입력</div>
+								<!-- 닉네임 입력 타이틀 + 입력 창 -->
+								<div class="input-nickname-container">
+									<div class="text-subtitle-1 width-14">닉네임 입력</div>
+									<div class="input-nickname-2">
+										<div class="input-nickname-1">
+											${inputNickname1.template()}
+										</div>
+										<div class="input-nickname-1">
+											${inputNickname2.template()}
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="verticalButton">${verticalButton.template()}</div>

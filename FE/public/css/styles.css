@@ -442,13 +442,13 @@ td {
 	align-items: center;
 }
 
-/* skin 1 */
-.skin-1 .num-in {
+/* head count */
+.head-count .num-in {
 	float: left;
 	width: 14rem;
 }
 
-.skin-1 .num-in span {
+.head-count .num-in span {
 	display: block;
 	float: left;
 	width: 3.6rem;
@@ -459,22 +459,23 @@ td {
 	cursor: pointer;
 }
 
-.skin-1 .num-in span.dis:before,
-.skin-1 .num-in span.dis:after {
-	background-color: #cccccc !important;
+.head-count .num-in span.dis:before,
+.head-count .num-in span.dis:after {
+	background-color: #9a9a9a !important;
 }
 
-.skin-1 .num-in input {
+.head-count .num-in input {
 	float: left;
 	width: 4rem;
 	height: 4rem;
 	border: 0.2rem solid #ffffff;
 	border-radius: 0.5rem;
+	font-size: 2rem;
 	text-align: center;
 	padding: 0;
 }
 
-.skin-1 .num-in span.minus:before {
+.head-count .num-in span.minus:before {
 	content: '';
 	position: absolute;
 	width: 2rem;
@@ -484,8 +485,8 @@ td {
 	left: 0;
 }
 
-.skin-1 .num-in span.plus:before,
-.skin-1 .num-in span.plus:after {
+.head-count .num-in span.plus:before,
+.head-count .num-in span.plus:after {
 	content: '';
 	position: absolute;
 	right: 0rem;
@@ -495,15 +496,66 @@ td {
 	top: 50%;
 }
 
-.skin-1 .num-in span.plus:after {
+.head-count .num-in span.plus:after {
 	-webkit-transform: rotate(90deg);
 	-ms-transform: rotate(90deg);
 	-o-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
 
-/* / skin 1 */
+/* head count */
+.text-light-15 {
+	width: 15px;
+	/* flex-shrink: 0; */
+	color: #FFF;
+	text-align: center;
+	font-size: 2rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+}
+.input-nickname-box {
+	width: 200px;
+	height: 40px;
+	flex-shrink: 0;
+	stroke-width: 2px;
+	stroke: #FFF;
+}
 
+.input-nickname {
+	display: flex;
+	width: 240px;
+	height: 40px;
+	justify-content: space-between;
+	align-items: center;
+}
+/* 닉네임 설정 한줄 */
+.input-nickname-1 {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 20px;
+}
+/* 닉네임 설정 두줄 묶음 */
+.input-nickname-2 {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
+
+/* 닉네임 설정 타이틀 + 입력창 */
+.input-nickname-container {
+	display: flex;
+	width: 52rem;
+	height: 28rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2rem;
+	flex-shrink: 0;
+}
+
+/* 인원수 설정 */
 .game-setting-number-container {
 	display: flex;
 	padding-left: 1rem;
@@ -511,13 +563,12 @@ td {
 	gap: 2rem;
 	align-self: stretch;
 }
-
+/* 인원 수 선택 및 닉네임 입력 컨테이너 두가지 포함 */
 .game-setting-tournament-container {
 	display: flex;
-	/*width: 540px;
-	height: 280px;*/
+	height: 39rem;
 	flex-direction: column;
-	align-items: flex-start;
+	align-items: center;
 	gap: 2rem;
 	flex-shrink: 0;
 }
@@ -614,6 +665,7 @@ td {
 	height: 4rem;
 	border-radius: 2rem;
 }
+
 /* GameSettingDetailed */
 
 /* Tournament */
