@@ -32,9 +32,21 @@ class GamePage {
 			</div>
 			<div
 				class="game-container"
-				style="display: flex; justify-content: center"
-			></div>
-			<div class="result" style="display: flex; justify-content: center"></div>
+				style="position: relative; display: flex; justify-content: center"
+			>
+				<div
+					class="result"
+					style="position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; display: none;"
+				>
+					<div
+						class="winner pink_neon_10"
+						style="color: white; font-size: 48px;"
+					>
+						Winner!
+					</div>
+				</div>
+			</div>
+
 			<button class="return-button" style="margin: 30px">Return</button>
 		`;
 	}
@@ -304,19 +316,24 @@ class GamePage {
 			websocket.send(JSON.stringify(message));
 		}
 
+		// 게임 종료 시 winner 설정
 		const player1Score = document.querySelector('.player1');
 		const player2Score = document.querySelector('.player2');
+
+		let winner = 0;
+
+		const result = document.querySelector('.result');
+		const totalScore = this.initial.total_score;
 
 		// 화면 렌더링
 		function renderThreeJs(data) {
 			frame += 1;
-
-			// if (winner === 1) {
-			// 	camera.lookAt(paddleMesh1.position);
-			// }
-			// if (winner === 2) {
-			// 	camera.lookAt(paddleMesh2.position);
-			// }
+			if (Number(player1Score.textContent) === totalScore) {
+				winner = 1;
+			}
+			if (Number(player2Score.textContent) === totalScore) {
+				winner = 2;
+			}
 
 			// Camera movement
 			if (frame < 100) {
@@ -366,6 +383,17 @@ class GamePage {
 			player2Score.textContent = score.player2;
 
 			ballLight.position.copy(ballMesh.position);
+
+			if (winner === 1) {
+				camera.position.x = -4;
+				camera.lookAt(paddleMesh1.position);
+				result.style.display = 'block';
+			}
+			if (winner === 2) {
+				camera.position.x = 4;
+				camera.lookAt(paddleMesh2.position);
+				result.style.display = 'block';
+			}
 
 			renderer.render(scene, camera);
 		}
