@@ -32,9 +32,21 @@ class GamePage {
 			</div>
 			<div
 				class="game-container"
-				style="display: flex; justify-content: center"
-			></div>
-			<div class="result" style="display: flex; justify-content: center"></div>
+				style="position: relative; display: flex; justify-content: center"
+			>
+				<div
+					class="result"
+					style="position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; display: none;"
+				>
+					<div
+						class="winner pink_neon_10"
+						style="color: white; font-size: 48px;"
+					>
+						Winner!
+					</div>
+				</div>
+			</div>
+
 			<button class="return-button" style="margin: 30px">Return</button>
 		`;
 	}
@@ -79,7 +91,6 @@ class GamePage {
 		const plane = new THREE.PlaneGeometry(6, 4);
 		const planeMaterial = new THREE.MeshPhysicalMaterial({
 			color: 0x000000,
-			// color: this.initial.color.background,
 			metalness: 0.5,
 			roughness: 0.5,
 			clearcoat: 1,
@@ -108,6 +119,7 @@ class GamePage {
 		lineDashed.computeLineDistances();
 		scene.add(lineDashed);
 
+		// --------------------- ball -------------------------
 		// Create a ball
 		const ball = new THREE.SphereGeometry(0.04, 32, 32);
 		const ballMaterial = new THREE.MeshPhysicalMaterial({
@@ -128,6 +140,7 @@ class GamePage {
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
+		// --------------------- paddle -------------------------
 		// Create a paddle
 		const paddle = new THREE.BoxGeometry(0.1, 0.5, 0.1);
 		const paddleMaterial = new THREE.MeshPhysicalMaterial({
@@ -137,7 +150,6 @@ class GamePage {
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
 			emissive: 0x0000ff,
-			// emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -152,6 +164,34 @@ class GamePage {
 		const paddleLightGroup1 = new THREE.Group();
 		const paddleLightGroup2 = new THREE.Group();
 
+		function addPaddleLights(paddleMesh, paddleLightGroup) {
+			for (
+				let i = paddleMesh.position.y - 0.25;
+				i <= paddleMesh.position.y + 0.25;
+				i += 0.1
+			) {
+				const paddleLight = new THREE.PointLight(0xffffff, 0.1, 100);
+				paddleLight.position.set(
+					paddleMesh === paddleMesh1 ? -2.8 : 2.8,
+					i,
+					0.2
+				);
+				paddleLightGroup.add(paddleLight);
+			}
+		}
+		function changePaddleLightColor(paddleLightGroup, paddleColor) {
+			paddleLightGroup.children.forEach((paddleLight) => {
+				paddleLight.color.set(paddleColor);
+			});
+		}
+
+		addPaddleLights(paddleMesh1, paddleLightGroup1);
+		addPaddleLights(paddleMesh2, paddleLightGroup2);
+
+		scene.add(paddleLightGroup1);
+		scene.add(paddleLightGroup2);
+
+		// ---------------------------------------------------
 		// Set the position of the ball
 		ballMesh.position.x = 0;
 		ballMesh.position.y = 0;
@@ -258,42 +298,13 @@ class GamePage {
 		function sendGameStartRequest(data) {
 			const { color } = data;
 
-			planeMaterial.color.set(color.background);
-			paddleMaterial.emissive.set(color.paddle);
-			for (
-				let i = paddleMesh1.position.y - 0.25;
-				i <= paddleMesh1.position.y + 0.25;
-				i += 0.1
-			) {
-				// GameSetting에서 가져온 값
-				const paddleLight = new THREE.PointLight(
-					color.paddle,
-					// 0xffffff,
-					0.1,
-					100
-				);
-				paddleLight.position.set(-2.8, i, 0.2);
-				paddleLightGroup1.add(paddleLight);
-			}
+			paddleMesh1.material.emissive.set(color.paddle);
+			paddleMesh2.material.emissive.set(color.paddle);
+			changePaddleLightColor(paddleLightGroup1, color.paddle);
+			changePaddleLightColor(paddleLightGroup2, color.paddle);
 
-			for (
-				let i = paddleMesh2.position.y - 0.25;
-				i <= paddleMesh2.position.y + 0.25;
-				i += 0.1
-			) {
-				// GameSetting에서 가져온 값
-				const paddleLight = new THREE.PointLight(
-					color.paddle,
-					// 0xffffff,
-					0.1,
-					100
-				);
-				paddleLight.position.set(2.8, i, 0.2);
-				paddleLightGroup2.add(paddleLight);
-			}
-
-			scene.add(paddleLightGroup1);
-			scene.add(paddleLightGroup2);
+			ballMesh.material.emissive.set(color.ball);
+			ballLight.color.set(color.ball);
 
 			const message = {
 				type: 'game',
@@ -305,19 +316,24 @@ class GamePage {
 			websocket.send(JSON.stringify(message));
 		}
 
+		// 게임 종료 시 winner 설정
 		const player1Score = document.querySelector('.player1');
 		const player2Score = document.querySelector('.player2');
+
+		let winner = 0;
+
+		const result = document.querySelector('.result');
+		const totalScore = this.initial.total_score;
 
 		// 화면 렌더링
 		function renderThreeJs(data) {
 			frame += 1;
-
-			// if (winner === 1) {
-			// 	camera.lookAt(paddleMesh1.position);
-			// }
-			// if (winner === 2) {
-			// 	camera.lookAt(paddleMesh2.position);
-			// }
+			if (Number(player1Score.textContent) === totalScore) {
+				winner = 1;
+			}
+			if (Number(player2Score.textContent) === totalScore) {
+				winner = 2;
+			}
 
 			// Camera movement
 			if (frame < 100) {
@@ -367,6 +383,17 @@ class GamePage {
 			player2Score.textContent = score.player2;
 
 			ballLight.position.copy(ballMesh.position);
+
+			if (winner === 1) {
+				camera.position.x = -4;
+				camera.lookAt(paddleMesh1.position);
+				result.style.display = 'block';
+			}
+			if (winner === 2) {
+				camera.position.x = 4;
+				camera.lookAt(paddleMesh2.position);
+				result.style.display = 'block';
+			}
 
 			renderer.render(scene, camera);
 		}
@@ -474,7 +501,7 @@ class GamePage {
 		returnButton.addEventListener('click', () => {
 			const disconnectMessage = {
 				type: 'disconnect',
-				message: 'I\'m leaving!'
+				message: "I'm leaving!"
 			};
 			websocket.send(JSON.stringify(disconnectMessage));
 			websocket.close();

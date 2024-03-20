@@ -72,7 +72,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def send_initial_settings(self, msg_data):
         color_info = msg_data.get("color")
         paddle_color = color_info["paddle"]
-        background_color = color_info["background"]
+        ball_color = color_info["ball"]
         # 아직 공 색 정보는 클라이언트에게 안받음
 
         ball: Ball = self.match_manager.ball
@@ -83,8 +83,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             "battle_mode": msg_data.get("battle_mode"),
             "color": {
                 "paddle": paddle_color,
-                "background": background_color,
-                "ball": "#FFFFFF",
+                "ball": ball_color,
             },
             "ball": {
                 "status": "in",
@@ -133,6 +132,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 await self.game_session
             except asyncio.CancelledError:
                 pass  # 게임 세션 취소 성공
+        await super().disconnect(code)
 
     async def send_message(self, subtype, message, data=None):
         if not self.connected:
