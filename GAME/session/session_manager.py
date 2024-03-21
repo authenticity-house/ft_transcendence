@@ -91,9 +91,7 @@ class SessionManager:
         return self._summary_stat
 
     def get_level_info(self):
-        """
-        패들 길이, 공 속도, 공 가속도 반환
-        """
+        """패들 길이, 공 속도, 공 가속도 반환"""
         if self._level == 1:
             return 0.5, 0.04, 0.003
         if self._level == 2:
@@ -110,18 +108,8 @@ class SessionManager:
             "battle_mode": self._battle_mode,
             "color": self._color,
             "ball": ball.get_stat_data(),
-            "paddle1": {
-                "x": player1.paddle.x,
-                "y": player1.paddle.y,
-                "width": player1.paddle.width,
-                "height": player1.paddle.height,
-            },
-            "paddle2": {
-                "x": player2.paddle.x,
-                "y": player2.paddle.y,
-                "width": player2.paddle.width,
-                "height": player2.paddle.height,
-            },
+            "paddle1": player1.paddle.get_stat_data(),
+            "paddle2": player2.paddle.get_stat_data(),
             "nickname": {
                 "player1": player1.name,
                 "player2": player2.name,
