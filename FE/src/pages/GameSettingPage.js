@@ -1,7 +1,6 @@
 import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
-import { activateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
@@ -14,13 +13,20 @@ class GameSettingPage {
 			color: {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
-			}
+			},
+			headcount: 2,
+			nickname: []
 		};
 	}
 
+	resetData() {
+		this.data = JSON.parse(JSON.stringify(this.initialData));
+	}
+
 	template(data) {
-		if (data == null) this.data = this.initialData;
+		if (data == null) this.resetData();
 		else this.data = data;
+		this.data.battle_mode = 1;
 
 		const horizonbuttonConfigs = [
 			{ text: '1vs1', classes: 'selected' },
@@ -50,7 +56,14 @@ class GameSettingPage {
 	}
 
 	addEventListeners() {
-		activateButtons('.horizontalButton');
+		// 게임 세부 설정 버튼
+		const matchMode = document.querySelector(
+			'.horizontalButton button:nth-child(2)'
+		);
+		matchMode.addEventListener('click', () => {
+			changeUrlData('gameSettingTournament', null);
+		});
+
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
@@ -62,7 +75,9 @@ class GameSettingPage {
 			'.verticalButton button:nth-child(2)'
 		);
 		startButton.addEventListener('click', () => {
-			changeUrlData('game', this.data);
+			const newData = this.data;
+			this.resetData();
+			changeUrlData('game', newData);
 		});
 	}
 }

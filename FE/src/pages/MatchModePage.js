@@ -30,7 +30,7 @@ class MatchModePage {
 		});
 		const tournament = document.querySelector('.button-click-tournament');
 		tournament.addEventListener('click', () => {
-			changeUrl('tournament');
+			changeUrlData('gameSettingTournament', null);
 		});
 		const back = document.querySelector('.back-arrow-container');
 		back.addEventListener('click', () => {

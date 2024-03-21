@@ -23,8 +23,8 @@ function createConfig(texts, classesPrefix, selectedIndices) {
 
 class GameSettingDetailed {
 	template(initial) {
-		this.data = initial;
-
+		this.data = JSON.parse(JSON.stringify(initial));
+		console.log(this.data);
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
 
@@ -165,7 +165,6 @@ class GameSettingDetailed {
 		);
 		resetButton.addEventListener('click', () => {
 			this.data = {
-				battle_mode: 1,
 				total_score: 2,
 				level: 2,
 				color: {
@@ -180,7 +179,9 @@ class GameSettingDetailed {
 			'.horizontalButton button:nth-child(2)'
 		);
 		confirmButton.addEventListener('click', () => {
-			changeUrlData('gameSetting', this.data);
+			if (this.data.battle_mode === 1) changeUrlData('gameSetting', this.data);
+			else if (this.data.battle_mode === 2)
+				changeUrlData('gameSettingTournament', this.data);
 		});
 	}
 }
