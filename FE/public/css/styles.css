@@ -277,7 +277,7 @@ button:hover:not(.button-back-arrow-box) {
 	flex-direction: column;
 	align-items: center;
 
-	border: 2px solid #fff;
+	border: 0.2rem solid #fff;
 	border-radius: 1rem;
 
 	overflow-y: scroll;
@@ -322,8 +322,8 @@ td {
 	width: 34rem;
 	height: 11rem;
 	padding: 2rem;
-	border-radius: 10px;
-	border: 1px solid #dcdcdc;
+	border-radius: 1rem;
+	border: 0.1rem solid #dcdcdc;
 }
 
 .table-line-margin-bottom {
@@ -345,8 +345,8 @@ td {
 	width: 36rem;
 	height: 22rem;
 	padding: 2rem;
-	border-radius: 10px;
-	border: 1px solid #dcdcdc;
+	border-radius: 1rem;
+	border: 0.1rem solid #dcdcdc;
 }
 
 .special-stats-container {
@@ -389,12 +389,9 @@ td {
 .game-setting-nickname-container {
 	display: flex;
 	width: 60rem;
-	height: 36rem;
-	padding: 5.2rem 3.5rem 6.8rem 5rem;
-	justify-content: flex-end;
+	height: 33rem;
+	justify-content: center;
 	align-items: center;
-
-	gap: 3.5rem;
 	border-radius: 1rem;
 	border: 0.2rem solid #fff;
 }
@@ -420,7 +417,6 @@ td {
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	align-self: stretch;
 	flex-shrink: 0;
 	align-self: stretch;
 }
@@ -436,7 +432,146 @@ td {
 	flex-shrink: 0;
 	border-radius: 3rem;
 	border: 0.4rem solid #fff;
-	background: rgba(255, 255, 255, 0);
+}
+
+/* GameSettingTournament*/
+
+.num-block {
+	float: left;
+	width: 100%;
+	align-items: center;
+}
+
+/* head count */
+.head-count .num-in {
+	float: left;
+	width: 14rem;
+}
+
+.head-count .num-in span {
+	display: block;
+	float: left;
+	width: 3.6rem;
+	height: 3.6rem;
+	/*line-height: 32px;*/
+	text-align: center;
+	position: relative;
+	cursor: pointer;
+}
+
+.head-count .num-in span.dis:before,
+.head-count .num-in span.dis:after {
+	background-color: #9a9a9a !important;
+}
+
+.head-count .num-in input {
+	float: left;
+	width: 4rem;
+	height: 4rem;
+	border: 0.2rem solid #ffffff;
+	border-radius: 0.5rem;
+	font-size: 2rem;
+	text-align: center;
+	padding: 0;
+}
+
+.head-count .num-in span.minus:before {
+	content: '';
+	position: absolute;
+	width: 2rem;
+	height: 0.4rem;
+	background-color: #ffffff;
+	top: 50%;
+	left: 0;
+}
+
+.head-count .num-in span.plus:before,
+.head-count .num-in span.plus:after {
+	content: '';
+	position: absolute;
+	right: 0rem;
+	width: 2rem;
+	height: 0.4rem;
+	background-color: #ffffff;
+	top: 50%;
+}
+
+.head-count .num-in span.plus:after {
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+/* head count */
+.text-light-15 {
+	width: 15px;
+	/* flex-shrink: 0; */
+	color: #fff;
+	text-align: center;
+	font-size: 2rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+}
+.input-nickname-box {
+	width: 200px;
+	height: 40px;
+	flex-shrink: 0;
+	stroke-width: 2px;
+	stroke: #fff;
+}
+
+.input-nickname {
+	display: flex;
+	width: 240px;
+	height: 40px;
+	justify-content: space-between;
+	align-items: center;
+}
+/* 닉네임 설정 한줄 */
+.input-nickname-col-1,
+.input-nickname-col-2 {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 20px;
+}
+/* 닉네임 설정 두줄 묶음 */
+.input-nickname-two-col {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
+
+/* 닉네임 설정 타이틀 + 입력창 */
+.input-nickname-container {
+	display: flex;
+	width: 52rem;
+	height: 28rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2rem;
+	flex-shrink: 0;
+}
+
+/* 인원수 설정 */
+.game-setting-number-container {
+	display: flex;
+	padding-left: 1rem;
+	align-items: center;
+	gap: 2rem;
+	align-self: stretch;
+}
+/* 인원 수 선택 및 닉네임 입력 컨테이너 두가지 포함 */
+.game-setting-tournament-container {
+	display: flex;
+	height: 39rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+	flex-shrink: 0;
 }
 /* GameSettingPage*/
 
@@ -483,6 +618,10 @@ td {
 	width: 28rem;
 }
 
+.width-14 {
+	width: 14rem;
+}
+
 .height-25 {
 	height: 25rem;
 }
@@ -527,6 +666,7 @@ td {
 	height: 4rem;
 	border-radius: 2rem;
 }
+
 /* GameSettingDetailed */
 
 /* Tournament */
