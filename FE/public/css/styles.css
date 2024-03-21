@@ -507,7 +507,7 @@ td {
 .text-light-15 {
 	width: 15px;
 	/* flex-shrink: 0; */
-	color: #FFF;
+	color: #fff;
 	text-align: center;
 	font-size: 2rem;
 	font-style: normal;
@@ -519,7 +519,7 @@ td {
 	height: 40px;
 	flex-shrink: 0;
 	stroke-width: 2px;
-	stroke: #FFF;
+	stroke: #fff;
 }
 
 .input-nickname {
@@ -739,4 +739,55 @@ td {
 .wire-dotted-line {
 	width: 100%;
 	border-top: 0.3rem dotted #ffffff;
+}
+
+/* GamePage.js */
+.game-header {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+}
+
+.score-container {
+	display: flex;
+	justify-content: center;
+	margin: 1rem;
+}
+
+.player1 {
+	margin-right: 4rem;
+}
+
+.player2 {
+	margin-left: 4rem;
+}
+
+@keyframes score_transition {
+	from {
+		text-shadow:
+			0rem 0rem 1rem #ff5d84,
+			0rem 0rem 1rem #ff5d84;
+	}
+	to {
+		text-shadow: none;
+	}
+}
+.score_transition {
+	animation: score_transition 3s;
+}
+
+.game-container {
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+.game-result {
+	position: absolute;
+	top: 75%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+	display: none;
 }

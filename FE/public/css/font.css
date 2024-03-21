@@ -65,6 +65,15 @@
 	letter-spacing: 0.2rem;
 }
 
+.display-light48 {
+	font-family: 'GongGothicLight';
+	font-size: 4.8rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
+
 .display-light32 {
 	font-family: 'GongGothicLight';
 	font-size: 3.2rem;
