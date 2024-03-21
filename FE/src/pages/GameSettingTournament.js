@@ -43,9 +43,8 @@ class GameSettingTournament {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
-
-		const inputNickname1 = new InputNickname(1, 4);
-		const inputNickname2 = new InputNickname(5, 8);
+		const initialIndex = 4;
+		const inputNickname1 = new InputNickname();
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
@@ -59,7 +58,12 @@ class GameSettingTournament {
 								<div class="num-block head-count">
 									<div class="num-in">
 										<span class="minus"></span>
-										<input type="text" class="in-num" value="4" readonly="" />
+										<input
+											type="text"
+											class="in-num"
+											value=${initialIndex}
+											readonly=""
+										/>
 										<span class="plus"></span>
 									</div>
 								</div>
@@ -69,13 +73,11 @@ class GameSettingTournament {
 								<!-- 닉네임 입력 타이틀 + 입력 창 -->
 								<div class="input-nickname-container">
 									<div class="text-subtitle-1 width-14">닉네임 입력</div>
-									<div class="input-nickname-2">
-										<div class="input-nickname-1">
-											${inputNickname1.template()}
+									<div class="input-nickname-two-col">
+										<div class="input-nickname-col-1">
+											${inputNickname1.containDiv(initialIndex)}
 										</div>
-										<div class="input-nickname-1">
-											${inputNickname2.template()}
-										</div>
+										<div class="input-nickname-col-2"></div>
 									</div>
 								</div>
 							</div>
@@ -88,40 +90,70 @@ class GameSettingTournament {
 	}
 
 	addEventListeners() {
-		function updateButtonsState(numBlock, count) {
-			const minusButton = numBlock.querySelector('.minus');
-			const plusButtons = numBlock.querySelectorAll('.plus');
+		function addInputNickname(count) {
+			const containerIdx = count > 4 ? 2 : 1; // 4명 초과시 두 번째 col 사용
+			const container = document.querySelector(
+				`.input-nickname-col-${containerIdx}`
+			);
+			if (!container) return;
+
+			if (container.children.length < 4 || (containerIdx === 1 && count <= 4)) {
+				const newInput = document.createElement('div');
+				newInput.className = `input-nickname`;
+				newInput.innerHTML = new InputNickname(count).template();
+				container.appendChild(newInput);
+			}
+		}
+
+		function removeInputNickname(count) {
+			// 4명 이하면 1번째 Col, 초과면 2번째 Col
+			const containerIdx = Math.ceil(count / 4);
+			const container = document.querySelector(
+				`.input-nickname-col-${containerIdx}`
+			);
+			if (!container || container.children.length === 0) return;
+			container.removeChild(container.lastElementChild);
+		}
+
+		// 1, 8이 되었을 때 -, + 버튼 비활성화
+		function updateButtonsState(count) {
+			const minusButton = document.querySelector('.minus');
+			const plusButton = document.querySelectorAll('.plus');
 
 			if (count <= 1) minusButton.classList.add('dis');
 			else minusButton.classList.remove('dis');
 
-			plusButtons.forEach((plusButton) => {
-				if (count >= 8) plusButton.classList.add('dis');
-				else plusButton.classList.remove('dis');
+			plusButton.forEach((button) => {
+				if (count >= 8) button.classList.add('dis');
+				else button.classList.remove('dis');
 			});
 		}
 
-		function handleSpanClick() {
-			const input = this.closest('.num-block').querySelector('input.in-num');
+		// -, + 버튼 클릭되었을 때, minus, plus에 맞추어 로직 수행
+		function handleClick() {
+			const input = document.querySelector('input.in-num');
 			let count = parseInt(input.value, 10);
 
 			if (this.classList.contains('minus')) {
-				count = count - 1 < 1 ? 1 : count - 1;
+				if (count > 1) {
+					removeInputNickname(count);
+					count -= 1;
+				}
 			} else if (this.classList.contains('plus')) {
-				count = count + 1 > 8 ? 8 : count + 1;
+				if (count < 8) {
+					count += 1;
+					addInputNickname(count);
+				}
 			}
 			input.value = count;
-			input.dispatchEvent(new Event('change'));
-
-			updateButtonsState(this.closest('.num-block'), count);
-
-			return false; // preventDefault 역할
+			updateButtonsState(count);
 		}
 
 		document.querySelectorAll('.num-in span').forEach((span) => {
-			span.addEventListener('click', handleSpanClick);
+			span.addEventListener('click', handleClick);
 		});
 
+		// 게임 세부 설정 버튼
 		activateButtons('.horizontalButton');
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
@@ -130,6 +162,7 @@ class GameSettingTournament {
 			changeUrlData('gameSettingDetailed', this.data);
 		});
 
+		// 시작 버튼
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
