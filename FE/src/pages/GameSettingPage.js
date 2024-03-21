@@ -18,8 +18,12 @@ class GameSettingPage {
 		};
 	}
 
+	resetData() {
+		this.data = JSON.parse(JSON.stringify(this.initialData));
+	}
+
 	template(data) {
-		if (data == null) this.data = this.initialData;
+		if (data == null) this.resetData();
 		else this.data = data;
 
 		const horizonbuttonConfigs = [
@@ -62,7 +66,9 @@ class GameSettingPage {
 			'.verticalButton button:nth-child(2)'
 		);
 		startButton.addEventListener('click', () => {
-			changeUrlData('game', this.data);
+			const newData = this.data;
+			this.resetData();
+			changeUrlData('game', newData);
 		});
 	}
 }
