@@ -91,8 +91,15 @@ class SessionManager:
         return self._summary_stat
 
     def get_level_info(self):
-        """(임시) 패들 길이, 공 속도, 공 가속도 반환"""
-        return 0.5, 0.06, 0.005
+        """
+        패들 길이, 공 속도, 공 가속도 반환
+        """
+        if self._level == 1:
+            return 0.5, 0.04, 0.003
+        if self._level == 2:
+            return 0.4, 0.04, 0.004
+
+        return 0.3, 0.05, 0.004
 
     def get_initial_settings(self):
         ball: Ball = self._match_manager.ball
