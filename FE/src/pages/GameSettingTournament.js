@@ -189,7 +189,8 @@ class GameSettingTournament {
 			const newData = this.data;
 			this.resetData();
 			updateNicknamesData(newData);
-			changeUrlData('tournament', newData);
+			changeUrlData('game', newData);
+			// changeUrlData('tournament', newData);
 		});
 	}
 }

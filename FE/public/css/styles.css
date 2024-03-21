@@ -531,7 +531,7 @@ td {
 }
 /* 닉네임 설정 한줄 */
 .input-nickname-col-1,
-.input-nickname-col- {
+.input-nickname-col-2 {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
