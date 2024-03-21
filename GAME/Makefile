@@ -13,13 +13,14 @@ format:
 
 lint:
 	@echo "Linting code with pylint"
-	@venv/bin/pylint game_server match websocket
+	@venv/bin/pylint game_server match websocket session
 
 type:
 	@echo "Typechecking with mypy"
 	@venv/bin/mypy game_server --ignore-missing-imports
 	@venv/bin/mypy match --ignore-missing-imports
 	@venv/bin/mypy websocket --ignore-missing-imports
+	@venv/bin/mypy session --ignore-missing-imports
 
 test:
 	@echo "Running Django unit tests"
