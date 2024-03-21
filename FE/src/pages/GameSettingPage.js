@@ -1,7 +1,6 @@
 import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
-import { activateButtons } from '../components/ActivateButtons.js';
 
 const html = String.raw;
 
@@ -57,7 +56,14 @@ class GameSettingPage {
 	}
 
 	addEventListeners() {
-		activateButtons('.horizontalButton');
+		// 게임 세부 설정 버튼
+		const matchMode = document.querySelector(
+			'.horizontalButton button:nth-child(2)'
+		);
+		matchMode.addEventListener('click', () => {
+			changeUrlData('gameSettingTournament', null);
+		});
+
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);

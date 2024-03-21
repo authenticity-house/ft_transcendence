@@ -1,7 +1,6 @@
 import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
-import { activateButtons } from '../components/ActivateButtons.js';
 import InputNickname from '../components/InputNickname.js';
 
 const html = String.raw;
@@ -49,8 +48,8 @@ class GameSettingTournament {
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
+					<div class="horizontalButton">${horizontalButton.template()}</div>
 					<div class="game-setting-content-container">
-						<div class="horizontalButton">${horizontalButton.template()}</div>
 						<!-- 인원수 선택 및 닉네임 설정 -->
 						<div class="game-setting-tournament-container">
 							<div class="game-setting-number-container">
@@ -69,6 +68,7 @@ class GameSettingTournament {
 									</div>
 								</div>
 							</div>
+
 							<!-- 닉네임 입력 테두리 -->
 							<div class="game-setting-nickname-container">
 								<!-- 닉네임 입력 타이틀 + 입력 창 -->
@@ -83,8 +83,8 @@ class GameSettingTournament {
 								</div>
 							</div>
 						</div>
-						<div class="verticalButton">${verticalButton.template()}</div>
 					</div>
+					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
 			</div>
 		`;
@@ -155,7 +155,14 @@ class GameSettingTournament {
 		});
 
 		// 게임 세부 설정 버튼
-		activateButtons('.horizontalButton');
+		const matchMode = document.querySelector(
+			'.horizontalButton button:nth-child(1)'
+		);
+		matchMode.addEventListener('click', () => {
+			changeUrlData('gameSetting', null);
+		});
+
+		// 세부 설정 버튼
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
@@ -182,8 +189,6 @@ class GameSettingTournament {
 			const newData = this.data;
 			this.resetData();
 			updateNicknamesData(newData);
-			console.log('초기값', this.data);
-			console.log('넘길거', newData);
 			changeUrlData('tournament', newData);
 		});
 	}

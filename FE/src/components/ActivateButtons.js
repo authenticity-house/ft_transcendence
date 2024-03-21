@@ -1,14 +1,11 @@
 export function activateButtons(containerSelector) {
 	document.querySelectorAll(containerSelector).forEach((container) => {
-		container.querySelectorAll('button').forEach((btn) => {
-			btn.addEventListener('click', (event) => {
-				const clickedBtn = event.target;
-				container.querySelectorAll('button').forEach((innerBtn) => {
-					innerBtn.classList.remove('selected');
-				});
-				clickedBtn.classList.add('selected');
-				// gameSetting.setSelectedButtonIndex(index);
-			});
+		container.querySelectorAll('button').forEach((btn, index) => {
+			if (index === 0) {
+				firstButtonFunction(); // 첫 번째 버튼 클릭 시 실행될 함수
+			} else if (index === 1) {
+				secondButtonFunction(); // 두 번째 버튼 클릭 시 실행될 함수
+			}
 		});
 	});
 }
