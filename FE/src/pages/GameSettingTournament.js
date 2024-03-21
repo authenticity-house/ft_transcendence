@@ -30,8 +30,8 @@ class GameSettingTournament {
 		else this.data = data;
 
 		const horizonbuttonConfigs = [
-			{ text: '1vs1', classes: 'selected' },
-			{ text: '토너먼트' }
+			{ text: '1vs1' },
+			{ text: '토너먼트', classes: 'selected' }
 		];
 		const horizontalButton = new HorizontalButton(
 			horizonbuttonConfigs,
