@@ -1,6 +1,11 @@
 import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
+import {
+	graphScoreText,
+	getScoreTextPosition,
+	graphScoreTrend
+} from '../components/GraphScore.js';
 
 const html = String.raw;
 
@@ -152,6 +157,40 @@ class DuelStatsPage {
 							</tbody>
 						</table>
 					</div>
+					<div class="divider"></div>
+					<div class="graph-container">
+						<div class="score-trend-container">
+							<div class="score-trend-title display-light24">득점 추이</div>
+							<div class="score-trend-canvas-container">
+								<div
+									class="score-trend-canvas-text-container display-light10"
+								></div>
+								<canvas
+									class="score-trend-canvas-draw-container"
+									width="335"
+									height="360"
+								></canvas>
+							</div>
+							<div class="score-trend-player-name-container display-light16">
+								<div class="score-trend-player-name-wrapper">
+									<div class="score-trend-player-name">${leftPlayer}</div>
+									<div class="score-trend-player-color-yellow"></div>
+								</div>
+								<div class="score-trend-player-name-wrapper">
+									<div class="score-trend-player-name">${rightPlayer}</div>
+									<div class="score-trend-player-color-blue"></div>
+								</div>
+							</div>
+						</div>
+						<div class="score-position-container">
+							<div class="score-position-title display-light24">득점 위치</div>
+							<canvas
+								class="score-position-canvas"
+								width="350"
+								height="360"
+							></canvas>
+						</div>
+					</div>
 				</div>
 				<div class="event-click-match" style="margin-top: 4rem">
 					${nextButton.template()}
@@ -165,6 +204,31 @@ class DuelStatsPage {
 		back.addEventListener('click', () => {
 			changeUrl('match');
 		});
+	}
+
+	mount(data) {
+		const leftScoreTrend = data ? data.graph.player1.score_trend : [];
+		const rightScoreTrend = data ? data.graph.player2.score_trend : [];
+		const leftScore = data ? data.player1.score : 15;
+		const rightScore = data ? data.player2.score : 15;
+		const maxScore = leftScore >= rightScore ? leftScore : rightScore;
+
+		// score-trend
+		const scoreText = document.querySelector(
+			'.score-trend-canvas-text-container'
+		);
+		scoreText.appendChild(graphScoreText(maxScore));
+
+		const position = getScoreTextPosition();
+		graphScoreTrend(leftScoreTrend, rightScoreTrend, position);
+
+		// // score-position (-ing)
+		// const scorePositionCanvas = document.querySelector(
+		// 	'.score-position-canvas'
+		// );
+		// scorePositionCanvas.appendChild(
+		// 	graphScorePosition(leftScoreTrend, rightScoreTrend, maxScore)
+		// );
 	}
 }
 
