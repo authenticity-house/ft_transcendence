@@ -57,6 +57,9 @@ export const changeUrl = (url) => {
 export const changeUrlData = (url, data) => {
 	history.pushState(null, null, `${homeLink}${url}`);
 	root.innerHTML = routes[url].template(data);
+	if (typeof routes[url].mount === 'function') {
+		routes[url].mount(data);
+	}
 	routes[url].addEventListeners();
 };
 

@@ -791,3 +791,108 @@ td {
 	z-index: 1000;
 	display: none;
 }
+
+/* Graph */
+.graph-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 50rem;
+}
+
+/* Graph - ScoreTrend */
+.score-trend-container {
+	display: flex;
+	flex-direction: column;
+	width: 36.5rem;
+	height: 45rem;
+}
+
+.score-trend-title {
+	width: 100%;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-left: 3rem;
+	margin-bottom: 1rem;
+}
+
+.score-trend-canvas-container {
+	display: flex;
+	width: 100%;
+	height: 36rem;
+}
+
+.score-trend-canvas-text-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 4rem;
+	height: 100%;
+	padding: 2rem 0;
+}
+
+.score-trend-canvas-text-wrapper {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	height: auto;
+	width: 3em;
+	padding-right: 1rem;
+	margin: auto;
+}
+
+.score-trend-canvas-draw-container {
+	border-left: 0.2rem solid white;
+	border-bottom: 0.2rem solid white;
+}
+
+.score-trend-player-name-container {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding-left: 5rem;
+	width: 100%;
+	height: 3rem;
+}
+
+.score-trend-player-name-wrapper {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin: auto;
+}
+
+.score-trend-player-name {
+	margin-right: 1rem;
+}
+.score-trend-player-color-yellow {
+	border: 0.4rem solid #ffd164;
+}
+
+.score-trend-player-color-blue {
+	border: 0.4rem solid #5ad7ff;
+}
+
+/* Graph - ScorePosition */
+.score-position-container {
+	display: flex;
+	flex-direction: column;
+	width: 36.5rem;
+	height: 45rem;
+}
+
+.score-position-title {
+	width: 100%;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.score-position-canvas {
+	background-color: white;
+}
