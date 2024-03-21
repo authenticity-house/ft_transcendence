@@ -14,7 +14,9 @@ class GameSettingPage {
 			color: {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
-			}
+			},
+			headcount: 2,
+			nickname: []
 		};
 	}
 
@@ -25,6 +27,7 @@ class GameSettingPage {
 	template(data) {
 		if (data == null) this.resetData();
 		else this.data = data;
+		this.data.battle_mode = 1;
 
 		const horizonbuttonConfigs = [
 			{ text: '1vs1', classes: 'selected' },

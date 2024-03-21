@@ -9,25 +9,26 @@ const html = String.raw;
 class GameSettingTournament {
 	constructor() {
 		this.initialData = {
-			battle_mode: 1,
+			battle_mode: 2,
 			total_score: 2,
 			level: 2,
 			color: {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
-			}
+			},
+			headcount: 4,
+			nickname: []
 		};
-		this.data = { ...this.initialData };
 	}
 
 	resetData() {
 		this.data = JSON.parse(JSON.stringify(this.initialData));
 	}
 
-	template(data = this.data) {
-		this.data = data;
+	template(data) {
 		if (data == null) this.resetData();
 		else this.data = data;
+		this.data.battle_mode = 2;
 
 		const horizonbuttonConfigs = [
 			{ text: '1vs1' },
@@ -162,12 +163,28 @@ class GameSettingTournament {
 			changeUrlData('gameSettingDetailed', this.data);
 		});
 
+		function updateNicknamesData(res) {
+			const nicknameInputs = document.querySelectorAll(
+				'.input-nickname input[type="text"]'
+			);
+			res.headcount = parseInt(
+				document.querySelector('input.in-num').value,
+				10
+			);
+			res.nickname = Array.from(nicknameInputs).map((input) => input.value);
+		}
+
 		// 시작 버튼
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
 		);
 		startButton.addEventListener('click', () => {
-			changeUrlData('tournament', this.data);
+			const newData = this.data;
+			this.resetData();
+			updateNicknamesData(newData);
+			console.log('초기값', this.data);
+			console.log('넘길거', newData);
+			changeUrlData('tournament', newData);
 		});
 	}
 }
