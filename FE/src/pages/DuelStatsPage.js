@@ -4,7 +4,8 @@ import ButtonSmall from '../components/ButtonSmall.js';
 import {
 	graphScoreText,
 	getScoreTextPosition,
-	graphScoreTrend
+	graphScoreTrend,
+	graphScorePosition
 } from '../components/GraphScore.js';
 
 const html = String.raw;
@@ -173,22 +174,37 @@ class DuelStatsPage {
 							</div>
 							<div class="score-trend-player-name-container display-light16">
 								<div class="score-trend-player-name-wrapper">
-									<div class="score-trend-player-name">${leftPlayer}</div>
-									<div class="score-trend-player-color-yellow"></div>
+									<div class="score-player-name-margin-right">
+										${leftPlayer}
+									</div>
+									<div class="score-player-color-yellow"></div>
 								</div>
 								<div class="score-trend-player-name-wrapper">
-									<div class="score-trend-player-name">${rightPlayer}</div>
-									<div class="score-trend-player-color-blue"></div>
+									<div class="score-player-name-margin-right">
+										${rightPlayer}
+									</div>
+									<div class="score-player-color-blue"></div>
 								</div>
 							</div>
 						</div>
 						<div class="score-position-container">
 							<div class="score-position-title display-light24">득점 위치</div>
-							<canvas
-								class="score-position-canvas"
-								width="350"
-								height="360"
-							></canvas>
+							<div class="score-position-player-name-container display-light16">
+								<div class="score-position-player-left-wrapper">
+									<div class="score-player-name-margin-right">
+										${leftPlayer}
+									</div>
+									<div class="score-player-color-yellow"></div>
+								</div>
+								<div class="score-position-player-right-wrapper">
+									<div class="score-player-color-blue"></div>
+									<div class="score-player-name-margin-left">
+										${rightPlayer}
+									</div>
+								</div>
+							</div>
+							<canvas class="score-position-canvas" width="280" height="360">
+							</canvas>
 						</div>
 					</div>
 				</div>
@@ -207,28 +223,23 @@ class DuelStatsPage {
 	}
 
 	mount(data) {
+		// score-trend
 		const leftScoreTrend = data ? data.graph.player1.score_trend : [];
 		const rightScoreTrend = data ? data.graph.player2.score_trend : [];
 		const leftScore = data ? data.player1.score : 15;
 		const rightScore = data ? data.player2.score : 15;
 		const maxScore = leftScore >= rightScore ? leftScore : rightScore;
-
-		// score-trend
 		const scoreText = document.querySelector(
 			'.score-trend-canvas-text-container'
 		);
 		scoreText.appendChild(graphScoreText(maxScore));
-
 		const position = getScoreTextPosition();
 		graphScoreTrend(leftScoreTrend, rightScoreTrend, position);
 
-		// // score-position (-ing)
-		// const scorePositionCanvas = document.querySelector(
-		// 	'.score-position-canvas'
-		// );
-		// scorePositionCanvas.appendChild(
-		// 	graphScorePosition(leftScoreTrend, rightScoreTrend, maxScore)
-		// );
+		// score-position
+		const leftPosition = data ? data.graph.player1.score_pos : [];
+		const rightPosition = data ? data.graph.player2.score_pos : [];
+		graphScorePosition(leftPosition, rightPosition);
 	}
 }
 
