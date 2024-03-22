@@ -203,11 +203,7 @@ class DuelStatsPage {
 									</div>
 								</div>
 							</div>
-							<canvas
-								class="score-position-canvas pink_neon_10"
-								width="280"
-								height="360"
-							>
+							<canvas class="score-position-canvas" width="280" height="360">
 							</canvas>
 						</div>
 					</div>
