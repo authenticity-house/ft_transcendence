@@ -24,7 +24,6 @@ function createConfig(texts, classesPrefix, selectedIndices) {
 class GameSettingDetailed {
 	template(initial) {
 		this.data = JSON.parse(JSON.stringify(initial));
-		console.log(this.data);
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
 
