@@ -10,6 +10,7 @@ import GameSettingDetailed from './pages/GameSettingDetailed.js';
 import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
+import TournamentResultPage from './pages/TournamentResultPage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -37,7 +38,8 @@ const routes = {
 	match: MatchModePage,
 	game: GamePage,
 	duelstats: DuelStatsPage,
-	tournament: TournamentPage
+	tournament: TournamentPage,
+	tournamentResult: TournamentResultPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page

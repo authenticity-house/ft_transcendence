@@ -72,7 +72,7 @@ button {
 	color: #fff;
 }
 
-button:hover:not(.button-back-arrow-box) {
+button:hover:not(.button-back-arrow-box):not(.duel-detail-button) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -959,4 +959,114 @@ td {
 }
 .score-position-canvas {
 	border: 0.2rem solid white;
+}
+
+/* component - DuelReport */
+.duel-report-container {
+	display: flex;
+	flex-direction: column;
+	width: 78rem;
+	height: 60rem;
+	overflow: scroll;
+}
+
+.duel-report-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 18rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #ffffff;
+	padding: 2rem;
+	margin-bottom: 3rem;
+	position: relative;
+}
+
+.duel-result-container {
+	display: flex;
+	width: 100%;
+	height: 9rem;
+	padding: 0 2rem;
+}
+
+.duel-user-container {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	width: 45%;
+	height: 100%;
+	border-color: #5ad7ff;
+}
+
+.justify-content-start {
+	justify-content: start;
+}
+
+.justify-content-end {
+	justify-content: end;
+}
+
+.user-image-container {
+	width: 9rem;
+	height: 9rem;
+	border-radius: 50%;
+	border: 1px solid white;
+	background-color: aliceblue;
+}
+
+.user-blank-container {
+	width: 3rem;
+}
+
+.user-nickname-container {
+	display: flex;
+	/* justify-content */
+	width: 16rem;
+}
+
+.duel-score-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 12rem;
+	height: 100%;
+}
+
+.duel-score-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 4rem;
+}
+
+.duel-date-time-container {
+	display: flex;
+	justify-content: center;
+	align-items: end;
+	width: 100%;
+	height: 100%;
+}
+
+.duel-date-time-wrapper {
+	display: flex;
+	align-items: center;
+	padding: 0 5rem;
+}
+
+.duel-date-time-title {
+	width: 7.2rem;
+	margin-right: 2rem;
+}
+
+.duel-date-time-data {
+	width: 11rem;
+}
+
+.duel-detail-button {
+	border: none;
+	position: absolute;
+	width: 6rem;
+	height: 5rem;
+	right: 5.5rem;
+	bottom: 0.5rem;
 }
