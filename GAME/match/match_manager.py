@@ -96,7 +96,6 @@ class MatchManager:
             "score": {
                 "player1": self.player1.score_point,
                 "player2": self.player2.score_point,
-                "latest": 1,
             },
         }
         return data
