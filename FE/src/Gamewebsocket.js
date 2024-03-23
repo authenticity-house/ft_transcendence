@@ -179,9 +179,6 @@ export class Gamewebsocket {
 				this.gamepage.scene.children[
 					this.gamepage.scene.children.length - 1
 				].visible = false;
-				// ballSpeed = INIT_BALL_SPEED;
-				// direction.x = Math.cos(seed) * ballSpeed;
-				// direction.y = Math.sin(seed) * ballSpeed;
 			}
 		}
 
@@ -228,10 +225,6 @@ export class Gamewebsocket {
 		this.ws.onmessage = (e) => {
 			const message = JSON.parse(e.data);
 			switch (message.type) {
-				// case 'connection_established':
-				// 	sendGameSessionInfo();
-				// 	break;
-
 				case 'game':
 					if (message.subtype === 'connection_established') {
 						this.sendGameSessionInfo();
