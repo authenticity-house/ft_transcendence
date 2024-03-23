@@ -46,7 +46,7 @@ class LoginPage {
 	addEventListeners() {
 		const loginButton = document.querySelector('.login-button');
 		loginButton.addEventListener('click', () => {
-			console.log('로그인');
+			changeUrl('tournamentResult');
 		});
 
 		const signupLink = document.querySelector('.login-signup-link');
