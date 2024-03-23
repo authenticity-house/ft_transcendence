@@ -12,6 +12,7 @@ class SessionManager:
         self._battle_mode = data.get("battle_mode", 1)
         self._match_manager: MatchManager = None
         self._summary_stat = []
+        self._latest_winner = ""
 
         nickname = data.get("nickname", ["player1", "player2"])
         headcount = data.get("headcount", len(nickname))
@@ -23,7 +24,11 @@ class SessionManager:
     # 소켓에서 전송할 데이터 반환
     def get_send_data(self, subtype: str):
         if subtype == "tournament_tree":
-            data = {"battle_mode": self._battle_mode, "depth": self._bracket.get_bracket()}
+            data = {
+                "battle_mode": self._battle_mode,
+                "winner": self._latest_winner,
+                "bracket": self._bracket.get_bracket(),
+            }
             return subtype, "3-1 대진표", data
 
         if subtype == "match_init_setting":
@@ -39,12 +44,16 @@ class SessionManager:
 
             if self.battle_mode == 2:
                 # 이긴 사람에 대해 업데이트 필요함
-                winner = self.get_winner_nickname(data)
-                self._bracket.set_winner_nickname(winner)
+                self._latest_winner = self.get_winner_nickname(data)
+                self._bracket.set_winner_nickname(self._latest_winner)
             return subtype, "5-1 매치 통계 정보 전송", data
 
         if subtype == "next_match":
-            data = {"battle_mode": self._battle_mode, "depth": self._bracket.get_bracket()}
+            data = {
+                "battle_mode": self._battle_mode,
+                "winner": self._latest_winner,
+                "bracket": self._bracket.get_bracket(),
+            }
 
             if self._bracket.is_end:
                 return "tournament_tree", "6-1 대진표", data, "game_over"
