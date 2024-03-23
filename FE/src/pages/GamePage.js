@@ -253,7 +253,7 @@ class GamePage {
 			};
 			gamewebsocket.send(JSON.stringify(disconnectMessage));
 			gamewebsocket.close();
-			changeUrl('');
+			changeUrl('match');
 		});
 	}
 }
