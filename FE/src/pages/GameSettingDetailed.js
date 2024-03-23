@@ -21,9 +21,14 @@ function createConfig(texts, classesPrefix, selectedIndices) {
 	}));
 }
 
+function deepCopy(src) {
+	return JSON.parse(JSON.stringify(src));
+}
+
 class GameSettingDetailed {
 	template(initial) {
-		this.data = JSON.parse(JSON.stringify(initial));
+		this.initial = initial;
+		this.data = deepCopy(initial);
 		const scoreTexts = ['5', '10', '15'];
 		const levelTexts = ['쉬움', '보통', '어려움'];
 
@@ -164,12 +169,15 @@ class GameSettingDetailed {
 		);
 		resetButton.addEventListener('click', () => {
 			this.data = {
+				battle_mode: deepCopy(this.initial.battle_mode),
 				total_score: 2,
 				level: 2,
 				color: {
 					paddle: '#5AD7FF',
 					ball: '#FFD164'
-				}
+				},
+				headcount: deepCopy(this.initial.headcount),
+				nickname: deepCopy(this.initial.nickname)
 			};
 			changeUrlData('gameSettingDetailed', this.data);
 		});
