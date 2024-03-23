@@ -1,6 +1,7 @@
 from match.match_manager import MatchManager
 from match.player import Player
 from match.ball import Ball
+from .bracket import Bracket
 
 
 class SessionManager:
@@ -9,15 +10,12 @@ class SessionManager:
         self._level = data.get("level", 2)
         self._color = data.get("color", {"paddle": "#5AD7FF", "ball": "#FFD164"})
         self._battle_mode = data.get("battle_mode", 1)
-        self._nickname = data.get("nickname", ["player1", "player2"])
-        self._headcount = data.get("headcount", len(self._nickname))
-        self._bracket = []
-        self._match_index = 0
-        self._match_cnt = 0
         self._match_manager: MatchManager = None
         self._summary_stat = []
 
-        self.match_making()
+        nickname = data.get("nickname", ["player1", "player2"])
+        headcount = data.get("headcount", len(nickname))
+        self._bracket: Bracket = Bracket(nickname, headcount)
 
     def get_match_frame(self):
         yield from self._match_manager.get_match_frame()
@@ -25,7 +23,7 @@ class SessionManager:
     # 소켓에서 전송할 데이터 반환
     def get_send_data(self, subtype: str):
         if subtype == "tournament_tree":
-            data = {"battle_mode": self._battle_mode, "depth": self.get_bracket()}
+            data = {"battle_mode": self._battle_mode, "depth": self._bracket.get_bracket()}
             return subtype, "3-1 대진표", data
 
         if subtype == "match_init_setting":
@@ -38,47 +36,51 @@ class SessionManager:
         if subtype == "match_end":
             data = self._match_manager.get_match_stat()
             self._summary_stat.append(data)
-            # 이긴 사람에 대해 업데이트 필요함
-            self.update_bracket()
+
+            if self.battle_mode == 2:
+                # 이긴 사람에 대해 업데이트 필요함
+                winner = self.get_winner_nickname(data)
+                self._bracket.set_winner_nickname(winner)
             return subtype, "5-1 매치 통계 정보 전송", data
 
         if subtype == "next_match":
-            data = {"battle_mode": self._battle_mode, "depth": self.get_bracket()}
+            data = {"battle_mode": self._battle_mode, "depth": self._bracket.get_bracket()}
 
-            if self._match_index == self._match_cnt:
+            if self._bracket.is_end:
                 return "tournament_tree", "6-1 대진표", data, "game_over"
 
             return "tournament_tree", "3-1 대진표", data
 
         return "error", "not match subtype", {}
 
-    def match_making(self):
-        """(임시)매치 메이킹 함수"""
-        self._bracket.append(self._nickname)
-        self._match_cnt = self._headcount // 2
+    def get_winner_nickname(self, data) -> str:
+        player1, player2 = data["player1"], data["player2"]
 
-    # 대진표
-    def get_bracket(self):
-        return self._bracket
+        if player1["score"] == self._total_score:
+            return player1["nickname"]
+
+        if player2["score"] == self._total_score:
+            return player2["nickname"]
+
+        return "error"
 
     def initialize_match(self):
         paddle_height, ball_speed, ball_accel_speed = self.get_level_info()
+        player1_nickname, player2_nickname = self._bracket.get_match_nickname()
+
         self._match_manager = MatchManager(
             total_score=self._total_score,
             paddle_height=paddle_height,
             ball_speed=ball_speed,
             ball_accel_speed=ball_accel_speed,
+            player1_name=player1_nickname,
+            player2_name=player2_nickname,
         )
 
-        self._match_index += 1
         return self.get_initial_settings()
 
     # 매치 진행
     def start_match(self):
-        pass
-
-    # 매치 끝난 후 대진표 업데이트
-    def update_bracket(self):
         pass
 
     def set_match_key_set(self, key_set):
