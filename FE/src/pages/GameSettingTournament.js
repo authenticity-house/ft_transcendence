@@ -121,7 +121,7 @@ class GameSettingTournament {
 			const minusButton = document.querySelector('.minus');
 			const plusButton = document.querySelectorAll('.plus');
 
-			if (count <= 1) minusButton.classList.add('dis');
+			if (count <= 3) minusButton.classList.add('dis');
 			else minusButton.classList.remove('dis');
 
 			plusButton.forEach((button) => {
@@ -136,7 +136,7 @@ class GameSettingTournament {
 			let count = parseInt(input.value, 10);
 
 			if (this.classList.contains('minus')) {
-				if (count > 1) {
+				if (count > 3) {
 					removeInputNickname(count);
 					count -= 1;
 				}
