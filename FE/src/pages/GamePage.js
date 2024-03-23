@@ -39,7 +39,7 @@ class GamePage {
 			<button class="return-button" style="margin: 30px">Return</button>
 			<button
 				type="button"
-				class="btn btn-primary return-button"
+				class="return-button"
 				data-bs-toggle="modal"
 				data-bs-target="#staticBackdrop"
 			>
@@ -67,7 +67,13 @@ class GamePage {
 						</div>
 						<div class="modal-body"></div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary">나가기</button>
+							<button
+								type="button"
+								class="btn btn-secondary real-exit"
+								data-bs-dismiss="modal"
+							>
+								나가기
+							</button>
 							<button
 								type="button"
 								class="btn btn-primary"
@@ -288,7 +294,8 @@ class GamePage {
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
-		const returnButton = document.querySelector('.return-button');
+
+		const returnButton = document.querySelector('.real-exit');
 		returnButton.addEventListener('click', () => {
 			const disconnectMessage = {
 				type: 'disconnect',
@@ -298,6 +305,17 @@ class GamePage {
 			gamewebsocket.close();
 			changeUrl('match');
 		});
+
+		//const returnButton = document.querySelector('.return-button');
+		//returnButton.addEventListener('click', () => {
+		//	const disconnectMessage = {
+		//		type: 'disconnect',
+		//		message: "I'm leaving!"
+		//	};
+		//	gamewebsocket.send(JSON.stringify(disconnectMessage));
+		//	gamewebsocket.close();
+		//	changeUrl('match');
+		//});
 	}
 }
 
