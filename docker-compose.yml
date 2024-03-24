@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    container_name: nginx_container
+    volumes:
+      - ./FE:/usr/share/nginx/html/FE
+
+networks:
+  pong_net:
+    driver: bridge

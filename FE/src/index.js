@@ -24,7 +24,7 @@ setTimeout(() => {
 const root = document.querySelector('#root');
 
 // homeLink is the root path of the website
-const homeLink = '/FE/public/';
+const homeLink = '/';
 
 // routes object is used to change the page
 const routes = {
