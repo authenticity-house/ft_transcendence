@@ -1,6 +1,59 @@
 const html = String.raw;
 
-class GraphScore {
+class DuelGraphStats {
+	static getScoreTrendHTML(matchData) {
+		return html`
+			<div class="score-trend-container">
+				<div class="score-trend-title display-light24">득점 추이</div>
+				<div class="score-trend-canvas-container">
+					<div class="score-trend-canvas-text-container display-light10"></div>
+					<canvas
+						class="score-trend-canvas-draw-container"
+						width="335"
+						height="360"
+					></canvas>
+				</div>
+				<div class="score-trend-player-name-container display-light16">
+					<div class="score-trend-player-name-wrapper">
+						<div class="score-player-name-margin-right">
+							${matchData.leftPlayer}
+						</div>
+						<div class="score-player-color-yellow"></div>
+					</div>
+					<div class="score-trend-player-name-wrapper">
+						<div class="score-player-name-margin-right">
+							${matchData.rightPlayer}
+						</div>
+						<div class="score-player-color-blue"></div>
+					</div>
+				</div>
+			</div>
+		`;
+	}
+
+	static getScorePositionHTML(matchData) {
+		return html`
+			<div class="score-position-container">
+				<div class="score-position-title display-light24">득점 위치</div>
+				<div class="score-position-player-name-container display-light16">
+					<div class="score-position-player-left-wrapper">
+						<div class="score-player-name-margin-right">
+							${matchData.leftPlayer}
+						</div>
+						<div class="score-player-color-yellow"></div>
+					</div>
+					<div class="score-position-player-right-wrapper">
+						<div class="score-player-color-blue"></div>
+						<div class="score-player-name-margin-left">
+							${matchData.rightPlayer}
+						</div>
+					</div>
+				</div>
+				<canvas class="score-position-canvas" width="280" height="360"></canvas>
+			</div>
+		`;
+	}
+
 	static appendScoresToYAxis(maxScore) {
 		const scoreText = document.querySelector(
 			'.score-trend-canvas-text-container'
@@ -134,4 +187,5 @@ class GraphScore {
 		);
 	}
 }
-export default GraphScore;
+
+export default DuelGraphStats;
