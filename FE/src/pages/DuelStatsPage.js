@@ -1,45 +1,18 @@
 import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
-import {
-	graphScoreText,
-	getScoreTextPosition,
-	graphScoreTrend,
-	graphScorePosition
-} from '../components/GraphScore.js';
+import DuelStatsData from '../components/DuelStatsData.js';
+import GraphScore from '../components/GraphScore.js';
+// import
 
 const html = String.raw;
 
 class DuelStatsPage {
 	template(data) {
-		const attackTypeList = ['공격형', '방어형', '혼합형'];
-		const attackPosList = ['상단', '중단', '하단', '전체'];
-		/* Mock Data - api 가져오기 */
-		const leftPlayer = data ? data.player1.nickname : '플레이어1';
-		const rightPlayer = data ? data.player2.nickname : '플레이어2';
-		const leftScore = data ? data.player1.score : 0;
-		const rightScore = data ? data.player2.score : 0;
-		const matchDate = data ? data.date : '2021-03-17';
-		const matchTime = data ? data.play_time : '00:00:01';
-		const winPlayer =
-			leftScore > rightScore ? `${leftPlayer} WIN!` : `${rightPlayer} WIN!`;
-		const maxRally = data ? data.rally[0] : 0;
-		const maxMaxBallSpeed = data ? data.max_ball_speed[0] : 0;
-		const avgRally = data ? data.rally[1] : 0;
-		const avgMaxBallSpeed = data ? data.max_ball_speed[1] : 0;
-		const minRally = data ? data.rally[2] : 0;
-		const minMaxBallSpeed = data ? data.max_ball_speed[2] : 0;
-		const attackType1 = data ? data.player1.attack_type : 0;
-		const attackType2 = data ? data.player2.attack_type : 0;
-		const powerUpCnt1 = data ? data.player1.power_up_cnt : 0;
-		const powerUpCnt2 = data ? data.player2.power_up_cnt : 0;
-		const keyCnt1 = data ? data.player1.key_cnt : 0;
-		const keyCnt2 = data ? data.player2.key_cnt : 0;
-		const attackPos1 = data ? data.player1.attack_pos : 0;
-		const attackPos2 = data ? data.player2.attack_pos : 0;
+		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
-		const titlComponent = new BoldTitle(winPlayer, 'pink');
+		const titlComponent = new BoldTitle(matchData.winPlayer, 'pink');
 		const nextButton = new ButtonSmall('다음');
 
 		return html`
@@ -47,13 +20,13 @@ class DuelStatsPage {
 				${titlComponent.template()}
 				<div class="medium-window-container">
 					<div class="score-board-container display-light28">
-						<div>${leftPlayer}</div>
+						<div>${matchData.leftPlayer}</div>
 						<ul class="score-board-wrapper pink_neon_10">
-							<li>${leftScore}</li>
+							<li>${matchData.leftScore}</li>
 							<li>:</li>
-							<li>${rightScore}</li>
+							<li>${matchData.rightScore}</li>
 						</ul>
-						<div>${rightPlayer}</div>
+						<div>${matchData.rightPlayer}</div>
 					</div>
 					<div class="divider"></div>
 					<div class="basic-stats-container display-light18">
@@ -63,13 +36,13 @@ class DuelStatsPage {
 									<tr>
 										<td>경기날짜</td>
 										<td></td>
-										<td>${matchDate}</td>
+										<td>${matchData.matchDate}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
 										<td>경기시간</td>
 										<td></td>
-										<td>${matchTime}</td>
+										<td>${matchData.matchTime}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -88,25 +61,25 @@ class DuelStatsPage {
 									<tr>
 										<td>최대</td>
 										<td></td>
-										<td>${maxRally}</td>
+										<td>${matchData.maxRally}</td>
 										<td></td>
-										<td>${maxMaxBallSpeed.toFixed(2)}</td>
+										<td>${matchData.maxMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
 										<td>평균</td>
 										<td></td>
-										<td>${avgRally.toFixed(2)}</td>
+										<td>${matchData.avgRally.toFixed(2)}</td>
 										<td></td>
-										<td>${avgMaxBallSpeed.toFixed(2)}</td>
+										<td>${matchData.avgMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 									<tr class="basic-table-tr-spacer"></tr>
 									<tr>
 										<td>최소</td>
 										<td></td>
-										<td>${minRally}</td>
+										<td>${matchData.minRally}</td>
 										<td></td>
-										<td>${minMaxBallSpeed.toFixed(2)}</td>
+										<td>${matchData.minMaxBallSpeed.toFixed(2)}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -117,43 +90,43 @@ class DuelStatsPage {
 						<table>
 							<tbody>
 								<tr class="display-light24">
-									<td>${leftPlayer}</td>
+									<td>${matchData.leftPlayer}</td>
 									<td></td>
 									<td>.</td>
 									<td></td>
-									<td>${rightPlayer}</td>
+									<td>${matchData.rightPlayer}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>${attackTypeList[attackType1]}</td>
+									<td>${matchData.leftAttackType}</td>
 									<td></td>
 									<td>공격성향</td>
 									<td></td>
-									<td>${attackTypeList[attackType2]}</td>
+									<td>${matchData.rightAttackType}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>${powerUpCnt1}</td>
+									<td>${matchData.powerUpCnt1}</td>
 									<td></td>
 									<td>파워업 공격 횟수</td>
 									<td></td>
-									<td>${powerUpCnt2}</td>
+									<td>${matchData.powerUpCnt2}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>${keyCnt1.toFixed(2)}</td>
+									<td>${matchData.keyCnt1.toFixed(2)}</td>
 									<td></td>
 									<td>평균 키 입력 횟수</td>
 									<td></td>
-									<td>${keyCnt2.toFixed(2)}</td>
+									<td>${matchData.keyCnt2.toFixed(2)}</td>
 								</tr>
 								<tr class="special-table-tr-spacer"></tr>
 								<tr>
-									<td>${attackPosList[attackPos1]}</td>
+									<td>${matchData.leftAttackPos}</td>
 									<td></td>
 									<td>주요 공격 위치</td>
 									<td></td>
-									<td>${attackPosList[attackPos2]}</td>
+									<td>${matchData.rightAttackPos}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -175,13 +148,13 @@ class DuelStatsPage {
 							<div class="score-trend-player-name-container display-light16">
 								<div class="score-trend-player-name-wrapper">
 									<div class="score-player-name-margin-right">
-										${leftPlayer}
+										${matchData.leftPlayer}
 									</div>
 									<div class="score-player-color-yellow"></div>
 								</div>
 								<div class="score-trend-player-name-wrapper">
 									<div class="score-player-name-margin-right">
-										${rightPlayer}
+										${matchData.rightPlayer}
 									</div>
 									<div class="score-player-color-blue"></div>
 								</div>
@@ -192,14 +165,14 @@ class DuelStatsPage {
 							<div class="score-position-player-name-container display-light16">
 								<div class="score-position-player-left-wrapper">
 									<div class="score-player-name-margin-right">
-										${leftPlayer}
+										${matchData.leftPlayer}
 									</div>
 									<div class="score-player-color-yellow"></div>
 								</div>
 								<div class="score-position-player-right-wrapper">
 									<div class="score-player-color-blue"></div>
 									<div class="score-player-name-margin-left">
-										${rightPlayer}
+										${matchData.rightPlayer}
 									</div>
 								</div>
 							</div>
@@ -223,23 +196,18 @@ class DuelStatsPage {
 	}
 
 	mount(data) {
+		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
-		const leftScoreTrend = data ? data.graph.player1.score_trend : [];
-		const rightScoreTrend = data ? data.graph.player2.score_trend : [];
-		const leftScore = data ? data.player1.score : 15;
-		const rightScore = data ? data.player2.score : 15;
-		const maxScore = leftScore >= rightScore ? leftScore : rightScore;
-		const scoreText = document.querySelector(
-			'.score-trend-canvas-text-container'
+		GraphScore.appendScoresToYAxis(matchData.maxScore);
+		GraphScore.appendScoreTrendGraph(
+			matchData.leftScoreTrend,
+			matchData.rightScoreTrend
 		);
-		scoreText.appendChild(graphScoreText(maxScore));
-		const position = getScoreTextPosition();
-		graphScoreTrend(leftScoreTrend, rightScoreTrend, position);
-
 		// score-position
-		const leftPosition = data ? data.graph.player1.score_pos : [];
-		const rightPosition = data ? data.graph.player2.score_pos : [];
-		graphScorePosition(leftPosition, rightPosition);
+		GraphScore.appendScorePositionGraph(
+			matchData.leftPosition,
+			matchData.rightPosition
+		);
 	}
 }
 
