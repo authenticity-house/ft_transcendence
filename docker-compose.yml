@@ -6,8 +6,20 @@ services:
     ports:
       - "8080:80"
     container_name: nginx_container
+    depends_on:
+      - game
     volumes:
       - ./FE:/usr/share/nginx/html/FE
+    networks:
+      - pong_net
+
+  game:
+    build: ./GAME
+    container_name: game_container
+    volumes:
+      - ./GAME:/code
+    networks:
+      - pong_net
 
 networks:
   pong_net:
