@@ -238,14 +238,23 @@ export class Gamewebsocket {
 						this.renderThreeJs(message.data);
 					} else if (message.subtype === 'match_end') {
 						console.log('match_end');
-						const disconnectMessage = {
-							type: 'disconnect',
-							message: 'plz!'
-						};
-						this.player1Score.textContent = message.data.player1.score;
-						this.player2Score.textContent = message.data.player2.score;
-						this.ws.send(JSON.stringify(disconnectMessage));
-						changeUrlData('duelstats', message.data);
+						if (this.gamesetting.battle_mode === 1) {
+							const disconnectMessage = {
+								type: 'disconnect',
+								message: 'plz!'
+							};
+							this.ws.send(JSON.stringify(disconnectMessage));
+
+							changeUrlData('duelstats', message.data);
+						} else {
+							// changeUrlData('duelstats', message.data);
+							const nextMessage = {
+								type: 'game',
+								subtype: 'next_match',
+								message: 'go!'
+							};
+							this.ws.send(JSON.stringify(nextMessage));
+						}
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
 					}

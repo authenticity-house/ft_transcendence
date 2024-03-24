@@ -33,19 +33,6 @@ class TournamentPage {
 		`;
 	}
 
-	addEventListeners() {
-		const next = document.querySelector('.event-click-match');
-		next.addEventListener('click', () => {
-			const message = JSON.stringify({
-				type: 'game',
-				subtype: 'match_init_setting',
-				message: 'go!',
-				data: {}
-			});
-			this.data.Gamewebsocket.send(message);
-		});
-	}
-
 	mount() {
 		/* <MOCK DATA> bracketInfo = data.depth (data.depth[0] 빼고 다 활용) */
 		// data.depth[1], data.dept[2]
@@ -88,6 +75,19 @@ class TournamentPage {
 				addWireBracket(position, child, depth);
 			}
 		}
+	}
+
+	addEventListeners() {
+		const next = document.querySelector('.event-click-match');
+		next.addEventListener('click', () => {
+			const message = JSON.stringify({
+				type: 'game',
+				subtype: 'match_init_setting',
+				message: 'go!',
+				data: {}
+			});
+			this.data.Gamewebsocket.send(message);
+		});
 	}
 }
 
