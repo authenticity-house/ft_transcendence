@@ -15,7 +15,7 @@ class GameSettingPage {
 				ball: '#FFD164'
 			},
 			headcount: 2,
-			nickname: []
+			nickname: ['player1', 'player2']
 		};
 	}
 
