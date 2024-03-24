@@ -4,7 +4,8 @@ import * as THREE from 'three';
 import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
-import { changeUrl, changeUrlData } from '../index.js';
+import { changeUrl } from '../index.js';
+import { Gamewebsocket } from '../Gamewebsocket.js';
 
 const html = String.raw;
 
@@ -39,15 +40,6 @@ class GamePage {
 	}
 
 	addEventListeners() {
-		// const INIT_BALL_SPEED = 0.05;
-		// const REFLECT_SPEED = 0.1;
-		// const PADDLE_SPEED = 0.07;
-		// const WIN_SCORE = '10';
-
-		// // get score element with querySelector
-		// const player1Score = document.querySelector('.player1');
-		// const player2Score = document.querySelector('.player2');
-
 		// Create a scene
 		const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x141343);
@@ -166,11 +158,6 @@ class GamePage {
 				paddleLightGroup.add(paddleLight);
 			}
 		}
-		function changePaddleLightColor(paddleLightGroup, paddleColor) {
-			paddleLightGroup.children.forEach((paddleLight) => {
-				paddleLight.color.set(paddleColor);
-			});
-		}
 
 		addPaddleLights(paddleMesh1, paddleLightGroup1);
 		addPaddleLights(paddleMesh2, paddleLightGroup2);
@@ -234,9 +221,17 @@ class GamePage {
 			scene.add(textMesh);
 		});
 
-		let frame = 0;
-
 		renderer.render(scene, camera);
+
+		this.camera = camera;
+		this.scene = scene;
+		this.renderer = renderer;
+		this.paddleMesh1 = paddleMesh1;
+		this.paddleMesh2 = paddleMesh2;
+		this.paddleLightGroup1 = paddleLightGroup1;
+		this.paddleLightGroup2 = paddleLightGroup2;
+		this.ballMesh = ballMesh;
+		this.ballLight = ballLight;
 
 		// Resize the window
 		window.addEventListener('resize', () => {
@@ -246,250 +241,7 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		// -------------------------------------------------------------------------------------------------------------------------
-		// websocket 통신
-
-		const websocket = new WebSocket('ws://localhost:8000/ws/game-server/');
-
-		function isOpen(ws) {
-			return ws.readyState === ws.OPEN;
-		}
-
-		websocket.onclose = () => {
-			console.log('Disconnected from server');
-		};
-
-		websocket.onerror = (error) => {
-			console.log(`Error: ${error}`);
-		};
-
-		// 게임 서버로 게임 초기 정보 전송
-		const sendGameSessionInfo = () => {
-			const message = {
-				type: 'game',
-				subtype: 'session_info',
-				message: '',
-				data: this.initial
-			};
-			websocket.send(JSON.stringify(message));
-		};
-
-		// 게임 서버가 보내온 게임 초기 정보 세팅
-		// 게임 서버로 매치 시작 요청 전송
-		function sendGameStartRequest(data) {
-			const { color } = data;
-
-			paddleMesh1.material.emissive.set(color.paddle);
-			paddleMesh2.material.emissive.set(color.paddle);
-			changePaddleLightColor(paddleLightGroup1, color.paddle);
-			changePaddleLightColor(paddleLightGroup2, color.paddle);
-
-			ballMesh.material.emissive.set(color.ball);
-			ballLight.color.set(color.ball);
-
-			const player1Name = document.querySelector('.player1-name');
-			const player2Name = document.querySelector('.player2-name');
-
-			player1Name.textContent = data.nickname.player1;
-			player2Name.textContent = data.nickname.player2;
-
-			const message = {
-				type: 'game',
-				subtype: 'match_start',
-				message: 'go!',
-				data: '',
-				match_id: 123
-			};
-			websocket.send(JSON.stringify(message));
-		}
-
-		const player1Score = document.querySelector('.player1');
-		const player2Score = document.querySelector('.player2');
-
-		// 게임 종료 시 winner 설정
-		let winner = 0;
-
-		const gameResult = document.querySelector('.game-result');
-		const totalScore = this.initial.total_score;
-
-		// 화면 렌더링
-		function renderThreeJs(data) {
-			frame += 1;
-			if (Number(player1Score.textContent) === totalScore) {
-				winner = 1;
-			}
-			if (Number(player2Score.textContent) === totalScore) {
-				winner = 2;
-			}
-
-			// Camera movement
-			if (frame < 100) {
-				camera.position.x = -4;
-				camera.position.y = -1 + (frame / 100) * 2;
-				camera.lookAt(paddleMesh1.position);
-			}
-			if (frame >= 100 && frame < 200) {
-				camera.position.x = 4;
-				camera.position.y = 1 - ((frame - 100) / 100) * 2;
-				camera.lookAt(paddleMesh2.position);
-			}
-			if (frame >= 200 && frame <= 300) {
-				camera.position.x = 0;
-				camera.position.y = 0;
-				camera.position.z =
-					3.5 +
-					Math.sin((3 / 2) * Math.PI + ((frame - 200) / 100) * Math.PI) *
-						(1 / 2);
-				camera.lookAt(0, 0, 0);
-				if (frame === 200) {
-					scene.children[scene.children.length - 1].visible = true;
-				}
-				if (frame >= 275 && frame < 300 && frame % 4 === 0) {
-					scene.children[scene.children.length - 1].visible =
-						!scene.children[scene.children.length - 1].visible;
-				}
-				if (frame === 300) {
-					scene.children[scene.children.length - 1].visible = false;
-					// ballSpeed = INIT_BALL_SPEED;
-					// direction.x = Math.cos(seed) * ballSpeed;
-					// direction.y = Math.sin(seed) * ballSpeed;
-				}
-			}
-
-			// object destructuring
-			const { ball: ballData, paddle1, paddle2, score } = data;
-
-			ballMesh.position.x = ballData.x;
-			ballMesh.position.y = ballData.y;
-			paddleMesh1.position.y = paddle1.y;
-			paddleLightGroup1.position.y = paddle1.y;
-			paddleMesh2.position.y = paddle2.y;
-			paddleLightGroup2.position.y = paddle2.y;
-
-			if (Number(player1Score.textContent) !== score.player1) {
-				player1Score.classList.remove('score_transition');
-				void player1Score.offsetWidth;
-				player1Score.textContent = score.player1;
-				player1Score.classList.add('score_transition');
-			}
-			if (Number(player2Score.textContent) !== score.player2) {
-				player2Score.classList.remove('score_transition');
-				void player2Score.offsetWidth;
-				player2Score.textContent = score.player2;
-				player2Score.classList.add('score_transition');
-			}
-
-			ballLight.position.copy(ballMesh.position);
-
-			if (winner === 1) {
-				camera.position.x = -4;
-				camera.lookAt(paddleMesh1.position);
-				gameResult.style.display = 'block';
-			}
-			if (winner === 2) {
-				camera.position.x = 4;
-				camera.lookAt(paddleMesh2.position);
-				gameResult.style.display = 'block';
-			}
-
-			renderer.render(scene, camera);
-		}
-
-		// 사용자 키 입력 이벤트리스너 등록
-
-		const keyDownList = new Set();
-		document.addEventListener('keydown', (event) => {
-			if (isOpen(websocket)) {
-				let isChange = false;
-
-				if (
-					['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown'].includes(event.code) &&
-					!keyDownList.has(event.code)
-				) {
-					keyDownList.add(event.code);
-					isChange = true;
-				}
-
-				if (isChange) {
-					const message = JSON.stringify({
-						type: 'game',
-						subtype: 'key_down',
-						message: 'key!',
-						match_id: 1,
-						data: {
-							key_set: Array.from(keyDownList)
-						}
-					});
-					websocket.send(message);
-				}
-			}
-		});
-
-		document.addEventListener('keyup', (event) => {
-			if (isOpen(websocket)) {
-				let isChange = false;
-
-				if (keyDownList.has(event.code)) {
-					keyDownList.delete(event.code);
-					isChange = true;
-				}
-
-				if (isChange) {
-					const message = JSON.stringify({
-						type: 'game',
-						subtype: 'key_down',
-						message: 'key!',
-						match_id: 1,
-						data: {
-							key_set: Array.from(keyDownList)
-						}
-					});
-					websocket.send(message);
-				}
-			}
-		});
-
-		async function receiveMessages() {
-			websocket.onmessage = (event) => {
-				const message = JSON.parse(event.data);
-				switch (message.type) {
-					// case 'connection_established':
-					// 	sendGameSessionInfo();
-					// 	break;
-
-					case 'game':
-						if (message.subtype === 'connection_established') {
-							sendGameSessionInfo();
-						} else if (message.subtype === 'match_init_setting') {
-							sendGameStartRequest(message.data);
-						} else if (message.subtype === 'match_run') {
-							renderThreeJs(message.data);
-						} else if (message.subtype === 'match_end') {
-							console.log('match_end');
-							const disconnectMessage = {
-								type: 'disconnect',
-								message: 'plz!'
-							};
-							player1Score.textContent = message.data.player1.score;
-							player2Score.textContent = message.data.player2.score;
-							websocket.send(JSON.stringify(disconnectMessage));
-							changeUrlData('duelstats', message.data);
-						} else if (message.subtype === 'error') {
-							console.log(`server: ${message.message}`);
-						}
-						break;
-
-					default:
-						console.log('default');
-						break;
-				}
-			};
-		}
-
-		websocket.onopen = () => {
-			console.log('Connected to server');
-			Promise.all([receiveMessages()]);
-		};
+		const gamewebsocket = new Gamewebsocket(this);
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
@@ -499,9 +251,9 @@ class GamePage {
 				type: 'disconnect',
 				message: "I'm leaving!"
 			};
-			websocket.send(JSON.stringify(disconnectMessage));
-			websocket.close();
-			changeUrl('');
+			gamewebsocket.send(JSON.stringify(disconnectMessage));
+			gamewebsocket.close();
+			changeUrl('match');
 		});
 	}
 }

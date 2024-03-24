@@ -16,7 +16,7 @@ class GameSettingTournament {
 				ball: '#FFD164'
 			},
 			headcount: 4,
-			nickname: []
+			nickname: ['', '', '', '']
 		};
 	}
 
@@ -43,7 +43,7 @@ class GameSettingTournament {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
-		const initialIndex = 4;
+		const initialIndex = this.data.headcount;
 		const inputNickname1 = new InputNickname();
 		return html`
 			<div class="game-setting-window head_white_neon_15">
@@ -75,10 +75,10 @@ class GameSettingTournament {
 								<div class="input-nickname-container">
 									<div class="text-subtitle-1 width-14">닉네임 입력</div>
 									<div class="input-nickname-two-col">
-										<div class="input-nickname-col-1">
-											${inputNickname1.containDiv(initialIndex)}
-										</div>
-										<div class="input-nickname-col-2"></div>
+										${inputNickname1.containDiv(
+											initialIndex,
+											this.data.nickname
+										)}
 									</div>
 								</div>
 							</div>
@@ -121,7 +121,7 @@ class GameSettingTournament {
 			const minusButton = document.querySelector('.minus');
 			const plusButton = document.querySelectorAll('.plus');
 
-			if (count <= 1) minusButton.classList.add('dis');
+			if (count <= 3) minusButton.classList.add('dis');
 			else minusButton.classList.remove('dis');
 
 			plusButton.forEach((button) => {
@@ -136,7 +136,7 @@ class GameSettingTournament {
 			let count = parseInt(input.value, 10);
 
 			if (this.classList.contains('minus')) {
-				if (count > 1) {
+				if (count > 3) {
 					removeInputNickname(count);
 					count -= 1;
 				}
@@ -162,14 +162,6 @@ class GameSettingTournament {
 			changeUrlData('gameSetting', null);
 		});
 
-		// 세부 설정 버튼
-		const detailedButton = document.querySelector(
-			'.verticalButton button:nth-child(1)'
-		);
-		detailedButton.addEventListener('click', () => {
-			changeUrlData('gameSettingDetailed', this.data);
-		});
-
 		function updateNicknamesData(res) {
 			const nicknameInputs = document.querySelectorAll(
 				'.input-nickname input[type="text"]'
@@ -180,6 +172,17 @@ class GameSettingTournament {
 			);
 			res.nickname = Array.from(nicknameInputs).map((input) => input.value);
 		}
+
+		// 세부 설정 버튼
+		const detailedButton = document.querySelector(
+			'.verticalButton button:nth-child(1)'
+		);
+		detailedButton.addEventListener('click', () => {
+			// const newData = this.data;
+			// this.resetData();
+			updateNicknamesData(this.data);
+			changeUrlData('gameSettingDetailed', this.data);
+		});
 
 		// 시작 버튼
 		const startButton = document.querySelector(
