@@ -39,6 +39,9 @@ class Paddle:
     def get_edges(self, ball_radius: float) -> list:
         return calculate_bounds_rect(Point(self.x, self.y), self.width, self._height, ball_radius)
 
+    def get_stat_data(self) -> dict[str, float]:
+        return {"x": self._x, "y": self._y, "width": self.width, "height": self._height}
+
     @property
     def x(self) -> float:
         return self._x
