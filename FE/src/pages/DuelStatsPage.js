@@ -10,6 +10,7 @@ const html = String.raw;
 
 class DuelStatsPage {
 	template(data) {
+		this.data = data;
 		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
@@ -48,7 +49,16 @@ class DuelStatsPage {
 	addEventListeners() {
 		const back = document.querySelector('.event-click-match');
 		back.addEventListener('click', () => {
-			changeUrl('match');
+			if (this.data.Gamewebsocket) {
+				const nextMessage = {
+					type: 'game',
+					subtype: 'next_match',
+					message: 'go!'
+				};
+				this.data.Gamewebsocket.send(JSON.stringify(nextMessage));
+			} else {
+				changeUrl('match');
+			}
 		});
 	}
 

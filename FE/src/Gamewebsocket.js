@@ -93,6 +93,8 @@ export class Gamewebsocket {
 			message: '',
 			data: this.gamepage.initial
 		};
+		// 임시로 1로 설정
+		message.data.total_score = 1;
 		this.ws.send(JSON.stringify(message));
 	}
 
@@ -244,17 +246,10 @@ export class Gamewebsocket {
 								message: 'plz!'
 							};
 							this.ws.send(JSON.stringify(disconnectMessage));
-
-							changeUrlData('duelstats', message.data);
 						} else {
-							// changeUrlData('duelstats', message.data);
-							const nextMessage = {
-								type: 'game',
-								subtype: 'next_match',
-								message: 'go!'
-							};
-							this.ws.send(JSON.stringify(nextMessage));
+							message.data.Gamewebsocket = this;
 						}
+						changeUrlData('duelstats', message.data);
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
 					}
