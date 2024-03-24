@@ -16,7 +16,7 @@ class GamePage {
 
 	template(initial) {
 		this.initial = initial;
-		this.initial.total_score *= 5;
+		console.log(initial);
 
 		return html`
 			<div class="game-header">

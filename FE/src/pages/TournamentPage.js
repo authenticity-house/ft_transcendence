@@ -1,4 +1,3 @@
-import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import {
@@ -11,25 +10,14 @@ import {
 const html = String.raw;
 
 class TournamentPage {
-	template() {
+	template(data) {
+		this.data = data;
+		console.log(data);
 		const titlComponent = new BoldTitle('대진표', 'yellow');
 		const nextButton = new ButtonSmall('다음');
 
 		/* <MOCK DATA> bracketInfo = data.depth */
-		const bracketInfo = [
-			[
-				'wonyang',
-				'jeongmin',
-				'joyoo',
-				'jihylim',
-				'player5',
-				'player6',
-				'player7'
-			],
-			['wonyang', 'PONG !', '', ''],
-			['', ''],
-			['']
-		];
+		const bracketInfo = data.bracket;
 		const openBracket = bracketTemplate(bracketInfo[0]);
 
 		return html`
@@ -48,7 +36,13 @@ class TournamentPage {
 	addEventListeners() {
 		const next = document.querySelector('.event-click-match');
 		next.addEventListener('click', () => {
-			changeUrl('');
+			const message = JSON.stringify({
+				type: 'game',
+				subtype: 'match_init_setting',
+				message: 'go!',
+				data: {}
+			});
+			this.data.Gamewebsocket.send(message);
 		});
 	}
 

@@ -228,6 +228,10 @@ export class Gamewebsocket {
 				case 'game':
 					if (message.subtype === 'connection_established') {
 						this.sendGameSessionInfo();
+					} else if (message.subtype === 'tournament_tree') {
+						console.log(message);
+						message.data.Gamewebsocket = this;
+						changeUrlData('tournament', message.data);
 					} else if (message.subtype === 'match_init_setting') {
 						this.sendGameStartRequest(message.data);
 					} else if (message.subtype === 'match_run') {
