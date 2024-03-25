@@ -241,7 +241,11 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		const gamewebsocket = new Gamewebsocket(this);
+		this.initial.Gamewebsocket.gamepage = this;
+
+		this.initial.Gamewebsocket.addListeners();
+
+		this.initial.Gamewebsocket.sendGameStartRequest();
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
@@ -251,8 +255,9 @@ class GamePage {
 				type: 'disconnect',
 				message: "I'm leaving!"
 			};
-			gamewebsocket.send(JSON.stringify(disconnectMessage));
-			gamewebsocket.close();
+			this.initial.Gamewebsocket.send(JSON.stringify(disconnectMessage));
+			this.initial.Gamewebsocket.close();
+			console.log('match_end');
 			changeUrl('match');
 		});
 	}

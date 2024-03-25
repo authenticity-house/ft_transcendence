@@ -5,26 +5,16 @@ import DuelStatsData from '../components/DuelStatsData.js';
 import DuelBasicStats from '../components/DuelBasicStats.js';
 import DuelSpecialStats from '../components/DuelSpecialStats.js';
 import DuelGraphStats from '../components/DuelGraphStats.js';
-import DuelStatsData from '../components/DuelStatsData.js';
-import DuelBasicStats from '../components/DuelBasicStats.js';
-import DuelSpecialStats from '../components/DuelSpecialStats.js';
-import DuelGraphStats from '../components/DuelGraphStats.js';
 
 const html = String.raw;
 
 class DuelStatsPage {
 	template(data) {
 		this.data = data;
+
 		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
-		const titleComponent = new BoldTitle(matchData.winPlayer, 'pink');
-		const scoreBoardHtml = DuelBasicStats.getScoreBoardHTML(matchData);
-		const matchDateTimeHtml = DuelBasicStats.getMatchDateTimeHTML(matchData);
-		const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(matchData);
-		const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(matchData);
-		const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(matchData);
-		const scorePositionHtml = DuelGraphStats.getScorePositionHTML(matchData);
 		const titleComponent = new BoldTitle(matchData.winPlayer, 'pink');
 		const scoreBoardHtml = DuelBasicStats.getScoreBoardHTML(matchData);
 		const matchDateTimeHtml = DuelBasicStats.getMatchDateTimeHTML(matchData);
@@ -36,20 +26,18 @@ class DuelStatsPage {
 
 		return html`
 			<div class="medium-window head_white_neon_15">
-				${titleComponent.template()} ${titleComponent.template()}
+				${titleComponent.template()}
 				<div class="medium-window-container">
-					${scoreBoardHtml} ${scoreBoardHtml}
+					${scoreBoardHtml}
 					<div class="divider"></div>
 					<div class="basic-stats-container display-light18">
-						${matchDateTimeHtml} ${matchRallyHtml} ${matchDateTimeHtml}
-						${matchRallyHtml}
+						${matchDateTimeHtml} ${matchRallyHtml}
 					</div>
 					<div class="divider"></div>
-					${specialStatsHtml} ${specialStatsHtml}
+					${specialStatsHtml}
 					<div class="divider"></div>
 					<div class="graph-container">
-						${scoreTrendHtml} ${scorePositionHtml} ${scoreTrendHtml}
-						${scorePositionHtml}
+						${scoreTrendHtml} ${scorePositionHtml}
 					</div>
 				</div>
 				<div class="event-click-match" style="margin-top: 4rem">
@@ -63,6 +51,7 @@ class DuelStatsPage {
 		const back = document.querySelector('.event-click-match');
 		back.addEventListener('click', () => {
 			if (this.data.Gamewebsocket) {
+				console.log('결과창 들어오고 next_match보내기');
 				const nextMessage = {
 					type: 'game',
 					subtype: 'next_match',
@@ -77,18 +66,7 @@ class DuelStatsPage {
 
 	mount(data) {
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
-		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
-		DuelGraphStats.appendScoresToYAxis(matchData.maxScore);
-		DuelGraphStats.appendScoreTrendGraph(
-			matchData.leftScoreTrend,
-			matchData.rightScoreTrend
-		);
-		// score-position
-		DuelGraphStats.appendScorePositionGraph(
-			matchData.leftPosition,
-			matchData.rightPosition
-		);
 		DuelGraphStats.appendScoresToYAxis(matchData.maxScore);
 		DuelGraphStats.appendScoreTrendGraph(
 			matchData.leftScoreTrend,

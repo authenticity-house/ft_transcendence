@@ -1,6 +1,6 @@
 /* eslint-disable no-void */
 
-import { changeUrlData } from './index.js';
+import { changeUrl, changeUrlData } from './index.js';
 
 export class Gamewebsocket {
 	constructor(gamepage) {
@@ -94,7 +94,7 @@ export class Gamewebsocket {
 			data: this.gamepage.initial
 		};
 		// 임시로 1로 설정
-		message.data.total_score = 1;
+		// message.data.total_score = 1;
 		this.ws.send(JSON.stringify(message));
 	}
 
@@ -231,7 +231,6 @@ export class Gamewebsocket {
 					if (message.subtype === 'connection_established') {
 						this.sendGameSessionInfo();
 					} else if (message.subtype === 'tournament_tree') {
-						console.log(message);
 						message.data.Gamewebsocket = this;
 						changeUrlData('tournament', message.data);
 					} else if (message.subtype === 'match_init_setting') {
@@ -252,6 +251,25 @@ export class Gamewebsocket {
 						changeUrlData('duelstats', message.data);
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
+					}
+					break;
+				case 'game_over':
+					console.log('game over');
+					if (message.subtype === 'tournament_tree') {
+						message.data.Gamewebsocket = this;
+						message.data.gameOver = true;
+						changeUrlData('tournament', message.data);
+					}
+					break;
+				case 'game_over_response':
+					// 최종 경기결과 정보 전송
+					{
+						const disconnectMessage = {
+							type: 'disconnect',
+							message: 'plz!'
+						};
+						this.ws.send(JSON.stringify(disconnectMessage));
+						changeUrl('match');
 					}
 					break;
 				default:
