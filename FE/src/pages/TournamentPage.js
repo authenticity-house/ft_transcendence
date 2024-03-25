@@ -6,6 +6,12 @@ import {
 	addWireBracket,
 	getUserPosition
 } from '../components/TournamentBracket.js';
+import {
+	bracketTemplate,
+	addUserBracket,
+	addWireBracket,
+	getUserPosition
+} from '../components/TournamentBracket.js';
 
 const html = String.raw;
 
@@ -24,6 +30,7 @@ class TournamentPage {
 			<div class="medium-window head_white_neon_15">
 				${titlComponent.template()}
 				<div class="medium-window-container display-light18">
+					${openBracket}
 					${openBracket}
 				</div>
 				<div class="event-click-match" style="margin-top: 4rem">
@@ -59,6 +66,11 @@ class TournamentPage {
 		for (const child of tournamentBracketChild) {
 			if (depth === 0) {
 				depth += 1;
+		const tournamentBracketChild = tournamentBracket.children;
+		let depth = 0;
+		for (const child of tournamentBracketChild) {
+			if (depth === 0) {
+				depth += 1;
 				continue;
 			}
 			if (child.classList.contains('user-container')) {
@@ -71,7 +83,17 @@ class TournamentPage {
 					winPlayer
 				);
 				depth += 1;
+				addUserBracket(
+					position,
+					halfHeight,
+					child,
+					depth,
+					bracketInfo,
+					winPlayer
+				);
+				depth += 1;
 			} else if (child.classList.contains('wire-container')) {
+				addWireBracket(position, child, depth);
 				addWireBracket(position, child, depth);
 			}
 		}
