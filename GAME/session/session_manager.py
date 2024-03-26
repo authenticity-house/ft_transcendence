@@ -55,11 +55,11 @@ class ASessionManager(metaclass=ABCMeta):
     def get_level_info(self):
         """패들 길이, 공 속도, 공 가속도 반환"""
         if self._level == 1:
-            return 0.5, 0.45, 0.003
+            return 0.5, 0.045, 0.003
         if self._level == 2:
-            return 0.4, 0.5, 0.004
+            return 0.4, 0.05, 0.004
 
-        return 0.3, 0.55, 0.004
+        return 0.3, 0.055, 0.004
 
     def get_initial_settings(self):
         ball: Ball = self._match_manager.ball
