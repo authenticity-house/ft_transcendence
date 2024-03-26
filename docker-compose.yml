@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "8080:80"
+    container_name: nginx_container
+    depends_on:
+      - game
+      - backend
+    volumes:
+      - ./FE:/usr/share/nginx/html/FE
+    networks:
+      - pong_net
+
+  game:
+    build: ./GAME
+    container_name: game_container
+    volumes:
+      - ./GAME:/code
+    env_file:
+      - ./.env
+    networks:
+      - pong_net
+  
+  backend:
+    build: ./BE
+    container_name: backend_container
+    volumes:
+      - ./BE:/code
+    env_file:
+      - ./.env
+    networks:
+      - pong_net
+
+networks:
+  pong_net:
+    driver: bridge

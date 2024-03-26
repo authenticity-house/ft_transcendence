@@ -6,7 +6,7 @@ export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		const ws = new WebSocket('ws://localhost:8000/ws/game-server/');
+		const ws = new WebSocket('ws://localhost:8080/ws/game-server/');
 		this.ws = ws;
 
 		this.gamesetting = {};
