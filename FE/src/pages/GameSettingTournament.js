@@ -2,6 +2,7 @@ import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import InputNickname from '../components/InputNickname.js';
+import { Gamewebsocket } from '../Gamewebsocket.js';
 
 const html = String.raw;
 
@@ -192,8 +193,11 @@ class GameSettingTournament {
 			const newData = this.data;
 			this.resetData();
 			updateNicknamesData(newData);
-			changeUrlData('game', newData);
-			// changeUrlData('tournament', newData);
+			newData.total_score *= 5;
+			const gamewebsocket = new Gamewebsocket(newData);
+			console.log(gamewebsocket);
+			// changeUrlData('game', newData);
+			// changeUrlData('game', gamewebsocket);
 		});
 	}
 }
