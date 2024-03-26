@@ -8,7 +8,6 @@ const html = String.raw;
 class TournamentResultPage {
 	template(data) {
 		this.data = data;
-		console.log('최종경기결과', this.data);
 		const titlComponent = new BoldTitle('게임 결과', 'yellow');
 		const exitButton = new ButtonSmall('나가기');
 		let duelReports = '';

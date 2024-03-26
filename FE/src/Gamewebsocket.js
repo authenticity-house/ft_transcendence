@@ -254,7 +254,6 @@ export class Gamewebsocket {
 	receiveMessages() {
 		this.ws.onmessage = (e) => {
 			const message = JSON.parse(e.data);
-			console.log(message.type);
 			switch (message.type) {
 				case 'game':
 					if (message.subtype === 'connection_established') {
