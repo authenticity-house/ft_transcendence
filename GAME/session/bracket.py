@@ -113,4 +113,7 @@ class Bracket:
 
     @property
     def is_end(self):
-        return self._bracket[-1][0][0] not in [Bracket.MATCH_NOT_START, Bracket.MATCH_PLAYING]
+        return (
+            len(self._bracket) == self._play_match[0] + 1
+            and self._bracket[-1][-1][-1] != Bracket.MATCH_PLAYING
+        )
