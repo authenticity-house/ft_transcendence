@@ -1,4 +1,3 @@
-import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import {
@@ -11,25 +10,16 @@ import {
 const html = String.raw;
 
 class TournamentPage {
-	template() {
+	template(data) {
+		this.data = data;
+		// console.log(data);
+
 		const titlComponent = new BoldTitle('대진표', 'yellow');
 		const nextButton = new ButtonSmall('다음');
 
 		/* <MOCK DATA> bracketInfo = data.depth */
-		const bracketInfo = [
-			[
-				'wonyang',
-				'jeongmin',
-				'joyoo',
-				'jihylim',
-				'player5',
-				'player6',
-				'player7'
-			],
-			['wonyang', 'PONG !', '', ''],
-			['', ''],
-			['']
-		];
+		const bracketInfo = this.data.bracket;
+
 		const openBracket = bracketTemplate(bracketInfo[0]);
 
 		return html`
@@ -43,13 +33,6 @@ class TournamentPage {
 				</div>
 			</div>
 		`;
-	}
-
-	addEventListeners() {
-		const next = document.querySelector('.event-click-match');
-		next.addEventListener('click', () => {
-			changeUrl('');
-		});
 	}
 
 	mount() {
@@ -94,6 +77,17 @@ class TournamentPage {
 				addWireBracket(position, child, depth);
 			}
 		}
+	}
+
+	addEventListeners() {
+		const next = document.querySelector('.event-click-match');
+		next.addEventListener('click', () => {
+			if (this.data.gameOver === true) {
+				this.data.Gamewebsocket.sendGameOver();
+			} else {
+				this.data.Gamewebsocket.sendGameMatchInitSetting();
+			}
+		});
 	}
 }
 

@@ -123,7 +123,7 @@ class Ball:
         return False
 
     def get_stat_data(self) -> dict[str, str | float]:
-        return {"status": "in", "x": self._x, "y": self._y}
+        return {"status": "in", "x": self._x, "y": self._y, "radius": Ball.BALL_RADIUS}
 
     @property
     def x(self) -> float:

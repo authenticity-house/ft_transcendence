@@ -3,13 +3,30 @@
 import { changeUrlData } from './index.js';
 
 export class Gamewebsocket {
-	constructor(gamepage) {
-		console.log('Gamewebsocket created');
-		this.gamepage = gamepage;
+	constructor(initial) {
+		this.initial = initial;
 
 		const ws = new WebSocket('ws://localhost:8000/ws/game-server/');
 		this.ws = ws;
+
+		this.gamesetting = {};
+
+		this.gamepage = null;
+
+		this.player1Score = null;
+		this.player2Score = null;
+		this.gameResult = null;
+
 		this.frame = 0;
+		this.winner = 0;
+
+		ws.onopen = () => {
+			console.log('connected');
+			this.receiveMessages();
+		};
+	}
+
+	addListeners() {
 		this.player1Score = document.querySelector('.player1');
 		this.player2Score = document.querySelector('.player2');
 		this.gameResult = document.querySelector('.game-result');
@@ -17,7 +34,7 @@ export class Gamewebsocket {
 
 		const keyDownList = new Set();
 		document.addEventListener('keydown', (event) => {
-			if (this.isOpen(ws)) {
+			if (this.isOpen(this.ws)) {
 				let isChange = false;
 
 				if (
@@ -38,13 +55,13 @@ export class Gamewebsocket {
 							key_set: Array.from(keyDownList)
 						}
 					});
-					ws.send(message);
+					this.ws.send(message);
 				}
 			}
 		});
 
 		document.addEventListener('keyup', (event) => {
-			if (this.isOpen(ws)) {
+			if (this.isOpen(this.ws)) {
 				let isChange = false;
 
 				if (keyDownList.has(event.code)) {
@@ -62,15 +79,10 @@ export class Gamewebsocket {
 							key_set: Array.from(keyDownList)
 						}
 					});
-					ws.send(message);
+					this.ws.send(message);
 				}
 			}
 		});
-
-		ws.onopen = () => {
-			console.log('connected');
-			this.receiveMessages();
-		};
 	}
 
 	// --------------------- utils ---------------------
@@ -86,40 +98,34 @@ export class Gamewebsocket {
 		return ws.readyState === ws.OPEN;
 	}
 
+	setGameSetting(data) {
+		this.gamesetting = data;
+	}
+	// -------------------------- send message --------------------------------
+
 	sendGameSessionInfo() {
 		const message = {
 			type: 'game',
 			subtype: 'session_info',
 			message: '',
-			data: this.gamepage.initial
+			data: this.initial
+		};
+		// 임시로 1로 설정
+		// message.data.total_score = 1;
+		this.ws.send(JSON.stringify(message));
+	}
+
+	sendGameMatchInitSetting() {
+		const message = {
+			type: 'game',
+			subtype: 'match_init_setting',
+			message: 'go!',
+			data: {}
 		};
 		this.ws.send(JSON.stringify(message));
 	}
 
-	// --------------------- game ---------------------
-	sendGameStartRequest(data) {
-		const { color } = data;
-
-		function changePaddleLightColor(paddleLightGroup, paddleColor) {
-			paddleLightGroup.children.forEach((paddleLight) => {
-				paddleLight.color.set(paddleColor);
-			});
-		}
-
-		this.gamepage.paddleMesh1.material.emissive.set(color.paddle);
-		this.gamepage.paddleMesh2.material.emissive.set(color.paddle);
-		changePaddleLightColor(this.gamepage.paddleLightGroup1, color.paddle);
-		changePaddleLightColor(this.gamepage.paddleLightGroup2, color.paddle);
-
-		this.gamepage.ballMesh.material.emissive.set(color.ball);
-		this.gamepage.ballLight.color.set(color.ball);
-
-		const player1Name = document.querySelector('.player1-name');
-		const player2Name = document.querySelector('.player2-name');
-
-		player1Name.textContent = data.nickname.player1;
-		player2Name.textContent = data.nickname.player2;
-
+	sendGameStartRequest() {
 		const message = {
 			type: 'game',
 			subtype: 'match_start',
@@ -130,18 +136,42 @@ export class Gamewebsocket {
 		this.ws.send(JSON.stringify(message));
 	}
 
+	sendGameNextMatch() {
+		const message = {
+			type: 'game',
+			subtype: 'next_match',
+			message: 'go!'
+		};
+		this.ws.send(JSON.stringify(message));
+	}
+
+	sendGameOver() {
+		const message = {
+			type: 'game_over',
+			subtype: 'summary',
+			message: 'go!'
+		};
+		this.ws.send(JSON.stringify(message));
+	}
+
+	sendGameDisconnect() {
+		const message = {
+			type: 'disconnect',
+			message: "I'm leaving!"
+		};
+		this.ws.send(JSON.stringify(message));
+		this.ws.close();
+		console.log('disconnected');
+	}
+
+	// ----------------------------------------------------------
+	// --------------------- game ---------------------
 	renderThreeJs(data) {
 		this.frame += 1;
-		if (
-			Number(this.player1Score.textContent) ===
-			this.gamepage.initial.total_score
-		) {
+		if (Number(this.player1Score.textContent) === this.initial.total_score) {
 			this.winner = 1;
 		}
-		if (
-			Number(this.player2Score.textContent) ===
-			this.gamepage.initial.total_score
-		) {
+		if (Number(this.player2Score.textContent) === this.initial.total_score) {
 			this.winner = 2;
 		}
 
@@ -228,24 +258,42 @@ export class Gamewebsocket {
 				case 'game':
 					if (message.subtype === 'connection_established') {
 						this.sendGameSessionInfo();
+					} else if (message.subtype === 'tournament_tree') {
+						message.data.Gamewebsocket = this;
+						changeUrlData('tournament', message.data);
 					} else if (message.subtype === 'match_init_setting') {
-						this.sendGameStartRequest(message.data);
+						this.gamesetting = message.data;
+						// this.sendGameStartRequest();
+						message.data.Gamewebsocket = this;
+						changeUrlData('game', message.data);
 					} else if (message.subtype === 'match_run') {
 						this.renderThreeJs(message.data);
 					} else if (message.subtype === 'match_end') {
 						console.log('match_end');
-						const disconnectMessage = {
-							type: 'disconnect',
-							message: 'plz!'
-						};
-						this.player1Score.textContent = message.data.player1.score;
-						this.player2Score.textContent = message.data.player2.score;
-						this.ws.send(JSON.stringify(disconnectMessage));
+						if (this.gamesetting.battle_mode === 1) {
+							this.sendGameDisconnect();
+						} else {
+							message.data.Gamewebsocket = this;
+						}
 						changeUrlData('duelstats', message.data);
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
 					}
 					break;
+				case 'game_over':
+					console.log('game over');
+					if (message.subtype === 'tournament_tree') {
+						message.data.Gamewebsocket = this;
+						message.data.gameOver = true;
+						changeUrlData('tournament', message.data);
+					}
+					break;
+				case 'game_over_response':
+					// 최종 경기결과 정보 전송
+					message.data.Gamewebsocket = this;
+					changeUrlData('tournamentResult', message.data);
+					break;
+
 				default:
 					console.log('default');
 					break;

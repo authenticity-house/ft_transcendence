@@ -5,7 +5,6 @@ import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLo
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 import { changeUrl } from '../index.js';
-import { Gamewebsocket } from '../Gamewebsocket.js';
 
 const html = String.raw;
 
@@ -16,7 +15,7 @@ class GamePage {
 
 	template(initial) {
 		this.initial = initial;
-		this.initial.total_score *= 5;
+		console.log(initial);
 
 		return html`
 			<div class="game-page-container">
@@ -87,6 +86,7 @@ class GamePage {
 	}
 
 	addEventListeners() {
+		// ---------------------------------------------------------------
 		// Create a scene
 		const scene = new THREE.Scene();
 		scene.background = new THREE.Color(0x141343);
@@ -144,8 +144,8 @@ class GamePage {
 		);
 		lineDashed.computeLineDistances();
 		scene.add(lineDashed);
-
-		// --------------------- ball -------------------------
+		// ---------------------------------------------------------------
+		// ----------------------------- ball ----------------------------
 		// Create a ball
 		const ball = new THREE.SphereGeometry(0.04, 32, 32);
 		const ballMaterial = new THREE.MeshPhysicalMaterial({
@@ -155,27 +155,31 @@ class GamePage {
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
 			side: THREE.DoubleSide,
-			emissive: 0xffff00,
+			emissive: this.initial.color.ball,
 			emissiveIntensity: 0.5
 		});
 		const ballMesh = new THREE.Mesh(ball, ballMaterial);
 		scene.add(ballMesh);
 
 		// Create a light emitting from the ball
-		const ballLight = new THREE.PointLight(0xffff00, 0.3, 100);
+		const ballLight = new THREE.PointLight(this.initial.color.ball, 0.3, 100);
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
 		// --------------------- paddle -------------------------
 		// Create a paddle
-		const paddle = new THREE.BoxGeometry(0.1, 0.5, 0.1);
+		const paddle = new THREE.BoxGeometry(
+			this.initial.paddle1.width,
+			this.initial.paddle1.height,
+			0.1
+		);
 		const paddleMaterial = new THREE.MeshPhysicalMaterial({
 			color: 0xffffff,
 			metalness: 0.5,
 			roughness: 0.5,
 			clearcoat: 1,
 			clearcoatRoughness: 0.5,
-			emissive: 0x0000ff,
+			emissive: this.initial.color.paddle,
 			emissiveIntensity: 0.5,
 			side: THREE.DoubleSide
 		});
@@ -196,7 +200,11 @@ class GamePage {
 				i <= paddleMesh.position.y + 0.25;
 				i += 0.1
 			) {
-				const paddleLight = new THREE.PointLight(0xffffff, 0.1, 100);
+				const paddleLight = new THREE.PointLight(
+					this.initial.color.paddle,
+					0.1,
+					100
+				);
 				paddleLight.position.set(
 					paddleMesh === paddleMesh1 ? -2.8 : 2.8,
 					i,
@@ -206,23 +214,26 @@ class GamePage {
 			}
 		}
 
-		addPaddleLights(paddleMesh1, paddleLightGroup1);
-		addPaddleLights(paddleMesh2, paddleLightGroup2);
+		addPaddleLights.bind(this)(paddleMesh1, paddleLightGroup1);
+		addPaddleLights.bind(this)(paddleMesh2, paddleLightGroup2);
 
 		scene.add(paddleLightGroup1);
 		scene.add(paddleLightGroup2);
 
-		// ---------------------------------------------------
+		// -----------------------------------------------------------
+		// -------------- 게임 서버에서 받아온 정보로 세팅 -------------------
 		// Set the position of the ball
-		ballMesh.position.x = 0;
-		ballMesh.position.y = 0;
+		ballMesh.position.x = this.initial.ball.x;
+		ballMesh.position.y = this.initial.ball.y;
 		ballMesh.position.z = -0.01;
 
 		// Set the position of the paddle
-		paddleMesh1.position.x = -2.8;
+		paddleMesh1.position.x = this.initial.paddle1.x;
+		paddleMesh1.position.y = this.initial.paddle1.y;
 
 		// Set the position of the paddle
-		paddleMesh2.position.x = 2.8;
+		paddleMesh2.position.x = this.initial.paddle2.x;
+		paddleMesh2.position.y = this.initial.paddle2.y;
 
 		// Create a ambientLight
 		const ambientLight = new THREE.AmbientLight(0xffffff, 2);
@@ -235,7 +246,14 @@ class GamePage {
 
 		// Set the camera position
 		camera.position.z = 4;
+		// 닉네임 세팅
+		const player1Name = document.querySelector('.player1-name');
+		const player2Name = document.querySelector('.player2-name');
 
+		player1Name.textContent = this.initial.nickname.player1;
+		player2Name.textContent = this.initial.nickname.player2;
+
+		// ---------------------------------------------------------------
 		// Load a font for ready text
 		const fontLoader = new FontLoader();
 
@@ -267,7 +285,7 @@ class GamePage {
 			textMesh.position.z = 0.5;
 			scene.add(textMesh);
 		});
-
+		// ---------------------------------------------------------------
 		renderer.render(scene, camera);
 
 		this.camera = camera;
@@ -288,19 +306,20 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		const gamewebsocket = new Gamewebsocket(this);
+		this.initial.Gamewebsocket.gamepage = this;
+
+		this.initial.Gamewebsocket.addListeners();
+
+		this.initial.Gamewebsocket.sendGameStartRequest();
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
 
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
-			const disconnectMessage = {
-				type: 'disconnect',
-				message: "I'm leaving!"
-			};
-			gamewebsocket.send(JSON.stringify(disconnectMessage));
-			gamewebsocket.close();
+			this.initial.Gamewebsocket.sendGameDisconnect();
+			// this.initial.Gamewebsocket.close();
+			console.log('match_end');
 			changeUrl('match');
 		});
 	}

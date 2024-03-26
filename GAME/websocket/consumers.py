@@ -4,13 +4,13 @@ from json.decoder import JSONDecodeError
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.exceptions import StopConsumer
-from session.session_manager import SessionManager
+from session.session_manager import ASessionManager, DuelManager, TournamentManager
 
 
 class GameConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.session_manager: SessionManager = None
+        self.session_manager: ASessionManager = None
         self.game_session = None
         self.connected = False
 
@@ -50,16 +50,18 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.send_message("summary", "6-4 최종 정보 전송", data, "game_over_response")
 
     async def initialize_session(self, msg_data):
-        self.session_manager = SessionManager(msg_data)
+        try:
+            battle_mode: int = msg_data["battle_mode"]
+            if battle_mode not in [1, 2]:
+                raise ValueError("battle_mode is invalid")
+        except KeyError:
+            await self.send_error("battle_mode not provided")
 
-        battle_mode = self.session_manager.battle_mode
-
-        if battle_mode == 1:  # 1vs1
-            send_msg = self.session_manager.get_send_data("match_init_setting")
-            await self.send_message(*send_msg)
-        elif battle_mode == 2:  # 토너먼트
-            send_msg = self.session_manager.get_send_data("tournament_tree")
-            await self.send_message(*send_msg)
+        self.session_manager = (
+            TournamentManager(msg_data) if battle_mode == 2 else DuelManager(msg_data)
+        )
+        send_msg = self.session_manager.get_first_message()
+        await self.send_message(*send_msg)
 
     async def handle_game_message(self, msg):
         msg_subtype = msg.get("subtype", "")
@@ -84,7 +86,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def run_game_session(self):
         """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
-        sm: SessionManager = self.session_manager
+        sm: ASessionManager = self.session_manager
 
         # 매치 프레임 전송
         for message in sm.get_match_frame():
@@ -117,6 +119,7 @@ class GameConsumer(AsyncWebsocketConsumer):
             "message": message,
             "data": data or {},
         }
+
         await self.send(text_data=json.dumps(msg))
 
     async def send_error(self, error_message):
