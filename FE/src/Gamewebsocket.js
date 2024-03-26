@@ -7,7 +7,7 @@ export class Gamewebsocket {
 		console.log('Gamewebsocket created');
 		this.gamepage = gamepage;
 
-		const ws = new WebSocket('ws://localhost:8000/ws/game-server/');
+		const ws = new WebSocket('ws://localhost:8080/ws/game-server/');
 		this.ws = ws;
 		this.frame = 0;
 		this.player1Score = document.querySelector('.player1');
