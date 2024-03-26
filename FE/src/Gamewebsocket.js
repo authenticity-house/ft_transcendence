@@ -1,4 +1,5 @@
 /* eslint-disable no-void */
+
 import { changeUrlData } from './index.js';
 
 export class Gamewebsocket {

@@ -1,6 +1,7 @@
 import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
+import { Gamewebsocket } from '../Gamewebsocket.js';
 
 const html = String.raw;
 
@@ -77,7 +78,11 @@ class GameSettingPage {
 		startButton.addEventListener('click', () => {
 			const newData = this.data;
 			this.resetData();
-			changeUrlData('game', newData);
+			newData.total_score *= 5;
+			// 웹소켓 만들기
+			const gamewebsocket = new Gamewebsocket(newData);
+			// changeUrlData('game', newData);
+			console.log(gamewebsocket);
 		});
 	}
 }
