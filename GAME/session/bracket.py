@@ -78,6 +78,10 @@ class Bracket:
     def set_winner_nickname(self, nickname) -> str:
         depth = self._play_match[0]
         self.set_play_match_str(nickname)
+
+        if self.is_end:
+            return
+
         # 부전승 체크하고 대진표 업데이트 (하드코딩중)
         if self.is_walk_over:
             self._bracket[depth + 1][-1][-1] = nickname

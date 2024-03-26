@@ -1,4 +1,3 @@
-import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import DuelStatsData from '../components/DuelStatsData.js';
@@ -10,6 +9,8 @@ const html = String.raw;
 
 class DuelStatsPage {
 	template(data) {
+		this.data = data;
+
 		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
@@ -48,7 +49,9 @@ class DuelStatsPage {
 	addEventListeners() {
 		const back = document.querySelector('.event-click-match');
 		back.addEventListener('click', () => {
-			changeUrl('match');
+			if (this.data.Gamewebsocket) {
+				this.data.Gamewebsocket.sendGameNextMatch();
+			}
 		});
 	}
 
