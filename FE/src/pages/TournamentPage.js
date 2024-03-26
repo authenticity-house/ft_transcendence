@@ -1,4 +1,3 @@
-import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import {
@@ -11,25 +10,11 @@ import {
 const html = String.raw;
 
 class TournamentPage {
-	template() {
+	template(data) {
+		this.data = data;
 		const titlComponent = new BoldTitle('대진표', 'yellow');
 		const nextButton = new ButtonSmall('다음');
-
-		/* <MOCK DATA> bracketInfo = data.depth */
-		const bracketInfo = [
-			[
-				'wonyang',
-				'jeongmin',
-				'joyoo',
-				'jihylim',
-				'player5',
-				'player6',
-				'player7'
-			],
-			['wonyang', 'PONG !', '', ''],
-			['', ''],
-			['']
-		];
+		const bracketInfo = this.data.bracket;
 		const openBracket = bracketTemplate(bracketInfo[0]);
 
 		return html`
@@ -45,32 +30,10 @@ class TournamentPage {
 		`;
 	}
 
-	addEventListeners() {
-		const next = document.querySelector('.event-click-match');
-		next.addEventListener('click', () => {
-			changeUrl('');
-		});
-	}
-
-	mount() {
-		/* <MOCK DATA> bracketInfo = data.depth (data.depth[0] 빼고 다 활용) */
-		// data.depth[1], data.dept[2]
-		const bracketInfo = [
-			[
-				'wonyang',
-				'jeongmin',
-				'joyoo',
-				'jihylim',
-				'player5',
-				'player6',
-				'player7'
-			],
-			['wonyang', 'PONG !', '', ''],
-			['', ''],
-			['']
-		];
-		const winPlayer = 'wonyang';
-		/* */
+	mount(data) {
+		this.data = data;
+		const bracketInfo = this.data.bracket;
+		const winPlayer = this.data.winner;
 		const { position, halfHeight } = getUserPosition();
 		const tournamentBracket = document.querySelector('.tournament-bracket');
 		const tournamentBracketChild = tournamentBracket.children;
@@ -85,8 +48,7 @@ class TournamentPage {
 					position,
 					halfHeight,
 					child,
-					depth,
-					bracketInfo,
+					bracketInfo[depth],
 					winPlayer
 				);
 				depth += 1;
@@ -94,6 +56,17 @@ class TournamentPage {
 				addWireBracket(position, child, depth);
 			}
 		}
+	}
+
+	addEventListeners() {
+		const next = document.querySelector('.event-click-match');
+		next.addEventListener('click', () => {
+			if (this.data.gameOver === true) {
+				this.data.Gamewebsocket.sendGameOver();
+			} else {
+				this.data.Gamewebsocket.sendGameMatchInitSetting();
+			}
+		});
 	}
 }
 

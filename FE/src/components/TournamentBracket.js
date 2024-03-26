@@ -1,10 +1,13 @@
 const html = String.raw;
 
 function bracketTemplate(bracketInfo) {
-	const playerCount = bracketInfo.length;
+	let playerCount = 0;
 	let userWrappers = '';
 	for (let i = 0; i < bracketInfo.length; i += 1) {
-		userWrappers += `<div class="user-wrapper"><p>${bracketInfo[i]}</p></div>`;
+		for (let j = 0; j < bracketInfo[i].length; j += 1) {
+			userWrappers += `<div class="user-wrapper"><p>${bracketInfo[i][j]}</p></div>`;
+			playerCount += 1;
+		}
 	}
 	if (playerCount <= 4) {
 		return html`
@@ -48,30 +51,27 @@ function getUserPosition() {
 	return { position, halfHeight };
 }
 
-function addUserBracket(
-	position,
-	halfHeight,
-	child,
-	depth,
-	bracketInfo,
-	winPlayer
-) {
-	for (let i = 0; i < position.length; i += 1) {
-		const topPosition = position[i] - halfHeight;
-		const userWrapper = document.createElement('div');
-		userWrapper.style.top = `${topPosition}px`;
-		userWrapper.style.left = '0';
-		userWrapper.classList.add('user-wrapper-position');
+function addUserBracket(position, halfHeight, child, bracketInfo, winPlayer) {
+	let positionIndex = 0;
+	for (let i = 0; i < bracketInfo.length; i += 1) {
+		for (let j = 0; j < bracketInfo[i].length; j += 1) {
+			const topPosition = position[positionIndex] - halfHeight;
+			positionIndex += 1;
+			const userWrapper = document.createElement('div');
+			userWrapper.style.top = `${topPosition}px`;
+			userWrapper.style.left = '0';
+			userWrapper.classList.add('user-wrapper-position');
 
-		const userWrapperText = bracketInfo[depth][i];
-		const textSpan = document.createElement('span');
-		textSpan.textContent = userWrapperText;
-		if (userWrapperText === 'PONG !')
-			userWrapper.classList.add('pong-animation');
-		if (userWrapperText === winPlayer)
-			textSpan.classList.add('win-player-animation');
-		userWrapper.appendChild(textSpan);
-		child.appendChild(userWrapper);
+			const userWrapperText = bracketInfo[i][j];
+			const textSpan = document.createElement('span');
+			textSpan.textContent = userWrapperText;
+			if (userWrapperText === 'PONG !')
+				userWrapper.classList.add('pong-animation');
+			if (userWrapperText === winPlayer)
+				textSpan.classList.add('win-player-animation');
+			userWrapper.appendChild(textSpan);
+			child.appendChild(userWrapper);
+		}
 	}
 }
 
