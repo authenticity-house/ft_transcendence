@@ -275,6 +275,7 @@ export class Gamewebsocket {
 						} else {
 							message.data.Gamewebsocket = this;
 						}
+						this.frame = 0;
 						changeUrlData('duelstats', message.data);
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
