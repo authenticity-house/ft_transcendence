@@ -18,23 +18,70 @@ class GamePage {
 		console.log(initial);
 
 		return html`
-			<div class="game-header">
-				<div class="player1-name display-light32"></div>
-				<div class="score-container display-medium48">
-					<div class="player1">0</div>
-					<div>:</div>
-					<div class="player2">0</div>
+			<div class="game-page-container">
+				<div class="game-page-container">
+					<div class="game-header">
+						<div class="player1-name display-light32"></div>
+						<div class="score-container display-medium48">
+							<div class="player1">0</div>
+							<div>:</div>
+							<div class="player2">0</div>
+						</div>
+						<div class="player2-name display-light32"></div>
+					</div>
+					<div
+						class="game-container"
+						style="position: relative; display: flex; justify-content: center"
+					>
+						<div class="game-result display-medium48 pink_neon_10">Winner!</div>
+					</div>
 				</div>
-				<div class="player2-name display-light32"></div>
+				<!-- 나가기 버튼 -->
+				<button
+					type="button"
+					class="button-small"
+					data-bs-toggle="modal"
+					data-bs-target="#staticBackdrop"
+				>
+					나가기
+				</button>
 			</div>
+			<!-- 나가기 모달 -->
 			<div
-				class="game-container"
-				style="position: relative; display: flex; justify-content: center"
+				class="modal fade"
+				id="staticBackdrop"
+				data-bs-backdrop="static"
+				data-bs-keyboard="false"
+				tabindex="-1"
+				aria-labelledby="staticBackdropLabel"
+				aria-hidden="true"
 			>
-				<div class="game-result display-medium48 pink_neon_10">Winner!</div>
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content modal-content-style">
+						<div class="modal-body">
+							<div class="display-light28 modal-content-body-text">
+								게임이 진행중입니다.<br />정말로 나가시겠습니까?
+							</div>
+							<div class="horizontal-button-container">
+								<button
+									type="button"
+									class="button-x-small return-button"
+									data-bs-dismiss="modal"
+								>
+									나가기
+								</button>
+								<button
+									type="button"
+									class="button-x-small"
+									data-bs-dismiss="modal"
+								>
+									돌아가기
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-
-			<button class="return-button" style="margin: 30px">Return</button>
 		`;
 	}
 
@@ -267,6 +314,7 @@ class GamePage {
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
+
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
 			this.initial.Gamewebsocket.sendGameDisconnect();

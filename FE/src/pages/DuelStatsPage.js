@@ -1,3 +1,4 @@
+import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import DuelStatsData from '../components/DuelStatsData.js';
@@ -51,7 +52,7 @@ class DuelStatsPage {
 		back.addEventListener('click', () => {
 			if (this.data.Gamewebsocket) {
 				this.data.Gamewebsocket.sendGameNextMatch();
-			}
+			} else changeUrl('match');
 		});
 	}
 
