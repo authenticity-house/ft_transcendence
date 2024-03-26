@@ -50,7 +50,6 @@ class DuelStatsPage {
 		const back = document.querySelector('.event-click-match');
 		back.addEventListener('click', () => {
 			if (this.data.Gamewebsocket) {
-				console.log('결과창 들어오고 next_match보내기');
 				this.data.Gamewebsocket.sendGameNextMatch();
 			}
 		});
