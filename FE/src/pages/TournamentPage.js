@@ -19,20 +19,6 @@ class TournamentPage {
 
 		/* <MOCK DATA> bracketInfo = data.depth */
 		const bracketInfo = this.data.bracket;
-		// [
-		//	[
-		//		'wonyang',
-		//		'jeongmin',
-		//		'joyoo',
-		//		'jihylim',
-		//		'player5',
-		//		'player6',
-		//		'player7'
-		//	],
-		//	['wonyang', 'PONG !', '', ''],
-		//	['', ''],
-		//	['']
-		// ];
 
 		const openBracket = bracketTemplate(bracketInfo[0]);
 

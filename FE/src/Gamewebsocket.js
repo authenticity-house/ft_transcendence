@@ -272,11 +272,6 @@ export class Gamewebsocket {
 						console.log('match_end');
 						if (this.gamesetting.battle_mode === 1) {
 							this.sendGameDisconnect();
-							// const disconnectMessage = {
-							//	type: 'disconnect',
-							//	message: 'plz!'
-							// };
-							// this.ws.send(JSON.stringify(disconnectMessage));
 						} else {
 							message.data.Gamewebsocket = this;
 						}
