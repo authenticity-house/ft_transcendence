@@ -251,12 +251,8 @@ class GamePage {
 		// Return to the main page
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
-			const disconnectMessage = {
-				type: 'disconnect',
-				message: "I'm leaving!"
-			};
-			this.initial.Gamewebsocket.send(JSON.stringify(disconnectMessage));
-			this.initial.Gamewebsocket.close();
+			this.initial.Gamewebsocket.sendGameDisconnect();
+			// this.initial.Gamewebsocket.close();
 			console.log('match_end');
 			changeUrl('match');
 		});

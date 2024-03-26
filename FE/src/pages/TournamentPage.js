@@ -97,20 +97,9 @@ class TournamentPage {
 		const next = document.querySelector('.event-click-match');
 		next.addEventListener('click', () => {
 			if (this.data.gameOver === true) {
-				const message = JSON.stringify({
-					type: 'game_over',
-					subtype: 'summary',
-					message: 'go!'
-				});
-				this.data.Gamewebsocket.send(message);
+				this.data.Gamewebsocket.sendGameOver();
 			} else {
-				const message = JSON.stringify({
-					type: 'game',
-					subtype: 'match_init_setting',
-					message: 'go!',
-					data: {}
-				});
-				this.data.Gamewebsocket.send(message);
+				this.data.Gamewebsocket.sendGameMatchInitSetting();
 			}
 		});
 	}

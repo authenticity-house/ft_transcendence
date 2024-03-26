@@ -1,4 +1,3 @@
-import { changeUrl } from '../index.js';
 import BoldTitle from '../components/BoldTitle.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import DuelStatsData from '../components/DuelStatsData.js';
@@ -52,14 +51,7 @@ class DuelStatsPage {
 		back.addEventListener('click', () => {
 			if (this.data.Gamewebsocket) {
 				console.log('결과창 들어오고 next_match보내기');
-				const nextMessage = {
-					type: 'game',
-					subtype: 'next_match',
-					message: 'go!'
-				};
-				this.data.Gamewebsocket.send(JSON.stringify(nextMessage));
-			} else {
-				changeUrl('match');
+				this.data.Gamewebsocket.sendGameNextMatch();
 			}
 		});
 	}
