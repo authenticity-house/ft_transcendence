@@ -197,7 +197,6 @@ class GameSettingTournament {
 			const gamewebsocket = new Gamewebsocket(newData);
 			console.log(gamewebsocket);
 			// changeUrlData('game', newData);
-			// changeUrlData('game', gamewebsocket);
 		});
 	}
 }

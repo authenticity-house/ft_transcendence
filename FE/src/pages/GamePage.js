@@ -5,7 +5,6 @@ import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLo
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 import { changeUrl } from '../index.js';
-// import { Gamewebsocket } from '../Gamewebsocket.js';
 
 const html = String.raw;
 
@@ -40,10 +39,6 @@ class GamePage {
 	}
 
 	addEventListeners() {
-		// this.initial.Gamewebsocket.player1Score =
-		// 	document.querySelector('.player1');
-		// this.initial.Gamewebsocket.player2Score =
-		// 	document.querySelector('.player2');
 		// ---------------------------------------------------------------
 		// Create a scene
 		const scene = new THREE.Scene();
