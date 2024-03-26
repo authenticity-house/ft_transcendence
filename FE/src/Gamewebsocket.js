@@ -1,15 +1,31 @@
 /* eslint-disable no-void */
-
 import { changeUrlData } from './index.js';
 
 export class Gamewebsocket {
-	constructor(gamepage) {
-		console.log('Gamewebsocket created');
-		this.gamepage = gamepage;
+	constructor(initial) {
+		this.initial = initial;
 
 		const ws = new WebSocket('ws://localhost:8000/ws/game-server/');
 		this.ws = ws;
+
+		this.gamesetting = {};
+
+		this.gamepage = null;
+
+		this.player1Score = null;
+		this.player2Score = null;
+		this.gameResult = null;
+
 		this.frame = 0;
+		this.winner = 0;
+
+		ws.onopen = () => {
+			console.log('connected');
+			this.receiveMessages();
+		};
+	}
+
+	addListeners() {
 		this.player1Score = document.querySelector('.player1');
 		this.player2Score = document.querySelector('.player2');
 		this.gameResult = document.querySelector('.game-result');
@@ -17,7 +33,7 @@ export class Gamewebsocket {
 
 		const keyDownList = new Set();
 		document.addEventListener('keydown', (event) => {
-			if (this.isOpen(ws)) {
+			if (this.isOpen(this.ws)) {
 				let isChange = false;
 
 				if (
@@ -38,13 +54,13 @@ export class Gamewebsocket {
 							key_set: Array.from(keyDownList)
 						}
 					});
-					ws.send(message);
+					this.ws.send(message);
 				}
 			}
 		});
 
 		document.addEventListener('keyup', (event) => {
-			if (this.isOpen(ws)) {
+			if (this.isOpen(this.ws)) {
 				let isChange = false;
 
 				if (keyDownList.has(event.code)) {
@@ -62,15 +78,10 @@ export class Gamewebsocket {
 							key_set: Array.from(keyDownList)
 						}
 					});
-					ws.send(message);
+					this.ws.send(message);
 				}
 			}
 		});
-
-		ws.onopen = () => {
-			console.log('connected');
-			this.receiveMessages();
-		};
 	}
 
 	// --------------------- utils ---------------------
@@ -96,7 +107,7 @@ export class Gamewebsocket {
 			type: 'game',
 			subtype: 'session_info',
 			message: '',
-			data: this.gamepage.initial
+			data: this.initial
 		};
 		// 임시로 1로 설정
 		message.data.total_score = 1;
@@ -156,16 +167,10 @@ export class Gamewebsocket {
 	// --------------------- game ---------------------
 	renderThreeJs(data) {
 		this.frame += 1;
-		if (
-			Number(this.player1Score.textContent) ===
-			this.gamepage.initial.total_score
-		) {
+		if (Number(this.player1Score.textContent) === this.initial.total_score) {
 			this.winner = 1;
 		}
-		if (
-			Number(this.player2Score.textContent) ===
-			this.gamepage.initial.total_score
-		) {
+		if (Number(this.player2Score.textContent) === this.initial.total_score) {
 			this.winner = 2;
 		}
 
@@ -257,7 +262,10 @@ export class Gamewebsocket {
 						message.data.Gamewebsocket = this;
 						changeUrlData('tournament', message.data);
 					} else if (message.subtype === 'match_init_setting') {
-						this.sendGameStartRequest(message.data);
+						this.gamesetting = message.data;
+						// this.sendGameStartRequest();
+						message.data.Gamewebsocket = this;
+						changeUrlData('game', message.data);
 					} else if (message.subtype === 'match_run') {
 						this.renderThreeJs(message.data);
 					} else if (message.subtype === 'match_end') {
