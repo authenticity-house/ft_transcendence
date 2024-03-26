@@ -1,6 +1,6 @@
 /* eslint-disable no-void */
 
-import { changeUrl, changeUrlData } from './index.js';
+import { changeUrlData } from './index.js';
 
 export class Gamewebsocket {
 	constructor(gamepage) {
@@ -86,6 +86,11 @@ export class Gamewebsocket {
 		return ws.readyState === ws.OPEN;
 	}
 
+	setGameSetting(data) {
+		this.gamesetting = data;
+	}
+	// -------------------------- send message --------------------------------
+
 	sendGameSessionInfo() {
 		const message = {
 			type: 'game',
@@ -94,34 +99,21 @@ export class Gamewebsocket {
 			data: this.gamepage.initial
 		};
 		// 임시로 1로 설정
-		// message.data.total_score = 1;
+		message.data.total_score = 1;
 		this.ws.send(JSON.stringify(message));
 	}
 
-	// --------------------- game ---------------------
-	sendGameStartRequest(data) {
-		const { color } = data;
+	sendGameMatchInitSetting() {
+		const message = {
+			type: 'game',
+			subtype: 'match_init_setting',
+			message: 'go!',
+			data: {}
+		};
+		this.ws.send(JSON.stringify(message));
+	}
 
-		function changePaddleLightColor(paddleLightGroup, paddleColor) {
-			paddleLightGroup.children.forEach((paddleLight) => {
-				paddleLight.color.set(paddleColor);
-			});
-		}
-
-		this.gamepage.paddleMesh1.material.emissive.set(color.paddle);
-		this.gamepage.paddleMesh2.material.emissive.set(color.paddle);
-		changePaddleLightColor(this.gamepage.paddleLightGroup1, color.paddle);
-		changePaddleLightColor(this.gamepage.paddleLightGroup2, color.paddle);
-
-		this.gamepage.ballMesh.material.emissive.set(color.ball);
-		this.gamepage.ballLight.color.set(color.ball);
-
-		const player1Name = document.querySelector('.player1-name');
-		const player2Name = document.querySelector('.player2-name');
-
-		player1Name.textContent = data.nickname.player1;
-		player2Name.textContent = data.nickname.player2;
-
+	sendGameStartRequest() {
 		const message = {
 			type: 'game',
 			subtype: 'match_start',
@@ -132,6 +124,36 @@ export class Gamewebsocket {
 		this.ws.send(JSON.stringify(message));
 	}
 
+	sendGameNextMatch() {
+		const message = {
+			type: 'game',
+			subtype: 'next_match',
+			message: 'go!'
+		};
+		this.ws.send(JSON.stringify(message));
+	}
+
+	sendGameOver() {
+		const message = {
+			type: 'game_over',
+			subtype: 'summary',
+			message: 'go!'
+		};
+		this.ws.send(JSON.stringify(message));
+	}
+
+	sendGameDisconnect() {
+		const message = {
+			type: 'disconnect',
+			message: "I'm leaving!"
+		};
+		this.ws.send(JSON.stringify(message));
+		this.ws.close();
+		console.log('disconnected');
+	}
+
+	// ----------------------------------------------------------
+	// --------------------- game ---------------------
 	renderThreeJs(data) {
 		this.frame += 1;
 		if (
@@ -226,6 +248,7 @@ export class Gamewebsocket {
 	receiveMessages() {
 		this.ws.onmessage = (e) => {
 			const message = JSON.parse(e.data);
+			console.log(message.type);
 			switch (message.type) {
 				case 'game':
 					if (message.subtype === 'connection_established') {
@@ -240,11 +263,12 @@ export class Gamewebsocket {
 					} else if (message.subtype === 'match_end') {
 						console.log('match_end');
 						if (this.gamesetting.battle_mode === 1) {
-							const disconnectMessage = {
-								type: 'disconnect',
-								message: 'plz!'
-							};
-							this.ws.send(JSON.stringify(disconnectMessage));
+							this.sendGameDisconnect();
+							// const disconnectMessage = {
+							//	type: 'disconnect',
+							//	message: 'plz!'
+							// };
+							// this.ws.send(JSON.stringify(disconnectMessage));
 						} else {
 							message.data.Gamewebsocket = this;
 						}
@@ -263,15 +287,10 @@ export class Gamewebsocket {
 					break;
 				case 'game_over_response':
 					// 최종 경기결과 정보 전송
-					{
-						const disconnectMessage = {
-							type: 'disconnect',
-							message: 'plz!'
-						};
-						this.ws.send(JSON.stringify(disconnectMessage));
-						changeUrl('match');
-					}
+					message.data.Gamewebsocket = this;
+					changeUrlData('tournamentResult', message.data);
 					break;
+
 				default:
 					console.log('default');
 					break;
