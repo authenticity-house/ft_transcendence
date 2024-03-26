@@ -197,6 +197,12 @@ button:hover:not(.button-back-arrow-box):not(.duel-detail-button) {
 	font-size: 2.4rem;
 }
 
+.button-x-small {
+	width: 18rem;
+	height: 6rem;
+	font-size: 2rem;
+}
+
 /* components - ButtonBackArrow */
 .button-back-arrow-box {
 	display: flex;
@@ -669,6 +675,26 @@ td {
 }
 
 /* GameSettingDetailed */
+
+/* 모달 */
+
+.modal-content-style {
+	background-color: #141343;
+	padding: 3rem 4rem;
+	border-radius: 2rem;
+}
+
+.modal-content-body-text {
+	text-align: center;
+	padding: 4rem;
+}
+
+.game-page-container {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+}
+/* 모달 */
 
 /* Tournament */
 .tournament-bracket {
