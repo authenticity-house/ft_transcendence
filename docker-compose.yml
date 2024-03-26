@@ -20,6 +20,14 @@ services:
       - ./GAME:/code
     networks:
       - pong_net
+  
+  backend:
+    build: ./BE
+    container_name: backend_container
+    volumes:
+      - ./BE:/code
+    networks:
+      - pong_net
 
 networks:
   pong_net:
