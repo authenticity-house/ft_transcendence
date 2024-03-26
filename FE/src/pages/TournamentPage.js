@@ -12,14 +12,9 @@ const html = String.raw;
 class TournamentPage {
 	template(data) {
 		this.data = data;
-		// console.log(data);
-
 		const titlComponent = new BoldTitle('대진표', 'yellow');
 		const nextButton = new ButtonSmall('다음');
-
-		/* <MOCK DATA> bracketInfo = data.depth */
 		const bracketInfo = this.data.bracket;
-
 		const openBracket = bracketTemplate(bracketInfo[0]);
 
 		return html`
@@ -35,25 +30,10 @@ class TournamentPage {
 		`;
 	}
 
-	mount() {
-		/* <MOCK DATA> bracketInfo = data.depth (data.depth[0] 빼고 다 활용) */
-		// data.depth[1], data.dept[2]
-		const bracketInfo = [
-			[
-				'wonyang',
-				'jeongmin',
-				'joyoo',
-				'jihylim',
-				'player5',
-				'player6',
-				'player7'
-			],
-			['wonyang', 'PONG !', '', ''],
-			['', ''],
-			['']
-		];
-		const winPlayer = 'wonyang';
-		/* */
+	mount(data) {
+		this.data = data;
+		const bracketInfo = this.data.bracket;
+		const winPlayer = this.data.winner;
 		const { position, halfHeight } = getUserPosition();
 		const tournamentBracket = document.querySelector('.tournament-bracket');
 		const tournamentBracketChild = tournamentBracket.children;
@@ -68,8 +48,7 @@ class TournamentPage {
 					position,
 					halfHeight,
 					child,
-					depth,
-					bracketInfo,
+					bracketInfo[depth],
 					winPlayer
 				);
 				depth += 1;
