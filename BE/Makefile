@@ -4,6 +4,13 @@ all:
 	@make type
 	@make test
 
+migrate:
+	venv/bin/python manage.py makemigrations
+	venv/bin/python manage.py migrate
+
+run:
+	venv/bin/python manage.py runserver
+
 format:
 	@echo "Formatting code with black"
 	@venv/bin/black --line-length 100 .
