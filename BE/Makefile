@@ -27,4 +27,4 @@ test:
 	@echo "Running Django unit tests"
 	@venv/bin/python manage.py test
 
-.PHONY: all format lint typecheck test
+.PHONY: all format lint typecheck test migrate run
