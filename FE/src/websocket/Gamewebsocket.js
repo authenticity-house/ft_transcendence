@@ -1,7 +1,7 @@
 /* eslint-disable no-void */
-import { changeUrlData } from './index.js';
-import { removeModalBackdrop } from './components/modal/modalUtiils.js';
-import { gameSessionInfoMsg } from './websocket/websocketUtils.js';
+import { changeUrlData } from '../index.js';
+import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
+import { gameSessionInfoMsg } from './websocketUtils.js';
 
 // const { port } = location;
 
