@@ -5,6 +5,7 @@ import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLo
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 import { changeUrl } from '../index.js';
+import { exitModal } from '../components/modal/exitModal.js';
 
 const html = String.raw;
 
@@ -47,41 +48,7 @@ class GamePage {
 				</button>
 			</div>
 			<!-- 나가기 모달 -->
-			<div
-				class="modal fade"
-				id="staticBackdrop"
-				data-bs-backdrop="static"
-				data-bs-keyboard="false"
-				tabindex="-1"
-				aria-labelledby="staticBackdropLabel"
-				aria-hidden="true"
-			>
-				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content modal-content-style">
-						<div class="modal-body">
-							<div class="display-light28 modal-content-body-text">
-								게임이 진행중입니다.<br />정말로 나가시겠습니까?
-							</div>
-							<div class="horizontal-button-container">
-								<button
-									type="button"
-									class="button-x-small return-button"
-									data-bs-dismiss="modal"
-								>
-									나가기
-								</button>
-								<button
-									type="button"
-									class="button-x-small"
-									data-bs-dismiss="modal"
-								>
-									돌아가기
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			${exitModal()}
 		`;
 	}
 
@@ -318,7 +285,6 @@ class GamePage {
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
 			this.initial.Gamewebsocket.sendGameDisconnect();
-			// this.initial.Gamewebsocket.close();
 			console.log('match_end');
 			changeUrl('match');
 		});
