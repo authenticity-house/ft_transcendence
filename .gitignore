@@ -25,7 +25,7 @@ GAME/env.bak/
 GAME/venv.bak/
 
 # Database
-./data
+data/
 
 BE/*.sqlite3
 BE/*.db
