@@ -71,3 +71,8 @@ window.onpopstate = () => {
 	root.innerHTML = routes[url].template();
 	routes[url].addEventListeners();
 };
+
+// 새로 고침 시 홈페이지로 주소 변경
+window.onload = () => {
+	history.pushState(null, null, homeLink);
+};
