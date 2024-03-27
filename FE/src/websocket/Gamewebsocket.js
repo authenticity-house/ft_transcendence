@@ -3,15 +3,13 @@ import { changeUrlData } from '../index.js';
 import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
 import { gameSessionInfoMsg } from './websocketUtils.js';
 
-// const { port } = location;
+const { port } = location;
 
 export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		// const ws = new WebSocket(`ws://localhost:${port}/ws/game-server/`);
-
-		const ws = new WebSocket(`ws://localhost:8080/ws/game-server/`);
+		const ws = new WebSocket(`ws://localhost:${port}/ws/game-server/`);
 		this.ws = ws;
 		this.ws = ws;
 
