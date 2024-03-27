@@ -35,6 +35,7 @@ class DuelGraphStats {
 		return html`
 			<div class="score-position-container">
 				<div class="score-position-title display-light24">득점 위치</div>
+				<canvas class="score-position-canvas" width="280" height="356"></canvas>
 				<div class="score-position-player-name-container display-light16">
 					<div class="score-position-player-left-wrapper">
 						<div class="score-player-name-margin-right">
@@ -49,15 +50,14 @@ class DuelGraphStats {
 						</div>
 					</div>
 				</div>
-				<canvas class="score-position-canvas" width="280" height="360"></canvas>
 			</div>
 		`;
 	}
 
-	static appendScoresToYAxis(maxScore) {
-		const scoreText = document.querySelector(
-			'.score-trend-canvas-text-container'
-		);
+	static appendScoresToYAxis(maxScore, graphContainer) {
+		const scoreText = graphContainer
+			? graphContainer.querySelector('.score-trend-canvas-text-container')
+			: document.querySelector('.score-trend-canvas-text-container');
 
 		let scoreTextWrappers = '';
 		for (let score = maxScore; score >= 0; score -= 1) {
@@ -70,18 +70,18 @@ class DuelGraphStats {
 		scoreText.appendChild(fragment);
 	}
 
-	static getScoreTextPosition() {
-		const scoreParent = document.querySelector(
-			'.score-trend-canvas-text-container'
-		);
+	static getScoreTextPosition(graphContainer) {
+		const scoreParent = graphContainer
+			? graphContainer.querySelector('.score-trend-canvas-text-container')
+			: document.querySelector('.score-trend-canvas-text-container');
 		const scoreParentRect = scoreParent.getBoundingClientRect();
 		const parentY = scoreParentRect.y;
 		const position = [];
 
 		let halfHeight;
-		const scoreTextWrappers = document.querySelectorAll(
-			'.score-trend-canvas-text-wrapper'
-		);
+		const scoreTextWrappers = graphContainer
+			? graphContainer.querySelectorAll('.score-trend-canvas-text-wrapper')
+			: document.querySelectorAll('.score-trend-canvas-text-wrapper');
 		scoreTextWrappers.forEach((child) => {
 			const childRect = child.getBoundingClientRect();
 			halfHeight = childRect.height / 2;
@@ -113,9 +113,15 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
-	static appendScoreTrendGraph(leftScoreTrend, rightScoreTrend) {
-		const position = this.getScoreTextPosition();
-		const canvas = document.querySelector('.score-trend-canvas-draw-container');
+	static appendScoreTrendGraph(
+		leftScoreTrend,
+		rightScoreTrend,
+		graphContainer
+	) {
+		const position = this.getScoreTextPosition(graphContainer);
+		const canvas = graphContainer
+			? graphContainer.querySelector('.score-trend-canvas-draw-container')
+			: document.querySelector('.score-trend-canvas-draw-container');
 		const widthCount = leftScoreTrend.length + 1;
 		const widthDivide = canvas.width / widthCount;
 
@@ -152,8 +158,10 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
-	static appendScorePositionGraph(leftPosition, rightPosition) {
-		const canvas = document.querySelector('.score-position-canvas');
+	static appendScorePositionGraph(leftPosition, rightPosition, graphContainer) {
+		const canvas = graphContainer
+			? graphContainer.querySelector('.score-position-canvas')
+			: document.querySelector('.score-position-canvas');
 		const ctx = canvas.getContext('2d');
 		const canvasHeight = canvas.height;
 		const canvasWidth = canvas.width;
