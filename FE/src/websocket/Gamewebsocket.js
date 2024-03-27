@@ -19,6 +19,7 @@ export class Gamewebsocket {
 		this.gameResult = null;
 		this.frame = 0;
 		this.winner = 0;
+		this.keyDownList = new Set();
 		ws.onopen = () => {
 			console.log('connected');
 			this.receiveMessages();
@@ -27,6 +28,25 @@ export class Gamewebsocket {
 	}
 
 	// ---------------------------------------------
+
+	send(message) {
+		this.ws.send(JSON.stringify(message));
+	}
+
+	close() {
+		this.ws.close();
+	}
+
+	isOpen() {
+		return this.ws.readyState === this.ws.OPEN;
+	}
+
+	setGameSetting(data) {
+		this.gamesetting = data;
+	}
+
+	// -------------------------------------------------
+
 	initializeEventListeners() {
 		document.addEventListener('keydown', (event) => this.handleKeyDown(event));
 		document.addEventListener('keyup', (event) => this.handleKeyUp(event));
@@ -55,7 +75,7 @@ export class Gamewebsocket {
 	}
 
 	sendKeySet() {
-		const message = JSON.stringify({
+		const message = {
 			type: 'game',
 			subtype: 'key_down',
 			message: 'key!',
@@ -63,28 +83,11 @@ export class Gamewebsocket {
 			data: {
 				key_set: Array.from(this.keyDownList)
 			}
-		});
-		this.ws.send(message);
+		};
+		this.send(message);
 	}
 
-	// --------------------- utils ---------------------
-	send(data) {
-		console.log(data);
-		this.ws.send(JSON.stringify(data));
-	}
-
-	close() {
-		this.ws.close();
-	}
-
-	isOpen() {
-		return this.ws.readyState === this.ws.OPEN;
-	}
-
-	setGameSetting(data) {
-		this.gamesetting = data;
-	}
-
+	// --------------------------------------------
 	sendGameDisconnect() {
 		const message = {
 			type: 'disconnect',
