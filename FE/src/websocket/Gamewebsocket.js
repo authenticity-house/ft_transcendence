@@ -1,7 +1,8 @@
 /* eslint-disable no-void */
-import { changeUrlData } from '../index.js';
+import { changeUrlInstance, changeUrlData } from '../index.js';
 import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
 import { gameSessionInfoMsg } from './websocketUtils.js';
+import GamePage from '../pages/GamePage.js';
 
 const { port } = location;
 
@@ -11,82 +12,59 @@ export class Gamewebsocket {
 
 		const ws = new WebSocket(`ws://localhost:${port}/ws/game-server/`);
 		this.ws = ws;
-		this.ws = ws;
-
 		this.gamesetting = {};
-
 		this.gamepage = null;
-
 		this.player1Score = null;
 		this.player2Score = null;
 		this.gameResult = null;
-
 		this.frame = 0;
 		this.winner = 0;
-
 		ws.onopen = () => {
 			console.log('connected');
 			this.receiveMessages();
 		};
+		this.initializeEventListeners();
 	}
 
-	addListeners() {
-		this.player1Score = document.querySelector('.player1');
-		this.player2Score = document.querySelector('.player2');
-		this.gameResult = document.querySelector('.game-result');
-		this.winner = 0;
+	// ---------------------------------------------
+	initializeEventListeners() {
+		document.addEventListener('keydown', (event) => this.handleKeyDown(event));
+		document.addEventListener('keyup', (event) => this.handleKeyUp(event));
+	}
 
-		const keyDownList = new Set();
-		document.addEventListener('keydown', (event) => {
-			if (this.isOpen(this.ws)) {
-				let isChange = false;
+	handleKeyDown(event) {
+		if (!this.isOpen()) return;
+		const relevantKeys = ['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown'];
 
-				if (
-					['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown'].includes(event.code) &&
-					!keyDownList.has(event.code)
-				) {
-					keyDownList.add(event.code);
-					isChange = true;
-				}
+		if (
+			relevantKeys.includes(event.code) &&
+			!this.keyDownList.has(event.code)
+		) {
+			this.keyDownList.add(event.code);
+			this.sendKeySet();
+		}
+	}
 
-				if (isChange) {
-					const message = JSON.stringify({
-						type: 'game',
-						subtype: 'key_down',
-						message: 'key!',
-						match_id: 1,
-						data: {
-							key_set: Array.from(keyDownList)
-						}
-					});
-					this.ws.send(message);
-				}
+	handleKeyUp(event) {
+		if (!this.isOpen()) return;
+
+		if (this.keyDownList.has(event.code)) {
+			this.keyDownList.delete(event.code);
+			this.sendKeySet();
+		}
+	}
+
+	sendKeySet() {
+		const message = JSON.stringify({
+			type: 'game',
+			subtype: 'key_down',
+			message: 'key!',
+			match_id: 1,
+			data: {
+				key_set: Array.from(this.keyDownList)
 			}
 		});
-
-		document.addEventListener('keyup', (event) => {
-			if (this.isOpen(this.ws)) {
-				let isChange = false;
-
-				if (keyDownList.has(event.code)) {
-					keyDownList.delete(event.code);
-					isChange = true;
-				}
-
-				if (isChange) {
-					const message = JSON.stringify({
-						type: 'game',
-						subtype: 'key_down',
-						message: 'key!',
-						match_id: 1,
-						data: {
-							key_set: Array.from(keyDownList)
-						}
-					});
-					this.ws.send(message);
-				}
-			}
-		});
+		this.ws.send(message);
 	}
 
 	// --------------------- utils ---------------------
@@ -99,8 +77,8 @@ export class Gamewebsocket {
 		this.ws.close();
 	}
 
-	isOpen(ws) {
-		return ws.readyState === ws.OPEN;
+	isOpen() {
+		return this.ws.readyState === this.ws.OPEN;
 	}
 
 	setGameSetting(data) {
@@ -112,8 +90,7 @@ export class Gamewebsocket {
 			type: 'disconnect',
 			message: "I'm leaving!"
 		};
-
-		this.ws.send(JSON.stringify(message));
+		this.send(message);
 		this.ws.close();
 		console.log('disconnected');
 	}
@@ -208,51 +185,73 @@ export class Gamewebsocket {
 	receiveMessages() {
 		this.ws.onmessage = (e) => {
 			const message = JSON.parse(e.data);
-			switch (message.type) {
-				case 'game':
-					if (message.subtype === 'connection_established') {
-						this.send(gameSessionInfoMsg(this.initial));
-					} else if (message.subtype === 'tournament_tree') {
-						message.data.Gamewebsocket = this;
-						changeUrlData('tournament', message.data);
-					} else if (message.subtype === 'match_init_setting') {
-						this.gamesetting = message.data;
-						message.data.Gamewebsocket = this;
-						changeUrlData('game', message.data);
-					} else if (message.subtype === 'match_run') {
-						this.renderThreeJs(message.data);
-					} else if (message.subtype === 'match_end') {
-						console.log('match_end');
-						if (this.gamesetting.battle_mode === 1) {
-							this.sendGameDisconnect();
-						} else {
-							message.data.Gamewebsocket = this;
-						}
-						this.frame = 0;
-						removeModalBackdrop();
-						changeUrlData('duelstats', message.data);
-					} else if (message.subtype === 'error') {
-						console.log(`server: ${message.message}`);
-					}
-					break;
-				case 'game_over':
-					console.log('game over');
-					if (message.subtype === 'tournament_tree') {
-						message.data.Gamewebsocket = this;
-						message.data.gameOver = true;
-						changeUrlData('tournament', message.data);
-					}
-					break;
-				case 'game_over_response':
-					// 최종 경기결과 정보 전송
-					message.data.Gamewebsocket = this;
-					changeUrlData('tournamentResult', message.data);
-					break;
-
-				default:
-					console.log('default');
-					break;
-			}
+			this.handleMessage(message);
 		};
+	}
+
+	handleMessage(message) {
+		switch (message.type) {
+			case 'game':
+				this.handleGameTypeMessage(message);
+				break;
+			case 'game_over':
+				console.log('game over');
+				if (message.subtype === 'tournament_tree') {
+					// eslint-disable-next-line no-param-reassign
+					message.data.Gamewebsocket = this;
+					// eslint-disable-next-line no-param-reassign
+					message.data.gameOver = true;
+					changeUrlData('tournament', message.data);
+				}
+				break;
+			case 'game_over_response':
+				// 최종 경기결과 정보 전송
+				// eslint-disable-next-line no-param-reassign
+				message.data.Gamewebsocket = this;
+				changeUrlData('tournamentResult', message.data);
+				break;
+
+			default:
+				console.log('default');
+				break;
+		}
+	}
+
+	handleGameTypeMessage(message) {
+		if (message.subtype === 'connection_established') {
+			this.send(gameSessionInfoMsg(this.initial));
+		} else if (message.subtype === 'tournament_tree') {
+			// eslint-disable-next-line no-param-reassign
+			message.data.Gamewebsocket = this;
+			changeUrlData('tournament', message.data);
+		} else if (message.subtype === 'match_init_setting') {
+			this.gamesetting = message.data;
+			// eslint-disable-next-line no-param-reassign
+			message.data.Gamewebsocket = this;
+			this.gamepage = new GamePage(message.data);
+			changeUrlInstance('game', this.gamepage);
+		} else if (message.subtype === 'match_run') {
+			this.renderThreeJs(message.data);
+		} else if (message.subtype === 'match_end') {
+			console.log('match_end');
+			if (this.gamesetting.battle_mode === 1) {
+				this.sendGameDisconnect();
+			} else {
+				// eslint-disable-next-line no-param-reassign
+				message.data.Gamewebsocket = this;
+			}
+			this.frame = 0;
+			removeModalBackdrop();
+			changeUrlData('duelstats', message.data);
+		} else if (message.subtype === 'error') {
+			console.log(`server: ${message.message}`);
+		}
+	}
+
+	addListeners() {
+		this.player1Score = document.querySelector('.player1');
+		this.player2Score = document.querySelector('.player2');
+		this.gameResult = document.querySelector('.game-result');
+		this.winner = 0;
 	}
 }

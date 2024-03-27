@@ -11,14 +11,11 @@ import { gameStartRequestMsg } from '../websocket/websocketUtils.js';
 const html = String.raw;
 
 class GamePage {
-	constructor() {
-		this.initial = {};
+	constructor(initial) {
+		this.initial = initial;
 	}
 
-	template(initial) {
-		this.initial = initial;
-		console.log(initial);
-
+	template() {
 		return html`
 			<div class="game-page-container">
 				<div class="game-page-container">
@@ -274,10 +271,7 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		this.initial.Gamewebsocket.gamepage = this;
-
 		this.initial.Gamewebsocket.addListeners();
-
 		this.initial.Gamewebsocket.send(gameStartRequestMsg());
 
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -292,4 +286,6 @@ class GamePage {
 	}
 }
 
-export default new GamePage();
+export default GamePage;
+
+// export default new GamePage();
