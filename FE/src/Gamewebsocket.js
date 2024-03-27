@@ -1,6 +1,6 @@
 /* eslint-disable no-void */
-
 import { changeUrlData } from './index.js';
+import { removeModalBackdrop } from './components/modal/modalUtiils.js';
 
 export class Gamewebsocket {
 	constructor(initial) {
@@ -276,6 +276,7 @@ export class Gamewebsocket {
 							message.data.Gamewebsocket = this;
 						}
 						this.frame = 0;
+						removeModalBackdrop();
 						changeUrlData('duelstats', message.data);
 					} else if (message.subtype === 'error') {
 						console.log(`server: ${message.message}`);
