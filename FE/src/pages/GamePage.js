@@ -6,6 +6,7 @@ import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/T
 
 import { changeUrl } from '../index.js';
 import { exitModal } from '../components/modal/exitModal.js';
+import { gameStartRequestMsg } from '../websocket/websocketUtils.js';
 
 const html = String.raw;
 
@@ -277,7 +278,7 @@ class GamePage {
 
 		this.initial.Gamewebsocket.addListeners();
 
-		this.initial.Gamewebsocket.sendGameStartRequest();
+		this.initial.Gamewebsocket.send(gameStartRequestMsg());
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page

@@ -1,12 +1,18 @@
 /* eslint-disable no-void */
 import { changeUrlData } from './index.js';
 import { removeModalBackdrop } from './components/modal/modalUtiils.js';
+import { gameSessionInfoMsg } from './websocket/websocketUtils.js';
+
+// const { port } = location;
 
 export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		const ws = new WebSocket('ws://localhost:8080/ws/game-server/');
+		// const ws = new WebSocket(`ws://localhost:${port}/ws/game-server/`);
+
+		const ws = new WebSocket(`ws://localhost:8080/ws/game-server/`);
+		this.ws = ws;
 		this.ws = ws;
 
 		this.gamesetting = {};
@@ -87,7 +93,8 @@ export class Gamewebsocket {
 
 	// --------------------- utils ---------------------
 	send(data) {
-		this.ws.send(data);
+		console.log(data);
+		this.ws.send(JSON.stringify(data));
 	}
 
 	close() {
@@ -101,64 +108,13 @@ export class Gamewebsocket {
 	setGameSetting(data) {
 		this.gamesetting = data;
 	}
-	// -------------------------- send message --------------------------------
-
-	sendGameSessionInfo() {
-		const message = {
-			type: 'game',
-			subtype: 'session_info',
-			message: '',
-			data: this.initial
-		};
-		// 임시로 1로 설정
-		// message.data.total_score = 1;
-		this.ws.send(JSON.stringify(message));
-	}
-
-	sendGameMatchInitSetting() {
-		const message = {
-			type: 'game',
-			subtype: 'match_init_setting',
-			message: 'go!',
-			data: {}
-		};
-		this.ws.send(JSON.stringify(message));
-	}
-
-	sendGameStartRequest() {
-		const message = {
-			type: 'game',
-			subtype: 'match_start',
-			message: 'go!',
-			data: '',
-			match_id: 123
-		};
-		this.ws.send(JSON.stringify(message));
-	}
-
-	sendGameNextMatch() {
-		const message = {
-			type: 'game',
-			subtype: 'next_match',
-			message: 'go!'
-		};
-		this.ws.send(JSON.stringify(message));
-	}
-
-	sendGameOver() {
-		const message = {
-			type: 'game_over',
-			subtype: 'summary',
-			message: 'go!'
-		};
-		this.ws.send(JSON.stringify(message));
-	}
 
 	sendGameDisconnect() {
 		const message = {
 			type: 'disconnect',
 			message: "I'm leaving!"
 		};
+
 		this.ws.send(JSON.stringify(message));
 		this.ws.close();
 		console.log('disconnected');
@@ -257,13 +213,12 @@ export class Gamewebsocket {
 			switch (message.type) {
 				case 'game':
 					if (message.subtype === 'connection_established') {
-						this.sendGameSessionInfo();
+						this.send(gameSessionInfoMsg(this.initial));
 					} else if (message.subtype === 'tournament_tree') {
 						message.data.Gamewebsocket = this;
 						changeUrlData('tournament', message.data);
 					} else if (message.subtype === 'match_init_setting') {
 						this.gamesetting = message.data;
-						// this.sendGameStartRequest();
 						message.data.Gamewebsocket = this;
 						changeUrlData('game', message.data);
 					} else if (message.subtype === 'match_run') {

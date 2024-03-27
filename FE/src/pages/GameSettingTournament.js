@@ -2,7 +2,7 @@ import { changeUrlData } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import InputNickname from '../components/InputNickname.js';
-import { Gamewebsocket } from '../Gamewebsocket.js';
+import Gamewebsocket from '../websocket/Gamewebsocket.js';
 
 const html = String.raw;
 
