@@ -46,7 +46,7 @@ class LoginPage {
 	addEventListeners() {
 		const loginButton = document.querySelector('.login-button');
 		loginButton.addEventListener('click', () => {
-			changeUrl('duelstats');
+			console.log('login42');
 		});
 
 		const signupLink = document.querySelector('.login-signup-link');
@@ -56,7 +56,7 @@ class LoginPage {
 
 		const login42 = document.querySelector('.login-42');
 		login42.addEventListener('click', () => {
-			changeUrl('tournamentResult');
+			console.log('login42');
 		});
 
 		const loginGuest = document.querySelector('.login-guest');
