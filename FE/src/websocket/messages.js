@@ -7,7 +7,7 @@ export function gameSessionInfoMsg(initial) {
 		// data: this.initial
 	};
 	// 임시로 1로 설정
-	// message.data.total_score = 1;
+	message.data.total_score = 1;
 
 	return message;
 }

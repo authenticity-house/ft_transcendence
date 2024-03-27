@@ -5,7 +5,6 @@ import DuelStatsData from '../components/DuelStatsData.js';
 import DuelBasicStats from '../components/DuelBasicStats.js';
 import DuelSpecialStats from '../components/DuelSpecialStats.js';
 import DuelGraphStats from '../components/DuelGraphStats.js';
-import { gameNextMatchMsg } from '../websocket/websocketUtils.js';
 
 const html = String.raw;
 
@@ -48,15 +47,6 @@ class DuelStatsPage {
 		`;
 	}
 
-	addEventListeners() {
-		const back = document.querySelector('.event-click-match');
-		back.addEventListener('click', () => {
-			if (this.data.Gamewebsocket) {
-				this.data.Gamewebsocket.send(gameNextMatchMsg());
-			} else changeUrl('match');
-		});
-	}
-
 	mount(data) {
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
@@ -70,6 +60,15 @@ class DuelStatsPage {
 			matchData.leftPosition,
 			matchData.rightPosition
 		);
+	}
+
+	addEventListeners() {
+		const back = document.querySelector('.event-click-match');
+		back.addEventListener('click', () => {
+			if (this.data.sendMsg) {
+				this.data.sendMsg();
+			} else changeUrl('match');
+		});
 	}
 }
 

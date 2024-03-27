@@ -7,11 +7,6 @@ import {
 	getUserPosition
 } from '../components/TournamentBracket.js';
 
-import {
-	gameMatchInitSettingMsg,
-	gameOverMsg
-} from '../websocket/websocketUtils.js';
-
 const html = String.raw;
 
 class TournamentPage {
@@ -66,11 +61,7 @@ class TournamentPage {
 	addEventListeners() {
 		const next = document.querySelector('.event-click-match');
 		next.addEventListener('click', () => {
-			if (this.data.gameOver === true) {
-				this.data.Gamewebsocket.send(gameOverMsg());
-			} else {
-				this.data.Gamewebsocket.send(gameMatchInitSettingMsg());
-			}
+			this.data.sendMsg();
 		});
 	}
 }

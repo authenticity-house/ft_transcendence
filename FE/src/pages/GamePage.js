@@ -6,7 +6,6 @@ import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/T
 
 import { changeUrl } from '../index.js';
 import { exitModal } from '../components/modal/exitModal.js';
-import { gameStartRequestMsg } from '../websocket/websocketUtils.js';
 
 const html = String.raw;
 
@@ -271,15 +270,17 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		this.initial.Gamewebsocket.addListeners();
-		this.initial.Gamewebsocket.send(gameStartRequestMsg());
+		// this.initial.Gamewebsocket.addListeners();
+		// this.initial.Gamewebsocket.send(gameStartRequestMsg());
 
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
 
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
-			this.initial.Gamewebsocket.sendGameDisconnect();
+			// this.initial.Gamewebsocket.sendGameDisconnect();
+			this.initial.sendMsg();
+
 			console.log('match_end');
 			changeUrl('match');
 		});
@@ -287,5 +288,3 @@ class GamePage {
 }
 
 export default GamePage;
-
-// export default new GamePage();
