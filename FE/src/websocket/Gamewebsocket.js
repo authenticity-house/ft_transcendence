@@ -1,12 +1,19 @@
 import { MessageManager } from './MessageManager.js';
 
-const { port } = location;
-
 export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		this.ws = new WebSocket(`ws://localhost:${port}/ws/game-server/`);
+		const { protocol, hostname, port } = location;
+
+		// 보안 연결(HTTPS)인 경우 wss를, 아니면 ws를 사용
+		const wsProtocol = protocol === 'https:' ? 'wss' : 'ws';
+		// 포트 번호가 있으면 URL에 포함시키고, 없으면 포트 번호 없이 도메인만 사용
+		const wsPort = port ? `:${port}` : '';
+		const wsUrl = `${wsProtocol}://${hostname}${wsPort}/ws/game-server/`;
+
+		this.ws = new WebSocket(wsUrl);
+
 		this.messageManager = new MessageManager(this);
 
 		this.gamesetting = {};
