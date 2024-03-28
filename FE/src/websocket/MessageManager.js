@@ -33,7 +33,7 @@ export class MessageManager {
 		this.winner = 0;
 	}
 
-	// ----------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	resetGameData() {
 		this.player1Score = document.querySelector('.player1');
@@ -43,7 +43,7 @@ export class MessageManager {
 		this.winner = 0;
 	}
 
-	// ----------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	setGameSetting(data) {
 		this.gamesetting = data;
@@ -75,7 +75,7 @@ export class MessageManager {
 		console.log('disconnected');
 	}
 
-	// ----------------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	renderThreeJs(data) {
 		this.frame += 1;
@@ -171,7 +171,7 @@ export class MessageManager {
 		this.gamepage.renderer.render(this.gamepage.scene, this.gamepage.camera);
 	}
 
-	// ========================================================================
+	// =============================================================================
 
 	handleMessage(message) {
 		switch (message.type) {
@@ -203,6 +203,7 @@ export class MessageManager {
 				break;
 		}
 	}
+	// -----------------------------------------------------------------------------
 
 	handleGameTypeMessage(message) {
 		switch (message.subtype) {
@@ -239,19 +240,18 @@ export class MessageManager {
 				removeModalBackdrop(); // modal-fade 비활성화
 
 				// 1vs1 대전의 경우 disconnect
-				if (this.gamesetting.battle_mode === 1) {
+				if (this.gamesetting.battle_mode === 1)
 					changeUrlData('duelstats', {
 						...message.data,
 						sendMsg: this.sendGameDisconnect.bind(this)
 					});
-				}
 				// 토너먼트의 경우 다음 매치 요청
-				else {
+				else
 					changeUrlData('duelstats', {
 						...message.data,
 						sendMsg: this.sendGameNextMatch.bind(this)
 					});
-				}
+
 				break;
 			case SubType.ERROR:
 				console.log(`server: ${message.message}`);

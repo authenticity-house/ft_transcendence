@@ -1,5 +1,3 @@
-/* eslint-disable no-void */
-
 import * as THREE from 'three';
 import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
@@ -270,15 +268,11 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		// this.initial.Gamewebsocket.addListeners();
-		// this.initial.Gamewebsocket.send(gameStartRequestMsg());
-
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Return to the main page
 
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
-			// this.initial.Gamewebsocket.sendGameDisconnect();
 			this.initial.sendMsg();
 
 			console.log('match_end');

@@ -192,11 +192,12 @@ class GameSettingTournament {
 		startButton.addEventListener('click', () => {
 			const newData = this.data;
 			this.resetData();
+
 			updateNicknamesData(newData);
 			newData.total_score *= 5;
+
 			const gamewebsocket = new Gamewebsocket(newData);
 			console.log(gamewebsocket);
-			// changeUrlData('game', newData);
 		});
 	}
 }

@@ -1,8 +1,3 @@
-/* eslint-disable no-void */
-// import { changeUrlInstance, changeUrlData } from '../index.js';
-// import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
-// import { gameSessionInfoMsg } from './messages.js';
-// import GamePage from '../pages/GamePage.js';
 import { MessageManager } from './MessageManager.js';
 
 const { port } = location;
@@ -28,7 +23,7 @@ export class Gamewebsocket {
 		this.initializeEventListeners();
 	}
 
-	// ---------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	send(message) {
 		this.ws.send(JSON.stringify(message));
@@ -42,7 +37,7 @@ export class Gamewebsocket {
 		return this.ws.readyState === this.ws.OPEN;
 	}
 
-	// -------------------------------------------------
+	// -----------------------------------------------------------------------------
 
 	initializeEventListeners() {
 		document.addEventListener('keydown', (event) => this.handleKeyDown(event));
@@ -90,12 +85,5 @@ export class Gamewebsocket {
 			const message = JSON.parse(e.data);
 			this.messageManager.handleMessage(message);
 		};
-	}
-
-	addListeners() {
-		this.player1Score = document.querySelector('.player1');
-		this.player2Score = document.querySelector('.player2');
-		this.gameResult = document.querySelector('.game-result');
-		this.winner = 0;
 	}
 }
