@@ -67,6 +67,7 @@ export const changeUrlData = (url, data) => {
 
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
+	// 링크가 변경되기 전에 유효하지 않은 요청인지 확인
 	const url = window.location.href.split('/').pop();
 	if (
 		url === 'game' ||
@@ -75,7 +76,7 @@ window.onpopstate = () => {
 		url === 'tournamentResult'
 	) {
 		alert('유효하지 않은 요청입니다.');
-		history.go(1);
+		changeUrl('');
 	} else {
 		root.innerHTML = routes[url].template();
 		routes[url].addEventListeners();
