@@ -18,7 +18,9 @@ class MatchModePage {
 				<div class="select-wrapper button-click-tournament">
 					${tournamentButton.template()}
 				</div>
-				<div class="back-arrow-container">${backButton.template()}</div>
+				<div class="back-arrow-container">
+					<div class="back-arrow">${backButton.template()}</div>
+				</div>
 			</div>
 		`;
 	}
@@ -32,7 +34,7 @@ class MatchModePage {
 		tournament.addEventListener('click', () => {
 			changeUrlData('gameSettingTournament', null);
 		});
-		const back = document.querySelector('.back-arrow-container');
+		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
 			changeUrl('play');
 		});

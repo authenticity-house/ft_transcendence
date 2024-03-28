@@ -17,6 +17,7 @@ body {
 	line-height: 1.6;
 	color: #ffffff;
 	background: var(--background, #141343);
+	overflow-x: hidden;
 }
 
 *,
@@ -79,7 +80,18 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button) {
 }
 
 ::-webkit-scrollbar {
-	display: none;
+	width: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #ffffff;
+	border-radius: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+	/* 투명도 50% */
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius: 0.4rem;
 }
 
 .loading-container {
@@ -1009,6 +1021,7 @@ td {
 	width: 78rem;
 	height: 56rem;
 	overflow: scroll;
+	overflow-x: hidden;
 }
 
 .duel-report-wrapper {
