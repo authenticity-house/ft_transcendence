@@ -106,6 +106,7 @@ class GamePage {
 		);
 		lineDashed.computeLineDistances();
 		scene.add(lineDashed);
+
 		// ---------------------------------------------------------------
 		// ----------------------------- ball ----------------------------
 		// Create a ball
@@ -128,7 +129,7 @@ class GamePage {
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
-		// --------------------- paddle -------------------------
+		// -------------------------- paddle -----------------------------
 		// Create a paddle
 		const paddle = new THREE.BoxGeometry(
 			this.initial.paddle1.width,
@@ -247,7 +248,9 @@ class GamePage {
 			textMesh.position.z = 0.5;
 			scene.add(textMesh);
 		});
+
 		// ---------------------------------------------------------------
+
 		renderer.render(scene, camera);
 
 		this.camera = camera;
@@ -260,6 +263,7 @@ class GamePage {
 		this.ballMesh = ballMesh;
 		this.ballLight = ballLight;
 
+		// ---------------------------------------------------------------
 		// Resize the window
 		window.addEventListener('resize', () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
@@ -268,7 +272,7 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		// -------------------------------------------------------------------------------------------------------------------------
+		// ---------------------------------------------------------------
 		// Return to the main page
 
 		const returnButton = document.querySelector('.return-button');

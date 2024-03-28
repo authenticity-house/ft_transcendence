@@ -77,9 +77,51 @@ export class MessageManager {
 
 	// -----------------------------------------------------------------------------
 
-	renderThreeJs(data) {
-		this.frame += 1;
+	setPositionAndLookAt(x, y, lookAtPosition) {
+		this.gamepage.camera.position.set(x, y, this.gamepage.camera.position.z);
+		this.gamepage.camera.lookAt(lookAtPosition);
+	}
 
+	updateCameraPosition() {
+		if (this.frame < 100) {
+			this.setPositionAndLookAt(
+				-4,
+				-1 + (this.frame / 100) * 2,
+				this.gamepage.paddleMesh1.position
+			);
+		} else if (this.frame >= 100 && this.frame < 200) {
+			this.setPositionAndLookAt(
+				4,
+				1 - ((this.frame - 100) / 100) * 2,
+				this.gamepage.paddleMesh2.position
+			);
+		} else if (this.frame >= 200 && this.frame <= 300) {
+			this.gamepage.camera.position.set(
+				0,
+				0,
+				3.5 +
+					Math.sin((3 / 2) * Math.PI + ((this.frame - 200) / 100) * Math.PI) *
+						(1 / 2)
+			);
+			this.gamepage.camera.lookAt(0, 0, 0);
+
+			this.toggleFinalAnimation();
+		}
+	}
+
+	toggleFinalAnimation() {
+		const lastChild =
+			this.gamepage.scene.children[this.gamepage.scene.children.length - 1];
+
+		if (this.frame === 200) lastChild.visible = true;
+		if (this.frame >= 275 && this.frame < 300 && this.frame % 4 === 0)
+			lastChild.visible = !lastChild.visible;
+		if (this.frame === 300) lastChild.visible = false;
+	}
+
+	// -----------------------------------------------------------------------------
+
+	checkWinner() {
 		if (
 			Number(this.player1Score.textContent) ===
 			this.websocket.initial.total_score
@@ -92,54 +134,11 @@ export class MessageManager {
 		) {
 			this.winner = 2;
 		}
+	}
 
-		if (this.frame < 100) {
-			this.gamepage.camera.position.x = -4;
-			this.gamepage.camera.position.y = -1 + (this.frame / 100) * 2;
-			this.gamepage.camera.lookAt(this.gamepage.paddleMesh1.position);
-		}
-		if (this.frame >= 100 && this.frame < 200) {
-			this.gamepage.camera.position.x = 4;
-			this.gamepage.camera.position.y = 1 - ((this.frame - 100) / 100) * 2;
-			this.gamepage.camera.lookAt(this.gamepage.paddleMesh2.position);
-		}
-		if (this.frame >= 200 && this.frame <= 300) {
-			this.gamepage.camera.position.x = 0;
-			this.gamepage.camera.position.y = 0;
-			this.gamepage.camera.position.z =
-				3.5 +
-				Math.sin((3 / 2) * Math.PI + ((this.frame - 200) / 100) * Math.PI) *
-					(1 / 2);
-			this.gamepage.camera.lookAt(0, 0, 0);
-			if (this.frame === 200) {
-				this.gamepage.scene.children[
-					this.gamepage.scene.children.length - 1
-				].visible = true;
-			}
-			if (this.frame >= 275 && this.frame < 300 && this.frame % 4 === 0) {
-				this.gamepage.scene.children[
-					this.gamepage.scene.children.length - 1
-				].visible =
-					!this.gamepage.scene.children[this.gamepage.scene.children.length - 1]
-						.visible;
-			}
-			if (this.frame === 300) {
-				this.gamepage.scene.children[
-					this.gamepage.scene.children.length - 1
-				].visible = false;
-			}
-		}
+	// -----------------------------------------------------------------------------
 
-		// object destructuring
-		const { ball: ballData, paddle1, paddle2, score } = data;
-
-		this.gamepage.ballMesh.position.x = ballData.x;
-		this.gamepage.ballMesh.position.y = ballData.y;
-		this.gamepage.paddleMesh1.position.y = paddle1.y;
-		this.gamepage.paddleLightGroup1.position.y = paddle1.y;
-		this.gamepage.paddleMesh2.position.y = paddle2.y;
-		this.gamepage.paddleLightGroup2.position.y = paddle2.y;
-
+	updateScores(score) {
 		if (Number(this.player1Score.textContent) !== score.player1) {
 			this.player1Score.classList.remove('score_transition');
 			// eslint-disable-next-line no-void
@@ -154,9 +153,9 @@ export class MessageManager {
 			this.player2Score.textContent = score.player2;
 			this.player2Score.classList.add('score_transition');
 		}
+	}
 
-		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
-
+	displayWinner() {
 		if (this.winner === 1) {
 			this.gamepage.camera.position.x = -4;
 			this.gamepage.camera.lookAt(this.gamepage.paddleMesh1.position);
@@ -167,6 +166,29 @@ export class MessageManager {
 			this.gamepage.camera.lookAt(this.gamepage.paddleMesh2.position);
 			this.gameResult.style.display = 'block';
 		}
+	}
+
+	// -----------------------------------------------------------------------------
+
+	renderThreeJs(data) {
+		this.frame += 1;
+
+		this.updateCameraPosition();
+		this.checkWinner();
+
+		// object destructuring
+		const { ball, paddle1, paddle2, score } = data;
+
+		this.gamepage.ballMesh.position.x = ball.x;
+		this.gamepage.ballMesh.position.y = ball.y;
+		this.gamepage.paddleMesh1.position.y = paddle1.y;
+		this.gamepage.paddleLightGroup1.position.y = paddle1.y;
+		this.gamepage.paddleMesh2.position.y = paddle2.y;
+		this.gamepage.paddleLightGroup2.position.y = paddle2.y;
+		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
+
+		this.updateScores(score);
+		this.displayWinner();
 
 		this.gamepage.renderer.render(this.gamepage.scene, this.gamepage.camera);
 	}
