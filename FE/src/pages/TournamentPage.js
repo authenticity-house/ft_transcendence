@@ -4,7 +4,8 @@ import {
 	bracketTemplate,
 	addUserBracket,
 	addWireBracket,
-	getUserPosition
+	getUserPosition,
+	replaceTitle
 } from '../components/TournamentBracket.js';
 
 const html = String.raw;
@@ -40,6 +41,12 @@ class TournamentPage {
 		let depth = 0;
 		for (const child of tournamentBracketChild) {
 			if (depth === 0) {
+				const userNickName = child.getElementsByTagName('p');
+				for (let i = 0; i < userNickName.length; i += 1) {
+					if (userNickName[i].innerText === winPlayer) {
+						userNickName[i].classList.add('win-player-animation');
+					}
+				}
 				depth += 1;
 				continue;
 			}
@@ -54,6 +61,20 @@ class TournamentPage {
 				depth += 1;
 			} else if (child.classList.contains('wire-container')) {
 				addWireBracket(position, child, depth);
+			}
+		}
+
+		// tournament ending
+		const textElementAll = document.getElementsByTagName('p');
+		const lastBracketText = textElementAll[textElementAll.length - 1].innerText;
+		if (!(lastBracketText === '' || lastBracketText === 'PONG !')) {
+			// title change
+			replaceTitle('.bold-title', winPlayer);
+			// pong animation winPlayer
+			for (let i = 0; i < textElementAll.length; i += 1) {
+				if (textElementAll[i].innerText === winPlayer) {
+					textElementAll[i].parentNode.classList.add('pong-animation');
+				}
 			}
 		}
 	}
