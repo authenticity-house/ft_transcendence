@@ -18,6 +18,7 @@ format:
 lint:
 	@echo "Linting code with pylint"
 	@venv/bin/pylint backend
+	@venv/bin/pylint users
 
 type:
 	@echo "Typechecking with mypy"
