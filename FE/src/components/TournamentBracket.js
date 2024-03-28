@@ -5,7 +5,9 @@ function bracketTemplate(bracketInfo) {
 	let userWrappers = '';
 	for (let i = 0; i < bracketInfo.length; i += 1) {
 		for (let j = 0; j < bracketInfo[i].length; j += 1) {
-			userWrappers += `<div class="user-wrapper"><p>${bracketInfo[i][j]}</p></div>`;
+			userWrappers += `<div class="user-wrapper">
+				<p>${bracketInfo[i][j]}</p>
+				</div>`;
 			playerCount += 1;
 		}
 	}
@@ -63,13 +65,14 @@ function addUserBracket(position, halfHeight, child, bracketInfo, winPlayer) {
 			userWrapper.classList.add('user-wrapper-position');
 
 			const userWrapperText = bracketInfo[i][j];
-			const textSpan = document.createElement('span');
-			textSpan.textContent = userWrapperText;
+			const textP = document.createElement('p');
+
+			textP.textContent = userWrapperText;
 			if (userWrapperText === 'PONG !')
 				userWrapper.classList.add('pong-animation');
 			if (userWrapperText === winPlayer)
-				textSpan.classList.add('win-player-animation');
-			userWrapper.appendChild(textSpan);
+				textP.classList.add('win-player-animation');
+			userWrapper.appendChild(textP);
 			child.appendChild(userWrapper);
 		}
 	}
@@ -115,4 +118,29 @@ function addWireBracket(position, child, depth) {
 	position.splice(0, position.length, ...newPosition);
 }
 
-export { bracketTemplate, addUserBracket, addWireBracket, getUserPosition };
+function replaceTitle(className, winPlayer) {
+	const replaceElement = html`
+		<div class="replace-title-container">
+			<div class="champion-wrapper blue_neon_10 display-medium36">
+				<span>CHAMPION</span>
+			</div>
+			<div class="nickname-wrapper pink_neon_10 display-medium56">
+				‘${winPlayer}’
+			</div>
+		</div>
+	`;
+	const fragment = document
+		.createRange()
+		.createContextualFragment(replaceElement);
+	const existingElement = document.querySelector('.bold-title');
+	const parentElement = existingElement.parentNode;
+	parentElement.replaceChild(fragment, existingElement);
+}
+
+export {
+	bracketTemplate,
+	addUserBracket,
+	addWireBracket,
+	getUserPosition,
+	replaceTitle
+};
