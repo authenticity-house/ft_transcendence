@@ -68,8 +68,18 @@ export const changeUrlData = (url, data) => {
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
 	const url = window.location.href.split('/').pop();
-	root.innerHTML = routes[url].template();
-	routes[url].addEventListeners();
+	if (
+		url === 'game' ||
+		url === 'duelstats' ||
+		url === 'tournament' ||
+		url === 'tournamentResult'
+	) {
+		alert('유효하지 않은 요청입니다.');
+		history.go(1);
+	} else {
+		root.innerHTML = routes[url].template();
+		routes[url].addEventListeners();
+	}
 };
 
 // 새로 고침 시 홈페이지로 주소 변경
