@@ -47,15 +47,6 @@ class DuelStatsPage {
 		`;
 	}
 
-	addEventListeners() {
-		const back = document.querySelector('.event-click-match');
-		back.addEventListener('click', () => {
-			if (this.data.Gamewebsocket) {
-				this.data.Gamewebsocket.sendGameNextMatch();
-			} else changeUrl('match');
-		});
-	}
-
 	mount(data) {
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
@@ -69,6 +60,15 @@ class DuelStatsPage {
 			matchData.leftPosition,
 			matchData.rightPosition
 		);
+	}
+
+	addEventListeners() {
+		const back = document.querySelector('.event-click-match');
+		back.addEventListener('click', () => {
+			this.data.sendMsg();
+			if (this.data.sendMsg.name === 'bound sendGameDisconnect')
+				changeUrl('match');
+		});
 	}
 }
 

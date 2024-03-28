@@ -46,6 +46,12 @@ const routes = {
 root.innerHTML = routes[''].template();
 routes[''].addEventListeners();
 
+export const changeUrlInstance = (url, instance) => {
+	// history.pushState(null, null, `${homeLink}${url}`);
+	root.innerHTML = instance.template();
+	instance.addEventListeners();
+};
+
 // When the user presses the back or forward button, the page is changed
 export const changeUrl = (url) => {
 	history.pushState(null, null, `${homeLink}${url}`);

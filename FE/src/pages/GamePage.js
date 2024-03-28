@@ -1,5 +1,3 @@
-/* eslint-disable no-void */
-
 import * as THREE from 'three';
 import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
@@ -10,14 +8,11 @@ import { exitModal } from '../components/modal/exitModal.js';
 const html = String.raw;
 
 class GamePage {
-	constructor() {
-		this.initial = {};
+	constructor(initial) {
+		this.initial = initial;
 	}
 
-	template(initial) {
-		this.initial = initial;
-		console.log(initial);
-
+	template() {
 		return html`
 			<div class="game-page-container">
 				<div class="game-page-container">
@@ -111,6 +106,7 @@ class GamePage {
 		);
 		lineDashed.computeLineDistances();
 		scene.add(lineDashed);
+
 		// ---------------------------------------------------------------
 		// ----------------------------- ball ----------------------------
 		// Create a ball
@@ -133,7 +129,7 @@ class GamePage {
 		ballLight.position.set(0, 0, 0);
 		scene.add(ballLight);
 
-		// --------------------- paddle -------------------------
+		// -------------------------- paddle -----------------------------
 		// Create a paddle
 		const paddle = new THREE.BoxGeometry(
 			this.initial.paddle1.width,
@@ -252,7 +248,9 @@ class GamePage {
 			textMesh.position.z = 0.5;
 			scene.add(textMesh);
 		});
+
 		// ---------------------------------------------------------------
+
 		renderer.render(scene, camera);
 
 		this.camera = camera;
@@ -265,6 +263,7 @@ class GamePage {
 		this.ballMesh = ballMesh;
 		this.ballLight = ballLight;
 
+		// ---------------------------------------------------------------
 		// Resize the window
 		window.addEventListener('resize', () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
@@ -273,22 +272,17 @@ class GamePage {
 			renderer.setSize(window.innerWidth / 1.8, window.innerHeight / 1.8);
 		});
 
-		this.initial.Gamewebsocket.gamepage = this;
-
-		this.initial.Gamewebsocket.addListeners();
-
-		this.initial.Gamewebsocket.sendGameStartRequest();
-
-		// -------------------------------------------------------------------------------------------------------------------------
+		// ---------------------------------------------------------------
 		// Return to the main page
 
 		const returnButton = document.querySelector('.return-button');
 		returnButton.addEventListener('click', () => {
-			this.initial.Gamewebsocket.sendGameDisconnect();
+			this.initial.sendMsg();
+
 			console.log('match_end');
 			changeUrl('match');
 		});
 	}
 }
 
-export default new GamePage();
+export default GamePage;
