@@ -30,7 +30,9 @@ class RegisterPage {
 					${nextButton.template()}
 				</div>
 
-				<div class="back-arrow-container">${backButton.template()}</div>
+				<div class="back-arrow-container">
+					<div class="back-arrow">${backButton.template()}</div>
+				</div>
 			</div>
 		`;
 	}
@@ -40,7 +42,7 @@ class RegisterPage {
 		next.addEventListener('click', () => {
 			changeUrl('registerNickname');
 		});
-		const back = document.querySelector('.back-arrow-container');
+		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
 			changeUrl('');
 		});
