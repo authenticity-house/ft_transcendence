@@ -4,7 +4,6 @@ export function gameSessionInfoMsg(initial) {
 		subtype: 'session_info',
 		message: '',
 		data: initial
-		// data: this.initial
 	};
 	// 임시로 1로 설정
 	message.data.total_score = 1;
@@ -49,6 +48,14 @@ export function gameOverMsg() {
 		type: 'game_over',
 		subtype: 'summary',
 		message: 'go!'
+	};
+	return message;
+}
+
+export function gameDisconnectMsg() {
+	const message = {
+		type: 'disconnect',
+		message: "I'm leaving!"
 	};
 	return message;
 }

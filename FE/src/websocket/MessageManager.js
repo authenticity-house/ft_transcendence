@@ -5,6 +5,21 @@ import * as msg from './messages.js';
 
 import GamePage from '../pages/GamePage.js';
 
+const MessageType = {
+	GAME: 'game',
+	GAME_OVER: 'game_over',
+	GAME_OVER_RESPONSE: 'game_over_response'
+};
+
+const SubType = {
+	CONNECTION_ESTABLISHED: 'connection_established',
+	TOURNAMENT_TREE: 'tournament_tree',
+	MATCH_INIT_SETTING: 'match_init_setting',
+	MATCH_RUN: 'match_run',
+	MATCH_END: 'match_end',
+	ERROR: 'error'
+};
+
 export class MessageManager {
 	constructor(websocket) {
 		this.websocket = websocket;
@@ -19,6 +34,21 @@ export class MessageManager {
 	}
 
 	// ----------------------------------------------------------
+
+	resetGameData() {
+		this.player1Score = document.querySelector('.player1');
+		this.player2Score = document.querySelector('.player2');
+		this.gameResult = document.querySelector('.game-result');
+		this.frame = 0;
+		this.winner = 0;
+	}
+
+	// ----------------------------------------------------------
+
+	setGameSetting(data) {
+		this.gamesetting = data;
+	}
+
 	sendGameSessionInfo(data) {
 		this.websocket.send(msg.gameSessionInfoMsg(data));
 	}
@@ -40,18 +70,16 @@ export class MessageManager {
 	}
 
 	sendGameDisconnect() {
-		const message = {
-			type: 'disconnect',
-			message: "I'm leaving!"
-		};
-		this.websocket.send(message);
+		this.websocket.send(msg.gameDisconnectMsg());
 		this.websocket.close();
 		console.log('disconnected');
 	}
 
 	// ----------------------------------------------------------
+
 	renderThreeJs(data) {
 		this.frame += 1;
+
 		if (
 			Number(this.player1Score.textContent) ===
 			this.websocket.initial.total_score
@@ -143,24 +171,17 @@ export class MessageManager {
 		this.gamepage.renderer.render(this.gamepage.scene, this.gamepage.camera);
 	}
 
-	addListeners() {
-		this.player1Score = document.querySelector('.player1');
-		this.player2Score = document.querySelector('.player2');
-		this.gameResult = document.querySelector('.game-result');
-		this.winner = 0;
-	}
-
-	// ----------------------------------------------------------
+	// ========================================================================
 
 	handleMessage(message) {
 		switch (message.type) {
-			case 'game':
+			case MessageType.GAME:
 				this.handleGameTypeMessage(message);
 				break;
 
-			case 'game_over':
+			case MessageType.GAME_OVER:
 				console.log('game over');
-				if (message.subtype === 'tournament_tree') {
+				if (message.subtype === SubType.TOURNAMENT_TREE) {
 					// 최종 대진표
 					changeUrlData('tournament', {
 						...message.data,
@@ -168,15 +189,13 @@ export class MessageManager {
 					});
 				}
 				break;
-			case 'game_over_response':
-				// 최종 경기결과 정보
-				{
-					const tmpData = {
-						content: message.data,
-						sendMsg: this.sendGameDisconnect.bind(this)
-					};
-					changeUrlData('tournamentResult', tmpData);
-				}
+
+			case MessageType.GAME_OVER_RESPONSE:
+				// 최종 경기결과
+				changeUrlData('tournamentResult', {
+					content: message.data,
+					sendMsg: this.sendGameDisconnect.bind(this)
+				});
 				break;
 
 			default:
@@ -186,52 +205,60 @@ export class MessageManager {
 	}
 
 	handleGameTypeMessage(message) {
-		if (message.subtype === 'connection_established') {
-			// 게임 초기 정보 전송
-			this.sendGameSessionInfo(this.websocket.initial);
-		} else if (message.subtype === 'tournament_tree') {
-			// 대진표 출력 및 게임 매치 초기화 요청
-			changeUrlData('tournament', {
-				...message.data,
-				sendMsg: this.sendGameMatchInitSetting.bind(this)
-			});
-		} else if (message.subtype === 'match_init_setting') {
-			// 매치 초기화 정보 수신
-			this.gamesetting = message.data;
-
-			// 게임 페이지 생성 및 실행
-			this.gamepage = new GamePage({
-				...message.data,
-				sendMsg: this.sendGameDisconnect.bind(this)
-			});
-			changeUrlInstance('game', this.gamepage);
-
-			// score 정보 초기화
-			this.addListeners();
-			// 게임 시작 요청
-			this.sendGameStartRequest();
-		} else if (message.subtype === 'match_run') {
-			// 매치 데이터 수신으로 rendering
-			this.renderThreeJs(message.data);
-		} else if (message.subtype === 'match_end') {
-			console.log('match_end');
-			this.frame = 0;
-			removeModalBackdrop(); // modal-fade 비활성화
-
-			// 1vs1 대전의 경우 disconnect 후 경기결과
-			if (this.gamesetting.battle_mode === 1) {
-				this.sendGameDisconnect();
-				changeUrlData('duelstats', message.data);
-			}
-			// 토너먼트의 경우 경기결과 출력 후 다음 매치 요청
-			else {
-				changeUrlData('duelstats', {
+		switch (message.subtype) {
+			case SubType.CONNECTION_ESTABLISHED:
+				// 게임 초기 정보 전송
+				this.sendGameSessionInfo(this.websocket.initial);
+				break;
+			case SubType.TOURNAMENT_TREE:
+				// 대진표 출력 및 게임 매치 초기화 요청
+				changeUrlData('tournament', {
 					...message.data,
-					sendMsg: this.sendGameNextMatch.bind(this)
+					sendMsg: this.sendGameMatchInitSetting.bind(this)
 				});
-			}
-		} else if (message.subtype === 'error') {
-			console.log(`server: ${message.message}`);
+				break;
+			case SubType.MATCH_INIT_SETTING:
+				// 매치 초기화 정보 저장
+				this.setGameSetting(message.data);
+				// 게임 페이지 생성 및 실행
+				this.gamepage = new GamePage({
+					...message.data,
+					sendMsg: this.sendGameDisconnect.bind(this)
+				});
+				changeUrlInstance('game', this.gamepage);
+
+				this.resetGameData(); // score 정보 초기화
+				this.sendGameStartRequest(); // 게임 시작 요청
+				break;
+			case SubType.MATCH_RUN:
+				// 수신한 매치 데이터로 rendering
+				this.renderThreeJs(message.data);
+				break;
+			case SubType.MATCH_END:
+				console.log('match_end');
+				removeModalBackdrop(); // modal-fade 비활성화
+
+				// 1vs1 대전의 경우 disconnect
+				if (this.gamesetting.battle_mode === 1) {
+					changeUrlData('duelstats', {
+						...message.data,
+						sendMsg: this.sendGameDisconnect.bind(this)
+					});
+				}
+				// 토너먼트의 경우 다음 매치 요청
+				else {
+					changeUrlData('duelstats', {
+						...message.data,
+						sendMsg: this.sendGameNextMatch.bind(this)
+					});
+				}
+				break;
+			case SubType.ERROR:
+				console.log(`server: ${message.message}`);
+				break;
+			default:
+				console.log('default');
+				break;
 		}
 	}
 }

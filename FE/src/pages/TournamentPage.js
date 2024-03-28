@@ -61,6 +61,7 @@ class TournamentPage {
 	addEventListeners() {
 		const next = document.querySelector('.event-click-match');
 		next.addEventListener('click', () => {
+			// 게임 매치 초기화 요청, MatchInitSettingMsg 전송
 			this.data.sendMsg();
 		});
 	}

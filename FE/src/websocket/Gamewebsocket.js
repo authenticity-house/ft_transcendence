@@ -35,16 +35,11 @@ export class Gamewebsocket {
 	}
 
 	close() {
-		console.log('close');
 		this.ws.close();
 	}
 
 	isOpen() {
 		return this.ws.readyState === this.ws.OPEN;
-	}
-
-	setGameSetting(data) {
-		this.gamesetting = data;
 	}
 
 	// -------------------------------------------------
