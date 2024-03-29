@@ -220,6 +220,8 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 /* components - ButtonBackArrow */
 .button-back-arrow-box {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 	border: none;
 	width: 5rem;
 }
@@ -1150,7 +1152,7 @@ td {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 40px;
+	gap: 4rem;
 	height: 12rem;
 }
 
@@ -1162,6 +1164,23 @@ td {
 	border-radius: 3rem;
 	border: 0.4rem solid #fff;
 	background: rgba(255, 255, 255, 0);
+	position: relative;
+}
+
+.user-profile-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8rem 5rem 10rem 5rem;
+	width: 40rem;
+	height: 100%;
+	gap: 4rem;
+	border-right: 0.2rem solid #ffffff;
+}
+
+.room-list-container {
+	width: 80rem;
+	height: 100%;
 }
 
 /* Component - ProfileButton */
@@ -1199,4 +1218,36 @@ td {
 	align-items: center;
 	border-radius: 100rem;
 	background: #dfdfdf;
+}
+
+/* Component - ProfileWindow */
+.user-profile-wrapper {
+	width: 16rem;
+	height: 16rem;
+	border-radius: 100rem;
+	border: 0.1rem solid white;
+	background-color: #ffd164;
+}
+
+.user-profile-summary {
+	width: 30rem;
+	height: 30rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+.create-room-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30rem;
+	height: 6rem;
+	border: 0.4rem solid #fff;
+	border-radius: 1rem;
+}
+
+.online-main-back-button {
+	position: absolute;
+	left: 3rem;
+	bottom: 2rem;
 }

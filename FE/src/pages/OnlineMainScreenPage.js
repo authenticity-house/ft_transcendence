@@ -1,16 +1,24 @@
 import { changeUrl } from '../index.js';
 import { profileButton } from '../components/ProfileButton.js';
+import { profileWindow } from '../components/ProfileWindow.js';
+import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
 
 class OnlineMainScreenPage {
 	template() {
-		const profileButtonContainer = profileButton();
+		// + data - user profile image
+		const profileButtonComponent = profileButton();
+		// + data - user profile image, nickname, profile summary
+		const userProfileComponent = profileWindow();
+		const backButton = new ButtonBackArrow();
+
 		return html`
-			<div class="profile-button-container">${profileButtonContainer}</div>
+			${profileButtonComponent}
 			<div class="large-window head_white_neon_15">
-				<div class="user-profile-container"></div>
+				${userProfileComponent}
 				<div class="room-list-container"></div>
+				<div class="online-main-back-button">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -25,9 +33,9 @@ class OnlineMainScreenPage {
 		});
 
 		// delete - changeUrl
-		const signupLink = document.querySelector('.login-signup-link');
-		signupLink.addEventListener('click', () => {
-			changeUrl('register');
+		const backButton = document.querySelector('.online-main-back-button');
+		backButton.addEventListener('click', () => {
+			changeUrl('play');
 		});
 	}
 }
