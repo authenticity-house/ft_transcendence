@@ -1,24 +1,9 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
 import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
-
-import * as msg from './messages.js';
-
 import GamePage from '../pages/GamePage.js';
 
-const MessageType = {
-	GAME: 'game',
-	GAME_OVER: 'game_over',
-	GAME_OVER_RESPONSE: 'game_over_response'
-};
-
-const SubType = {
-	CONNECTION_ESTABLISHED: 'connection_established',
-	TOURNAMENT_TREE: 'tournament_tree',
-	MATCH_INIT_SETTING: 'match_init_setting',
-	MATCH_RUN: 'match_run',
-	MATCH_END: 'match_end',
-	ERROR: 'error'
-};
+import * as msg from './messages.js';
+import { MessageType, SubType, Winner } from './constWebsocket.js';
 
 export class MessageManager {
 	constructor(websocket) {
@@ -83,19 +68,24 @@ export class MessageManager {
 	}
 
 	updateCameraPosition() {
+		// Player 1
 		if (this.frame < 100) {
 			this.setPositionAndLookAt(
 				-4,
 				-1 + (this.frame / 100) * 2,
 				this.gamepage.paddleMesh1.position
 			);
-		} else if (this.frame >= 100 && this.frame < 200) {
+		}
+		// Player 2
+		else if (this.frame >= 100 && this.frame < 200) {
 			this.setPositionAndLookAt(
 				4,
 				1 - ((this.frame - 100) / 100) * 2,
 				this.gamepage.paddleMesh2.position
 			);
-		} else if (this.frame >= 200 && this.frame <= 300) {
+		}
+		// Ready
+		else if (this.frame >= 200 && this.frame <= 300) {
 			this.gamepage.camera.position.set(
 				0,
 				0,
@@ -122,18 +112,12 @@ export class MessageManager {
 	// -----------------------------------------------------------------------------
 
 	checkWinner() {
-		if (
-			Number(this.player1Score.textContent) ===
-			this.websocket.initial.total_score
-		) {
-			this.winner = 1;
-		}
-		if (
-			Number(this.player2Score.textContent) ===
-			this.websocket.initial.total_score
-		) {
-			this.winner = 2;
-		}
+		const finalScore = this.websocket.initial.total_score;
+
+		if (Number(this.player1Score.textContent) === finalScore)
+			this.winner = Winner.PLAYER_1;
+		if (Number(this.player2Score.textContent) === finalScore)
+			this.winner = Winner.PLAYER_2;
 	}
 
 	// -----------------------------------------------------------------------------
@@ -156,16 +140,15 @@ export class MessageManager {
 	}
 
 	displayWinner() {
-		if (this.winner === 1) {
-			this.gamepage.camera.position.x = -4;
-			this.gamepage.camera.lookAt(this.gamepage.paddleMesh1.position);
-			this.gameResult.style.display = 'block';
-		}
-		if (this.winner === 2) {
-			this.gamepage.camera.position.x = 4;
-			this.gamepage.camera.lookAt(this.gamepage.paddleMesh2.position);
-			this.gameResult.style.display = 'block';
-		}
+		const winnerPosition = this.winner === Winner.PLAYER_1 ? -4 : 4;
+		const targetPaddle =
+			this.winner === Winner.PLAYER_1
+				? this.gamepage.paddleMesh1
+				: this.gamepage.paddleMesh2;
+
+		this.gamepage.camera.position.x = winnerPosition;
+		this.gamepage.camera.lookAt(targetPaddle.position);
+		this.gameResult.style.display = 'block';
 	}
 
 	// -----------------------------------------------------------------------------
@@ -225,6 +208,7 @@ export class MessageManager {
 				break;
 		}
 	}
+
 	// -----------------------------------------------------------------------------
 
 	handleGameTypeMessage(message) {
