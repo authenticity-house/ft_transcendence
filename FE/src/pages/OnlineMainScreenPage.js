@@ -11,14 +11,37 @@ class OnlineMainScreenPage {
 		// + data - user profile image
 		const profileButtonComponent = profileButton();
 		// + data - user profile image, nickname, profile summary
-		const userProfileComponent = profileWindow();
-		const roomListComponent = roomListWindow();
+		const profileWindowElement = profileWindow();
+		// + MOCK data - roomList
+		const roomList = [
+			{
+				matchMode: '1 vs 1',
+				roomTitle: '아무나 들어오세!',
+				rating: '1000',
+				peopleMax: '2',
+				peopleNow: '1'
+			},
+			{
+				matchMode: 'tournament',
+				roomTitle: '8인 토너먼트 고수만!',
+				rating: '3000',
+				peopleMax: '8',
+				peopleNow: '3'
+			},
+			{
+				matchMode: '1vs1',
+				roomTitle: '아무나 들어오세!',
+				rating: '1000',
+				peopleMax: '2',
+				peopleNow: '1'
+			}
+		];
+		const roomListWindowElement = roomListWindow(roomList);
 		const backButton = new ButtonBackArrow();
-
 		return html`
 			${profileButtonComponent}
 			<div class="large-window head_white_neon_15">
-				${userProfileComponent} ${roomListComponent}
+				${profileWindowElement} ${roomListWindowElement}
 				<div class="online-main-back-button">${backButton.template()}</div>
 			</div>
 		`;

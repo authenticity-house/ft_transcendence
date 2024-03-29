@@ -75,7 +75,9 @@ button {
 
 button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 		.info-modal-button
-	):not(.user-profile-button):not(.room-list-refresh-button) {
+	):not(.user-profile-button):not(.room-list-refresh-button):not(
+		.single-room-button
+	) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -1247,7 +1249,7 @@ td {
 	border-radius: 1rem;
 }
 
-/* Component - RoomList */
+/* Component - RoomListWindow */
 .room-list-window {
 	width: 80rem;
 	height: 100%;
@@ -1291,11 +1293,61 @@ td {
 .room-list-container {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: space-between;
+	align-content: flex-start;
 	width: 68rem;
 	height: 68rem;
 	padding: 3rem 1.8rem;
 	border-radius: 10px;
 	border: 2px solid #fff;
 	overflow-y: scroll;
+}
+
+.single-room-button {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem 2.2rem;
+	margin-bottom: 4rem;
+	align-items: center;
+	justify-content: space-between;
+	width: 30rem;
+	height: 18rem;
+	gap: 1.5rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #fff;
+}
+
+.single-room-match-mode {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 23rem;
+	height: 4rem;
+	border-radius: 10px;
+	border: 2px solid #fff;
+}
+
+.single-room-title {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+}
+
+.single-room-bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 4rem;
+}
+
+.single-room-people {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 8rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
