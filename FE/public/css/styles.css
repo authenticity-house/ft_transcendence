@@ -75,7 +75,7 @@ button {
 
 button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 		.info-modal-button
-	):not(.user-profile-button) {
+	):not(.user-profile-button):not(.room-list-refresh-button) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -1145,17 +1145,6 @@ td {
 }
 
 /* OnlineMainScreenPage */
-.profile-button-container {
-	position: absolute;
-	top: 20rem;
-	right: 10rem;
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	gap: 4rem;
-	height: 12rem;
-}
-
 .large-window {
 	display: flex;
 	width: 120rem;
@@ -1167,23 +1156,24 @@ td {
 	position: relative;
 }
 
-.user-profile-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 8rem 5rem 10rem 5rem;
-	width: 40rem;
-	height: 100%;
-	gap: 4rem;
-	border-right: 0.2rem solid #ffffff;
-}
-
-.room-list-container {
-	width: 80rem;
-	height: 100%;
+.online-main-back-button {
+	position: absolute;
+	left: 3rem;
+	bottom: 2rem;
 }
 
 /* Component - ProfileButton */
+.profile-button-container {
+	position: absolute;
+	top: 20rem;
+	right: 10rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 4rem;
+	height: 12rem;
+}
+
 .info-modal-container {
 	display: flex;
 	align-items: center;
@@ -1221,6 +1211,17 @@ td {
 }
 
 /* Component - ProfileWindow */
+.user-profile-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8rem 5rem 10rem 5rem;
+	width: 40rem;
+	height: 100%;
+	gap: 4rem;
+	border-right: 0.2rem solid #ffffff;
+}
+
 .user-profile-wrapper {
 	width: 16rem;
 	height: 16rem;
@@ -1246,8 +1247,55 @@ td {
 	border-radius: 1rem;
 }
 
-.online-main-back-button {
+/* Component - RoomList */
+.room-list-window {
+	width: 80rem;
+	height: 100%;
+	padding: 4rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4rem;
+}
+
+.room-list-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 6rem;
+	position: relative;
+}
+
+.room-list-refresh-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 6rem;
+	height: 6rem;
 	position: absolute;
-	left: 3rem;
-	bottom: 2rem;
+	right: 7rem;
+	border: none;
+}
+
+.room-list-refresh-img {
+	width: 6rem;
+	height: 6rem;
+	transition: transform 1s ease;
+}
+
+.room-list-refresh-img.rotated {
+	transform: rotate(360deg);
+}
+
+.room-list-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 68rem;
+	height: 68rem;
+	padding: 3rem 1.8rem;
+	border-radius: 10px;
+	border: 2px solid #fff;
+	overflow-y: scroll;
 }
