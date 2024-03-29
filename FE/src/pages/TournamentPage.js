@@ -21,7 +21,10 @@ class TournamentPage {
 		return html`
 			<div class="medium-window head_white_neon_15">
 				${titlComponent.template()}
-				<div class="medium-window-container display-light18">
+				<div
+					class="medium-window-container display-light18"
+					style="overflow: hidden;"
+				>
 					${openBracket}
 				</div>
 				<div class="event-click-match" style="margin-top: 4rem">
