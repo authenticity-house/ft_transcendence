@@ -73,7 +73,9 @@ button {
 	color: #fff;
 }
 
-button:hover:not(.button-back-arrow-box):not(.duel-toggle-button) {
+button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
+		.info-modal-button
+	):not(.user-profile-button) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -1138,4 +1140,63 @@ td {
 
 .duel-toggle-hidden {
 	display: none;
+}
+
+/* OnlineMainScreenPage */
+.profile-button-container {
+	position: absolute;
+	top: 20rem;
+	right: 10rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 40px;
+	height: 12rem;
+}
+
+.large-window {
+	display: flex;
+	width: 120rem;
+	height: 88rem;
+	margin-top: 7.4rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #fff;
+	background: rgba(255, 255, 255, 0);
+}
+
+/* Component - ProfileButton */
+.info-modal-container {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+}
+
+.info-modal-button {
+	display: flex;
+	width: 12rem;
+	height: 10rem;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border: none;
+}
+
+.modal-button-hidden {
+	display: none;
+}
+
+.info-modal-img {
+	width: 5rem;
+	height: 5rem;
+}
+
+.user-profile-button {
+	display: flex;
+	width: 12rem;
+	height: 12rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 100rem;
+	background: #dfdfdf;
 }
