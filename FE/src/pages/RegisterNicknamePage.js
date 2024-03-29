@@ -22,7 +22,10 @@ class RegisterNicknamePage {
 				<div class="register-next" style="margin-top: 35rem">
 					${nextButton.template()}
 				</div>
-				<div class="back-arrow-container">${backButton.template()}</div>
+
+				<div class="back-arrow-container">
+					<div class="back-arrow">${backButton.template()}</div>
+				</div>
 			</div>
 		`;
 	}
@@ -32,7 +35,7 @@ class RegisterNicknamePage {
 		next.addEventListener('click', () => {
 			changeUrl('');
 		});
-		const back = document.querySelector('.back-arrow-container');
+		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
 			changeUrl('register');
 		});
