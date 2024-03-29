@@ -1,7 +1,7 @@
 import { changeUrl } from '../index.js';
 import { profileButton } from '../components/ProfileButton.js';
 import { profileWindow } from '../components/ProfileWindow.js';
-import { roomListWindow } from '../components/RoomList.js';
+import { roomListWindow } from '../components/RoomListWindow.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
