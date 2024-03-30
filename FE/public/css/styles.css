@@ -1284,10 +1284,19 @@ td {
 	width: 6rem;
 	height: 6rem;
 	transition: transform 1s ease;
+	animation-name: rotate;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
 }
 
-.room-list-refresh-img.rotated {
-	transform: rotate(360deg);
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .room-list-container {

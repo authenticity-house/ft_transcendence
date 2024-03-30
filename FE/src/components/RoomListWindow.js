@@ -40,6 +40,7 @@ function roomListWindow(roomList) {
 						src="image/refresh.png"
 						alt="refresh"
 						class="room-list-refresh-img"
+						style="animation: none"
 					/>
 				</button>
 			</div>
