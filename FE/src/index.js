@@ -12,6 +12,9 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import { profileButton } from './components/ProfileButton.js';
+
+const html = String.raw;
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -95,3 +98,19 @@ window.onpopstate = () => {
 window.onload = () => {
 	history.pushState(null, null, homeLink);
 };
+
+// header에 프로필 버튼 추가
+const profileButtonComponent = profileButton();
+
+const header = document.querySelector('header');
+console.log(header);
+header.innerHTML = html`
+	<img src="./image/logo.svg" alt="logo" style="width: 48rem" />
+	${profileButtonComponent}
+`;
+
+const userProfileButton = document.querySelector('.user-profile-button');
+userProfileButton.addEventListener('click', () => {
+	const infoModalContainer = document.querySelector('.info-modal-container');
+	infoModalContainer.classList.toggle('modal-button-hidden');
+});

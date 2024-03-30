@@ -1167,8 +1167,8 @@ td {
 /* Component - ProfileButton */
 .profile-button-container {
 	position: absolute;
-	top: 20rem;
-	right: 10rem;
+	top: 6rem;
+	right: 6rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;

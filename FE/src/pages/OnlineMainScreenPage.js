@@ -1,6 +1,5 @@
 /* eslint-disable no-void */
 import { changeUrl } from '../index.js';
-import { profileButton } from '../components/ProfileButton.js';
 import { profileWindow } from '../components/ProfileWindow.js';
 import { roomListWindow } from '../components/RoomListWindow.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
@@ -9,8 +8,6 @@ const html = String.raw;
 
 class OnlineMainScreenPage {
 	template() {
-		// + data - user profile image
-		const profileButtonComponent = profileButton();
 		// + data - user profile image, nickname, profile summary
 		const profileWindowElement = profileWindow();
 		// + MOCK data - roomList
@@ -40,7 +37,6 @@ class OnlineMainScreenPage {
 		const roomListWindowElement = roomListWindow(roomList);
 		const backButton = new ButtonBackArrow();
 		return html`
-			${profileButtonComponent}
 			<div class="large-window head_white_neon_15">
 				${profileWindowElement} ${roomListWindowElement}
 				<div class="online-main-back-button">${backButton.template()}</div>
@@ -49,13 +45,6 @@ class OnlineMainScreenPage {
 	}
 
 	addEventListeners() {
-		const userProfileButton = document.querySelector('.user-profile-button');
-		userProfileButton.addEventListener('click', () => {
-			const infoModalContainer = document.querySelector(
-				'.info-modal-container'
-			);
-			infoModalContainer.classList.toggle('modal-button-hidden');
-		});
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
