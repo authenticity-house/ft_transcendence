@@ -17,7 +17,7 @@ class TournamentResultPage {
 		const titlComponent = new BoldTitle('게임 결과', 'yellow');
 		const exitButton = new ButtonSmall('나가기');
 		let duelReports = '';
-		// console.log('한 묶음 데이터!');
+
 		for (let i = 0; i < content.length; i += 1) {
 			const resultData = DuelStatsData.getDuelStatsData(content[i]);
 			const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(resultData);
@@ -46,10 +46,13 @@ class TournamentResultPage {
 	}
 
 	mount(data) {
+		this.data = data;
+		const { content } = this.data;
 		let i = 0;
+
 		const graphContainers = document.querySelectorAll('.graph-container');
 		graphContainers.forEach((graphContainer) => {
-			const matchData = DuelStatsData.getMountDuelStatsData(data[i]);
+			const matchData = DuelStatsData.getMountDuelStatsData(content[i]);
 			// score-trend
 			DuelGraphStats.appendScoresToYAxis(matchData.maxScore, graphContainer);
 			DuelGraphStats.appendScoreTrendGraph(
