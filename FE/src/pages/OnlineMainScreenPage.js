@@ -1,3 +1,4 @@
+/* eslint-disable no-void */
 import { changeUrl } from '../index.js';
 import { profileButton } from '../components/ProfileButton.js';
 import { profileWindow } from '../components/ProfileWindow.js';
@@ -56,11 +57,16 @@ class OnlineMainScreenPage {
 			infoModalContainer.classList.toggle('modal-button-hidden');
 		});
 		const refreshButton = document.querySelector('.room-list-refresh-button');
+		const refreshImg = document.querySelector('.room-list-refresh-img');
+
 		refreshButton.addEventListener('click', () => {
-			// + 방 목록 데이터 다시 가져오기
-			document
-				.querySelector('.room-list-refresh-img')
-				.classList.toggle('rotated');
+			// 방 목록 데이터 다시 가져오기 로직 추가
+
+			// 애니메이션을 재시작하기 위해 애니메이션 이름을 변경
+			refreshImg.style.animation = 'none';
+			setTimeout(() => {
+				refreshImg.style.animation = '';
+			}, 10); // 잠시 대기 후 애니메이션을 다시 설정
 		});
 		const backButton = document.querySelector('.online-main-back-button');
 		backButton.addEventListener('click', () => {
