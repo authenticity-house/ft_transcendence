@@ -43,6 +43,10 @@ header {
 	background-color: #141343;
 }
 
+#logo:hover {
+	cursor: pointer;
+}
+
 input {
 	font-size: 2.4rem;
 	font-family: 'GongGothicLight', sans-serif;

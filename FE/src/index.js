@@ -28,7 +28,7 @@ const profileButtonComponent = profileButton();
 
 const header = document.querySelector('header');
 header.innerHTML = html`
-	<img src="./image/logo.svg" alt="logo" style="width: 48rem" />
+	<img id="logo" src="./image/logo.svg" alt="logo" style="width: 48rem" />
 	${profileButtonComponent}
 `;
 
@@ -90,6 +90,12 @@ export const changeUrlData = (url, data) => {
 	}
 	routes[url].addEventListeners();
 };
+
+// When the user clicks the logo, the page is changed
+const logo = document.querySelector('#logo');
+logo.addEventListener('click', () => {
+	changeUrl('');
+});
 
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
