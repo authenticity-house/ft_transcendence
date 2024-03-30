@@ -23,6 +23,21 @@ setTimeout(() => {
 	loadingContainer.classList.add('hidden');
 }, 1500);
 
+// header에 프로필 버튼 추가
+const profileButtonComponent = profileButton();
+
+const header = document.querySelector('header');
+header.innerHTML = html`
+	<img src="./image/logo.svg" alt="logo" style="width: 48rem" />
+	${profileButtonComponent}
+`;
+
+const userProfileButton = document.querySelector('.user-profile-button');
+userProfileButton.addEventListener('click', () => {
+	const infoModalContainer = document.querySelector('.info-modal-container');
+	infoModalContainer.classList.toggle('modal-button-hidden');
+});
+
 // --------------------------------------------------------------------------------------------- //
 // root is the root element of the website
 const root = document.querySelector('#root');
@@ -98,19 +113,3 @@ window.onpopstate = () => {
 window.onload = () => {
 	history.pushState(null, null, homeLink);
 };
-
-// header에 프로필 버튼 추가
-const profileButtonComponent = profileButton();
-
-const header = document.querySelector('header');
-console.log(header);
-header.innerHTML = html`
-	<img src="./image/logo.svg" alt="logo" style="width: 48rem" />
-	${profileButtonComponent}
-`;
-
-const userProfileButton = document.querySelector('.user-profile-button');
-userProfileButton.addEventListener('click', () => {
-	const infoModalContainer = document.querySelector('.info-modal-container');
-	infoModalContainer.classList.toggle('modal-button-hidden');
-});
