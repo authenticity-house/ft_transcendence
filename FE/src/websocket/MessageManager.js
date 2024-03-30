@@ -140,6 +140,7 @@ export class MessageManager {
 	}
 
 	displayWinner() {
+		if (this.winner === 0) return ;
 		const winnerPosition = this.winner === Winner.PLAYER_1 ? -4 : 4;
 		const targetPaddle =
 			this.winner === Winner.PLAYER_1
