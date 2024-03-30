@@ -19,27 +19,40 @@ class LoginPage {
 		const loginGuest = new ButtonSmall('게스트 로그인');
 
 		return html`
-			<div class="small-window head_white_neon_15">
-				${titleComponent.template()}
+			<div class="small-window head_white_neon_15" style="padding: 5rem">
 
-				<div style="margin-bottom: 4rem">
-					${textInputBoxId.template()} ${textInputBoxPassword.template()}
+			<div class="bold-title-no-padding" style="gap:4rem">
+
+				${titleComponent.register()}
+
+				<div class="vertical-button-container" style="height:62rem">
+					<div class="bold-title-no-padding" style="gap: 2rem">
+						<div class="bold-title-no-padding" style="gap: 5rem">
+							<div class="bold-title-no-padding" style="gap:1.6rem">
+								${textInputBoxId.template()} ${textInputBoxPassword.template()}
+							</div>
+
+							<div class="login-button">
+								${loginButton.template()}
+							</div>
+						</div>
+						<div>
+							<span class="login-signup-link display-light20">회원가입</span>
+						</div>
+					</div>
+
+					<div class="bold-title-no-padding" style="gap:2rem">
+						<div class="login-42">
+							${login42.template()}
+						</div>
+
+						<div class="login-guest">${loginGuest.template()}</div>
+					</div>
+
 				</div>
-
-				<div class="login-button" style="margin-bottom: 2rem">
-					${loginButton.template()}
-				</div>
-
-				<div class="login-signup">
-					<span class="login-signup-link display-light20">회원가입</span>
-				</div>
-
-				<div class="login-42" style="margin-bottom: 2rem">
-					${login42.template()}
-				</div>
-
-				<div class="login-guest">${loginGuest.template()}</div>
 			</div>
+		</div>
+		</div>
 		`;
 	}
 

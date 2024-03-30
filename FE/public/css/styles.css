@@ -131,6 +131,12 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 }
 
 /* components - BoldTitle */
+.bold-title-no-padding {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .bold-title {
 	display: flex;
 	flex-direction: column;
@@ -146,7 +152,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	align-items: center;
 	/* justify-content: center; */
 	gap: 1rem;
-	padding-bottom: 2rem;
+	/* padding-bottom: 2rem; */
 	width: 70rem;
 }
 .text-inputbox-button-container {
@@ -155,7 +161,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	align-items: flex-end;
 	/* justify-content: center; */
 	gap: 1rem;
-	padding-bottom: 2rem;
+	/* padding-bottom: 2rem; */
 	width: 70rem;
 }
 .text-container {
@@ -190,10 +196,6 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	height: 8rem;
 	/* margin: 2rem 0rem; */
 	font-size: 2.8rem;
-}
-
-.login-signup {
-	margin-bottom: 8rem;
 }
 
 .login-signup-link {

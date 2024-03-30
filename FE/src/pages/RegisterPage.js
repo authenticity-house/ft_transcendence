@@ -18,18 +18,32 @@ class RegisterPage {
 			text: '비밀번호 확인',
 			button: false
 		});
+		const textInputBoxEmail = new TextInputBox({
+			text: '이메일',
+			button: true
+		});
+
+		const textInputBoxNickname = new TextInputBox({
+			text: '닉네임',
+			button: true
+		});
+
 		const nextButton = new ButtonMedium('확인');
 		const backButton = new ButtonBackArrow();
 
 		return html`
-			<div class="small-window head_white_neon_15">
-				${titleComponent.template()} ${textInputBoxId.template()}
-				${textInputBoxPassword.template()}
-				${textInputBoxPasswordCheck.template()}
-				<div class="register-next" style="margin-top: 12rem">
-					${nextButton.template()}
+			<div class="small-window head_white_neon_15" style="padding: 5rem">
+				<div class="bold-title-no-padding" style="gap: 4rem">
+					${titleComponent.register()}
+					<div class="vertical-button-container" style="height: 66rem">
+						<div class="bold-title-no-padding" style="gap:1.6rem">
+							${textInputBoxId.template()} ${textInputBoxPassword.template()}
+							${textInputBoxPasswordCheck.template()}
+							${textInputBoxEmail.template()} ${textInputBoxNickname.template()}
+						</div>
+						<div class="register-next">${nextButton.template()}</div>
+					</div>
 				</div>
-
 				<div class="back-arrow-container">
 					<div class="back-arrow">${backButton.template()}</div>
 				</div>

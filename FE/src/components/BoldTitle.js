@@ -20,6 +20,21 @@ class BoldTitle {
 			</div>
 		`;
 	}
+
+	register() {
+		if (this.color === 'yellow') {
+			return html`
+				<div class="bold-title-no-padding">
+					<span class="display-medium48 yellow_neon_10"> ${this.text} </span>
+				</div>
+			`;
+		}
+		return html`
+			<div class="bold-title-no-padding">
+				<span class="display-medium48 pink_neon_10"> ${this.text} </span>
+			</div>
+		`;
+	}
 }
 
 export default BoldTitle;
