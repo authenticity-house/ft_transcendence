@@ -73,7 +73,11 @@ button {
 	color: #fff;
 }
 
-button:hover:not(.button-back-arrow-box):not(.duel-toggle-button) {
+button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
+		.info-modal-button
+	):not(.user-profile-button):not(.room-list-refresh-button):not(
+		.single-room-button
+	) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -218,6 +222,8 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button) {
 /* components - ButtonBackArrow */
 .button-back-arrow-box {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 	border: none;
 	width: 5rem;
 }
@@ -1138,4 +1144,219 @@ td {
 
 .duel-toggle-hidden {
 	display: none;
+}
+
+/* OnlineMainScreenPage */
+.large-window {
+	display: flex;
+	width: 120rem;
+	height: 88rem;
+	margin-top: 7.4rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #fff;
+	background: rgba(255, 255, 255, 0);
+	position: relative;
+}
+
+.online-main-back-button {
+	position: absolute;
+	left: 3rem;
+	bottom: 2rem;
+}
+
+/* Component - ProfileButton */
+.profile-button-container {
+	position: absolute;
+	top: 20rem;
+	right: 10rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 4rem;
+	height: 12rem;
+}
+
+.info-modal-container {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+}
+
+.info-modal-button {
+	display: flex;
+	width: 12rem;
+	height: 10rem;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border: none;
+}
+
+.modal-button-hidden {
+	display: none;
+}
+
+.info-modal-img {
+	width: 5rem;
+	height: 5rem;
+}
+
+.user-profile-button {
+	display: flex;
+	width: 12rem;
+	height: 12rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 100rem;
+	background: #dfdfdf;
+}
+
+/* Component - ProfileWindow */
+.user-profile-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 8rem 5rem 10rem 5rem;
+	width: 40rem;
+	height: 100%;
+	gap: 4rem;
+	border-right: 0.2rem solid #ffffff;
+}
+
+.user-profile-wrapper {
+	width: 16rem;
+	height: 16rem;
+	border-radius: 100rem;
+	border: 0.1rem solid white;
+	background-color: #ffd164;
+}
+
+.user-profile-summary {
+	width: 30rem;
+	height: 30rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+.create-room-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30rem;
+	height: 6rem;
+	border: 0.4rem solid #fff;
+	border-radius: 1rem;
+}
+
+/* Component - RoomListWindow */
+.room-list-window {
+	width: 80rem;
+	height: 100%;
+	padding: 4rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4rem;
+}
+
+.room-list-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 6rem;
+	position: relative;
+}
+
+.room-list-refresh-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 6rem;
+	height: 6rem;
+	position: absolute;
+	right: 7rem;
+	border: none;
+}
+
+.room-list-refresh-img {
+	width: 6rem;
+	height: 6rem;
+	transition: transform 1s ease;
+	animation-name: rotate;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.room-list-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	width: 68rem;
+	height: 68rem;
+	padding: 3rem 1.8rem;
+	border-radius: 10px;
+	border: 2px solid #fff;
+	overflow-y: scroll;
+}
+
+.single-room-button {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem 2.2rem;
+	margin-bottom: 4rem;
+	align-items: center;
+	justify-content: space-between;
+	width: 30rem;
+	height: 18rem;
+	gap: 1.5rem;
+	border-radius: 3rem;
+	border: 0.4rem solid #fff;
+}
+
+.single-room-match-mode {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 23rem;
+	height: 4rem;
+	border-radius: 10px;
+	border: 2px solid #fff;
+}
+
+.single-room-title {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+}
+
+.single-room-bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 4rem;
+}
+
+.single-room-people {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 8rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
