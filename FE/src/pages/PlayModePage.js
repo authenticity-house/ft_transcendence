@@ -7,7 +7,8 @@ const html = String.raw;
 class PlayModePage {
 	template() {
 		const localButton = new ButtonLarge('LOCAL', false);
-		const onlineButton = new ButtonLarge('ONLINE', true);
+		// 나중에 로그인 작업 후, 변경해야 할 것 -> Guest Login 시, true로 / 42Login 또는 일반Login 시 false로 설정하기
+		const onlineButton = new ButtonLarge('ONLINE', false);
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -33,7 +34,7 @@ class PlayModePage {
 		});
 		const online = document.querySelector('.button-click-online');
 		online.addEventListener('click', () => {
-			console.log('online button click!');
+			changeUrl('onlineMainScreen');
 		});
 		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {

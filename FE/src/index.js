@@ -11,8 +11,8 @@ import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
+import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
-
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
 
@@ -40,7 +40,8 @@ const routes = {
 	game: GamePage,
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
-	tournamentResult: TournamentResultPage
+	tournamentResult: TournamentResultPage,
+	onlineMainScreen: OnlineMainScreenPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
