@@ -12,6 +12,7 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import WaitingRoomPage from './pages/WaitingRoomPage.js';
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -41,7 +42,8 @@ const routes = {
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
 	tournamentResult: TournamentResultPage,
-	onlineMainScreen: OnlineMainScreenPage
+	onlineMainScreen: OnlineMainScreenPage,
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
