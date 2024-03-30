@@ -12,13 +12,14 @@ const html = String.raw;
 class TournamentResultPage {
 	template(data) {
 		this.data = data;
+		const { content } = this.data;
 
 		const titlComponent = new BoldTitle('게임 결과', 'yellow');
 		const exitButton = new ButtonSmall('나가기');
 		let duelReports = '';
-		// console.log('한 묶음 데이터!');
-		for (let i = 0; i < data.length; i += 1) {
-			const resultData = DuelStatsData.getDuelStatsData(data[i]);
+
+		for (let i = 0; i < content.length; i += 1) {
+			const resultData = DuelStatsData.getDuelStatsData(content[i]);
 			const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(resultData);
 			const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(resultData);
 			const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(resultData);
@@ -45,10 +46,13 @@ class TournamentResultPage {
 	}
 
 	mount(data) {
+		this.data = data;
+		const { content } = this.data;
 		let i = 0;
+
 		const graphContainers = document.querySelectorAll('.graph-container');
 		graphContainers.forEach((graphContainer) => {
-			const matchData = DuelStatsData.getMountDuelStatsData(data[i]);
+			const matchData = DuelStatsData.getMountDuelStatsData(content[i]);
 			// score-trend
 			DuelGraphStats.appendScoresToYAxis(matchData.maxScore, graphContainer);
 			DuelGraphStats.appendScoreTrendGraph(
@@ -89,7 +93,7 @@ class TournamentResultPage {
 
 		const exit = document.querySelector('.exit-button');
 		exit.addEventListener('click', () => {
-			this.data.Gamewebsocket.sendGameDisconnect();
+			this.data.sendMsg();
 			changeUrl('match');
 		});
 	}

@@ -85,11 +85,8 @@ class TournamentPage {
 	addEventListeners() {
 		const next = document.querySelector('.event-click-match');
 		next.addEventListener('click', () => {
-			if (this.data.gameOver === true) {
-				this.data.Gamewebsocket.sendGameOver();
-			} else {
-				this.data.Gamewebsocket.sendGameMatchInitSetting();
-			}
+			// 게임 매치 초기화 요청, MatchInitSettingMsg 전송
+			this.data.sendMsg();
 		});
 	}
 }
