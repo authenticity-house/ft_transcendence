@@ -2,8 +2,40 @@
 @import 'color.css';
 @import 'font.css';
 
-html {
-	font-size: 62.5%;
+@media (max-width: 2560px) {
+	html {
+		font-size: 62.5%;
+	}
+}
+
+@media (max-width: 1920px) {
+	html {
+		font-size: 50%;
+	}
+}
+
+@media (max-width: 1440px) {
+	html {
+		font-size: 37.5%;
+	}
+}
+
+@media (max-width: 1024px) {
+	html {
+		font-size: 25%;
+	}
+}
+
+@media (max-width: 768px) {
+	html {
+		font-size: 18.75%;
+	}
+}
+
+@media (max-width: 425px) {
+	html {
+		font-size: 12.5%;
+	}
 }
 
 body {

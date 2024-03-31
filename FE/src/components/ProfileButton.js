@@ -4,7 +4,7 @@ const html = String.raw;
 function profileButton() {
 	return html`
 		<div class="profile-button-container">
-			<div class="info-modal-container modal-button-hidden">
+			<div class="info-modal-container">
 				<button class="info-modal-button">
 					<img src="image/my-friend.svg" alt="friend" class="info-modal-img" />
 					<span class="display-light24">내 친구</span>
@@ -26,7 +26,12 @@ function profileButton() {
 					<span class="display-light24">통계</span>
 				</button>
 			</div>
-			<button class="user-profile-button"></button>
+			<button
+				type="button"
+				data-bs-toggle="modal"
+				data-bs-target="#profileModal"
+				class="user-profile-button"
+			></button>
 		</div>
 	`;
 }
