@@ -1,4 +1,4 @@
-import { changeUrlData } from '../index.js';
+import { changeUrlData, gamewsmanager } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import InputNickname from '../components/InputNickname.js';
@@ -197,7 +197,7 @@ class GameSettingTournament {
 			newData.total_score *= 5;
 
 			const gamewebsocket = new Gamewebsocket(newData);
-			console.log(gamewebsocket);
+			gamewsmanager.register(gamewebsocket);
 		});
 	}
 }
