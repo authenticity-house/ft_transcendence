@@ -9,10 +9,17 @@ const html = String.raw;
 
 class OnlineMainScreenPage {
 	template() {
-		// + data - user profile image
-		const profileButtonComponent = profileButton();
-		// + data - user profile image, nickname, profile summary
-		const profileWindowElement = profileWindow();
+		// + Mock data - profileData
+		const profileData = {
+			image: '',
+			nickName: '종석',
+			winLossRecord: [100, 50, 50],
+			winRate: 50,
+			rating: 4242
+		};
+		const profileButtonComponent = profileButton(profileData.image);
+		const profileWindowElement = profileWindow(profileData);
+
 		// + MOCK data - roomList
 		const roomList = [
 			{
@@ -39,6 +46,7 @@ class OnlineMainScreenPage {
 		];
 		const roomListWindowElement = roomListWindow(roomList);
 		const backButton = new ButtonBackArrow();
+
 		return html`
 			${profileButtonComponent}
 			<div class="large-window head_white_neon_15">
@@ -60,13 +68,11 @@ class OnlineMainScreenPage {
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
 		refreshButton.addEventListener('click', () => {
-			// 방 목록 데이터 다시 가져오기 로직 추가
-
-			// 애니메이션을 재시작하기 위해 애니메이션 이름을 변경
+			// + 방 목록 데이터 다시 가져오기 로직 추가
 			refreshImg.style.animation = 'none';
 			setTimeout(() => {
 				refreshImg.style.animation = '';
-			}, 10); // 잠시 대기 후 애니메이션을 다시 설정
+			}, 10);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {

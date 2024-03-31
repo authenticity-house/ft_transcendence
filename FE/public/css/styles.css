@@ -1175,14 +1175,8 @@ td {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 4rem;
+	gap: 1rem;
 	height: 12rem;
-}
-
-.info-modal-container {
-	display: flex;
-	align-items: center;
-	gap: 0.7rem;
 }
 
 .info-modal-button {
@@ -1194,10 +1188,6 @@ td {
 	align-items: center;
 	gap: 1rem;
 	border: none;
-}
-
-.modal-button-hidden {
-	display: none;
 }
 
 .info-modal-img {
@@ -1212,7 +1202,13 @@ td {
 	justify-content: center;
 	align-items: center;
 	border-radius: 100rem;
-	background: #dfdfdf;
+	border-style: none;
+}
+
+.user-profile-img {
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 50%;
 }
 
 /* Component - ProfileWindow */
@@ -1221,7 +1217,7 @@ td {
 	flex-direction: column;
 	align-items: center;
 	padding: 8rem 5rem 10rem 5rem;
-	width: 40rem;
+	width: 35rem;
 	height: 100%;
 	gap: 4rem;
 	border-right: 0.2rem solid #ffffff;
@@ -1231,13 +1227,16 @@ td {
 	width: 16rem;
 	height: 16rem;
 	border-radius: 100rem;
-	border: 0.1rem solid white;
-	background-color: #ffd164;
 }
 
 .user-profile-summary {
-	width: 30rem;
-	height: 30rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4rem;
+	width: 28rem;
+	height: 28rem;
 	border-radius: 1rem;
 	border: 0.2rem solid #fff;
 }
@@ -1246,7 +1245,7 @@ td {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 30rem;
+	width: 28rem;
 	height: 6rem;
 	border: 0.4rem solid #fff;
 	border-radius: 1rem;
@@ -1254,7 +1253,7 @@ td {
 
 /* Component - RoomListWindow */
 .room-list-window {
-	width: 80rem;
+	width: 85rem;
 	height: 100%;
 	padding: 4rem 0;
 	display: flex;
@@ -1307,9 +1306,11 @@ td {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	align-content: flex-start;
-	width: 68rem;
-	height: 68rem;
-	padding: 3rem 1.8rem;
+	column-gap: 5rem;
+	row-gap: 4rem;
+	width: 75rem;
+	height: 75rem;
+	padding: 3rem 4rem;
 	border-radius: 10px;
 	border: 2px solid #fff;
 	overflow-y: scroll;
@@ -1319,7 +1320,6 @@ td {
 	display: flex;
 	flex-direction: column;
 	padding: 1.5rem 2.2rem;
-	margin-bottom: 4rem;
 	align-items: center;
 	justify-content: space-between;
 	width: 30rem;
