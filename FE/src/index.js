@@ -67,28 +67,34 @@ root.innerHTML = routes[''].template();
 routes[''].addEventListeners();
 
 export const changeUrlInstance = (url, instance) => {
-	// history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = instance.template();
-	instance.addEventListeners();
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = instance.template();
+		instance.addEventListeners();
+	}
 };
 
 // When the user presses the back or forward button, the page is changed
 export const changeUrl = (url) => {
-	history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = routes[url].template();
-	if (typeof routes[url].mount === 'function') {
-		routes[url].mount();
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = routes[url].template();
+		if (typeof routes[url].mount === 'function') {
+			routes[url].mount();
+		}
+		routes[url].addEventListeners();
 	}
-	routes[url].addEventListeners();
 };
 
 export const changeUrlData = (url, data) => {
-	history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = routes[url].template(data);
-	if (typeof routes[url].mount === 'function') {
-		routes[url].mount(data);
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = routes[url].template(data);
+		if (typeof routes[url].mount === 'function') {
+			routes[url].mount(data);
+		}
+		routes[url].addEventListeners();
 	}
-	routes[url].addEventListeners();
 };
 
 // When the user clicks the logo, the page is changed
