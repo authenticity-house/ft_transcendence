@@ -36,6 +36,9 @@ ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
+    "TOKEN_MODEL": None,
+    "SESSION_LOGIN": True,
+    "USE_JWT": False,
 }
 
 # Application definition
@@ -51,7 +54,6 @@ INSTALLED_APPS = [
     "channels",
     "websocket",
     "rest_framework",
-    "rest_framework.authtoken",
     "dj_rest_auth",
     "django.contrib.sites",
     "allauth",
@@ -108,6 +110,12 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT"),
     }
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',  # JSON 응답만 활성화
+#     )
+# }
 
 AUTH_USER_MODEL = "users.User"
 
