@@ -220,6 +220,24 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 }
 
 /* components - ButtonBackArrow */
+
+/* window 안에 뒤로가기 있을 경우, window 안의 절대좌표로 지정*/
+.button-back-in-window {
+	position: absolute;
+	left: 3rem;
+	bottom: 2rem;
+}
+
+/* window가 없을 경우 뒤로가기 버튼 container*/
+.back-arrow-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	width: 100%;
+	height: 100%;
+}
+
+/* */
 .button-back-arrow-box {
 	display: flex;
 	justify-content: center;
@@ -266,14 +284,6 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	/* margin: 2rem 0rem; */
 	font-size: 5.2rem;
 	border-radius: 3rem;
-}
-
-.back-arrow-container {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-end;
-	width: 100%;
-	height: 100%;
 }
 
 .medium-window {
@@ -442,8 +452,7 @@ td {
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	flex-shrink: 0;
-	align-self: stretch;
+	flex: 1 0 0;
 }
 
 .game-setting-window {
@@ -451,8 +460,9 @@ td {
 	width: 80rem;
 	height: 88rem;
 	padding: 7rem;
-	justify-content: center;
-	align-items: flex-start;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
 	gap: 1rem;
 	flex-shrink: 0;
 	border-radius: 3rem;
@@ -661,7 +671,6 @@ td {
 	font-size: 2.4rem;
 	font-style: normal;
 	font-weight: 300;
-	line-height: normal;
 }
 
 .color-picker-hidden {
@@ -1156,12 +1165,6 @@ td {
 	border: 0.4rem solid #fff;
 	background: rgba(255, 255, 255, 0);
 	position: relative;
-}
-
-.online-main-back-button {
-	position: absolute;
-	left: 3rem;
-	bottom: 2rem;
 }
 
 /* Component - ProfileButton */
