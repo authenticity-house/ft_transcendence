@@ -24,9 +24,11 @@ function profileButton(image) {
 			<button
 				type="button"
 				data-bs-toggle="modal"
-				data-bs-target="#profileModal"
+				data-bs-target="#profile-modal"
 				class="user-profile-button"
-			></button>
+			>
+				<img src="${profileImage}" alt="user" class="user-profile-img" />
+			</button>
 		</div>
 	`;
 }
