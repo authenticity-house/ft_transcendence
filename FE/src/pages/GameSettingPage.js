@@ -1,4 +1,4 @@
-import { changeUrlData } from '../index.js';
+import { changeUrlData, gamewsmanager } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
@@ -81,8 +81,8 @@ class GameSettingPage {
 			newData.total_score *= 5;
 			// 웹소켓 만들기
 			const gamewebsocket = new Gamewebsocket(newData);
+			gamewsmanager.register(gamewebsocket);
 			// changeUrlData('game', newData);
-			console.log(gamewebsocket);
 		});
 	}
 }

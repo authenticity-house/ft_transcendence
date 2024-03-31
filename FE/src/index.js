@@ -12,6 +12,7 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
 
 // Shows loading message for 2 seconds
@@ -51,7 +52,7 @@ root.innerHTML = routes[''].template();
 routes[''].addEventListeners();
 
 export const changeUrlInstance = (url, instance) => {
-	// history.pushState(null, null, `${homeLink}${url}`);
+	history.pushState(null, null, `${homeLink}${url}`);
 	root.innerHTML = instance.template();
 	instance.addEventListeners();
 };
@@ -75,9 +76,12 @@ export const changeUrlData = (url, data) => {
 	routes[url].addEventListeners();
 };
 
+export const gamewsmanager = new GamewebsocketManager();
+
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
 	// 링크가 변경되기 전에 유효하지 않은 요청인지 확인
+	gamewsmanager.unregister();
 	const url = window.location.href.split('/').pop();
 	if (
 		url === 'game' ||
