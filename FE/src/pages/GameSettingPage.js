@@ -51,9 +51,21 @@ class GameSettingPage {
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
-						<div class="game-setting-nickname-container" style="gap:6rem">
-							<img src="./image/left_pong.svg" style="width: 20rem" />
-							<img src="./image/right_pong.svg" style="width: 20rem" />
+						<div class="game-setting-nickname-container">
+							<div style="position:absolute; left: 20rem">
+								<img
+									class="img_pink_neon"
+									src="./image/left_pong.svg"
+									style="width: 25rem;"
+								/>
+								<div style="position:absolute; top:0rem; left: 15em">
+									<img
+										class="img_blue_neon"
+										src="./image/right_pong.svg"
+										style="width: 25rem"
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
