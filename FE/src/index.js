@@ -98,13 +98,14 @@ export const changeUrlData = (url, data) => {
 	}
 };
 
+export const gamewsmanager = new GamewebsocketManager();
+
 // When the user clicks the logo, the page is changed
 const logo = document.querySelector('#logo');
 logo.addEventListener('click', () => {
+	gamewsmanager.unregister();
 	changeUrl('');
 });
-
-export const gamewsmanager = new GamewebsocketManager();
 
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {
