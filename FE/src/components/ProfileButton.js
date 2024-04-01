@@ -21,7 +21,12 @@ function profileButton(image) {
 				<img src="image/statistics.svg" alt="stats" class="info-modal-img" />
 				<span class="display-light24">통계</span>
 			</button>
-			<button class="user-profile-button">
+			<button
+				type="button"
+				data-bs-toggle="modal"
+				data-bs-target="#profile-modal"
+				class="user-profile-button"
+			>
 				<img src="${profileImage}" alt="user" class="user-profile-img" />
 			</button>
 		</div>
