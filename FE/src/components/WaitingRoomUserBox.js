@@ -32,10 +32,10 @@ function getUserProfileBox(userSeatElement, userInfo) {
 			let readyStateString = '방장';
 			let readyStateColor = 'head_yellow_neon_15 yellow_neon_10';
 			if (user.host === false) {
-				readyStateString = user.readyState ? '대기 중' : '준비완료';
+				readyStateString = user.readyState ? '준비완료' : '대기 중';
 				readyStateColor = user.readyState
-					? 'head_blue_neon_15 blue_neon_10'
-					: 'head_pink_neon_15 pink_neon_10';
+					? 'head_pink_neon_15 pink_neon_10'
+					: 'head_blue_neon_15 blue_neon_10';
 			}
 
 			const htmlString = html`
@@ -43,7 +43,7 @@ function getUserProfileBox(userSeatElement, userInfo) {
 					<img src="${userImage}" alt="user" class="user-profile-img" />
 				</div>
 				<span>${user.nickName}</span>
-				<span>레이팅:${user.rating}</span>
+				<span>레이팅: ${user.rating}</span>
 				<div class="user-seat-box-ready-state ${readyStateColor}">
 					<span>${readyStateString}</span>
 				</div>
