@@ -3,6 +3,8 @@ import {
 	getUserSeatBox,
 	getUserProfileBox
 } from '../components/WaitingRoomUserBox.js';
+import { getRoomContainer } from '../components/WaitingRoomInfo.js';
+
 import ButtonExtraLarge from '../components/ButtonExtraLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
@@ -15,43 +17,44 @@ class WaitingRoomPage {
 			roomInfo: {
 				battle_mode: 2,
 				level: 2,
-				total_score: 5,
+				total_score: 2,
 				color: {
 					paddle: '#5AD7FF',
 					ball: '#FFD164'
 				},
 				maxPlayer: 4,
-				roomName: 'My Room'
+				roomName: '토너먼트 고수만 오세요! 퐁퐁퐁퐁퐁퐁퐁퐁퐁퐁',
+				rating: 1500
 			},
 			userInfo: [
 				{
 					image: '',
 					nickName: 'jeongrol',
 					rating: 1200,
-					host: true,
 					roomPosition: 0,
+					host: true,
 					readyState: false
 				},
 				{
 					image: '',
 					nickName: 'jooyoo',
 					rating: 1500,
-					host: false,
 					roomPosition: 1,
+					host: false,
 					readyState: false
 				},
 				{
 					image: '',
 					nickName: 'wonyang',
 					rating: 2000,
-					host: false,
 					roomPosition: 2,
+					host: false,
 					readyState: true
 				}
 			],
 			myInfo: {
-				host: true,
 				roomPosition: 0,
+				host: false,
 				readyState: false
 			}
 		};
@@ -59,16 +62,22 @@ class WaitingRoomPage {
 		const userSeatElement = getUserSeatBox(data.roomInfo.maxPlayer);
 		getUserProfileBox(userSeatElement, data.userInfo);
 
-		const readyButton = data.myInfo.host
-			? new ButtonExtraLarge('시작', 'yellow')
-			: new ButtonExtraLarge('대기', 'blue');
+		const roomInfoElement = getRoomContainer(data.roomInfo, data.myInfo.host);
+
+		let readyButton;
+		if (data.myInfo.host) {
+			readyButton = new ButtonExtraLarge('시작', 'yellow');
+		} else if (data.myInfo.readyState) {
+			readyButton = new ButtonExtraLarge('대기', 'blue');
+		} else {
+			readyButton = new ButtonExtraLarge('준비', 'pink');
+		}
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="large-window flex-direction-column head_white_neon_15">
 				<div class="waiting-room-main">
-					${userSeatElement.outerHTML}
-					<div class="room-info-container"></div>
+					${userSeatElement.outerHTML} ${roomInfoElement.outerHTML}
 				</div>
 				<div class="waiting-room-footer">${readyButton.template()}</div>
 				<div class="online-main-back-button">${backButton.template()}</div>

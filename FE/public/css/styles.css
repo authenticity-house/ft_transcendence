@@ -1373,6 +1373,15 @@ td {
 	border-bottom: 0.2rem solid #fff;
 }
 
+.waiting-room-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 20rem;
+}
+
+/* Component - WaitingRoomUserBox */
 .waiting-room-users-container {
 	display: flex;
 	flex-wrap: wrap;
@@ -1384,21 +1393,6 @@ td {
 	row-gap: 5rem;
 }
 
-.room-info-container {
-	width: 30rem;
-	height: 100%;
-	background-color: #ffd164;
-}
-
-.waiting-room-footer {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	height: 20rem;
-}
-
-/* Component - WaitingRoomUserBox */
 .user-seat-box {
 	display: flex;
 	flex-direction: column;
@@ -1431,6 +1425,68 @@ td {
 .user-seat-box-block-container {
 	width: 9rem;
 	height: 9rem;
+}
+
+/* Component - WaitingRoomInfo */
+.room-info-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 30rem;
+	height: 100%;
+	padding: 4.5rem 4rem;
+}
+
+.room-info-content-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	gap: 3rem;
+	width: 22rem;
+	height: 45rem;
+	border-radius: 2rem;
+	border: 0.2rem solid #fff;
+	margin-top: 4rem;
+	margin-bottom: 2rem;
+	padding: 4.5rem 1rem;
+}
+
+.room-info-content-text {
+	width: 100%;
+	height: 2rem;
+	text-align: center;
+	overflow: hidden;
+}
+
+.room-info-content-color {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 15rem;
+	padding: 2rem 5rem;
+	background-color: #000;
+}
+
+.room-info-color-paddle {
+	width: 2rem;
+	height: 100%;
+}
+
+.room-info-color-ball {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+}
+
+.room-info-modify-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 22rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
 
 /* Component - ButtonExtraLarge */
