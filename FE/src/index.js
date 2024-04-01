@@ -14,6 +14,10 @@ import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
+import { profileButton } from './components/ProfileButton.js';
+import { profileModal } from './components/modal/profileModal.js';
+
+const html = String.raw;
 
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
@@ -21,6 +25,15 @@ const loadingContainer = document.querySelector('.loading-container');
 setTimeout(() => {
 	loadingContainer.classList.add('hidden');
 }, 1500);
+
+// header에 프로필 버튼 추가
+const profileButtonComponent = profileButton();
+
+const header = document.querySelector('header');
+header.innerHTML = html`
+	<img id="logo" src="./image/logo.svg" alt="logo" style="width: 48rem" />
+	${profileButtonComponent} ${profileModal()}
+`;
 
 // --------------------------------------------------------------------------------------------- //
 // root is the root element of the website
@@ -52,31 +65,44 @@ root.innerHTML = routes[''].template();
 routes[''].addEventListeners();
 
 export const changeUrlInstance = (url, instance) => {
-	history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = instance.template();
-	instance.addEventListeners();
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = instance.template();
+		instance.addEventListeners();
+	}
 };
 
 // When the user presses the back or forward button, the page is changed
 export const changeUrl = (url) => {
-	history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = routes[url].template();
-	if (typeof routes[url].mount === 'function') {
-		routes[url].mount();
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = routes[url].template();
+		if (typeof routes[url].mount === 'function') {
+			routes[url].mount();
+		}
+		routes[url].addEventListeners();
 	}
-	routes[url].addEventListeners();
 };
 
 export const changeUrlData = (url, data) => {
-	history.pushState(null, null, `${homeLink}${url}`);
-	root.innerHTML = routes[url].template(data);
-	if (typeof routes[url].mount === 'function') {
-		routes[url].mount(data);
+	if (url !== window.location.href.split('/').pop()) {
+		history.pushState(null, null, `${homeLink}${url}`);
+		root.innerHTML = routes[url].template(data);
+		if (typeof routes[url].mount === 'function') {
+			routes[url].mount(data);
+		}
+		routes[url].addEventListeners();
 	}
-	routes[url].addEventListeners();
 };
 
 export const gamewsmanager = new GamewebsocketManager();
+
+// When the user clicks the logo, the page is changed
+const logo = document.querySelector('#logo');
+logo.addEventListener('click', () => {
+	gamewsmanager.unregister();
+	changeUrl('');
+});
 
 // When the user presses the back or forward button, the page is changed
 window.onpopstate = () => {

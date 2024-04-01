@@ -54,13 +54,6 @@ class OnlineMainScreenPage {
 	}
 
 	addEventListeners() {
-		const userProfileButton = document.querySelector('.user-profile-button');
-		userProfileButton.addEventListener('click', () => {
-			const infoModalContainer = document.querySelector(
-				'.info-modal-container'
-			);
-			infoModalContainer.classList.toggle('modal-button-hidden');
-		});
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
