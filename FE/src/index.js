@@ -12,8 +12,8 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
-import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
+import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import { profileButton } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
 

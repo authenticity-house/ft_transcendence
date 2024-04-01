@@ -46,7 +46,7 @@ class LoginPage {
 	addEventListeners() {
 		const loginButton = document.querySelector('.login-button');
 		loginButton.addEventListener('click', () => {
-			changeUrl('waitingRoom');
+			console.log('login');
 		});
 
 		const signupLink = document.querySelector('.login-signup-link');
