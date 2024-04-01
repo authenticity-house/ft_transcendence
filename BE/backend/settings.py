@@ -36,6 +36,7 @@ ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
     "TOKEN_MODEL": None,
     "SESSION_LOGIN": True,
     "USE_JWT": False,
