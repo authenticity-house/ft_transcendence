@@ -52,17 +52,17 @@ class GameSettingPage {
 					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
 						<div class="game-setting-nickname-container">
-							<div style="position:absolute; left: 20rem">
+							<div style="position:absolute;left: 18rem">
 								<img
 									class="img_pink_neon"
 									src="./image/left_pong.svg"
-									style="width: 25rem;"
+									style="width: 28rem;"
 								/>
 								<div style="position:absolute; top:0rem; left: 15em">
 									<img
 										class="img_blue_neon"
 										src="./image/right_pong.svg"
-										style="width: 25rem"
+										style="width: 28rem"
 									/>
 								</div>
 							</div>
