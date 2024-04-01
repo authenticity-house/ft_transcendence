@@ -3,6 +3,7 @@ import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { pongImage } from '../components/pongImage.js';
 
 const html = String.raw;
 
@@ -51,22 +52,7 @@ class GameSettingPage {
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
-						<div class="game-setting-nickname-container">
-							<div style="position:absolute;left: 18rem">
-								<img
-									class="img_pink_neon"
-									src="./image/left_pong.svg"
-									style="width: 28rem;"
-								/>
-								<div style="position:absolute; top:0rem; left: 15em">
-									<img
-										class="img_blue_neon"
-										src="./image/right_pong.svg"
-										style="width: 28rem"
-									/>
-								</div>
-							</div>
-						</div>
+						<div class="game-setting-nickname-container">${pongImage()}</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
