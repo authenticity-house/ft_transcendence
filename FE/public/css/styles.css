@@ -1360,3 +1360,87 @@ td {
 	border-radius: 1rem;
 	border: 0.2rem solid #fff;
 }
+
+/* WaitingRoomPage */
+.flex-direction-column {
+	flex-direction: column;
+}
+
+.waiting-room-main {
+	display: flex;
+	width: 100%;
+	height: 68rem;
+	border-bottom: 0.2rem solid #fff;
+}
+
+.waiting-room-users-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 90rem;
+	height: 100%;
+	border-right: 0.2rem solid #fff;
+	padding: 3.5rem 4rem;
+	row-gap: 5rem;
+}
+
+.room-info-container {
+	width: 30rem;
+	height: 100%;
+	background-color: #ffd164;
+}
+
+.waiting-room-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 20rem;
+}
+
+/* Component - WaitingRoomUserBox */
+.user-seat-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 18rem;
+	height: 28rem;
+	gap: 2rem;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-img-container {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+}
+
+.user-seat-box-ready-state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 12rem;
+	height: 4rem;
+
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-block-container {
+	width: 9rem;
+	height: 9rem;
+}
+
+/* Component - ButtonExtraLarge */
+.button-extra-large {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80rem;
+	height: 8rem;
+	color: #fff;
+	border-radius: 10px;
+	border: 4px solid #fff;
+}

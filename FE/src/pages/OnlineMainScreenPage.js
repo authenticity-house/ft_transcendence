@@ -1,6 +1,5 @@
 /* eslint-disable no-void */
 import { changeUrl } from '../index.js';
-import { profileButton } from '../components/ProfileButton.js';
 import { profileWindow } from '../components/ProfileWindow.js';
 import { roomListWindow } from '../components/RoomListWindow.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
@@ -17,7 +16,6 @@ class OnlineMainScreenPage {
 			winRate: 50,
 			rating: 4242
 		};
-		const profileButtonComponent = profileButton(profileData.image);
 		const profileWindowElement = profileWindow(profileData);
 
 		// + MOCK data - roomList
@@ -48,7 +46,6 @@ class OnlineMainScreenPage {
 		const backButton = new ButtonBackArrow();
 
 		return html`
-			${profileButtonComponent}
 			<div class="large-window head_white_neon_15">
 				${profileWindowElement} ${roomListWindowElement}
 				<div class="online-main-back-button">${backButton.template()}</div>
