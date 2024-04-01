@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["password", "username", "email", "nickname"]
 
 
-class CustomRegisterSerializer(RegisterSerializer):
+class CustomRegisterSerializer(RegisterSerializer):  # pylint: disable=abstract-method
     nickname = serializers.CharField(min_length=1, max_length=12)
 
     def custom_signup(self, request, user):
