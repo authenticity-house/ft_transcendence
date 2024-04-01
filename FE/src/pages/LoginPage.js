@@ -19,16 +19,16 @@ class LoginPage {
 		const loginGuest = new ButtonSmall('게스트 로그인');
 
 		return html`
-			<div class="small-window head_white_neon_15" style="padding: 5rem">
+			<div class="small-window head_white_neon_15">
 
-			<div class="bold-title-no-padding" style="gap:4rem">
+			<div class="bold-title-no-padding gap-6">
 
 				${titleComponent.register()}
 
-				<div class="vertical-button-container" style="height:62rem">
-					<div class="bold-title-no-padding" style="gap: 2rem">
-						<div class="bold-title-no-padding" style="gap: 5rem">
-							<div class="bold-title-no-padding" style="gap:1.6rem">
+				<div class="vertical-button-container height-62">
+					<div class="bold-title-no-padding gap-4">
+						<div class="bold-title-no-padding gap-6">
+							<div class="bold-title-no-padding gap-1-6">
 								${textInputBoxId.template()} ${textInputBoxPassword.template()}
 							</div>
 
@@ -41,7 +41,7 @@ class LoginPage {
 						</div>
 					</div>
 
-					<div class="bold-title-no-padding" style="gap:2rem">
+					<div class="bold-title-no-padding gap-4">
 						<div class="login-42">
 							${login42.template()}
 						</div>

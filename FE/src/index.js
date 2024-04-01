@@ -2,7 +2,6 @@ import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/RegisterPage.js';
-import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
 
 import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingTournament from './pages/GameSettingTournament.js';
@@ -45,7 +44,6 @@ const homeLink = '/';
 const routes = {
 	'': LoginPage,
 	register: RegisterPage,
-	registerNickname: RegisterNicknamePage,
 	gameSetting: GameSettingPage,
 	gameSettingTournament: GameSettingTournament,
 	gameSettingDetailed: GameSettingDetailed,

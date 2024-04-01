@@ -52,11 +52,6 @@
 		0rem 0rem 1rem #c7c7c7;
 }
 
-/*.img_pink_neon {
-	-webkit-filter: drop-shadow(0rem 0rem 1.5rem #ff5d84);
-	filter: drop-shadow(0rem 0rem 1.5rem #ff5d84);
-}*/
-
 .img_pink_neon {
 	-webkit-filter: drop-shadow(0rem 0rem 0.5rem #ff5d84);
 	filter: drop-shadow(0rem 0rem 0.5rem #ff5d84)

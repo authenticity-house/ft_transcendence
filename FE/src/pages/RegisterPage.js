@@ -32,11 +32,11 @@ class RegisterPage {
 		const backButton = new ButtonBackArrow();
 
 		return html`
-			<div class="small-window head_white_neon_15" style="padding: 5rem">
-				<div class="bold-title-no-padding" style="gap: 4rem">
+			<div class="small-window head_white_neon_15">
+				<div class="bold-title-no-padding gap-5">
 					${titleComponent.register()}
-					<div class="vertical-button-container" style="height: 66rem">
-						<div class="bold-title-no-padding" style="gap:1.6rem">
+					<div class="vertical-button-container height-66">
+						<div class="bold-title-no-padding gap-1-6">
 							${textInputBoxId.template()} ${textInputBoxPassword.template()}
 							${textInputBoxPasswordCheck.template()}
 							${textInputBoxEmail.template()} ${textInputBoxNickname.template()}
@@ -44,9 +44,7 @@ class RegisterPage {
 						<div class="register-next">${nextButton.template()}</div>
 					</div>
 				</div>
-				<div class="back-arrow-container">
-					<div class="back-arrow">${backButton.template()}</div>
-				</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -54,9 +52,9 @@ class RegisterPage {
 	addEventListeners() {
 		const next = document.querySelector('.register-next');
 		next.addEventListener('click', () => {
-			changeUrl('registerNickname');
+			changeUrl('');
 		});
-		const back = document.querySelector('.back-arrow');
+		const back = document.querySelector('.button-back-in-window');
 		back.addEventListener('click', () => {
 			changeUrl('');
 		});

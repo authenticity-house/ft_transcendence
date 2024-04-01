@@ -154,10 +154,10 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	width: 80rem;
 	height: 88rem;
-	padding: 2.2rem 2.8rem;
+	padding: 5rem;
 	flex-direction: column;
 	align-items: center;
-
+	position: relative;
 	flex-shrink: 0;
 	margin-top: 7rem;
 
@@ -186,18 +186,14 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* justify-content: center; */
 	gap: 1rem;
-	/* padding-bottom: 2rem; */
 	width: 70rem;
 }
 .text-inputbox-button-container {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	/* justify-content: center; */
 	gap: 1rem;
-	/* padding-bottom: 2rem; */
 	width: 70rem;
 }
 .text-container {
@@ -594,6 +590,7 @@ td {
 	flex-shrink: 0;
 	stroke-width: 0.2rem;
 	stroke: #fff;
+	text-align:left
 }
 
 .input-nickname {
@@ -699,6 +696,31 @@ td {
 .height-25 {
 	height: 25rem;
 }
+
+.height-62 {
+	height: 62rem;
+}
+
+.height-66 {
+	height: 66rem;
+}
+
+.gap-1-6{
+	gap: 1.6rem;
+}
+
+.gap-4{
+	gap: 4rem;
+}
+
+.gap-5{
+	gap: 5rem;
+}
+
+.gap-6{
+	gap: 6rem;
+}
+
 
 .selected {
 	box-shadow:
