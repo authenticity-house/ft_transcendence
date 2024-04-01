@@ -297,7 +297,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	width: 80rem;
 	height: 88rem;
-	padding: 2.4rem 3.4rem;
+	padding: 2.36rem 3.3rem;
 	flex-direction: column;
 	align-items: center;
 
