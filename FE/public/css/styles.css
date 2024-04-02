@@ -566,7 +566,7 @@ td {
 
 /* head count */
 .text-light-15 {
-	width: 15px;
+	width: 1.5rem;
 	/* flex-shrink: 0; */
 	color: #fff;
 	text-align: center;
@@ -576,17 +576,17 @@ td {
 	line-height: normal;
 }
 .input-nickname-box {
-	width: 200px;
-	height: 40px;
+	width: 20rem;
+	height: 4rem;
 	flex-shrink: 0;
-	stroke-width: 2px;
+	stroke-width: 0.2rem;
 	stroke: #fff;
 }
 
 .input-nickname {
 	display: flex;
-	width: 240px;
-	height: 40px;
+	width: 24rem;
+	height: 4rem;
 	justify-content: space-between;
 	align-items: center;
 }
@@ -1109,7 +1109,7 @@ td {
 	width: 9rem;
 	height: 9rem;
 	border-radius: 50%;
-	border: 1px solid white;
+	border: 0.1rem solid white;
 	background-color: aliceblue;
 }
 
@@ -1344,8 +1344,8 @@ td {
 	width: 75rem;
 	height: 75rem;
 	padding: 3rem 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 	overflow-y: scroll;
 }
 
@@ -1368,8 +1368,8 @@ td {
 	align-items: center;
 	width: 23rem;
 	height: 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
 
 .single-room-title {
@@ -1449,26 +1449,53 @@ td {
 
 #profile-modal-nav {
 	display: flex;
-	justify-content: center;
-	align-items: flex-start;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	height: 100%;
 	border-right: 0.2rem solid #fff;
 	padding: 0;
 }
 
 #nav-tab {
+	display: flex;
 	width: 100%;
+	padding: 4rem 0;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
 }
 
-#my-record-tab,
-#match-record-tab,
-#user-search-tab,
-#my-friend-tab,
-#stats-tab {
+.nav-link {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
 	height: 6rem;
 	border-radius: 0;
+	border: none;
+	display: flex;
+	height: 8rem;
+	padding: 0 4rem;
+	align-items: center;
+	gap: 2.4rem;
+	align-self: stretch;
+}
+
+#logout-container {
+	display: flex;
+	padding-bottom: 40px;
+	justify-content: center;
+	align-items: center;
+	gap: 24px;
+	align-self: stretch;
+}
+
+#logout-button {
+	display: flex;
+	padding: 0px 40px;
+	align-items: center;
+	gap: 24px;
+	flex: 1 0 0;
+	height: 6rem;
 }

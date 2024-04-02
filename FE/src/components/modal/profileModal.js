@@ -83,33 +83,58 @@ export function profileModal() {
 											통계
 										</button>
 									</div>
+									<div id="logout-container">
+										<button
+											id="logout-button"
+											class="btn btn-danger display-light28"
+											type="button"
+										>
+											로그아웃
+										</button>
+									</div>
 								</div>
 								<!-- 선택된 뷰의 내용을 표시하는 부분 -->
 								<div class="col-9">
 									<div class="tab-content" id="nav-tabContent">
 										<div
 											class="tab-pane fade show active"
-											id="nav-home"
+											id="my-record"
 											role="tabpanel"
-											aria-labelledby="nav-home-tab"
+											aria-labelledby="my-record-tab"
 										>
-											...
+											내 기록
 										</div>
 										<div
 											class="tab-pane fade"
-											id="nav-profile"
+											id="match-record"
 											role="tabpanel"
-											aria-labelledby="nav-profile-tab"
+											aria-labelledby="match-record-tab"
 										>
-											...
+											경기 기록
 										</div>
 										<div
 											class="tab-pane fade"
-											id="nav-contact"
+											id="user-search"
 											role="tabpanel"
-											aria-labelledby="nav-contact-tab"
+											aria-labelledby="user-search-tab"
 										>
-											...
+											유저 검색
+										</div>
+										<div
+											class="tab-pane fade"
+											id="my-friend"
+											role="tabpanel"
+											aria-labelledby="my-friend-tab"
+										>
+											내 친구
+										</div>
+										<div
+											class="tab-pane fade"
+											id="stats"
+											role="tabpanel"
+											aria-labelledby="stats-tab"
+										>
+											통계
 										</div>
 									</div>
 								</div>
