@@ -58,6 +58,15 @@
 
 .display-medium44 {
 	font-family: 'GongGothicMedium';
+	font-size: 4.4rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.44rem;
+}
+
+.display-medium40 {
+	font-family: 'GongGothicMedium';
 	font-size: 4rem;
 	font-weight: normal;
 	font-style: normal;
