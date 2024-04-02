@@ -40,6 +40,13 @@ function getRoomInfoContent(roomInfo) {
 	);
 	roomInfoContent.appendChild(roomNameElement);
 
+	const averageRatingElement = createStyledElement(
+		'span',
+		'room-info-content-text',
+		`평균 레이팅: ${roomInfo.average_rating}`
+	);
+	roomInfoContent.appendChild(averageRatingElement);
+
 	const totalScoreElement = createStyledElement(
 		'span',
 		'room-info-content-text',

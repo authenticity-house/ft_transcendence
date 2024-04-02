@@ -590,7 +590,7 @@ td {
 	flex-shrink: 0;
 	stroke-width: 0.2rem;
 	stroke: #fff;
-	text-align:left
+	text-align: left;
 }
 
 .input-nickname {
@@ -705,22 +705,21 @@ td {
 	height: 66rem;
 }
 
-.gap-1-6{
+.gap-1-6 {
 	gap: 1.6rem;
 }
 
-.gap-4{
+.gap-4 {
 	gap: 4rem;
 }
 
-.gap-5{
+.gap-5 {
 	gap: 5rem;
 }
 
-.gap-6{
+.gap-6 {
 	gap: 6rem;
 }
-
 
 .selected {
 	box-shadow:
@@ -1512,7 +1511,7 @@ td {
 	border: 0.2rem solid #fff;
 	margin-top: 4rem;
 	margin-bottom: 2rem;
-	padding: 4.5rem 1rem;
+	padding: 2rem 1rem;
 }
 
 .room-info-content-text {

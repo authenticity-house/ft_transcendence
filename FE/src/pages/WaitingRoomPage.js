@@ -24,13 +24,13 @@ class WaitingRoomPage {
 				},
 				maxPlayer: 4,
 				roomName: '토너먼트 고수만 오세요! 퐁퐁퐁퐁퐁퐁퐁퐁퐁퐁',
-				rating: 1500
+				average_rating: 1500
 			},
 			userInfo: [
 				{
 					image: '',
 					nickName: 'jeongrol',
-					rating: 1200,
+					rating: 1000,
 					roomPosition: 0,
 					host: true,
 					readyState: false
@@ -53,9 +53,9 @@ class WaitingRoomPage {
 				}
 			],
 			myInfo: {
-				roomPosition: 2,
-				host: false,
-				readyState: true
+				roomPosition: 0,
+				host: true,
+				readyState: false
 			}
 		};
 
