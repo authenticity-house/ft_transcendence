@@ -57,6 +57,7 @@ class OnlineMainScreenPage {
 	addEventListeners() {
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
+		const createRoom = document.querySelector('.create-room-button');
 
 		refreshButton.addEventListener('click', () => {
 			// + 방 목록 데이터 다시 가져오기 로직 추가
@@ -68,6 +69,10 @@ class OnlineMainScreenPage {
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			changeUrl('play');
+		});
+
+		createRoom.addEventListener('click', () => {
+			changeUrl('onlineSetting');
 		});
 	}
 }
