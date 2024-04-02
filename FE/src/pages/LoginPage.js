@@ -25,7 +25,7 @@ class LoginPage {
 
 				${titleComponent.register()}
 
-				<div class="vertical-button-container height-62">
+				<div class="vertical-button-container height-64">
 					<div class="bold-title-no-padding gap-4">
 						<div class="bold-title-no-padding gap-6">
 							<div class="bold-title-no-padding gap-1-6">
