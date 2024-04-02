@@ -1,7 +1,6 @@
 import { changeUrl, changeUrlData, gamewsmanager } from '../../index.js';
 import HorizontalButton from '../../components/HorizontalButton.js';
 import VerticalButton from '../../components/VerticalButton.js';
-import InputNickname from '../../components/InputNickname.js';
 import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 
@@ -46,16 +45,25 @@ class OnlineGameSettingTournament {
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
 		const initialIndex = this.data.headcount;
-		const inputNickname1 = new InputNickname();
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
-					<div class="horizontalButton">${horizontalButton.template()}</div>
 					<div class="game-setting-content-container">
+						<div class="horizontalButton">${horizontalButton.template()}</div>
 						<!-- 인원수 선택 및 닉네임 설정 -->
 						<div class="game-setting-tournament-container">
+							<div class="text-inputbox-room-container">
+								<p class="text-subtitle-1-left" style="padding-left: 1rem;">
+									방 제목
+								</p>
+								<input
+									class="game-setting-room-container"
+									type="text"
+									class="input-size-60"
+								/>
+							</div>
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
 								<p class="text-subtitle-1 width-14">참여인원</p>
@@ -74,18 +82,7 @@ class OnlineGameSettingTournament {
 							</div>
 
 							<!-- 닉네임 입력 테두리 -->
-							<div class="game-setting-nickname-container">
-								<!-- 닉네임 입력 타이틀 + 입력 창 -->
-								<div class="input-nickname-container">
-									<div class="text-subtitle-1 width-14">닉네임 입력</div>
-									<div class="input-nickname-two-col">
-										${inputNickname1.containDiv(
-											initialIndex,
-											this.data.nickname
-										)}
-									</div>
-								</div>
-							</div>
+							<div class="game-setting-nickname-container"></div>
 						</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
@@ -96,31 +93,6 @@ class OnlineGameSettingTournament {
 	}
 
 	addEventListeners() {
-		function addInputNickname(count) {
-			const containerIdx = count > 4 ? 2 : 1; // 4명 초과시 두 번째 col 사용
-			const container = document.querySelector(
-				`.input-nickname-col-${containerIdx}`
-			);
-			if (!container) return;
-
-			if (container.children.length < 4 || (containerIdx === 1 && count <= 4)) {
-				const newInput = document.createElement('div');
-				newInput.className = `input-nickname`;
-				newInput.innerHTML = new InputNickname(count).template();
-				container.appendChild(newInput);
-			}
-		}
-
-		function removeInputNickname(count) {
-			// 4명 이하면 1번째 Col, 초과면 2번째 Col
-			const containerIdx = Math.ceil(count / 4);
-			const container = document.querySelector(
-				`.input-nickname-col-${containerIdx}`
-			);
-			if (!container || container.children.length === 0) return;
-			container.removeChild(container.lastElementChild);
-		}
-
 		// 1, 8이 되었을 때 -, + 버튼 비활성화
 		function updateButtonsState(count) {
 			const minusButton = document.querySelector('.minus');
@@ -142,13 +114,11 @@ class OnlineGameSettingTournament {
 
 			if (this.classList.contains('minus')) {
 				if (count > 3) {
-					removeInputNickname(count);
 					count -= 1;
 				}
 			} else if (this.classList.contains('plus')) {
 				if (count < 8) {
 					count += 1;
-					addInputNickname(count);
 				}
 			}
 			input.value = count;

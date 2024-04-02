@@ -50,18 +50,22 @@ class GameSettingPage {
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
-					<div class="game-setting-content-container" style="gap:4rem">
+					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
-						<div class="text-inputbox-room-container">
-							<div class="display-medium20">방 제목</div>
-							<input
-								class="game-setting-room-container"
-								type="text"
-								class="input-size-60"
-							/>
-						</div>
-						<div class="game-setting-nickname-container height-27">
-							${pongImage('online')}
+						<div class="game-setting-tournament-container">
+							<div class="text-inputbox-room-container">
+								<p class="text-subtitle-1-left" style="padding-left: 1rem;">
+									방 제목
+								</p>
+								<input
+									class="game-setting-room-container"
+									type="text"
+									class="input-size-60"
+								/>
+							</div>
+							<div class="game-setting-nickname-container">
+								${pongImage('online')}
+							</div>
 						</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
