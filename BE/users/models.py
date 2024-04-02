@@ -16,7 +16,9 @@ class User(AbstractUser):
     provider = models.CharField(
         max_length=4, choices=Provider.choices, default=Provider.PONG, null=False
     )
-    profile_url = models.CharField(max_length=250)
+    profile_url = models.CharField(
+        max_length=250, null=False, default="http://localhost:8000/api/profile/default.png"
+    )
     date_updated = models.DateTimeField(auto_now=True)
 
     first_name = None
