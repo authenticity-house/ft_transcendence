@@ -18,21 +18,33 @@ class RegisterPage {
 			text: '비밀번호 확인',
 			button: false
 		});
+		const textInputBoxEmail = new TextInputBox({
+			text: '이메일',
+			button: true
+		});
+
+		const textInputBoxNickname = new TextInputBox({
+			text: '닉네임',
+			button: true
+		});
+
 		const nextButton = new ButtonMedium('확인');
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="small-window head_white_neon_15">
-				${titleComponent.template()} ${textInputBoxId.template()}
-				${textInputBoxPassword.template()}
-				${textInputBoxPasswordCheck.template()}
-				<div class="register-next" style="margin-top: 12rem">
-					${nextButton.template()}
+				<div class="bold-title-no-padding gap-5">
+					${titleComponent.register()}
+					<div class="vertical-button-container height-66">
+						<div class="bold-title-no-padding gap-1-6">
+							${textInputBoxId.template()} ${textInputBoxPassword.template()}
+							${textInputBoxPasswordCheck.template()}
+							${textInputBoxEmail.template()} ${textInputBoxNickname.template()}
+						</div>
+						<div class="register-next">${nextButton.template()}</div>
+					</div>
 				</div>
-
-				<div class="back-arrow-container">
-					<div class="back-arrow">${backButton.template()}</div>
-				</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -40,9 +52,9 @@ class RegisterPage {
 	addEventListeners() {
 		const next = document.querySelector('.register-next');
 		next.addEventListener('click', () => {
-			changeUrl('registerNickname');
+			changeUrl('');
 		});
-		const back = document.querySelector('.back-arrow');
+		const back = document.querySelector('.button-back-in-window');
 		back.addEventListener('click', () => {
 			changeUrl('');
 		});

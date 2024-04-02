@@ -20,26 +20,39 @@ class LoginPage {
 
 		return html`
 			<div class="small-window head_white_neon_15">
-				${titleComponent.template()}
 
-				<div style="margin-bottom: 4rem">
-					${textInputBoxId.template()} ${textInputBoxPassword.template()}
+			<div class="bold-title-no-padding gap-6">
+
+				${titleComponent.register()}
+
+				<div class="vertical-button-container height-62">
+					<div class="bold-title-no-padding gap-4">
+						<div class="bold-title-no-padding gap-6">
+							<div class="bold-title-no-padding gap-1-6">
+								${textInputBoxId.template()} ${textInputBoxPassword.template()}
+							</div>
+
+							<div class="login-button">
+								${loginButton.template()}
+							</div>
+						</div>
+						<div>
+							<span class="login-signup-link display-light20">회원가입</span>
+						</div>
+					</div>
+
+					<div class="bold-title-no-padding gap-4">
+						<div class="login-42">
+							${login42.template()}
+						</div>
+
+						<div class="login-guest">${loginGuest.template()}</div>
+					</div>
+
 				</div>
-
-				<div class="login-button" style="margin-bottom: 2rem">
-					${loginButton.template()}
-				</div>
-
-				<div class="login-signup">
-					<span class="login-signup-link display-light20">회원가입</span>
-				</div>
-
-				<div class="login-42" style="margin-bottom: 2rem">
-					${login42.template()}
-				</div>
-
-				<div class="login-guest">${loginGuest.template()}</div>
 			</div>
+		</div>
+		</div>
 		`;
 	}
 
