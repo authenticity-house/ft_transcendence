@@ -13,7 +13,10 @@ import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
-import { profileButton } from './components/ProfileButton.js';
+import {
+	headerAddEventListeners,
+	profileButton
+} from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
 
 const html = String.raw;
@@ -31,8 +34,11 @@ const profileButtonComponent = profileButton();
 const header = document.querySelector('header');
 header.innerHTML = html`
 	<img id="logo" src="./image/logo.svg" alt="logo" style="width: 48rem" />
-	${profileButtonComponent} ${profileModal()}
+	${profileButtonComponent} ${profileModal.template()}
 `;
+
+profileModal.addEventListeners();
+headerAddEventListeners();
 
 // --------------------------------------------------------------------------------------------- //
 // root is the root element of the website
