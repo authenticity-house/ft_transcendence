@@ -66,7 +66,7 @@ class OnlineGameSettingTournament {
 							</div>
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
-								<p class="text-subtitle-1 width-14">참여인원</p>
+								<p class="text-subtitle-1-left">참여인원</p>
 								<div class="num-block head-count">
 									<div class="num-in">
 										<span class="minus"></span>
