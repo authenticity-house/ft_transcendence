@@ -166,8 +166,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"  # 메일 호스트 서버
 EMAIL_PORT = 465  # gmail과 통신하는 포트, TLS: 587 / SSL: 465
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # 발신할 이메일
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # 발신할 메일의 비밀번호
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # 발신할 이메일
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # 발신할 메일의 비밀번호
 
 
 EMAIL_USE_SSL = True
