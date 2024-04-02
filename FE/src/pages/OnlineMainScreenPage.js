@@ -36,7 +36,7 @@ class OnlineMainScreenPage {
 				peopleNow: '3'
 			},
 			{
-				matchMode: '1vs1',
+				matchMode: '1 vs 1',
 				roomTitle: '아무나 들어오세!',
 				rating: '1000',
 				peopleMax: '2',
@@ -49,7 +49,7 @@ class OnlineMainScreenPage {
 		return html`
 			<div class="large-window head_white_neon_15">
 				${profileWindowElement} ${roomListWindowElement}
-				<div class="online-main-back-button">${backButton.template()}</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -65,7 +65,7 @@ class OnlineMainScreenPage {
 				refreshImg.style.animation = '';
 			}, 10);
 		});
-		const backButton = document.querySelector('.online-main-back-button');
+		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			changeUrl('play');
 		});

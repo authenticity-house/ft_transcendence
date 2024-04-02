@@ -1,7 +1,9 @@
-import { changeUrlData, gamewsmanager } from '../index.js';
+import { changeUrl, changeUrlData, gamewsmanager } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
+import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { pongImage } from '../components/pongImage.js';
 
 const html = String.raw;
 
@@ -30,7 +32,7 @@ class GameSettingPage {
 		this.data.battle_mode = 1;
 
 		const horizonbuttonConfigs = [
-			{ text: '1vs1', classes: 'selected' },
+			{ text: '1 vs 1', classes: 'selected' },
 			{ text: '토너먼트' }
 		];
 		const horizontalButton = new HorizontalButton(
@@ -43,15 +45,18 @@ class GameSettingPage {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
+		const backButton = new ButtonBackArrow();
+
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
 					<div class="game-setting-content-container">
 						<div class="horizontalButton">${horizontalButton.template()}</div>
-						<div class="game-setting-nickname-container"></div>
+						<div class="game-setting-nickname-container">${pongImage()}</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -83,6 +88,11 @@ class GameSettingPage {
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);
 			// changeUrlData('game', newData);
+		});
+		const backButton = document.querySelector('.button-back-in-window');
+		backButton.addEventListener('click', () => {
+			this.resetData();
+			changeUrl('match');
 		});
 	}
 }
