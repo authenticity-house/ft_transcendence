@@ -3,6 +3,7 @@ import HorizontalButton from '../../components/HorizontalButton.js';
 import VerticalButton from '../../components/VerticalButton.js';
 import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
+import { pongImage } from '../../components/pongImage.js';
 
 const html = String.raw;
 
@@ -84,7 +85,9 @@ class OnlineGameSettingTournament {
 							</div>
 
 							<!-- 닉네임 입력 테두리 -->
-							<div class="game-setting-nickname-container"></div>
+							<div class="game-setting-nickname-container">
+								${pongImage('onlineTournament')}
+							</div>
 						</div>
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
