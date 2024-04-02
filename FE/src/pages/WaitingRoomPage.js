@@ -80,7 +80,7 @@ class WaitingRoomPage {
 					${userSeatElement.outerHTML} ${roomInfoElement.outerHTML}
 				</div>
 				<div class="waiting-room-footer">${readyButton.template()}</div>
-				<div class="online-main-back-button">${backButton.template()}</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -91,7 +91,7 @@ class WaitingRoomPage {
 			console.log('click!');
 		});
 
-		const backButton = document.querySelector('.online-main-back-button');
+		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			changeUrl('onlineMainScreen');
 		});
