@@ -1,49 +1,65 @@
+function createStyledElement(elementType, classNames, text) {
+	const element = document.createElement(elementType);
+	if (classNames) {
+		element.className = classNames;
+	}
+	if (text) {
+		element.textContent = text;
+	}
+	return element;
+}
+
 function getRoomTitle() {
-	const roomTitle = document.createElement('span');
-	roomTitle.className = 'display-medium44';
-	roomTitle.textContent = '방 정보';
+	const roomTitle = createStyledElement('span', 'display-medium44', '방 정보');
 	return roomTitle;
 }
 
 function getRoomInfoContent(roomInfo) {
-	const roomInfoContent = document.createElement('div');
-	roomInfoContent.className = 'room-info-content-container display-medium20';
+	const roomInfoContent = createStyledElement(
+		'div',
+		'room-info-content-container display-medium20'
+	);
 
 	const battleMode = ['1 vs 1', '토너먼트'];
 	const level = ['쉬움', '보통', '어려움'];
 	const totalScore = [5, 10, 15];
 
-	const playModeElement = document.createElement('span');
 	const playModeTextColor =
 		roomInfo.battle_mode === 1 ? 'blue_neon_10' : 'pink_neon_10';
-	playModeElement.className = `room-info-content-text ${playModeTextColor}`;
-	playModeElement.textContent = `${battleMode[roomInfo.battle_mode - 1]}`;
+	const playModeElement = createStyledElement(
+		'span',
+		`room-info-content-text ${playModeTextColor}`,
+		`${battleMode[roomInfo.battle_mode - 1]}`
+	);
 	roomInfoContent.appendChild(playModeElement);
 
-	const roomNameElement = document.createElement('span');
-	roomNameElement.className = 'room-info-content-text display-light16';
-	roomNameElement.textContent = `${roomInfo.roomName}`;
+	const roomNameElement = createStyledElement(
+		'span',
+		'room-info-content-text display-light16',
+		`${roomInfo.roomName}`
+	);
 	roomInfoContent.appendChild(roomNameElement);
 
-	const totalScoreElement = document.createElement('span');
-	totalScoreElement.className = 'room-info-content-text';
-	totalScoreElement.textContent = `승점: ${totalScore[roomInfo.total_score - 1]}점`;
+	const totalScoreElement = createStyledElement(
+		'span',
+		'room-info-content-text',
+		`승점: ${totalScore[roomInfo.total_score - 1]}점`
+	);
 	roomInfoContent.appendChild(totalScoreElement);
 
-	const levelElement = document.createElement('span');
-	levelElement.className = 'room-info-content-text';
-	levelElement.textContent = `난이도: ${level[roomInfo.level - 1]}`;
+	const levelElement = createStyledElement(
+		'span',
+		'room-info-content-text',
+		`난이도: ${level[roomInfo.level - 1]}`
+	);
 	roomInfoContent.appendChild(levelElement);
 
-	const colorElement = document.createElement('div');
-	colorElement.className = 'room-info-content-color';
-	const colorPaddle = document.createElement('div');
-	colorPaddle.className = 'room-info-color-paddle';
+	const colorElement = createStyledElement('div', 'room-info-content-color');
+	const colorPaddle = createStyledElement('div', 'room-info-color-paddle');
 	colorPaddle.style.backgroundColor = roomInfo.color.paddle;
 	colorPaddle.style.boxShadow = `0rem 0rem 2rem 0rem ${roomInfo.color.paddle}`;
 	colorElement.appendChild(colorPaddle);
-	const colorBall = document.createElement('div');
-	colorBall.className = 'room-info-color-ball';
+	const colorBall = createStyledElement('div', 'room-info-color-ball');
 	colorBall.style.backgroundColor = roomInfo.color.ball;
 	colorBall.style.boxShadow = `0rem 0rem 2rem 0rem ${roomInfo.color.ball}`;
 	colorElement.appendChild(colorBall);
@@ -53,18 +69,17 @@ function getRoomInfoContent(roomInfo) {
 }
 
 function getModifyButton() {
-	const modifyElement = document.createElement('button');
-	modifyElement.className =
-		'room-info-modify-button head_yellow_neon_15 yellow_neon_10 display-light20';
-	const modifyText = document.createElement('span');
-	modifyText.textContent = '수정하기';
+	const modifyElement = createStyledElement(
+		'button',
+		'room-info-modify-button head_yellow_neon_15 yellow_neon_10 display-light20'
+	);
+	const modifyText = createStyledElement('span', '', '수정하기');
 	modifyElement.appendChild(modifyText);
 	return modifyElement;
 }
 
 function getRoomContainer(roomInfo, isHost) {
-	const roomInfoContainer = document.createElement('div');
-	roomInfoContainer.className = 'room-info-container';
+	const roomInfoContainer = createStyledElement('div', 'room-info-container');
 	roomInfoContainer.appendChild(getRoomTitle());
 	roomInfoContainer.appendChild(getRoomInfoContent(roomInfo));
 	if (isHost) {
