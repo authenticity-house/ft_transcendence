@@ -18,7 +18,8 @@ class GameSettingPage {
 				ball: '#FFD164'
 			},
 			headcount: 2,
-			nickname: ['player1', 'player2']
+			nickname: ['player1', 'player2'],
+			room_name: 'room'
 		};
 	}
 
@@ -61,6 +62,7 @@ class GameSettingPage {
 									class="game-setting-room-container"
 									type="text"
 									class="input-size-60"
+									value=${this.data.room_name}
 								/>
 							</div>
 							<div class="game-setting-nickname-container">
@@ -84,10 +86,17 @@ class GameSettingPage {
 			changeUrlData('onlineSettingTournament', null);
 		});
 
+		function updateRoomName(res) {
+			res.room_name = document.querySelector(
+				'.game-setting-room-container'
+			).value;
+		}
+
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
+			updateRoomName(this.data);
 			changeUrlData('onlineDetailed', this.data);
 		});
 
@@ -98,6 +107,7 @@ class GameSettingPage {
 			const newData = this.data;
 			this.resetData();
 			newData.total_score *= 5;
+			updateRoomName(newData);
 			// 웹소켓 만들기
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);

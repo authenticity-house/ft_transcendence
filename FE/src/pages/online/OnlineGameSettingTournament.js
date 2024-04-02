@@ -17,7 +17,8 @@ class OnlineGameSettingTournament {
 				ball: '#FFD164'
 			},
 			headcount: 4,
-			nickname: ['', '', '', '']
+			nickname: ['', '', '', ''],
+			room_name: 'room'
 		};
 	}
 
@@ -62,6 +63,7 @@ class OnlineGameSettingTournament {
 									class="game-setting-room-container"
 									type="text"
 									class="input-size-60"
+									value=${this.data.room_name}
 								/>
 							</div>
 							<div class="game-setting-number-container">
@@ -137,15 +139,10 @@ class OnlineGameSettingTournament {
 			changeUrlData('onlineSetting', null);
 		});
 
-		function updateNicknamesData(res) {
-			const nicknameInputs = document.querySelectorAll(
-				'.input-nickname input[type="text"]'
-			);
-			res.headcount = parseInt(
-				document.querySelector('input.in-num').value,
-				10
-			);
-			res.nickname = Array.from(nicknameInputs).map((input) => input.value);
+		function updateRoomName(res) {
+			res.room_name = document.querySelector(
+				'.game-setting-room-container'
+			).value;
 		}
 
 		// 세부 설정 버튼
@@ -155,7 +152,7 @@ class OnlineGameSettingTournament {
 		detailedButton.addEventListener('click', () => {
 			// const newData = this.data;
 			// this.resetData();
-			updateNicknamesData(this.data);
+			updateRoomName(this.data);
 			changeUrlData('onlineDetailed', this.data);
 		});
 
@@ -167,12 +164,14 @@ class OnlineGameSettingTournament {
 			const newData = this.data;
 			this.resetData();
 
-			updateNicknamesData(newData);
+			updateRoomName(newData);
 			newData.total_score *= 5;
 
+			console.log('뉴뉴뉴', newData);
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);
 		});
+
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.resetData();

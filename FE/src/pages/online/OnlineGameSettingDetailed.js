@@ -177,7 +177,8 @@ class OnlineGameSettingDetailed {
 					ball: '#FFD164'
 				},
 				headcount: deepCopy(this.initial.headcount),
-				nickname: deepCopy(this.initial.nickname)
+				nickname: deepCopy(this.initial.nickname),
+				room_name: 'room'
 			};
 			changeUrlData('onlineDetailed', this.data);
 		});
