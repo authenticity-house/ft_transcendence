@@ -160,14 +160,15 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email Configurations
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"  # 메일 호스트 서버
-EMAIL_PORT = 465  # gmail과 통신하는 포트
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # 발신할 이메일
+EMAIL_PORT = 465  # gmail과 통신하는 포트, TLS: 587 / SSL: 465
+# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # 발신할 이메일
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # 발신할 메일의 비밀번호
 
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # 발신할 메일의 비밀번호
 
-# EMAIL_USE_SSL = False
+EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False  # TLS 보안 방법
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
@@ -177,7 +178,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 # Determines the email verification method during signup
 # – choose one of "mandatory", "optional", or "none".
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
     "/"  # 사이트와 관련한 자동응답을 받을 이메일 주소,'webmaster@localhost'
 )
