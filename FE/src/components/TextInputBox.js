@@ -5,7 +5,8 @@ class TextInputBox {
 	constructor(options) {
 		this.text = options.text; // string
 		this.button = options.button; // boolean
-		if (this.text === '비밀번호') this.type = 'password';
+		if (this.text === '비밀번호' || this.text === '비밀번호 확인')
+			this.type = 'password';
 		else this.type = 'text';
 	}
 

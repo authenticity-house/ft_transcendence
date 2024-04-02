@@ -1,8 +1,9 @@
-import { changeUrlData, gamewsmanager } from '../index.js';
+import { changeUrl, changeUrlData, gamewsmanager } from '../index.js';
 import HorizontalButton from '../components/HorizontalButton.js';
 import VerticalButton from '../components/VerticalButton.js';
 import InputNickname from '../components/InputNickname.js';
 import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
+import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
 
@@ -31,7 +32,7 @@ class GameSettingTournament {
 		this.data.battle_mode = 2;
 
 		const horizonbuttonConfigs = [
-			{ text: '1vs1' },
+			{ text: '1 vs 1' },
 			{ text: '토너먼트', classes: 'selected' }
 		];
 		const horizontalButton = new HorizontalButton(
@@ -46,6 +47,8 @@ class GameSettingTournament {
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
 		const initialIndex = this.data.headcount;
 		const inputNickname1 = new InputNickname();
+		const backButton = new ButtonBackArrow();
+
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
@@ -87,6 +90,7 @@ class GameSettingTournament {
 					</div>
 					<div class="verticalButton">${verticalButton.template()}</div>
 				</div>
+				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
@@ -198,6 +202,11 @@ class GameSettingTournament {
 
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);
+		});
+		const backButton = document.querySelector('.button-back-in-window');
+		backButton.addEventListener('click', () => {
+			this.resetData();
+			changeUrl('match');
 		});
 	}
 }

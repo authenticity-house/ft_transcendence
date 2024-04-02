@@ -2,7 +2,6 @@ import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/RegisterPage.js';
-import RegisterNicknamePage from './pages/RegisterNicknamePage.js';
 
 import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingTournament from './pages/GameSettingTournament.js';
@@ -12,6 +11,7 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import WaitingRoomPage from './pages/WaitingRoomPage.js';
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import { profileButton } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
@@ -45,7 +45,6 @@ const homeLink = '/';
 const routes = {
 	'': LoginPage,
 	register: RegisterPage,
-	registerNickname: RegisterNicknamePage,
 	gameSetting: GameSettingPage,
 	gameSettingTournament: GameSettingTournament,
 	gameSettingDetailed: GameSettingDetailed,
@@ -55,7 +54,8 @@ const routes = {
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
 	tournamentResult: TournamentResultPage,
-	onlineMainScreen: OnlineMainScreenPage
+	onlineMainScreen: OnlineMainScreenPage,
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
