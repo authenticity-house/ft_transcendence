@@ -41,7 +41,7 @@ class LoginPage {
 						</div>
 					</div>
 
-					<div class="bold-title-no-padding gap-4">
+					<div class="bold-title-no-padding gap-5">
 						<div class="login-42">
 							${login42.template()}
 						</div>
