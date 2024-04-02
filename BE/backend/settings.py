@@ -36,6 +36,7 @@ ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
     "TOKEN_MODEL": None,
     "SESSION_LOGIN": True,
     "USE_JWT": False,
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth.registration",
     "users",
+    "stats",
 ]
 
 SITE_ID = 1
@@ -187,3 +189,5 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 
 # 이메일에 자동으로 표시되는 사이트 정보
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Pong]"
+
+APPEND_SLASH = False

@@ -17,12 +17,13 @@ format:
 
 lint:
 	@echo "Linting code with pylint"
-	@venv/bin/pylint backend
-	@venv/bin/pylint users
+	@venv/bin/pylint backend users stats
 
 type:
 	@echo "Typechecking with mypy"
 	@venv/bin/mypy backend --ignore-missing-imports
+	@venv/bin/mypy users --ignore-missing-imports
+	@venv/bin/mypy stats --ignore-missing-imports
 
 test:
 	@echo "Running Django unit tests"
