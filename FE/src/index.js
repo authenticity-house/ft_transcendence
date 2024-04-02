@@ -12,9 +12,12 @@ import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+
 import OnlineGameSettingPage from './pages/online/OnlineGameSettingPage.js';
 import OnlineGameSettingDetailed from './pages/online/OnlineGameSettingDetailed.js';
 import OnlineGameSettingTournament from './pages/online/OnlineGameSettingTournament.js';
+
+import WaitingRoomPage from './pages/WaitingRoomPage.js';
 
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import { profileButton } from './components/ProfileButton.js';
@@ -61,7 +64,8 @@ const routes = {
 	onlineMainScreen: OnlineMainScreenPage,
 	onlineSetting: OnlineGameSettingPage,
 	onlineSettingTournament: OnlineGameSettingTournament,
-	onlineDetailed: OnlineGameSettingDetailed
+	onlineDetailed: OnlineGameSettingDetailed,
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page

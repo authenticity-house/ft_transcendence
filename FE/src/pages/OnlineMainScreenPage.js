@@ -16,7 +16,6 @@ class OnlineMainScreenPage {
 			winRate: 50,
 			rating: 4242
 		};
-
 		const profileWindowElement = profileWindow(profileData);
 
 		// + MOCK data - roomList
@@ -66,6 +65,14 @@ class OnlineMainScreenPage {
 				refreshImg.style.animation = '';
 			}, 10);
 		});
+
+		const roomTempButton = document.querySelectorAll('.single-room-button');
+		roomTempButton.forEach((button) => {
+			button.addEventListener('click', () => {
+				changeUrl('waitingRoom');
+			});
+		});
+
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			changeUrl('play');
