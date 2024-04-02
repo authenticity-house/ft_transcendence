@@ -590,7 +590,7 @@ td {
 	flex-shrink: 0;
 	stroke-width: 0.2rem;
 	stroke: #fff;
-	text-align:left
+	text-align: left;
 }
 
 .input-nickname {
@@ -705,22 +705,21 @@ td {
 	height: 66rem;
 }
 
-.gap-1-6{
+.gap-1-6 {
 	gap: 1.6rem;
 }
 
-.gap-4{
+.gap-4 {
 	gap: 4rem;
 }
 
-.gap-5{
+.gap-5 {
 	gap: 5rem;
 }
 
-.gap-6{
+.gap-6 {
 	gap: 6rem;
 }
-
 
 .selected {
 	box-shadow:
@@ -1423,6 +1422,148 @@ td {
 	height: 4rem;
 	border-radius: 1rem;
 	border: 0.2rem solid #fff;
+}
+
+/* WaitingRoomPage */
+.flex-direction-column {
+	flex-direction: column;
+}
+
+.waiting-room-main {
+	display: flex;
+	width: 100%;
+	height: 68rem;
+	border-bottom: 0.2rem solid #fff;
+}
+
+.waiting-room-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 20rem;
+}
+
+/* Component - WaitingRoomUserBox */
+.waiting-room-users-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 90rem;
+	height: 100%;
+	border-right: 0.2rem solid #fff;
+	padding: 3.5rem 4rem;
+	row-gap: 5rem;
+}
+
+.user-seat-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 18rem;
+	height: 28rem;
+	gap: 2rem;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-img-container {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+}
+
+.user-seat-box-ready-state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 12rem;
+	height: 4rem;
+
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-block-container {
+	width: 9rem;
+	height: 9rem;
+}
+
+/* Component - WaitingRoomInfo */
+.room-info-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 30rem;
+	height: 100%;
+	padding: 4.5rem 4rem;
+}
+
+.room-info-content-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	gap: 3rem;
+	width: 22rem;
+	height: 45rem;
+	border-radius: 2rem;
+	border: 0.2rem solid #fff;
+	margin-top: 4rem;
+	margin-bottom: 2rem;
+	padding: 2rem 1rem;
+}
+
+.room-info-content-text {
+	width: 100%;
+	height: 2rem;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.room-info-content-color {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 15rem;
+	padding: 2rem 5rem;
+	background-color: #000;
+}
+
+.room-info-color-paddle {
+	width: 2rem;
+	height: 100%;
+}
+
+.room-info-color-ball {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+}
+
+.room-info-modify-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 22rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+/* Component - ButtonExtraLarge */
+.button-extra-large {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80rem;
+	height: 8rem;
+	color: #fff;
+	border-radius: 10px;
+	border: 4px solid #fff;
 }
 
 /* profile modal */

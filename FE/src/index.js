@@ -11,6 +11,7 @@ import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import WaitingRoomPage from './pages/WaitingRoomPage.js';
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import { profileButton } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
@@ -53,7 +54,8 @@ const routes = {
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
 	tournamentResult: TournamentResultPage,
-	onlineMainScreen: OnlineMainScreenPage
+	onlineMainScreen: OnlineMainScreenPage,
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
