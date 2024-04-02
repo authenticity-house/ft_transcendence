@@ -11,6 +11,9 @@ env_file:
 up: env_file
 	@docker-compose up -d
 
+up_db: env_file
+	@docker-compose up -d postgresql
+
 build: env_file
 	@docker-compose up -d --build
 
@@ -25,4 +28,4 @@ logs:
 ps:
 	@docker-compose ps
 
-.PHONY	: all env_file up build down re logs ps
+.PHONY	: all env_file up up_db build down re logs ps
