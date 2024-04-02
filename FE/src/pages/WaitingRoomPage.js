@@ -93,7 +93,7 @@ class WaitingRoomPage {
 
 		const backButton = document.querySelector('.online-main-back-button');
 		backButton.addEventListener('click', () => {
-			changeUrl('');
+			changeUrl('onlineMainScreen');
 		});
 	}
 }
