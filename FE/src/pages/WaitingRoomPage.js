@@ -53,9 +53,9 @@ class WaitingRoomPage {
 				}
 			],
 			myInfo: {
-				roomPosition: 0,
+				roomPosition: 2,
 				host: false,
-				readyState: false
+				readyState: true
 			}
 		};
 
@@ -68,9 +68,9 @@ class WaitingRoomPage {
 		if (data.myInfo.host) {
 			readyButton = new ButtonExtraLarge('시작', 'yellow');
 		} else if (data.myInfo.readyState) {
-			readyButton = new ButtonExtraLarge('대기', 'blue');
+			readyButton = new ButtonExtraLarge('대기', 'pink');
 		} else {
-			readyButton = new ButtonExtraLarge('준비', 'pink');
+			readyButton = new ButtonExtraLarge('준비', 'blue');
 		}
 		const backButton = new ButtonBackArrow();
 
