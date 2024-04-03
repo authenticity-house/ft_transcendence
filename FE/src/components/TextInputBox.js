@@ -2,13 +2,14 @@ const html = String.raw;
 
 // {text: 'string', button: true}
 class TextInputBox {
-	constructor(options) {
-		this.text = options.text; // string
-		this.button = options.button; // boolean
-		this.name = options.name ? options.name : 'default';
+	constructor({ text, button, name, type = 'text' }) {
+		this.text = text;
+		this.button = button;
+		this.name = name;
 
-		this.type = options.type ? options.type : 'text';
-		if (this.name === 'password') this.type = this.name;
+		this.type = ['password', 'password_confirm'].includes(name)
+			? 'password'
+			: type;
 	}
 
 	template() {
@@ -28,7 +29,7 @@ class TextInputBox {
 					<p class="display-medium20">${this.text}</p>
 				</div>
 				<div class="input-button-container">
-					<input type="text" class="input-size" />
+					<input name=${this.name} type=${this.type} class="input-size" />
 					<button class="input-button head_blue_neon_15">
 						<p class="display-light24 blue_neon_10">중복확인</p>
 					</button>
