@@ -185,7 +185,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: 10px;
+	gap: 1rem;
 	align-self: stretch;
 }
 
