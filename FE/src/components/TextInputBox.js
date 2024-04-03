@@ -5,9 +5,10 @@ class TextInputBox {
 	constructor(options) {
 		this.text = options.text; // string
 		this.button = options.button; // boolean
-		if (this.text === '비밀번호' || this.text === '비밀번호 확인')
-			this.type = 'password';
-		else this.type = 'text';
+		this.name = options.name ? options.name : 'default';
+
+		this.type = options.type ? options.type : 'text';
+		if (this.name === 'password') this.type = this.name;
 	}
 
 	template() {
@@ -17,7 +18,7 @@ class TextInputBox {
 					<div class="text-container">
 						<p class="display-medium20">${this.text}</p>
 					</div>
-					<input type=${this.type} class="input-size" />
+					<input name=${this.name} type=${this.type} class="input-size" />
 				</div>
 			`;
 		}

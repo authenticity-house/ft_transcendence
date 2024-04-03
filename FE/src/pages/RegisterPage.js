@@ -9,14 +9,20 @@ const html = String.raw;
 class RegisterPage {
 	template() {
 		const titleComponent = new BoldTitle('회원가입', 'yellow');
-		const textInputBoxId = new TextInputBox({ text: '아이디', button: true });
+		const textInputBoxId = new TextInputBox({
+			text: '아이디',
+			button: true,
+			name: 'username'
+		});
 		const textInputBoxPassword = new TextInputBox({
 			text: '비밀번호',
-			button: false
+			button: false,
+			name: 'password'
 		});
 		const textInputBoxPasswordCheck = new TextInputBox({
 			text: '비밀번호 확인',
-			button: false
+			button: false,
+			name: 'password'
 		});
 		const textInputBoxEmail = new TextInputBox({
 			text: '이메일',
