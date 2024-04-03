@@ -1,3 +1,5 @@
+import { myInfoContent } from './MyInfoContent.js';
+
 const html = String.raw;
 
 class ProfileModal {
@@ -133,7 +135,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
 											>
-												내 기록
+												${myInfoContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"

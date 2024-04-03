@@ -24,7 +24,7 @@ import {
 	headerAddEventListeners,
 	profileButton
 } from './components/ProfileButton.js';
-import { profileModal } from './components/modal/profileModal.js';
+import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 
 const html = String.raw;
 

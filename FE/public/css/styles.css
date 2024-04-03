@@ -1742,3 +1742,151 @@ td {
 	height: 100%;
 	padding: 0;
 }
+
+#nav-tabContent {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+}
+
+.tab-content .active {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+}
+
+/* my-info */
+
+.my-info-content-container {
+	display: inline-flex;
+	align-items: flex-start;
+	margin-top: 8rem;
+	gap: 6rem;
+}
+
+.my-info-content-left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10rem;
+}
+
+.my-info-content-image-name-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5rem;
+}
+
+.my-info-content-image-container {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+}
+
+.my-info-content-image {
+	display: flex;
+	width: 20rem;
+	height: 20rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border-radius: 100rem;
+	background: #dfdfdf;
+}
+
+.my-info-content-image-edit {
+	display: flex;
+	padding: 1rem;
+	align-items: flex-end;
+	gap: 1rem;
+	position: absolute;
+	right: 0rem;
+	bottom: 0rem;
+	border-radius: 100rem;
+	border: 0.1rem solid #fff;
+	background: var(--yellow, #ffd164);
+}
+
+.edit-icon {
+	width: 3rem;
+	height: 3rem;
+}
+
+.my-info-content-name {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	align-items: center;
+	gap: 1rem;
+}
+
+.my-info-content-id-password-container {
+	display: flex;
+	width: 30rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 3rem;
+}
+
+.my-info-content-id {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	align-self: stretch;
+}
+
+.my-info-content-password {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	align-self: stretch;
+}
+
+.my-info-content-right {
+	display: flex;
+	flex-direction: column;
+	width: 40rem;
+	padding: 8.8rem 7.4rem 8.8rem 7.3rem;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+}
+
+.my-info-stats-container {
+	display: flex;
+	width: 25.3rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2rem;
+	flex-shrink: 0;
+}
+
+.my-info-content-win-lose-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-content: flex-start;
+	row-gap: 2rem;
+	align-self: stretch;
+	flex-wrap: wrap;
+}
+
+.my-info-content-win-rate-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
+
+.my-info-content-rating-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
