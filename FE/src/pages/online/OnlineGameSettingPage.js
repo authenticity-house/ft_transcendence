@@ -43,7 +43,7 @@ class GameSettingPage {
 
 		const virticalbuttonConfigs = [
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },
-			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
+			{ text: '확인', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
 		const backButton = new ButtonBackArrow();
@@ -108,10 +108,8 @@ class GameSettingPage {
 			this.resetData();
 			newData.total_score *= 5;
 			updateRoomName(newData);
-			// 웹소켓 만들기
-			const gamewebsocket = new Gamewebsocket(newData);
-			gamewsmanager.register(gamewebsocket);
-			// changeUrlData('game', newData);
+
+			changeUrlData('waitingRoom', newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {

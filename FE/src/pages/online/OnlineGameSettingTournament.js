@@ -166,13 +166,10 @@ class OnlineGameSettingTournament {
 		startButton.addEventListener('click', () => {
 			const newData = this.data;
 			this.resetData();
-
 			updateRoomName(newData);
 			newData.total_score *= 5;
 
-			console.log('뉴뉴뉴', newData);
-			const gamewebsocket = new Gamewebsocket(newData);
-			gamewsmanager.register(gamewebsocket);
+			changeUrlData('waitingRoom', newData);
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');
