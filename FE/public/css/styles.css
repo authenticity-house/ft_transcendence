@@ -1180,7 +1180,7 @@ td {
 	width: 9rem;
 	height: 9rem;
 	border-radius: 50%;
-	border: 1px solid white;
+	border: 0.1rem solid white;
 	background-color: aliceblue;
 }
 
@@ -1409,8 +1409,8 @@ td {
 	width: 75rem;
 	height: 75rem;
 	padding: 3rem 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 	overflow-y: scroll;
 }
 
@@ -1433,8 +1433,8 @@ td {
 	align-items: center;
 	width: 23rem;
 	height: 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
 
 .single-room-title {
@@ -1600,8 +1600,8 @@ td {
 	width: 80rem;
 	height: 8rem;
 	color: #fff;
-	border-radius: 10px;
-	border: 4px solid #fff;
+	border-radius: 1rem;
+	border: 0.4rem solid #fff;
 }
 
 /* profile modal */
@@ -1656,26 +1656,89 @@ td {
 
 #profile-modal-nav {
 	display: flex;
-	justify-content: center;
-	align-items: flex-start;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	height: 100%;
 	border-right: 0.2rem solid #fff;
 	padding: 0;
 }
 
-#nav-tab {
+#profile-nav-tab {
+	display: flex;
 	width: 100%;
+	padding: 4rem 0;
+	flex-direction: column;
+	align-items: center;
 }
 
-#my-record-tab,
-#match-record-tab,
-#user-search-tab,
-#my-friend-tab,
-#stats-tab {
+.profile-nav-link {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
 	height: 6rem;
 	border-radius: 0;
+	border: none;
+	display: flex;
+	height: 10rem;
+	padding: 0 4rem;
+	align-items: center;
+	gap: 2.4rem;
+	align-self: stretch;
+}
+
+.profile-nav-link.active {
+	text-shadow:
+		0rem 0rem 1rem #ffd164,
+		0rem 0rem 1rem #ffd164;
+	background: rgba(255, 255, 255, 0.2);
+	border-right: 0.6rem solid #ffd164;
+}
+
+.profile-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.profile-nav-link:hover .profile-icon,
+.profile-nav-link.active .profile-icon,
+.logout-button:hover .profile-icon {
+	filter: brightness(0) saturate(100%) invert(83%) sepia(30%) saturate(800%)
+		hue-rotate(344deg) brightness(101%) contrast(101%);
+}
+
+#logout-container {
+	display: flex;
+	padding-bottom: 4rem;
+	justify-content: center;
+	align-items: center;
+	gap: 2.4rem;
+	align-self: stretch;
+}
+
+#logout-button {
+	display: flex;
+	padding: 0rem 4rem;
+	align-items: center;
+	gap: 2.4rem;
+	flex: 1 0 0;
+	height: 6rem;
+	border-radius: 0;
+	border: none;
+}
+
+#logout-button:hover .profile-icon {
+	filter: brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(5393%)
+		hue-rotate(355deg) brightness(93%) contrast(128%);
+}
+
+#logout-text {
+	width: 100%;
+}
+
+#profile-modal-content-container {
+	display: flex;
+	height: 100%;
+	padding: 0;
 }
