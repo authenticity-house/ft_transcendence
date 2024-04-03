@@ -3,17 +3,9 @@ import BoldTitle from '../components/BoldTitle.js';
 import TextInputBox from '../components/TextInputBox.js';
 import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
+import { formDataToJson } from '../utils/formDataToJson.js';
 
 const html = String.raw;
-
-function formDataToJson(formData) {
-	const object = {};
-	formData.forEach((value, key) => {
-		// 객체에 키와 값을 추가합니다.
-		object[key] = value;
-	});
-	return JSON.stringify(object);
-}
 
 class LoginPage {
 	template() {
