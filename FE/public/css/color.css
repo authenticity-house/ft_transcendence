@@ -22,6 +22,12 @@
 		0rem 0rem 1.5rem 0rem #ffffff;
 }
 
+.head_white_neon_10 {
+	box-shadow:
+		0rem 0rem 1rem 0rem #ffffff,
+		0rem 0rem 1rem 0rem #ffffff;
+}
+
 .yellow_neon_10 {
 	text-shadow:
 		0rem 0rem 1rem #ffd164,
@@ -52,6 +58,36 @@
 		0rem 0rem 1rem #c7c7c7;
 }
 
+.text_yellow_neon {
+	text-shadow:
+		0rem 0rem 1rem #ffd164,
+		0rem 0rem 1rem #ffd164;
+}
+
+.text_pink_neon {
+	text-shadow:
+		0rem 0rem 1rem #ff5d84,
+		0rem 0rem 1rem #ff5d84;
+}
+
+.text_blue_neon {
+	text-shadow:
+		0rem 0rem 1rem #5ad7ff,
+		0rem 0rem 1rem #5ad7ff;
+}
+
+.text_white_neon {
+	text-shadow:
+		0rem 0rem 1rem #ffffff,
+		0rem 0rem 1rem #ffffff;
+}
+
+.img_yellow_neon {
+	-webkit-filter: drop-shadow(0rem 0rem 0.5rem #ffd164);
+	filter: drop-shadow(0rem 0rem 0.5rem #ffd164)
+		drop-shadow(0rem 0rem 0.5rem #ffd164);
+}
+
 .img_pink_neon {
 	-webkit-filter: drop-shadow(0rem 0rem 0.5rem #ff5d84);
 	filter: drop-shadow(0rem 0rem 0.5rem #ff5d84)
@@ -62,4 +98,10 @@
 	-webkit-filter: drop-shadow(0rem 0rem 0.5rem #5ad7ff);
 	filter: drop-shadow(0rem 0rem 0.5rem #5ad7ff)
 		drop-shadow(0rem 0rem 0.5rem #5ad7ff);
+}
+
+.img_white_neon {
+	-webkit-filter: drop-shadow(0rem 0rem 0.5rem #ffffff);
+	filter: drop-shadow(0rem 0rem 0.5rem #ffffff)
+		drop-shadow(0rem 0rem 0.5rem #ffffff);
 }

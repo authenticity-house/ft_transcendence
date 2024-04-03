@@ -181,6 +181,14 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	padding-bottom: 5.9rem;
 }
 
+.text-inputbox-room-container {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1rem;
+	align-self: stretch;
+}
+
 /* components - TextInputBox */
 .text-inputbox-container {
 	display: flex;
@@ -212,6 +220,12 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	width: 40rem;
 	height: 6rem;
 }
+
+.input-size-60 {
+	width: 60rem;
+	height: 6rem;
+}
+
 .input-button-container {
 	display: flex;
 	gap: 3rem;
@@ -455,10 +469,18 @@ td {
 	align-items: center;
 }
 
+.game-setting-room-container {
+	display: flex;
+	width: 60rem;
+	height: 6rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
 .game-setting-nickname-container {
 	display: flex;
 	width: 60rem;
-	height: 33rem;
+	height: 34rem;
 	justify-content: center;
 	align-items: center;
 	border-radius: 1rem;
@@ -590,7 +612,7 @@ td {
 	flex-shrink: 0;
 	stroke-width: 0.2rem;
 	stroke: #fff;
-	text-align:left
+	text-align: left;
 }
 
 .input-nickname {
@@ -600,6 +622,7 @@ td {
 	justify-content: space-between;
 	align-items: center;
 }
+
 /* 닉네임 설정 한줄 */
 .input-nickname-col-1,
 .input-nickname-col-2 {
@@ -678,6 +701,17 @@ td {
 	letter-spacing: 0.24rem;
 }
 
+.text-subtitle-1-left {
+	width: 14rem;
+	color: #fff;
+	text-align: flex-start;
+	font-size: 2.4rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	letter-spacing: 0.24rem;
+}
+
 .width-66 {
 	width: 66rem;
 }
@@ -697,30 +731,33 @@ td {
 	height: 25rem;
 }
 
-.height-62 {
-	height: 62rem;
+.height-27 {
+	height: 27rem;
+}
+
+.height-64 {
+	height: 63.7rem;
 }
 
 .height-66 {
 	height: 66rem;
 }
 
-.gap-1-6{
+.gap-1-6 {
 	gap: 1.6rem;
 }
 
-.gap-4{
+.gap-4 {
 	gap: 4rem;
 }
 
-.gap-5{
+.gap-5 {
 	gap: 5rem;
 }
 
-.gap-6{
+.gap-6 {
 	gap: 6rem;
 }
-
 
 .selected {
 	box-shadow:
@@ -1143,7 +1180,7 @@ td {
 	width: 9rem;
 	height: 9rem;
 	border-radius: 50%;
-	border: 1px solid white;
+	border: 0.1rem solid white;
 	background-color: aliceblue;
 }
 
@@ -1372,8 +1409,8 @@ td {
 	width: 75rem;
 	height: 75rem;
 	padding: 3rem 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 	overflow-y: scroll;
 }
 
@@ -1396,8 +1433,8 @@ td {
 	align-items: center;
 	width: 23rem;
 	height: 4rem;
-	border-radius: 10px;
-	border: 2px solid #fff;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
 }
 
 .single-room-title {
@@ -1423,6 +1460,148 @@ td {
 	height: 4rem;
 	border-radius: 1rem;
 	border: 0.2rem solid #fff;
+}
+
+/* WaitingRoomPage */
+.flex-direction-column {
+	flex-direction: column;
+}
+
+.waiting-room-main {
+	display: flex;
+	width: 100%;
+	height: 68rem;
+	border-bottom: 0.2rem solid #fff;
+}
+
+.waiting-room-footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 20rem;
+}
+
+/* Component - WaitingRoomUserBox */
+.waiting-room-users-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 90rem;
+	height: 100%;
+	border-right: 0.2rem solid #fff;
+	padding: 3.5rem 4rem;
+	row-gap: 5rem;
+}
+
+.user-seat-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 18rem;
+	height: 28rem;
+	gap: 2rem;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-img-container {
+	width: 10rem;
+	height: 10rem;
+	border-radius: 50%;
+}
+
+.user-seat-box-ready-state {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 12rem;
+	height: 4rem;
+
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+.user-seat-box-block-container {
+	width: 9rem;
+	height: 9rem;
+}
+
+/* Component - WaitingRoomInfo */
+.room-info-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 30rem;
+	height: 100%;
+	padding: 4.5rem 4rem;
+}
+
+.room-info-content-container {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	gap: 3rem;
+	width: 22rem;
+	height: 45rem;
+	border-radius: 2rem;
+	border: 0.2rem solid #fff;
+	margin-top: 4rem;
+	margin-bottom: 2rem;
+	padding: 2rem 1rem;
+}
+
+.room-info-content-text {
+	width: 100%;
+	height: 2rem;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.room-info-content-color {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 15rem;
+	padding: 2rem 5rem;
+	background-color: #000;
+}
+
+.room-info-color-paddle {
+	width: 2rem;
+	height: 100%;
+}
+
+.room-info-color-ball {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+}
+
+.room-info-modify-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 22rem;
+	height: 4rem;
+	border-radius: 1rem;
+	border: 0.2rem solid #fff;
+}
+
+/* Component - ButtonExtraLarge */
+.button-extra-large {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80rem;
+	height: 8rem;
+	color: #fff;
+	border-radius: 1rem;
+	border: 0.4rem solid #fff;
 }
 
 /* profile modal */
@@ -1477,26 +1656,89 @@ td {
 
 #profile-modal-nav {
 	display: flex;
-	justify-content: center;
-	align-items: flex-start;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 	height: 100%;
 	border-right: 0.2rem solid #fff;
 	padding: 0;
 }
 
-#nav-tab {
+#profile-nav-tab {
+	display: flex;
 	width: 100%;
+	padding: 4rem 0;
+	flex-direction: column;
+	align-items: center;
 }
 
-#my-record-tab,
-#match-record-tab,
-#user-search-tab,
-#my-friend-tab,
-#stats-tab {
+.profile-nav-link {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	width: 100%;
 	height: 6rem;
 	border-radius: 0;
+	border: none;
+	display: flex;
+	height: 10rem;
+	padding: 0 4rem;
+	align-items: center;
+	gap: 2.4rem;
+	align-self: stretch;
+}
+
+.profile-nav-link.active {
+	text-shadow:
+		0rem 0rem 1rem #ffd164,
+		0rem 0rem 1rem #ffd164;
+	background: rgba(255, 255, 255, 0.2);
+	border-right: 0.6rem solid #ffd164;
+}
+
+.profile-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.profile-nav-link:hover .profile-icon,
+.profile-nav-link.active .profile-icon,
+.logout-button:hover .profile-icon {
+	filter: brightness(0) saturate(100%) invert(83%) sepia(30%) saturate(800%)
+		hue-rotate(344deg) brightness(101%) contrast(101%);
+}
+
+#logout-container {
+	display: flex;
+	padding-bottom: 4rem;
+	justify-content: center;
+	align-items: center;
+	gap: 2.4rem;
+	align-self: stretch;
+}
+
+#logout-button {
+	display: flex;
+	padding: 0rem 4rem;
+	align-items: center;
+	gap: 2.4rem;
+	flex: 1 0 0;
+	height: 6rem;
+	border-radius: 0;
+	border: none;
+}
+
+#logout-button:hover .profile-icon {
+	filter: brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(5393%)
+		hue-rotate(355deg) brightness(93%) contrast(128%);
+}
+
+#logout-text {
+	width: 100%;
+}
+
+#profile-modal-content-container {
+	display: flex;
+	height: 100%;
+	padding: 0;
 }

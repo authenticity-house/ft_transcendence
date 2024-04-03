@@ -10,9 +10,20 @@ import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
+
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+
+import OnlineGameSettingPage from './pages/online/OnlineGameSettingPage.js';
+import OnlineGameSettingDetailed from './pages/online/OnlineGameSettingDetailed.js';
+import OnlineGameSettingTournament from './pages/online/OnlineGameSettingTournament.js';
+
+import WaitingRoomPage from './pages/WaitingRoomPage.js';
+
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
-import { profileButton } from './components/ProfileButton.js';
+import {
+	headerAddEventListeners,
+	profileButton
+} from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
 
 const html = String.raw;
@@ -30,8 +41,11 @@ const profileButtonComponent = profileButton();
 const header = document.querySelector('header');
 header.innerHTML = html`
 	<img id="logo" src="./image/logo.svg" alt="logo" style="width: 48rem" />
-	${profileButtonComponent} ${profileModal()}
+	${profileButtonComponent} ${profileModal.template()}
 `;
+
+profileModal.addEventListeners();
+headerAddEventListeners();
 
 // --------------------------------------------------------------------------------------------- //
 // root is the root element of the website
@@ -53,7 +67,11 @@ const routes = {
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
 	tournamentResult: TournamentResultPage,
-	onlineMainScreen: OnlineMainScreenPage
+	onlineMainScreen: OnlineMainScreenPage,
+	onlineSetting: OnlineGameSettingPage,
+	onlineSettingTournament: OnlineGameSettingTournament,
+	onlineDetailed: OnlineGameSettingDetailed,
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page

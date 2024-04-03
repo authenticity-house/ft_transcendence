@@ -25,7 +25,7 @@ class LoginPage {
 
 				${titleComponent.register()}
 
-				<div class="vertical-button-container height-62">
+				<div class="vertical-button-container height-64">
 					<div class="bold-title-no-padding gap-4">
 						<div class="bold-title-no-padding gap-6">
 							<div class="bold-title-no-padding gap-1-6">
@@ -41,7 +41,7 @@ class LoginPage {
 						</div>
 					</div>
 
-					<div class="bold-title-no-padding gap-4">
+					<div class="bold-title-no-padding gap-5">
 						<div class="login-42">
 							${login42.template()}
 						</div>
@@ -59,7 +59,7 @@ class LoginPage {
 	addEventListeners() {
 		const loginButton = document.querySelector('.login-button');
 		loginButton.addEventListener('click', () => {
-			console.log('login42');
+			console.log('login');
 		});
 
 		const signupLink = document.querySelector('.login-signup-link');
