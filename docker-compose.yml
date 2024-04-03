@@ -33,6 +33,8 @@ services:
       - ./BE:/code
     env_file:
       - ./.env
+    environment:
+      POSTGRES_HOST: ${POSTGRES_DOCKER_HOST}
     networks:
       - pong_net
 
