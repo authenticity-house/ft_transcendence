@@ -1778,6 +1778,7 @@ td {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	gap: 5rem;
 }
 
@@ -1818,11 +1819,11 @@ td {
 
 .my-info-content-name {
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	align-items: center;
 	gap: 1rem;
+	padding-left: 4rem;
 }
 
 .my-info-content-id-password-container {
@@ -1889,4 +1890,29 @@ td {
 	justify-content: space-between;
 	align-items: flex-start;
 	align-self: stretch;
+}
+
+/* MyRecordContent.js */
+
+.my-record-content-container {
+	display: flex;
+	width: 85rem;
+	height: 76rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 4rem;
+	flex-shrink: 0;
+	margin-top: 6rem;
+}
+
+.my-record-container {
+	display: flex;
+	padding: 0rem 3rem;
+	width: 85rem;
+	height: 66rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	align-self: stretch;
+	overflow-y: scroll;
 }

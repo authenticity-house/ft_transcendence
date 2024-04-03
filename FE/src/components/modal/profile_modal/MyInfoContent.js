@@ -19,7 +19,7 @@ class MyInfoContent {
 							</div>
 						</div>
 						<div class="my-info-content-name">
-							<span class="display-medium24">이름</span>
+							<span class="display-light28">이름</span>
 							<img class="edit-icon" src="image/edit.svg" alt="edit" />
 						</div>
 					</div>
@@ -30,24 +30,26 @@ class MyInfoContent {
 						</div>
 						<div class="my-info-content-password">
 							<span class="display-light24">비밀번호</span>
-							<button type="button" class="display-light24">변경</button>
+							<button type="button" class="display-light24 head_blue_neon_15">
+								변경
+							</button>
 						</div>
 					</div>
 				</div>
 				<div class="my-info-content-right">
-					<div class="my-info-stats-container">
+					<div class="my-info-stats-container display-light28">
 						<div class="my-info-content-win-lose-container">
-							<span class="display-light24">N전</span>
-							<span class="display-light24">N승</span>
-							<span class="display-light24">N패</span>
+							<span>N전</span>
+							<span>N승</span>
+							<span>N패</span>
 						</div>
 						<div class="my-info-content-win-rate-container">
-							<span class="display-light24">승률</span>
-							<span class="display-light24">NN%</span>
+							<span>승률</span>
+							<span>NN%</span>
 						</div>
 						<div class="my-info-content-rating-container">
-							<span class="display-light24">레이팅</span>
-							<span class="display-light24">NNN점</span>
+							<span>레이팅</span>
+							<span>NNN점</span>
 						</div>
 					</div>
 				</div>
