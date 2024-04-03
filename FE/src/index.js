@@ -10,8 +10,15 @@ import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/DuelStatsPage.js';
 import TournamentPage from './pages/TournamentPage.js';
 import TournamentResultPage from './pages/TournamentResultPage.js';
+
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+
+import OnlineGameSettingPage from './pages/online/OnlineGameSettingPage.js';
+import OnlineGameSettingDetailed from './pages/online/OnlineGameSettingDetailed.js';
+import OnlineGameSettingTournament from './pages/online/OnlineGameSettingTournament.js';
+
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
+
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import { profileButton } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profileModal.js';
@@ -55,6 +62,9 @@ const routes = {
 	tournament: TournamentPage,
 	tournamentResult: TournamentResultPage,
 	onlineMainScreen: OnlineMainScreenPage,
+	onlineSetting: OnlineGameSettingPage,
+	onlineSettingTournament: OnlineGameSettingTournament,
+	onlineDetailed: OnlineGameSettingDetailed,
 	waitingRoom: WaitingRoomPage
 };
 
