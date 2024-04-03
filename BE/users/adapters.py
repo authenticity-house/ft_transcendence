@@ -14,3 +14,14 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         user_field(user, "nickname", request.data.get("nickname"))
         user.save()
         return user
+
+    def get_email_confirmation_url(self, request, emailconfirmation):
+        """
+            Changing the confirmation URL to fit the domain that we are working on
+        """
+
+        url = (
+                "http://localhost:8080/users-confirm-email/"
+                + emailconfirmation.key
+        )
+        return url
