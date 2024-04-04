@@ -186,6 +186,86 @@ export function getContent(id) {
 			{
 				profileImg: 'image/default-profile.png',
 				nickname: 'joyoo'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongrol'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'wonyang'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jihylim'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongmin'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'joyoo'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongrol'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'wonyang'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jihylim'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongmin'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'joyoo'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongrol'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'wonyang'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jihylim'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongmin'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'joyoo'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongrol'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'wonyang'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jihylim'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'jeongmin'
+			},
+			{
+				profileImg: 'image/default-profile.png',
+				nickname: 'joyoo'
 			}
 		];
 
@@ -193,6 +273,7 @@ export function getContent(id) {
 		userSearchContent.addEventListeners();
 	} else if (id === 'my-friend') {
 		// my-friend 탭을 클릭했을 때 친구 목록을 렌더링
+		// mock-data
 		const data = {
 			friends: [
 				{

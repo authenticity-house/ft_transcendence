@@ -1958,6 +1958,7 @@ td {
 	display: flex;
 	width: 81rem;
 	justify-content: center;
+	align-items: center;
 	gap: 3rem;
 }
 
@@ -1967,11 +1968,19 @@ td {
 	flex-shrink: 0;
 }
 
-.user-search-icon {
+.user-search-button {
 	position: absolute;
 	right: 0;
+	border: none;
+}
+
+.user-search-icon {
 	width: 5rem;
 	height: 5rem;
+}
+
+.user-search-button:hover .user-search-icon {
+	filter: brightness(0) saturate(100%);
 }
 
 .user-search-result-container {
@@ -2053,10 +2062,6 @@ td {
 	border: 0.2rem solid #fff;
 	overflow-y: scroll;
 	overflow-x: hidden;
-}
-
-.my-friend-request-sent::-webkit-scrollbar,
-.my-friend-request-received::-webkit-scrollbar {
 }
 
 .my-friend-request-sent::-webkit-scrollbar-button:start,

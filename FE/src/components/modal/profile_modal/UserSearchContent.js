@@ -12,7 +12,9 @@ class UserSearchContent {
 						class="user-search-input"
 						placeholder="닉네임을 입력하세요."
 					/>
-					<img class="user-search-icon" src="image/search.svg" alt="search" />
+					<button class="user-search-button">
+						<img class="user-search-icon" src="image/search.svg" alt="search" />
+					</button>
 				</div>
 				<div class="user-search-result-container container">
 					<div class="user-search-result row"></div>
