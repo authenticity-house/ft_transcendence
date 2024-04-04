@@ -3,6 +3,22 @@ import { myRecordContent } from './MyRecordContent.js';
 
 const html = String.raw;
 
+function getCookie(name) {
+	let cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i++) {
+			const cookie = cookies[i].trim();
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) === name + '=') {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
+
 class ProfileModal {
 	template() {
 		return html`
@@ -374,6 +390,37 @@ class ProfileModal {
 		});
 
 		// 로그아웃 버튼에 대한 이벤트 리스너도 여기에 추가할 수 있습니다.
+		const logout = document.getElementById('logout-button');
+		logout.addEventListener('click', () => {
+			//const csrfToken = document
+			//	.querySelector('meta[name="csrf-token"]')
+			//	.getAttribute('content');
+			const csrfToken = getCookie('csrftoken');
+
+			console.log(csrfToken);
+			fetch('http://127.0.0.1:8080/api/users/logout/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				}
+			})
+				.then((res) => {
+					console.log('here', res);
+					// 200 : OK
+					if (res.ok) {
+						if (res.status === 204) {
+							// 204 : No Content - json() 호출 불가
+							console.log('logout success');
+							return null;
+						}
+						return res.json();
+					}
+					throw new Error('Error');
+				})
+				.then((data) => console.log(data))
+				.catch((error) => console.error('Error:', error));
+		});
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
