@@ -4,6 +4,7 @@ import TextInputBox from '../components/TextInputBox.js';
 import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
+import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
 
 const html = String.raw;
 
@@ -44,17 +45,18 @@ class RegisterPage {
 			<div class="small-window head_white_neon_15">
 				<div class="bold-title-no-padding gap-5">
 					${titleComponent.register()}
-					<form id="resgister-confirm-form">
-						<div class="vertical-button-container height-66">
+
+					<div class="vertical-button-container height-66">
+						<form id="resgister-confirm-form">
 							<div class="bold-title-no-padding gap-1-6">
 								${textInputBoxId.template()} ${textInputBoxPassword.template()}
 								${textInputBoxPasswordCheck.template()}
 								${textInputBoxEmail.template()}
 								${textInputBoxNickname.template()}
 							</div>
-							<div class="register-confirm">${confirmButton.template()}</div>
-						</div>
-					</form>
+						</form>
+						<div class="register-confirm">${confirmButton.template()}</div>
+					</div>
 				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
@@ -62,12 +64,45 @@ class RegisterPage {
 	}
 
 	addEventListeners() {
+		const idCheck = document.getElementById('check-username');
+		idCheck.addEventListener('click', (e) => {
+			e.preventDefault();
+			const inputValue = document.querySelector('input[name="username"]').value;
+			console.log(inputValue);
+			alert('사용 가능한 아이디');
+		});
+
+		const emailCheck = document.getElementById('check-email');
+		emailCheck.addEventListener('click', (e) => {
+			e.preventDefault();
+			const inputValue = document.querySelector('input[name="email"]').value;
+			console.log(inputValue);
+			alert('사용 가능한 이메일');
+		});
+
+		const nicknameCheck = document.getElementById('check-nickname');
+		nicknameCheck.addEventListener('click', (e) => {
+			e.preventDefault();
+			const inputValue = document.querySelector('input[name="nickname"]').value;
+			console.log(inputValue);
+			alert('사용 가능한 닉네임');
+		});
+
+		// --------------------------------------------------------------------------------
+
 		const confirmForm = document.getElementById('resgister-confirm-form');
-		confirmForm.addEventListener('submit', (e) => {
+		const confirm = document.querySelector('.register-confirm');
+		confirm.addEventListener('click', (e) => {
 			e.preventDefault();
 
-			const payload = formDataToJson(new FormData(confirmForm));
-			console.log(payload);
+			const formData = new FormData(confirmForm);
+
+			if (!areAllFieldsFilled(formData)) {
+				alert('모두 입력해주세요.');
+			} else {
+				const payload = formDataToJson(formData);
+				console.log('Form data:', payload);
+			}
 
 			//	fetch('http://127.0.0.1:8080/api/users/login/', {
 			//		method: 'POST',
@@ -93,6 +128,8 @@ class RegisterPage {
 			//		.then((data) => console.log(data))
 			//		.catch((error) => console.error('Error:', error));
 		});
+
+		// --------------------------------------------------------------------------------
 
 		const back = document.querySelector('.button-back-in-window');
 		back.addEventListener('click', () => {

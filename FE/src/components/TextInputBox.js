@@ -30,7 +30,10 @@ class TextInputBox {
 				</div>
 				<div class="input-button-container">
 					<input name=${this.name} type=${this.type} class="input-size" />
-					<button class="input-button head_blue_neon_15">
+					<button
+						class="input-button head_blue_neon_15"
+						id="check-${this.name}"
+					>
 						<p class="display-light24 blue_neon_10">중복확인</p>
 					</button>
 				</div>
