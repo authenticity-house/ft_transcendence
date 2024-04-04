@@ -1,6 +1,6 @@
 const html = String.raw;
 
-class UserSearchNode {
+class UserNode {
 	constructor(data) {
 		this.data = data;
 	}
@@ -19,4 +19,4 @@ class UserSearchNode {
 	}
 }
 
-export default UserSearchNode;
+export default UserNode;

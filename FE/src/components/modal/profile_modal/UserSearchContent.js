@@ -1,4 +1,4 @@
-import UserSearchNode from '../../UserSearchNode.js';
+import UserNode from '../../UserNode.js';
 
 const html = String.raw;
 
@@ -27,7 +27,7 @@ class UserSearchContent {
 		let userSearches = '';
 
 		for (let i = 0; i < data.length; i += 1) {
-			const userSearchNode = new UserSearchNode(data[i]);
+			const userSearchNode = new UserNode(data[i]);
 			userSearches += userSearchNode.template();
 		}
 

@@ -1,4 +1,5 @@
 import { getContent } from './GetContent.js';
+import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
@@ -162,7 +163,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="my-friend-tab"
 											>
-												내 친구
+												${myFriendContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -210,7 +211,6 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
-
 				getContent(selectedTabContentId);
 			});
 		});

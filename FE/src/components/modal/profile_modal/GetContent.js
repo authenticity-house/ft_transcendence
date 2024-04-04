@@ -1,3 +1,4 @@
+import { myFriendContent } from './MyFriendContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
 
@@ -190,5 +191,64 @@ export function getContent(id) {
 
 		userSearchContent.mount(data);
 		userSearchContent.addEventListeners();
+	} else if (id === 'my-friend') {
+		// my-friend 탭을 클릭했을 때 친구 목록을 렌더링
+		const data = {
+			friends: [
+				{
+					profileImg: 'image/default-profile.png',
+					nickname: 'jeongrol'
+				},
+				{
+					profileImg: 'image/default-profile.png',
+					nickname: 'wonyang'
+				},
+				{
+					profileImg: 'image/default-profile.png',
+					nickname: 'jihylim'
+				},
+				{
+					profileImg: 'image/default-profile.png',
+					nickname: 'jeongmin'
+				},
+				{
+					profileImg: 'image/default-profile.png',
+					nickname: 'joyoo'
+				}
+			],
+			friendRequestsSent: [
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jeongrol',
+				'wonyang',
+				'jihylim'
+			],
+			friendRequestsReceived: ['jeongmin', 'joyoo']
+		};
+
+		myFriendContent.mount(data);
+		myFriendContent.addEventListeners();
 	}
 }
