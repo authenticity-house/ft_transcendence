@@ -14,6 +14,8 @@ class TournamentResultPage {
 		this.data = data;
 		const { content } = this.data;
 
+		console.log(content);
+
 		const titlComponent = new BoldTitle('게임 결과', 'yellow');
 		const exitButton = new ButtonSmall('나가기');
 		let duelReports = '';
@@ -50,7 +52,12 @@ class TournamentResultPage {
 		const { content } = this.data;
 		let i = 0;
 
-		const graphContainers = document.querySelectorAll('.graph-container');
+		const duelReportContainer = document.querySelector(
+			'.duel-report-container'
+		);
+
+		const graphContainers =
+			duelReportContainer.querySelectorAll('.graph-container');
 		graphContainers.forEach((graphContainer) => {
 			const matchData = DuelStatsData.getMountDuelStatsData(content[i]);
 			// score-trend
@@ -69,10 +76,10 @@ class TournamentResultPage {
 			i += 1;
 		});
 
-		const toggleConatiners = document.querySelectorAll(
+		const toggleContainers = duelReportContainer.querySelectorAll(
 			'.duel-toggle-container'
 		);
-		toggleConatiners.forEach((toggleContainer) => {
+		toggleContainers.forEach((toggleContainer) => {
 			toggleContainer.classList.toggle('duel-toggle-hidden');
 		});
 	}

@@ -1,3 +1,6 @@
+import { myInfoContent } from './MyInfoContent.js';
+import { myRecordContent } from './MyRecordContent.js';
+
 const html = String.raw;
 
 class ProfileModal {
@@ -133,7 +136,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
 											>
-												내 기록
+												${myInfoContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -141,7 +144,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="match-record-tab"
 											>
-												경기 기록
+												${myRecordContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -205,6 +208,168 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
+
+				// my-record 탭을 클릭했을 때 경기 기록을 렌더링
+				// mock-data
+				const data = [
+					{
+						date: '2024-04-03',
+						play_time: '00:00:24',
+						rally: [2, 0.4, 0],
+						max_ball_speed: [0.059, 0.0438, 0.04],
+						player1: {
+							nickname: 'jeongrol',
+							score: 0,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 0.2,
+							attack_pos: 0
+						},
+						player2: {
+							nickname: 'wonyang',
+							score: 5,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 0,
+							attack_pos: 0
+						},
+						graph: {
+							player1: {
+								score_trend: [0, 0, 0, 0, 0, 0],
+								score_pos: []
+							},
+							player2: {
+								score_trend: [0, 1, 2, 3, 4, 5],
+								score_pos: [
+									[-2.982, -1.161],
+									[-2.983, 0.585],
+									[-2.975, -0.94],
+									[-2.969, 0.821],
+									[-2.978, 0.691]
+								]
+							}
+						}
+					},
+					{
+						date: '2024-04-03',
+						play_time: '00:00:14',
+						rally: [0, 0, 0],
+						max_ball_speed: [0.04, 0.04, 0.04],
+						player1: {
+							nickname: 'jihylim',
+							score: 0,
+							attack_type: 2,
+							power_up_cnt: 0,
+							key_cnt: 0.6,
+							attack_pos: 3
+						},
+						player2: {
+							nickname: 'jeongmin',
+							score: 5,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 0,
+							attack_pos: 3
+						},
+						graph: {
+							player1: {
+								score_trend: [0, 0, 0, 0, 0, 0],
+								score_pos: []
+							},
+							player2: {
+								score_trend: [0, 1, 2, 3, 4, 5],
+								score_pos: [
+									[-2.998, 0.112],
+									[-2.971, 1.293],
+									[-2.964, 1.405],
+									[-2.964, 0.461],
+									[-2.997, -0.126]
+								]
+							}
+						}
+					},
+					{
+						date: '2024-04-03',
+						play_time: '00:00:19',
+						rally: [2, 0.8, 0],
+						max_ball_speed: [0.059, 0.0476, 0.04],
+						player1: {
+							nickname: 'joyoo',
+							score: 0,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 3.2,
+							attack_pos: 1
+						},
+						player2: {
+							nickname: 'wonyang',
+							score: 5,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 15.6,
+							attack_pos: 1
+						},
+						graph: {
+							player1: {
+								score_trend: [0, 0, 0, 0, 0, 0],
+								score_pos: []
+							},
+							player2: {
+								score_trend: [0, 1, 2, 3, 4, 5],
+								score_pos: [
+									[-2.98, -0.266],
+									[-2.963, -0.469],
+									[-2.975, 1.383],
+									[-2.997, -0.125],
+									[-3, 0.053]
+								]
+							}
+						}
+					},
+					{
+						date: '2024-04-03',
+						play_time: '00:00:23',
+						rally: [1, 0.16666666666666666, 0],
+						max_ball_speed: [0.055, 0.0425, 0.04],
+						player1: {
+							nickname: 'wonyang',
+							score: 1,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 8.5,
+							attack_pos: 3
+						},
+						player2: {
+							nickname: 'jeongmin',
+							score: 5,
+							attack_type: 0,
+							power_up_cnt: 0,
+							key_cnt: 32.666666666666664,
+							attack_pos: 1
+						},
+						graph: {
+							player1: {
+								score_trend: [0, 1, 1, 1, 1, 1, 1],
+								score_pos: [[2.965, 0.552]]
+							},
+							player2: {
+								score_trend: [0, 0, 1, 2, 3, 4, 5],
+								score_pos: [
+									[-2.99, -1.857],
+									[-2.978, 1.171],
+									[-2.96, -1.07],
+									[-2.997, -0.144],
+									[-2.985, -1.261]
+								]
+							}
+						}
+					}
+				];
+
+				if (selectedTabContentId === 'match-record') {
+					myRecordContent.mount(data);
+					myRecordContent.addEventListeners();
+				}
 			});
 		});
 
