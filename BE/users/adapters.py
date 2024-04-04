@@ -21,7 +21,7 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         """
 
         url = (
-                "http://localhost:8080/users-confirm-email/"
-                + emailconfirmation.key
+                "http://localhost:8080/api/users/users-confirm-email/"
+                + emailconfirmation.key + "/"
         )
         return url
