@@ -1916,3 +1916,75 @@ td {
 	align-self: stretch;
 	overflow-y: scroll;
 }
+
+/* UserSearchNode.js */
+.user-search-node-container {
+	display: flex;
+	padding: 4rem 4rem 5.3rem 4rem;
+	width: 20rem;
+	height: 28rem;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+	gap: 3.5rem;
+}
+
+.user-search-node-profile {
+	display: flex;
+	width: 12rem;
+	height: 12rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border-radius: 100rem;
+	background: #dfdfdf;
+}
+
+/* UserSearchContent.js */
+.user-search-content-container {
+	display: inline-flex;
+	width: 81rem;
+	height: 70rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 6.5rem;
+	flex-shrink: 0;
+	margin-top: 9rem;
+}
+
+.user-search-input-container {
+	position: relative;
+	display: flex;
+	width: 81rem;
+	justify-content: center;
+	gap: 3rem;
+}
+
+.user-search-input {
+	width: 64rem;
+	height: 6rem;
+	flex-shrink: 0;
+}
+
+.user-search-icon {
+	position: absolute;
+	right: 0;
+	width: 5rem;
+	height: 5rem;
+}
+
+.user-search-result-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+
+	overflow-y: scroll;
+}
+
+.user-search-result {
+	display: flex;
+	width: 66.3rem;
+	gap: 3rem;
+}
