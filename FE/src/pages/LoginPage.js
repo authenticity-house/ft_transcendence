@@ -4,6 +4,7 @@ import TextInputBox from '../components/TextInputBox.js';
 import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
+import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
 
 const html = String.raw;
 
@@ -69,31 +70,36 @@ class LoginPage {
 		loginForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
-			const payload = formDataToJson(new FormData(loginForm));
+			const formData = new FormData(loginForm);
 
-			fetch('http://127.0.0.1:8080/api/users/login/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: payload
-			})
-				.then((res) => {
-					// 200 : OK
-					if (res.ok) {
-						if (res.status === 204) {
-							// 204 : No Content - json() 호출 불가
-							console.log('login success');
-							changeUrl('onlineMainScreen');
-
-							return null;
-						}
-						return res.json();
-					}
-					throw new Error('Error');
+			if (!areAllFieldsFilled(formData)) {
+				alert('아이디/비밀번호를 입력해주세요.');
+			} else {
+				const payload = formDataToJson(formData);
+				fetch('http://127.0.0.1:8080/api/users/login/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: payload
 				})
-				.then((data) => console.log(data))
-				.catch((error) => console.error('Error:', error));
+					.then((res) => {
+						// 200 : OK
+						if (res.ok) {
+							if (res.status === 204) {
+								// 204 : No Content - json() 호출 불가
+								console.log('login success');
+								changeUrl('onlineMainScreen');
+
+								return null;
+							}
+							return res.json();
+						}
+						throw new Error('Error');
+					})
+					.then((data) => console.log(data))
+					.catch((error) => console.error('Error:', error));
+			}
 		});
 
 		const signupLink = document.querySelector('.login-signup-link');
