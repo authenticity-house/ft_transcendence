@@ -1917,3 +1917,191 @@ td {
 	align-self: stretch;
 	overflow-y: scroll;
 }
+
+/* UserNode.js */
+.user-search-node-container {
+	display: flex;
+	padding: 4rem 4rem 5.3rem 4rem;
+	width: 20rem;
+	height: 28rem;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+	gap: 3.5rem;
+}
+
+.user-search-node-profile {
+	display: flex;
+	width: 12rem;
+	height: 12rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border-radius: 100rem;
+	background: #dfdfdf;
+}
+
+/* UserSearchContent.js */
+.user-search-content-container {
+	display: inline-flex;
+	width: 81rem;
+	height: 70rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 6.5rem;
+	flex-shrink: 0;
+	margin-top: 9rem;
+}
+
+.user-search-input-container {
+	position: relative;
+	display: flex;
+	width: 81rem;
+	justify-content: center;
+	align-items: center;
+	gap: 3rem;
+}
+
+.user-search-input {
+	width: 64rem;
+	height: 6rem;
+	flex-shrink: 0;
+}
+
+.user-search-button {
+	position: absolute;
+	right: 0;
+	border: none;
+}
+
+.user-search-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.user-search-button:hover .user-search-icon {
+	filter: brightness(0) saturate(100%);
+}
+
+.user-search-result-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+
+	overflow-y: scroll;
+}
+
+.user-search-result {
+	display: flex;
+	width: 66.3rem;
+	gap: 3rem;
+}
+
+/* MyFriendContent.js */
+.my-friend-content-container {
+	display: flex;
+	width: 72rem;
+	height: 76rem;
+	flex-direction: column;
+	align-items: center;
+	gap: 4rem;
+	margin-top: 6rem;
+}
+
+.my-friend-list-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3rem;
+	align-self: stretch;
+	height: 100%;
+}
+
+.my-friend {
+	display: flex;
+	justify-content: center;
+	align-self: stretch;
+
+	height: 28rem;
+	overflow-y: scroll;
+}
+
+.my-friend-row {
+	display: flex;
+	width: 66.3rem;
+	gap: 3rem;
+}
+
+.my-friend-request-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	align-self: stretch;
+}
+
+.my-friend-request-sent-container,
+.my-friend-request-received-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3rem;
+}
+
+.my-friend-request-sent,
+.my-friend-request-received {
+	display: flex;
+	flex-direction: column;
+	width: 32rem;
+	height: 28rem;
+	padding: 4rem;
+	gap: 2rem;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: 3rem;
+	border: 0.2rem solid #fff;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.my-friend-request-sent::-webkit-scrollbar-button:start,
+.my-friend-request-sent::-webkit-scrollbar-button:end,
+.my-friend-request-received::-webkit-scrollbar-button:start,
+.my-friend-request-received::-webkit-scrollbar-button:end {
+	opacity: 0;
+}
+
+/* MyFriendRequestNode.js */
+.my-friend-request-node-container {
+	display: flex;
+	width: 240px;
+	justify-content: space-between;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.my-friend-request-node-button-container {
+	display: flex;
+	gap: 1rem;
+}
+
+.my-friend-request-node-cancel,
+.my-friend-request-node-accept,
+.my-friend-request-node-reject {
+	width: 40px;
+	height: 40px;
+	flex-shrink: 0;
+	border: none;
+}
+
+.my-friend-request-node-cancel:hover img,
+.my-friend-request-node-reject:hover img {
+	filter: brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(5393%)
+		hue-rotate(355deg) brightness(93%) contrast(128%);
+}
+
+.my-friend-request-node-accept:hover img {
+	filter: brightness(0) saturate(100%) invert(77%) sepia(66%) saturate(6583%)
+		hue-rotate(87deg) brightness(125%) contrast(119%);
+}
