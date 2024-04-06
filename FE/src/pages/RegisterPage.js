@@ -6,6 +6,9 @@ import ButtonBackArrow from '../components/ButtonBackArrow.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
 import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
 
+import { registerModal } from '../components/modal/registerModal.js';
+import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
+
 const html = String.raw;
 
 class RegisterPage {
@@ -60,6 +63,7 @@ class RegisterPage {
 				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
+			${registerModal()}
 		`;
 	}
 
@@ -87,6 +91,24 @@ class RegisterPage {
 			console.log(inputValue);
 			alert('사용 가능한 닉네임');
 		});
+		// --------------------------------------------------------------------------------
+		function showModal() {
+			// eslint-disable-next-line no-undef
+			const myModal = new bootstrap.Modal(
+				document.getElementById('registerModal'),
+				{
+					keyboard: false,
+					backdrop: 'static'
+				}
+			);
+			myModal.show();
+			document
+				.querySelector('.back-home-button')
+				.addEventListener('click', () => {
+					changeUrl('');
+					removeModalBackdrop();
+				});
+		}
 
 		// --------------------------------------------------------------------------------
 
@@ -116,7 +138,7 @@ class RegisterPage {
 								// 201 : Created
 								console.log('register success');
 								// 모달 띄우기
-								changeUrl('');
+								showModal();
 								return null;
 							}
 							return res.json();
