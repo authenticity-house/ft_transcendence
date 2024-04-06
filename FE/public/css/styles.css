@@ -1103,6 +1103,10 @@ td {
 	margin-bottom: 1rem;
 }
 
+.score-position-canvas {
+	border: 0.2rem solid white;
+}
+
 .score-position-player-name-container {
 	display: flex;
 	justify-content: space-between;
@@ -1122,9 +1126,6 @@ td {
 	justify-content: end;
 	align-items: center;
 	width: 48%;
-}
-.score-position-canvas {
-	border: 0.2rem solid white;
 }
 
 /* component - DuelReport */
