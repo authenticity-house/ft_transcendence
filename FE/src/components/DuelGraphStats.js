@@ -117,19 +117,19 @@ class DuelGraphStats {
 		if (windowWidth > 2560) {
 			canvasWidth = widthRem * 16;
 			canvasHeight = heightRem * 16;
-		} else if (windowWidth > 1920 && windowWidth <= 2560) {
+		} else if (windowWidth > 1920) {
 			canvasWidth = widthRem * 10;
 			canvasHeight = heightRem * 10;
-		} else if (windowWidth > 1440 && windowWidth <= 1920) {
+		} else if (windowWidth > 1440) {
 			canvasWidth = widthRem * 8;
 			canvasHeight = heightRem * 8;
-		} else if (windowWidth > 1024 && windowWidth <= 1440) {
+		} else if (windowWidth > 1024) {
 			canvasWidth = widthRem * 6;
 			canvasHeight = heightRem * 6;
-		} else if (windowWidth > 768 && windowWidth <= 1024) {
+		} else if (windowWidth > 768) {
 			canvasWidth = widthRem * 4;
 			canvasHeight = heightRem * 4;
-		} else if (windowWidth > 425 && windowWidth <= 768) {
+		} else if (windowWidth > 425) {
 			canvasWidth = widthRem * 3;
 			canvasHeight = heightRem * 3;
 		} else {
