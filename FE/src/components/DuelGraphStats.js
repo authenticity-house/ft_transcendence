@@ -109,6 +109,36 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
+	static getWidthHeight(widthRem, heightRem) {
+		const windowWidth = window.innerWidth;
+
+		let canvasWidth = 0;
+		let canvasHeight = 0;
+		if (windowWidth > 2560) {
+			canvasWidth = widthRem * 16;
+			canvasHeight = heightRem * 16;
+		} else if (windowWidth > 1920 && windowWidth <= 2560) {
+			canvasWidth = widthRem * 10;
+			canvasHeight = heightRem * 10;
+		} else if (windowWidth > 1440 && windowWidth <= 1920) {
+			canvasWidth = widthRem * 8;
+			canvasHeight = heightRem * 8;
+		} else if (windowWidth > 1024 && windowWidth <= 1440) {
+			canvasWidth = widthRem * 6;
+			canvasHeight = heightRem * 6;
+		} else if (windowWidth > 768 && windowWidth <= 1024) {
+			canvasWidth = widthRem * 4;
+			canvasHeight = heightRem * 4;
+		} else if (windowWidth > 425 && windowWidth <= 768) {
+			canvasWidth = widthRem * 3;
+			canvasHeight = heightRem * 3;
+		} else {
+			canvasWidth = widthRem * 2;
+			canvasHeight = heightRem * 2;
+		}
+		return [canvasWidth, canvasHeight];
+	}
+
 	static appendScoreTrendGraph(
 		leftScoreTrend,
 		rightScoreTrend,
@@ -119,31 +149,10 @@ class DuelGraphStats {
 			? graphContainer.querySelector('.score-trend-canvas-draw-container')
 			: document.querySelector('.score-trend-canvas-draw-container');
 
-		// 33.5rem , 36 rem -> 10px
-		// 득점 추이 캔버스 width height 구하기
-		const windowWidth = window.innerWidth;
-		if (windowWidth > 2560) {
-			canvas.width = 33.5 * 16;
-			canvas.height = 36 * 16;
-		} else if (windowWidth > 1920 && windowWidth <= 2560) {
-			canvas.width = 33.5 * 10;
-			canvas.height = 36 * 10;
-		} else if (windowWidth > 1440 && windowWidth <= 1920) {
-			canvas.width = 33.5 * 8;
-			canvas.height = 36 * 8;
-		} else if (windowWidth > 1024 && windowWidth <= 1440) {
-			canvas.width = 33.5 * 6;
-			canvas.height = 36 * 6;
-		} else if (windowWidth > 768 && windowWidth <= 1024) {
-			canvas.width = 33.5 * 4;
-			canvas.height = 36 * 4;
-		} else if (windowWidth > 425 && windowWidth <= 768) {
-			canvas.width = 33.5 * 3;
-			canvas.height = 36 * 3;
-		} else {
-			canvas.width = 33.5 * 2;
-			canvas.height = 36 * 2;
-		}
+		// canvas : 33.5rem , 36rem
+		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = responsiveWidth;
+		canvas.height = reponsiveHeight;
 
 		const widthCount = leftScoreTrend.length + 1;
 		const widthDivide = canvas.width / widthCount;
@@ -185,31 +194,10 @@ class DuelGraphStats {
 		const canvas = graphContainer
 			? graphContainer.querySelector('.score-position-canvas')
 			: document.querySelector('.score-position-canvas');
-		// 28rem , 35.6rem -> 10px
-		// 득점 추이 캔버스 width height 구하기
-		const windowWidth = window.innerWidth;
-		if (windowWidth > 2560) {
-			canvas.width = 28 * 16;
-			canvas.height = 35.6 * 16;
-		} else if (windowWidth > 1920 && windowWidth <= 2560) {
-			canvas.width = 28 * 10;
-			canvas.height = 35.6 * 10;
-		} else if (windowWidth > 1440 && windowWidth <= 1920) {
-			canvas.width = 28 * 8;
-			canvas.height = 35.6 * 8;
-		} else if (windowWidth > 1024 && windowWidth <= 1440) {
-			canvas.width = 28 * 6;
-			canvas.height = 35.6 * 6;
-		} else if (windowWidth > 768 && windowWidth <= 1024) {
-			canvas.width = 28 * 4;
-			canvas.height = 35.6 * 4;
-		} else if (windowWidth > 425 && windowWidth <= 768) {
-			canvas.width = 28 * 3;
-			canvas.height = 35.6 * 3;
-		} else {
-			canvas.width = 28 * 2;
-			canvas.height = 35.6 * 2;
-		}
+		// canvas : 28rem, 35.6rem
+		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = responsiveWidth;
+		canvas.height = reponsiveHeight;
 
 		const ctx = canvas.getContext('2d');
 		const canvasHeight = canvas.height;
