@@ -13,7 +13,10 @@ export function registerModal() {
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content modal-content-style head_white_neon_15">
 					<div class="modal-body">
-						<div class="display-light28 modal-content-body-text">
+						<div
+							class="display-light28 modal-content-body-text"
+							style="line-height:180%"
+						>
 							회원가입을 완료하기 위해 이메일 인증이 필요합니다.<br />등록하신
 							이메일을 확인해 주세요.
 						</div>

@@ -136,12 +136,14 @@ class RegisterPage {
 						if (res.ok) {
 							if (res.status === 201) {
 								// 201 : Created
-								console.log('register success');
-								// 모달 띄우기
 								showModal();
-								return null;
+								return res.json();
 							}
 							return res.json();
+						}
+						if (res.status === 400) {
+							// 비밀번호 다름, 아이디/닉네임/이메일 중복
+							alert('회원가입 실패');
 						}
 						throw new Error('Error');
 					})
