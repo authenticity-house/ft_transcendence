@@ -19,12 +19,12 @@ class RegisterPage {
 		const textInputBoxPassword = new TextInputBox({
 			text: '비밀번호',
 			button: false,
-			name: 'password'
+			name: 'password1'
 		});
 		const textInputBoxPasswordCheck = new TextInputBox({
 			text: '비밀번호 확인',
 			button: false,
-			name: 'password_confirm'
+			name: 'password2'
 		});
 		const textInputBoxEmail = new TextInputBox({
 			text: '이메일',
@@ -102,31 +102,30 @@ class RegisterPage {
 			} else {
 				const payload = formDataToJson(formData);
 				console.log('Form data:', payload);
+				fetch('http://127.0.0.1:8080/api/users/registration/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: payload
+				})
+					.then((res) => {
+						// 200 : OK
+						if (res.ok) {
+							if (res.status === 201) {
+								// 201 : Created
+								console.log('register success');
+								// 모달 띄우기
+								changeUrl('');
+								return null;
+							}
+							return res.json();
+						}
+						throw new Error('Error');
+					})
+					.then((data) => console.log(data))
+					.catch((error) => console.error('Error:', error));
 			}
-
-			//	fetch('http://127.0.0.1:8080/api/users/login/', {
-			//		method: 'POST',
-			//		headers: {
-			//			'Content-Type': 'application/json'
-			//		},
-			//		body: payload
-			//	})
-			//		.then((res) => {
-			//			// 200 : OK
-			//			if (res.ok) {
-			//				if (res.status === 204) {
-			//					// 204 : No Content - json() 호출 불가
-			//					console.log('login success');
-			//					changeUrl('onlineMainScreen');
-
-			//					return null;
-			//				}
-			//				return res.json();
-			//			}
-			//			throw new Error('Error');
-			//		})
-			//		.then((data) => console.log(data))
-			//		.catch((error) => console.error('Error:', error));
 		});
 
 		// --------------------------------------------------------------------------------

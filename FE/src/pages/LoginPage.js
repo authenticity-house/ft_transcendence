@@ -95,6 +95,11 @@ class LoginPage {
 							}
 							return res.json();
 						}
+						if (res.status === 400) {
+							// 400 : Bad request, 이메일 인증 안 받음
+							console.log('이메일 인증 필요');
+							return null;
+						}
 						throw new Error('Error');
 					})
 					.then((data) => console.log(data))

@@ -7,7 +7,7 @@ class TextInputBox {
 		this.button = button;
 		this.name = name;
 
-		this.type = ['password', 'password_confirm'].includes(name)
+		this.type = ['password', 'password1', 'password2'].includes(name)
 			? 'password'
 			: type;
 	}
