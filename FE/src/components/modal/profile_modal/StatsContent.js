@@ -1,4 +1,8 @@
-import { appendRatingText, drawRatingChange } from '../../ModalGraphStats.js';
+import {
+	appendRatingText,
+	drawRatingChange,
+	drawAttackTendency
+} from '../../ModalGraphStats.js';
 
 const html = String.raw;
 
@@ -85,7 +89,9 @@ class StatsContent {
 					</div>
 					<div class="attack-tendency-container">
 						<span>공격 성향</span>
-						<div class="attack-tendency-wrapper display-light20"></div>
+						<div class="attack-tendency-wrapper">
+							<canvas class="attack-tendency-canvas"></canvas>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -94,6 +100,7 @@ class StatsContent {
 
 	mount(data) {
 		drawRatingChange(data.ratingChange);
+		drawAttackTendency(data.attackTendency);
 	}
 }
 

@@ -61,13 +61,6 @@ function getTextPosition() {
 	if (position.length !== 2) return [-1, -1, -1];
 	const oneRating =
 		(position[0][1] - position[1][1]) / (position[1][0] - position[0][0]);
-	console.log(
-		position[0][0],
-		position[1][0],
-		position[0][1],
-		position[1][1],
-		oneRating
-	);
 	return [position[1][0], position[1][1], oneRating];
 }
 
@@ -110,7 +103,6 @@ function drawRatingChange(ratingChange) {
 			const x2 = (i + 2) * widthDivide;
 			const y1 = (maxNumber - ratingChange[i]) * ratingGapY + maxNumberY;
 			const y2 = (maxNumber - ratingChange[i + 1]) * ratingGapY + maxNumberY;
-			console.log(y1, y2);
 			drawCircle(ctx, x1, y1, '#ffd164');
 			drawCircle(ctx, x2, y2, '#ffd164');
 			drawLine(ctx, x1, y1, x2, y2, '#ffd164');
@@ -118,4 +110,47 @@ function drawRatingChange(ratingChange) {
 	}
 }
 
-export { appendRatingText, drawRatingChange };
+function drawAttackTendency(attackTendency) {
+	const canvas = document.querySelector('.attack-tendency-canvas');
+	// canvas width 20rem, height 20rem을 px단위로 변환
+	const [canvasWidth, canvasHeight] = getWidthHeight(20, 20);
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
+
+	const fontSize = canvasWidth / 20 + 6;
+
+	const ctx = canvas.getContext('2d');
+	let totalValue = 0;
+	attackTendency.forEach((tendency) => {
+		totalValue += tendency.value;
+	});
+	const centerX = canvas.width / 2;
+	const centerY = canvas.height / 2;
+	const radius = Math.min(canvas.width, canvas.height) / 2;
+	let startAngle = -Math.PI / 2;
+
+	attackTendency.forEach((slice) => {
+		const angle = (slice.value / totalValue) * 2 * Math.PI;
+		const sliceMiddleAngle = startAngle + angle / 2;
+		// 색상 채우기
+		ctx.beginPath();
+		ctx.fillStyle = slice.color;
+		ctx.moveTo(centerX, centerY);
+		ctx.arc(centerX, centerY, radius, startAngle, startAngle + angle);
+		ctx.closePath();
+		ctx.fill();
+		startAngle += angle;
+		// 텍스트 그리기
+		if (slice.value !== 0) {
+			const textX = centerX + (radius / 2) * Math.cos(sliceMiddleAngle);
+			const textY = centerY + (radius / 2) * Math.sin(sliceMiddleAngle);
+			ctx.fillStyle = '#000';
+			ctx.font = `${fontSize}px GongGothicLight`;
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillText(slice.title, textX, textY);
+		}
+	});
+}
+
+export { appendRatingText, drawRatingChange, drawAttackTendency };
