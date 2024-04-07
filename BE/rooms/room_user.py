@@ -1,0 +1,28 @@
+from enum import Enum
+
+
+class RoomUser:
+    class Status(Enum):
+        WAIT = 0
+        READY = 1
+
+    def __init__(self, nickname, rating, img_url) -> None:
+        self._nickname: str = nickname
+        self._rating: int = rating
+        self._img_url: str = img_url
+
+        self._ready_state: Status = Status.WAIT
+
+    def change_ready_state(self) -> None:
+        if self._ready_state == Status.WAIT:
+            self._ready_state = Status.READY
+        else:
+            self._ready_state = Status.WAIT
+
+    def info(self) -> dict:
+        return {
+            image: self._img_url,
+            nickName: self._nickname,
+            rating: self._rating,
+            readyState: self._ready_state == Status.READY,
+        }
