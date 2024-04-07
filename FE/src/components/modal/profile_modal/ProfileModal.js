@@ -6,6 +6,22 @@ import { userSearchContent } from './UserSearchContent.js';
 
 const html = String.raw;
 
+function getCookie(name) {
+	let cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i += 1) {
+			const cookie = cookies[i].trim();
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) === `${name}=`) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
+
 class ProfileModal {
 	template() {
 		return html`
@@ -218,16 +234,17 @@ class ProfileModal {
 		// 로그아웃 버튼에 대한 이벤트 리스너도 여기에 추가할 수 있습니다.
 		const logout = document.getElementById('logout-button');
 		logout.addEventListener('click', () => {
-			const csrfToken = document
-				.querySelector('meta[name="csrf-token"]')
-				.getAttribute('content');
+			const csrfToken = getCookie('csrftoken');
+
+			// const csrfToken = Cookies.get('csrftoken');
 
 			fetch('http://127.0.0.1:8080/api/users/logout/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'X-CSRFToken': csrfToken
-				}
+				},
+				mode: 'same-origin'
 			})
 				.then((res) => {
 					console.log('here', res);

@@ -7,6 +7,8 @@ import { formDataToJson } from '../utils/formDataToJson.js';
 import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
 
 import { registerModal } from '../components/modal/registerModal.js';
+import { registerLoadingModal } from '../components/modal/registerLoadingModal.js';
+import { registerFailModal } from '../components/modal/registerFailModal.js';
 import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
 
 const html = String.raw;
@@ -63,7 +65,7 @@ class RegisterPage {
 				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
-			${registerModal()}
+			${registerFailModal()} ${registerModal()} ${registerLoadingModal()}
 		`;
 	}
 
@@ -91,23 +93,23 @@ class RegisterPage {
 			console.log(inputValue);
 			alert('사용 가능한 닉네임');
 		});
+
 		// --------------------------------------------------------------------------------
-		function showModal() {
-			// eslint-disable-next-line no-undef
-			const myModal = new bootstrap.Modal(
-				document.getElementById('registerModal'),
-				{
-					keyboard: false,
-					backdrop: 'static'
-				}
-			);
-			myModal.show();
-			document
-				.querySelector('.back-home-button')
-				.addEventListener('click', () => {
-					changeUrl('');
+
+		function hideModal(element) {
+			const modal = document.getElementById(element);
+			modal.style.display = 'none';
+		}
+
+		function showModal(element) {
+			const modal = document.getElementById(element);
+			modal.style.display = 'block';
+			document.addEventListener('click', (e) => {
+				if (e.target && e.target.id === 'back-home-button') {
 					removeModalBackdrop();
-				});
+					changeUrl('');
+				}
+			});
 		}
 
 		// --------------------------------------------------------------------------------
@@ -124,6 +126,7 @@ class RegisterPage {
 			} else {
 				const payload = formDataToJson(formData);
 				console.log('Form data:', payload);
+				showModal('registerLoadingModal');
 				fetch('http://127.0.0.1:8080/api/users/registration/', {
 					method: 'POST',
 					headers: {
@@ -132,18 +135,21 @@ class RegisterPage {
 					body: payload
 				})
 					.then((res) => {
+						hideModal('registerLoadingModal');
 						// 200 : OK
 						if (res.ok) {
 							if (res.status === 201) {
 								// 201 : Created
-								showModal();
+
+								showModal('registerModal');
 								return res.json();
 							}
 							return res.json();
 						}
-						if (res.status === 400) {
+						if (res.status === 400 || res.status === 403) {
 							// 비밀번호 다름, 아이디/닉네임/이메일 중복
-							alert('회원가입 실패');
+							showModal('registerFailModal');
+							return res.json();
 						}
 						throw new Error('Error');
 					})
