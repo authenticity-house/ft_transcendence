@@ -343,7 +343,6 @@ export function getContent(id) {
 				{ title: '방어형', value: 20, color: '#5ad7ff' }
 			]
 		};
-		const newData = statsContent.mount(data);
-		myFriendContent.addEventListeners(newData);
+		statsContent.mount(data);
 	}
 }
