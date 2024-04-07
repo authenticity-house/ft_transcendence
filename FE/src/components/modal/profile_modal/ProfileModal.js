@@ -3,6 +3,7 @@ import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
+import { statsContent } from './StatsContent.js';
 
 const html = String.raw;
 
@@ -171,7 +172,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="stats-tab"
 											>
-												통계
+												${statsContent.template()}
 											</div>
 										</div>
 									</div>
