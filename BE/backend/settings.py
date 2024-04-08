@@ -185,7 +185,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 # Determines the email verification method during signup
 # – choose one of "mandatory", "optional", or "none".
-ACCOUNT_EMAIL_VERIFICATION = None
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = (
     "/"  # 사이트와 관련한 자동응답을 받을 이메일 주소,'webmaster@localhost'
 )
