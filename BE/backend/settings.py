@@ -34,6 +34,12 @@ ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]"]
 
 ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
     "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
