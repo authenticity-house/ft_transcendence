@@ -33,12 +33,8 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
         read_only_fields = ("pk", "username", "provider")
 
 
-class FriendSerializer(serializers.ModelSerializer):
+class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        field = ("pk", "username", "profile_url")
-        read_only_fields = ("pk", "username", "profile_url")
-
-
-class FriendshipSerializer(serializers.Serializer):
-    friend = FriendSerializer(read_only=True, many=True)
+        fields = ("pk", "nickname", "profile_url")
+        read_only_fields = ("pk", "nickname", "profile_url")
