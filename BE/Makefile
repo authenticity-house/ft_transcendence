@@ -22,8 +22,8 @@ lint:
 type:
 	@echo "Typechecking with mypy"
 	@venv/bin/mypy backend --ignore-missing-imports
-	@venv/bin/mypy users --ignore-missing-imports
-	@venv/bin/mypy stats --ignore-missing-imports
+	@venv/bin/mypy users --ignore-missing-imports --exclude '/migrations/'
+	@venv/bin/mypy stats --ignore-missing-imports --exclude '/migrations/'
 
 test:
 	@echo "Running Django unit tests"
