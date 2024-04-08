@@ -4,24 +4,10 @@ import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
+import { getCookie, removeCSRF } from '../../../utils/getCookie.js';
+import { hideModal } from '../modalUtiils.js';
 
 const html = String.raw;
-
-function getCookie(name) {
-	let cookieValue = null;
-	if (document.cookie && document.cookie !== '') {
-		const cookies = document.cookie.split(';');
-		for (let i = 0; i < cookies.length; i += 1) {
-			const cookie = cookies[i].trim();
-			// Does this cookie string begin with the name we want?
-			if (cookie.substring(0, name.length + 1) === `${name}=`) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
 
 class ProfileModal {
 	template() {
@@ -251,12 +237,13 @@ class ProfileModal {
 					console.log('here', res);
 					// 200 : OK
 					if (res.ok) {
-						if (res.status === 204) {
-							// 204 : No Content - json() 호출 불가
-							console.log('logout success');
-							return null;
-						}
-						changeUrl('');
+						removeCSRF();
+						hideModal('profile-modal', () => {
+							setTimeout(() => {
+								changeUrl('');
+							}, 100);
+						});
+
 						return res.json();
 					}
 					throw new Error('Error');
