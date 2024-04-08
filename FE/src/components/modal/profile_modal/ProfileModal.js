@@ -1,3 +1,4 @@
+import { changeUrl } from '../../../index.js';
 import { getContent } from './GetContent.js';
 import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
@@ -255,6 +256,7 @@ class ProfileModal {
 							console.log('logout success');
 							return null;
 						}
+						changeUrl('');
 						return res.json();
 					}
 					throw new Error('Error');

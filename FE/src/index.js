@@ -1,7 +1,7 @@
 import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
-import RegisterPage from './pages/RegisterPage.js';
+import RegisterPage from './pages/register/RegisterPage.js';
 
 import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingTournament from './pages/GameSettingTournament.js';

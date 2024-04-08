@@ -1,15 +1,15 @@
-import { changeUrl } from '../index.js';
-import BoldTitle from '../components/BoldTitle.js';
-import TextInputBox from '../components/TextInputBox.js';
-import ButtonMedium from '../components/ButtonMedium.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
-import { formDataToJson } from '../utils/formDataToJson.js';
-import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
+import { changeUrl } from '../../index.js';
+import BoldTitle from '../../components/BoldTitle.js';
+import TextInputBox from '../../components/TextInputBox.js';
+import ButtonMedium from '../../components/ButtonMedium.js';
+import ButtonBackArrow from '../../components/ButtonBackArrow.js';
+import { formDataToJson } from '../../utils/formDataToJson.js';
+import { areAllFieldsFilled } from '../../utils/areAllFieldsFilled.js';
 
-import { registerModal } from '../components/modal/registerModal.js';
-import { registerLoadingModal } from '../components/modal/registerLoadingModal.js';
-import { registerFailModal } from '../components/modal/registerFailModal.js';
-import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
+import { registerModal } from './registerModal.js';
+import { registerLoadingModal } from './registerLoadingModal.js';
+import { registerFailModal } from './registerFailModal.js';
+import { hideModal, showModal } from '../../components/modal/modalUtiils.js';
 
 const html = String.raw;
 
@@ -96,22 +96,6 @@ class RegisterPage {
 
 		// --------------------------------------------------------------------------------
 
-		function hideModal(element) {
-			const modal = document.getElementById(element);
-			modal.style.display = 'none';
-		}
-
-		function showModal(element) {
-			const modal = document.getElementById(element);
-			modal.style.display = 'block';
-			document.addEventListener('click', (e) => {
-				if (e.target && e.target.id === 'back-home-button') {
-					removeModalBackdrop();
-					changeUrl('');
-				}
-			});
-		}
-
 		// --------------------------------------------------------------------------------
 
 		const confirmForm = document.getElementById('resgister-confirm-form');
@@ -127,6 +111,7 @@ class RegisterPage {
 				const payload = formDataToJson(formData);
 				console.log('Form data:', payload);
 				showModal('registerLoadingModal');
+
 				fetch('http://127.0.0.1:8080/api/users/registration/', {
 					method: 'POST',
 					headers: {
@@ -135,20 +120,23 @@ class RegisterPage {
 					body: payload
 				})
 					.then((res) => {
-						hideModal('registerLoadingModal');
+						let modalToShow;
+
 						// 200 : OK
 						if (res.ok) {
 							if (res.status === 201) {
 								// 201 : Created
-
-								showModal('registerModal');
-								return res.json();
+								modalToShow = 'registerModal';
 							}
-							return res.json();
 						}
 						if (res.status === 400 || res.status === 403) {
 							// 비밀번호 다름, 아이디/닉네임/이메일 중복
-							showModal('registerFailModal');
+							modalToShow = 'registerFailModal';
+						}
+						if (modalToShow) {
+							hideModal('registerLoadingModal', () => {
+								showModal(modalToShow);
+							});
 							return res.json();
 						}
 						throw new Error('Error');
