@@ -267,6 +267,14 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	font-size: 2rem;
 }
 
+.button-x-small-flex {
+	display: flex;
+	height: 6rem;
+	justify-content: center;
+	align-items: center;
+	flex: 1 0 0;
+}
+
 /* components - ButtonBackArrow */
 
 /* window 안에 뒤로가기 있을 경우, window 안의 절대좌표로 지정*/

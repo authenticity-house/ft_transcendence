@@ -1,7 +1,6 @@
-import { changeUrl, changeUrlData, gamewsmanager } from '../../index.js';
+import { changeUrl, changeUrlData } from '../../index.js';
 import HorizontalButton from '../../components/HorizontalButton.js';
 import VerticalButton from '../../components/VerticalButton.js';
-import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 import { pongImage } from '../../components/pongImage.js';
 
