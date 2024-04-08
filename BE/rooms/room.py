@@ -1,7 +1,4 @@
-from django.shortcuts import get_object_or_404
-
 from .room_user import RoomUser
-from users.models import User
 
 
 class Room:
@@ -67,3 +64,15 @@ class Room:
             "roomName": self._room_name,
             "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
         }
+
+    def users_info(self) -> list:
+        users = []
+
+        for idx, room_user in enumerate(self._users):
+            info = room_user.info()
+            info["host"] = idx == 0
+            info["roomPosition"] = idx
+
+            users.append(info)
+
+        return users
