@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from .room_user import RoomUser
 from users.models import User
 
+
 class Room:
     DEFAULT_ROOM_NAME = "내 방으로 들어와!"
     DEFAULT_PADDLE_COLOR = "5AD7FF"
@@ -31,42 +32,38 @@ class Room:
         self._users: list = []
         self._total_rating: int = 0
 
-        if self._head_count > 2 and game_mode == 0:
+        if self._head_count > 2 and self._game_mode == 0:
             raise Exception()
 
-    def addUser(self, user) -> None:
+    def add_user(self, user) -> None:
         nickname = user.nickname
         rating = user.stats.rating
         img_url = user.profile_url
 
         user = RoomUser(nickname, rating, img_url)
-        _users.append(user)
+        self._users.append(user)
 
         self._total_rating += rating
 
-    def deleteUser(self, user) -> None:
+    def delete_user(self, user) -> None:
         nickname = user.nickname
         rating = user.stats.rating
 
-        for idx, room_user in enumerate(users):
+        for idx, room_user in enumerate(self._users):
             if room_user.nickname == nickname:
-                users.pop(idx)
+                self._users.pop(idx)
                 self._total_rating -= rating
                 return
 
         raise Exception()
 
     def room_info(self) -> dict:
-        info = {
+        return {
             "battle_mode": self._battle_mode,
             "level": self._level,
             "total_score": self._total_score,
-            "color": {
-                "paddle": self._paddle_color,
-                "ball": self._ball_color
-            },
+            "color": {"paddle": self._paddle_color, "ball": self._ball_color},
             "maxPlayer": self._max_player,
             "roomName": self._room_name,
-            "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users)
+            "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
         }
-

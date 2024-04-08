@@ -11,18 +11,18 @@ class RoomUser:
         self._rating: int = rating
         self._img_url: str = img_url
 
-        self._ready_state: Status = Status.WAIT
+        self._ready_state: RoomUser.Status = RoomUser.Status.WAIT
 
     def change_ready_state(self) -> None:
-        if self._ready_state == Status.WAIT:
-            self._ready_state = Status.READY
+        if self._ready_state == RoomUser.Status.WAIT:
+            self._ready_state = RoomUser.Status.READY
         else:
-            self._ready_state = Status.WAIT
+            self._ready_state = RoomUser.Status.WAIT
 
     def info(self) -> dict:
         return {
-            image: self._img_url,
-            nickName: self._nickname,
-            rating: self._rating,
-            readyState: self._ready_state == Status.READY,
+            "image": self._img_url,
+            "nickName": self._nickname,
+            "rating": self._rating,
+            "readyState": self._ready_state == RoomUser.Status.READY,
         }
