@@ -92,7 +92,6 @@ class FriendAPIView(APIView):
 
         try:
             user_profile = User.objects.get(pk=user_pk)
-            print(user_profile.friends.all())
             serializer = FriendshipSerializer(user_profile.friends.all(), many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist as exc:
