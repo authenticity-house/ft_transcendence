@@ -2235,9 +2235,19 @@ td {
 	width: 100%;
 }
 
+.rating-change-canvas-wrapper {
+	position: relative;
+}
+
 .rating-change-canvas {
 	border-left: 0.1rem solid #fff;
 	border-bottom: 0.1rem solid #fff;
+}
+
+#rating-tooltip {
+	position: absolute;
+	display: none;
+	white-space: nowrap;
 }
 
 .attack-tendency-container {

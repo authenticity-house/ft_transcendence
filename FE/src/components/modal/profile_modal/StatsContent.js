@@ -80,11 +80,10 @@ class StatsContent {
 							<div class="rating-change-text-container display-light10">
 								${ratingChangeText}
 							</div>
-							<canvas class="rating-change-canvas"></canvas>
-							<div
-								id="rating-tooltip"
-								style="position: absolute; display: none;"
-							></div>
+							<div class="rating-change-canvas-wrapper">
+								<canvas class="rating-change-canvas"></canvas>
+								<div id="rating-tooltip" class="display-light16"></div>
+							</div>
 						</div>
 					</div>
 					<div class="attack-tendency-container">
@@ -99,8 +98,45 @@ class StatsContent {
 	}
 
 	mount(data) {
-		drawRatingChange(data.ratingChange);
+		const toolTip = drawRatingChange(data.ratingChange);
 		drawAttackTendency(data.attackTendency);
+		return toolTip;
+	}
+
+	addEventListeners(toolTip) {
+		const ratingCanvas = document.querySelector('.rating-change-canvas');
+		ratingCanvas.addEventListener('mousemove', (event) => {
+			const rect = ratingCanvas.getBoundingClientRect();
+			const mouseX = event.clientX - rect.left;
+			const mouseY = event.clientY - rect.top;
+
+			// 마우스 위치와 각 원의 위치를 비교하여 레이팅 점수 확인
+			for (const [x, y, rating] of toolTip) {
+				// 현재 마우스 위치가 원의 범위 내에 있는지 확인
+				const distance = Math.sqrt((mouseX - x) ** 2 + (mouseY - y) ** 2);
+				if (distance <= 5) {
+					// 마우스 위치가 원의 범위 내에 있으면 해당 원의 레이팅 점수를 표시
+					this.showToolTip(mouseX, mouseY, rating);
+					return;
+				}
+			}
+			this.hideToolTip();
+		});
+	}
+
+	showToolTip(x, y, rating) {
+		const tooltipOffsetX = 10; // 툴팁을 오른쪽으로 이동할 거리
+		const tooltipOffsetY = -15; // 툴팁을 위쪽으로 이동할 거리
+		const tooltipElement = document.getElementById('rating-tooltip');
+		tooltipElement.innerText = `레이팅 : ${rating}`;
+		tooltipElement.style.left = `${tooltipOffsetX + x}px`;
+		tooltipElement.style.top = `${tooltipOffsetY + y}px`;
+		tooltipElement.style.display = 'block';
+	}
+
+	hideToolTip() {
+		const tooltipElement = document.getElementById('rating-tooltip');
+		tooltipElement.style.display = 'none';
 	}
 }
 

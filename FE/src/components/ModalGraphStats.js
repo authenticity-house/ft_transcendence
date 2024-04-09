@@ -96,6 +96,7 @@ function drawRatingChange(ratingChange) {
 	// 레이팅 최대 최소 좌표 이용해서 ratingChange 데이터 값들 canvas에 그리기
 	const widthCount = ratingChange.length + 1;
 	const widthDivide = canvas.width / widthCount;
+	const toolTip = [];
 	if (maxNumber !== -1) {
 		const ctx = canvas.getContext('2d');
 		for (let i = 0; i < ratingChange.length - 1; i += 1) {
@@ -106,8 +107,12 @@ function drawRatingChange(ratingChange) {
 			drawCircle(ctx, x1, y1, '#ffd164');
 			drawCircle(ctx, x2, y2, '#ffd164');
 			drawLine(ctx, x1, y1, x2, y2, '#ffd164');
+			toolTip.push([x1, y1, ratingChange[i]]);
+			if (i === ratingChange.length - 2)
+				toolTip.push([x2, y2, ratingChange[i + 1]]);
 		}
 	}
+	return toolTip;
 }
 
 function drawAttackTendency(attackTendency) {

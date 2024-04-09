@@ -343,6 +343,7 @@ export function getContent(id) {
 				{ title: '방어형', value: 20, color: '#5ad7ff' }
 			]
 		};
-		statsContent.mount(data);
+		const toolTip = statsContent.mount(data);
+		statsContent.addEventListeners(toolTip);
 	}
 }
