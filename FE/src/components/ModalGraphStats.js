@@ -87,8 +87,8 @@ function drawLine(ctx, x1, y1, x2, y2, color) {
 
 function drawRatingChange(ratingChange) {
 	const canvas = document.querySelector('.rating-change-canvas');
-	// canvas width 34rem, height 24rem을 px단위로 변환
-	const [canvasWidth, canvasHeight] = getWidthHeight(34, 24);
+	// canvas width 32rem, height 24rem을 px단위로 변환
+	const [canvasWidth, canvasHeight] = getWidthHeight(32, 24);
 	canvas.width = canvasWidth;
 	canvas.height = canvasHeight;
 	// 레이팅 최대 최소 좌표 가져오기 (canvas y좌표 활용)

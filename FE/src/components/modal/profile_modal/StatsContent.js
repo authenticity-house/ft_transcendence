@@ -20,7 +20,7 @@ class StatsContent {
 				topRallyCount: 55
 			},
 			ratingChange: [
-				1000, 1050, 1100, 1150, 1200, 1300, 1250, 1270, 1300, 1240, 1220, 1280
+				1000, 1050, 1100, 1050, 1100, 1150, 1200, 1250, 1300, 1250, 1200, 1250
 			]
 		};
 
@@ -75,9 +75,9 @@ class StatsContent {
 				</div>
 				<div class="graph-stats-container display-medium20">
 					<div class="rating-change-container">
-						<span>레이팅 변화율</span>
+						<div class="rating-change-title"><span>레이팅 변화율</span></div>
 						<div class="rating-change-wrapper display-light20">
-							<div class="rating-change-text-container display-light10">
+							<div class="rating-change-text-container display-light14">
 								${ratingChangeText}
 							</div>
 							<div class="rating-change-canvas-wrapper">

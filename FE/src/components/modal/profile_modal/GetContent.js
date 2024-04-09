@@ -335,7 +335,7 @@ export function getContent(id) {
 	} else if (id === 'stats') {
 		const data = {
 			ratingChange: [
-				1000, 1050, 1100, 1150, 1200, 1300, 1250, 1270, 1300, 1240, 1220, 1280
+				1000, 1050, 1100, 1050, 1100, 1150, 1100, 1150, 1200, 1150, 1200, 1250
 			],
 			attackTendency: [
 				{ title: '공격형', value: 50, color: '#ff5d84' },

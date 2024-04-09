@@ -2206,9 +2206,17 @@ td {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	width: 37rem;
 	height: 28rem;
 	gap: 1rem;
+}
+
+.rating-change-title {
+	display: flex;
+	justify-content: center;
+	padding-left: 4.5rem;
+	width: 100%;
 }
 
 .rating-change-wrapper {
@@ -2223,7 +2231,7 @@ td {
 	align-items: end;
 	justify-content: space-between;
 	padding: 2rem 0;
-	width: fit-content;
+	width: 4rem;
 	height: 100%;
 	margin-right: 0.5rem;
 }
