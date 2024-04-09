@@ -11,5 +11,5 @@ class RoomSerializer(serializers.Serializer):
     color = serializers.DictField(child=serializers.CharField())
 
     def create(self, validated_data):
-        RoomManager.add_room(validated_data)
-        return validated_data
+        room_number = RoomManager.add_room(validated_data)
+        return room_number

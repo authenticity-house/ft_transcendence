@@ -14,7 +14,7 @@ class RoomManager:
         return cls._instance
 
     @classmethod
-    def add_room(cls, room_info) -> None:
+    def add_room(cls, room_info) -> int:
         room_number = cls.next_room_number()
         room = Room(
             room_number=room_number,
@@ -27,6 +27,8 @@ class RoomManager:
             ball_color=room_info["color"]["paddle"],
         )
         cls._rooms[room_number] = room
+
+        return room_number
 
     @classmethod
     def next_room_number(cls):
