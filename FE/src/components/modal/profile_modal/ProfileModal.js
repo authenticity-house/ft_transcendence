@@ -284,12 +284,12 @@ class ProfileModal {
 		// 클릭된 탭 버튼에 'active' 클래스 추가
 		tabButton.classList.add('active');
 
+		// 모달 열기
+		profileModal.style.display = 'block';
+
 		// 클릭된 탭에 해당하는 컨텐츠 보여주기
 		tab.classList.add('show', 'active');
 		getContent(tabId);
-
-		// 모달 열기
-		profileModal.style.display = 'block';
 	}
 }
 
