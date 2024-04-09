@@ -339,7 +339,7 @@ export function getContent(id) {
 			],
 			attackTendency: [
 				{ title: '공격형', value: 50, color: '#ff5d84' },
-				{ title: '전체형', value: 30, color: '#ffd164' },
+				{ title: '혼합형', value: 30, color: '#ffd164' },
 				{ title: '방어형', value: 20, color: '#5ad7ff' }
 			]
 		};
