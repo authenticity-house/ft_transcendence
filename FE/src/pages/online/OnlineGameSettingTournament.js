@@ -142,6 +142,10 @@ class OnlineGameSettingTournament {
 		});
 
 		function updateRoomName(res) {
+			res.headcount = parseInt(
+				document.querySelector('input.in-num').value,
+				10
+			);
 			res.room_name = document.querySelector(
 				'.game-setting-room-container'
 			).value;
