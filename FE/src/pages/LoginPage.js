@@ -4,6 +4,7 @@ import TextInputBox from '../components/TextInputBox.js';
 import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
+import { LOGIN_URL } from '../constants/apiUrls.js';
 
 const html = String.raw;
 
@@ -86,7 +87,7 @@ class LoginPage {
 			} else {
 				// 모든 필드가 채워져 있을 경우, 서버로 요청을 보냅니다.
 				const payload = formDataToJson(formData);
-				fetch('http://127.0.0.1:8080/api/users/login/', {
+				fetch(LOGIN_URL, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'

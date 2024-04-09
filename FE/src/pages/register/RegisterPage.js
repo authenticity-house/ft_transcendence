@@ -11,6 +11,8 @@ import { registerLoadingModal } from './registerLoadingModal.js';
 import { registerFailModal } from './registerFailModal.js';
 import { hideModal, showModal } from '../../components/modal/modalUtiils.js';
 
+import { REGISTRATION_URL } from '../../constants/apiUrls.js';
+
 const html = String.raw;
 
 class RegisterPage {
@@ -112,7 +114,7 @@ class RegisterPage {
 				console.log('Form data:', payload);
 				showModal('registerLoadingModal');
 
-				fetch('http://127.0.0.1:8080/api/users/registration/', {
+				fetch(REGISTRATION_URL, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json'

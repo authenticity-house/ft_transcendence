@@ -7,6 +7,8 @@ import { userSearchContent } from './UserSearchContent.js';
 import { getCookie, removeCSRF } from '../../../utils/getCookie.js';
 import { hideModal } from '../modalUtiils.js';
 
+import { LOGOUT_URL } from '../../../constants/apiUrls.js';
+
 const html = String.raw;
 
 class ProfileModal {
@@ -225,7 +227,7 @@ class ProfileModal {
 
 			// const csrfToken = Cookies.get('csrftoken');
 
-			fetch('http://127.0.0.1:8080/api/users/logout/', {
+			fetch(LOGOUT_URL, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
