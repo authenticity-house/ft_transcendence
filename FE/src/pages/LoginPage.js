@@ -4,7 +4,6 @@ import TextInputBox from '../components/TextInputBox.js';
 import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
-import { areAllFieldsFilled } from '../utils/areAllFieldsFilled.js';
 
 const html = String.raw;
 
@@ -35,9 +34,10 @@ class LoginPage {
 				<div class="vertical-button-container height-64">
 					<div class="bold-title-no-padding gap-4">
 						<form id="login-form">
-							<div class="bold-title-no-padding gap-6">
+							<div class="bold-title-no-padding gap-5">
 								<div class="bold-title-no-padding gap-1-6">
 									${textInputBoxId.template()} ${textInputBoxPassword.template()}
+									<div class="text-container"><p class="text-light-left-pink" id="error-message"></p></div>
 								</div>
 								<div class="login-button">
 									${loginButton.template()}
@@ -71,10 +71,20 @@ class LoginPage {
 			e.preventDefault();
 
 			const formData = new FormData(loginForm);
+			const username = formData.get('username');
+			const password = formData.get('password');
+			const errorMessageElement = document.getElementById('error-message');
 
-			if (!areAllFieldsFilled(formData)) {
-				alert('아이디/비밀번호를 입력해주세요.');
+			errorMessageElement.textContent = '';
+
+			if (!username && !password) {
+				errorMessageElement.textContent = '아이디, 비밀번호를 입력해주세요.';
+			} else if (!username) {
+				errorMessageElement.textContent = '아이디를 입력해주세요.';
+			} else if (!password) {
+				errorMessageElement.textContent = '비밀번호를 입력해주세요.';
 			} else {
+				// 모든 필드가 채워져 있을 경우, 서버로 요청을 보냅니다.
 				const payload = formDataToJson(formData);
 				fetch('http://127.0.0.1:8080/api/users/login/', {
 					method: 'POST',
@@ -90,23 +100,27 @@ class LoginPage {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
 								changeUrl('onlineMainScreen');
-
 								return null;
 							}
 							return res.json();
 						}
-						if (res.status === 400) {
-							// 400 : Bad request, 이메일 인증 안 받음
-							console.log('로그인 실패');
-							return res;
-						}
+						// if (res.status === 400) {
+						// 400 : Bad request, 이메일 인증 안 받음
+						console.log('로그인 실패');
+						console.log(res);
+						// }
 						throw new Error('Error');
 					})
 					.then((data) => console.log(data))
-					.catch((error) => console.error('Error:', error));
+					.catch((error) => {
+						console.error('Error:', error);
+						errorMessageElement.textContent =
+							' 아이디 또는 비밀번호를 잘못 입력했습니다.';
+					});
 			}
 		});
 
+		// 기존의 회원가입 링크와 기타 버튼 이벤트 리스너는 유지
 		const signupLink = document.querySelector('.login-signup-link');
 		signupLink.addEventListener('click', () => {
 			changeUrl('register');
