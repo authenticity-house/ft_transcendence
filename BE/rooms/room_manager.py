@@ -20,7 +20,7 @@ class RoomManager:
             room_number=room_number,
             room_name=room_info["room_name"],
             battle_mode=room_info["battle_mode"],
-            max_player=room_info["headcount"],
+            max_player=room_info["max_player"],
             total_score=room_info["total_score"],
             level=room_info["level"],
             paddle_color=room_info["color"]["paddle"],
@@ -37,3 +37,11 @@ class RoomManager:
     def attend(cls, room_number, user):
         room = cls._rooms[room_number]
         room.add_user(user)
+
+    @classmethod
+    def room_list(cls):
+        lst = []
+        for room in cls._rooms.values():
+            info = room.room_info()
+            lst.append(info)
+        return lst

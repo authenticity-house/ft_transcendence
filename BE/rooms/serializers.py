@@ -5,7 +5,7 @@ from .room_manager import RoomManager
 class RoomSerializer(serializers.Serializer):
     room_name = serializers.CharField(max_length=255)
     battle_mode = serializers.IntegerField()
-    headcount = serializers.IntegerField()
+    max_player = serializers.IntegerField()
     total_score = serializers.IntegerField()
     level = serializers.IntegerField()
     color = serializers.DictField(child=serializers.CharField())

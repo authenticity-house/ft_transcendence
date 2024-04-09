@@ -29,9 +29,6 @@ class Room:
         self._users: list = []
         self._total_rating: int = 0
 
-        if self._head_count > 2 and self._game_mode == 0:
-            raise Exception()
-
     def add_user(self, user) -> None:
         nickname = user.nickname
         rating = user.stats.rating
@@ -56,6 +53,7 @@ class Room:
 
     def room_info(self) -> dict:
         return {
+            "room_number": self._room_number,
             "battle_mode": self._battle_mode,
             "level": self._level,
             "total_score": self._total_score,
