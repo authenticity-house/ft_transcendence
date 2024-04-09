@@ -13,7 +13,6 @@ export function hideModal(element, callback) {
 	// eslint-disable-next-line no-undef
 	const bsModal = bootstrap.Modal.getInstance(modalElement);
 	if (bsModal) {
-		console.log('모달 숨기기');
 		// eslint-disable-next-line no-underscore-dangle
 		bsModal._element.addEventListener(
 			'hidden.bs.modal',
@@ -51,7 +50,6 @@ export function showModal(element) {
 		bsModal = new bootstrap.Modal(modalElement);
 	}
 	bsModal.show();
-	console.log('모달 띄우기');
 
 	document.addEventListener('click', handleBackHomeClick);
 }

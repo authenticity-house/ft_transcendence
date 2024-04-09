@@ -236,7 +236,6 @@ class ProfileModal {
 				mode: 'same-origin'
 			})
 				.then((res) => {
-					console.log('here', res);
 					// 200 : OK
 					if (res.ok) {
 						removeCSRF();
