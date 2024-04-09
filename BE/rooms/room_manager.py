@@ -2,12 +2,20 @@ from .room import Room
 
 
 class RoomManager:
-    def __init__(self) -> None:
-        self._rooms: dict = {}
-        self._last_room_number: int = -1
+    _instance = None
+    _rooms: dict = {}
+    _last_room_number: int = -1
 
-    def add_room(self, room_info) -> None:
-        room_number = self.next_room_number()
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(RoomManager, cls).__new__(cls)
+            cls._rooms = {}
+            cls._last_room_number = -1
+        return cls._instance
+
+    @classmethod
+    def add_room(cls, room_info) -> None:
+        room_number = cls.next_room_number()
         room = Room(
             room_number=room_number,
             room_name=room_info["room_name"],
@@ -18,12 +26,14 @@ class RoomManager:
             paddle_color=room_info["color"]["paddle"],
             ball_color=room_info["color"]["paddle"],
         )
-        self._rooms[room_number] = room
+        cls._rooms[room_number] = room
 
-    def next_room_number(self):
-        self._last_room_number += 1
-        return self._last_room_number
+    @classmethod
+    def next_room_number(cls):
+        cls._last_room_number += 1
+        return cls._last_room_number
 
-    def attend(self, room_number, user):
-        room = self._rooms[room_number]
+    @classmethod
+    def attend(cls, room_number, user):
+        room = cls._rooms[room_number]
         room.add_user(user)
