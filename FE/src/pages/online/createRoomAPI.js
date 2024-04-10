@@ -17,9 +17,7 @@ export function createRoomAPI(roomData) {
 		.then((res) => {
 			// 201 : Created
 			if (res.ok || res.status === 201) {
-				// 201 : Created
 				changeUrl('waitingRoom');
-				return res.json();
 			}
 			return res.json();
 		})
