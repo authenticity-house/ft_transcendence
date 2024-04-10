@@ -20,5 +20,5 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         Changing the confirmation URL to fit the domain that we are working on
         """
 
-        url = "http://localhost:8080/api/users/users-confirm-email/" + emailconfirmation.key + "/"
+        url = "http://127.0.0.1:8080/api/users/users-confirm-email/" + emailconfirmation.key + "/"
         return url
