@@ -197,7 +197,6 @@ class OnlineGameSettingDetailed {
 					ball: '#FFD164'
 				},
 				max_headcount: deepCopy(this.initial.max_headcount),
-				nickname: deepCopy(this.initial.nickname),
 				room_name: 'room'
 			};
 

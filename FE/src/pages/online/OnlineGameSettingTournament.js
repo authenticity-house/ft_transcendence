@@ -17,7 +17,6 @@ class OnlineGameSettingTournament {
 				ball: '#FFD164'
 			},
 			max_headcount: 4,
-			nickname: ['', '', '', ''],
 			room_name: 'room'
 		};
 	}

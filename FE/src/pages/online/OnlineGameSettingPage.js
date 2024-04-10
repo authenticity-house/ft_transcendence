@@ -18,8 +18,7 @@ class GameSettingPage {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			max_headcount: 2,
-			nickname: ['player1', 'player2']
+			max_headcount: 2
 		};
 	}
 
@@ -109,6 +108,7 @@ class GameSettingPage {
 			newData.total_score *= 5;
 			updateRoomName(newData);
 
+			console.log('넘기는 값', newData);
 			changeUrlData('waitingRoom', newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
