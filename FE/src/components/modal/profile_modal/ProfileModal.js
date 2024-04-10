@@ -6,7 +6,7 @@ import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
 
 import { getCookie, removeCSRF } from '../../../utils/getCookie.js';
-import { hideModal } from '../modalUtiils.js';
+import { hideModal } from '../modalUtils.js';
 
 import apiEndpoints from '../../../constants/apiConfig.js';
 

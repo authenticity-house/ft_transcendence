@@ -9,7 +9,7 @@ import { areAllFieldsFilled } from '../../utils/areAllFieldsFilled.js';
 import { registerModal } from './registerModal.js';
 import { registerLoadingModal } from './registerLoadingModal.js';
 import { registerFailModal } from './registerFailModal.js';
-import { hideModal, showModal } from '../../components/modal/modalUtiils.js';
+import { hideModal, showModal } from '../../components/modal/modalUtils.js';
 
 import apiEndpoints from '../../constants/apiConfig.js';
 
