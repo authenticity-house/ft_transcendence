@@ -720,6 +720,16 @@ td {
 	letter-spacing: 0.24rem;
 }
 
+.text-light-left-pink {
+	color: #ff5d84;
+	text-align: flex-start;
+	font-size: 1.8rem;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	letter-spacing: 0.24rem;
+}
+
 .width-66 {
 	width: 66rem;
 }
