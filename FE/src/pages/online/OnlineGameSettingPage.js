@@ -10,6 +10,7 @@ const html = String.raw;
 class GameSettingPage {
 	constructor() {
 		this.initialData = {
+			room_name: 'room',
 			battle_mode: 1,
 			total_score: 2,
 			level: 2,
@@ -17,9 +18,8 @@ class GameSettingPage {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			headcount: 2,
-			nickname: ['player1', 'player2'],
-			room_name: 'room'
+			max_headcount: 2,
+			nickname: ['player1', 'player2']
 		};
 	}
 

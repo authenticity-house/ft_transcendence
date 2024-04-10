@@ -16,7 +16,7 @@ class OnlineGameSettingTournament {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			headcount: 4,
+			max_headcount: 4,
 			nickname: ['', '', '', ''],
 			room_name: 'room'
 		};
@@ -45,7 +45,7 @@ class OnlineGameSettingTournament {
 			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
-		const initialIndex = this.data.headcount;
+		const initialIndex = this.data.max_headcount;
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -142,7 +142,7 @@ class OnlineGameSettingTournament {
 		});
 
 		function updateRoomName(res) {
-			res.headcount = parseInt(
+			res.max_headcount = parseInt(
 				document.querySelector('input.in-num').value,
 				10
 			);

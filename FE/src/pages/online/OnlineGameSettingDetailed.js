@@ -196,7 +196,7 @@ class OnlineGameSettingDetailed {
 					paddle: '#5AD7FF',
 					ball: '#FFD164'
 				},
-				headcount: deepCopy(this.initial.headcount),
+				max_headcount: deepCopy(this.initial.max_headcount),
 				nickname: deepCopy(this.initial.nickname),
 				room_name: 'room'
 			};
