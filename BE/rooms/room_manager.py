@@ -42,7 +42,24 @@ class RoomManager:
 
     @classmethod
     def room_list(cls):
-        lst = []
+        # debug
+        test_room_info1 = {
+            "room_number": 998,
+            "room_name": "1대1 한 판 붙자!",
+            "battle_mode": 1,
+            "current_player": 1,
+            "max_player": 2,
+            "rating": 1487
+        }
+        test_room_info2 = {
+            "room_number": 999,
+            "room_name": "내 방으로 들어와!!",
+            "battle_mode": 2,
+            "current_player": 5,
+            "max_player": 7,
+            "rating": 2398
+        }
+        lst = [test_room_info1, test_room_info2]
         for room in cls._rooms.values():
             info = room.room_info()
             lst.append(info)
