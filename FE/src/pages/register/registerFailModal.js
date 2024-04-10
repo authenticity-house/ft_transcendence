@@ -1,10 +1,10 @@
 const html = String.raw;
 
-export function registerModal() {
+export function registerFailModal() {
 	return html`
 		<div
-			class="modal"
-			id="registerModal"
+			class="modal fade"
+			id="registerFailModal"
 			data-bs-backdrop="static"
 			data-bs-keyboard="false"
 			tabindex="-1"
@@ -17,8 +17,7 @@ export function registerModal() {
 							class="display-light28 modal-content-body-text"
 							style="line-height:180%"
 						>
-							회원가입을 완료하기 위해 이메일 인증이 필요합니다.<br />등록하신
-							이메일을 확인해 주세요.
+							회원가입 실패
 						</div>
 						<div class="horizontal-button-container" style="gap:4rem">
 							<button
