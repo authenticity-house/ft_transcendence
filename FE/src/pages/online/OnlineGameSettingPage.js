@@ -4,7 +4,7 @@ import VerticalButton from '../../components/VerticalButton.js';
 import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 import { pongImage } from '../../components/pongImage.js';
-import { getCookie } from '../../utils/getCookie.js';
+import { createRoomAPI } from './createRoomAPI.js';
 
 const html = String.raw;
 
@@ -109,37 +109,8 @@ class GameSettingPage {
 			newData.total_score *= 5;
 			updateRoomName(newData);
 
-			console.log('넘기는 값', newData);
-			// ----------------------------------
-
-			const payload = JSON.stringify(newData);
-			const csrfToken = getCookie('csrftoken');
-			console.log('Form data:', payload);
-			fetch('http://127.0.0.1:8080/api/rooms/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRFToken': csrfToken
-				},
-				body: payload
-			})
-				.then((res) => {
-					// 200 : OK
-					if (res.ok) {
-						if (res.status === 201) {
-							// 201 : Created
-
-							return res.json();
-						}
-						return res.json();
-					}
-					throw new Error('Error');
-				})
-				.then((data) => console.log(data))
-				.catch((error) => console.error('Error:', error));
-
-			// ----------------------------------
-			// changeUrlData('waitingRoom', newData);
+			// api 호출 후 방으로 이동
+			createRoomAPI(newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
