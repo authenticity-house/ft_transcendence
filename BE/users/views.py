@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ParseError, APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -114,3 +114,39 @@ class FriendAPIView(APIView):
             raise NotFound(
                 detail=f"User does not exist: pk={user_pk} or friend_pk={friend_pk}"
             ) from exc
+
+
+class InvalidQueryParams(APIException):
+    status_code = 400
+    default_detail = "Query Params key should be 'email', 'nickname', or 'username'."
+
+
+class CheckDuplicateAPIView(APIView):
+    allowed_keys = ["email", "nickname", "username"]
+
+    def get(self, request):
+        query_params = request.query_params
+
+        if not request.query_params:
+            raise ParseError(detail="query param is empty")
+
+        if not all(key in self.allowed_keys for key in query_params.keys()):
+            raise InvalidQueryParams()
+
+        data = self.check_duplicate(**query_params)
+        if True in data.values():
+            return Response(data, status=status.HTTP_409_CONFLICT)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    def check_duplicate(self, **kwargs):
+        data = {key: False for key in self.allowed_keys}
+
+        if "email" in kwargs:
+            data["email"] = User.objects.filter(email=kwargs["email"][0]).exists()
+        if "nickname" in kwargs:
+            data["nickname"] = User.objects.filter(nickname=kwargs["nickname"][0]).exists()
+        if "username" in kwargs:
+            data["username"] = User.objects.filter(username=kwargs["username"][0]).exists()
+
+        return data
