@@ -3,8 +3,25 @@ import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
+import { statsContent } from './StatsContent.js';
 
 const html = String.raw;
+
+function getCookie(name) {
+	let cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i += 1) {
+			const cookie = cookies[i].trim();
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) === `${name}=`) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
 
 class ProfileModal {
 	template() {
@@ -171,7 +188,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="stats-tab"
 											>
-												통계
+												${statsContent.template()}
 											</div>
 										</div>
 									</div>
@@ -216,6 +233,36 @@ class ProfileModal {
 		});
 
 		// 로그아웃 버튼에 대한 이벤트 리스너도 여기에 추가할 수 있습니다.
+		const logout = document.getElementById('logout-button');
+		logout.addEventListener('click', () => {
+			const csrfToken = getCookie('csrftoken');
+
+			// const csrfToken = Cookies.get('csrftoken');
+
+			fetch('http://127.0.0.1:8080/api/users/logout/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				},
+				mode: 'same-origin'
+			})
+				.then((res) => {
+					console.log('here', res);
+					// 200 : OK
+					if (res.ok) {
+						if (res.status === 204) {
+							// 204 : No Content - json() 호출 불가
+							console.log('logout success');
+							return null;
+						}
+						return res.json();
+					}
+					throw new Error('Error');
+				})
+				.then((data) => console.log(data))
+				.catch((error) => console.error('Error:', error));
+		});
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
@@ -237,12 +284,12 @@ class ProfileModal {
 		// 클릭된 탭 버튼에 'active' 클래스 추가
 		tabButton.classList.add('active');
 
+		// 모달 열기
+		profileModal.style.display = 'block';
+
 		// 클릭된 탭에 해당하는 컨텐츠 보여주기
 		tab.classList.add('show', 'active');
 		getContent(tabId);
-
-		// 모달 열기
-		profileModal.style.display = 'block';
 	}
 }
 

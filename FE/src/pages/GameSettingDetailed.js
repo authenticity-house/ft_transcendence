@@ -142,28 +142,47 @@ class GameSettingDetailed {
 	addEventListeners() {
 		this.activateButtons('.activate-button');
 
+		// 색상 변경
+		const changeColor = (
+			elementId,
+			element,
+			elementColorSelector,
+			boxShadowSelector
+		) => {
+			document.getElementById(elementId).textContent = this.data.color[element];
+			// 패들, 공 색깔
+			document.querySelector(elementColorSelector).style.backgroundColor =
+				this.data.color[element];
+			// 패들, 공 효과 색깔
+			document.querySelector(boxShadowSelector).style.boxShadow =
+				`0rem 0rem 1.5rem 0rem ${this.data.color[element]}, 0rem 0rem 1.5rem 0rem ${this.data.color[element]}`;
+		};
+
+		// 패들 색상 선택
 		const paddleColorPicker = document.getElementById('paddleColorPicker');
 		paddleColorPicker.addEventListener('change', (e) => {
 			this.data.color.paddle = e.target.value;
-			document.getElementById('paddleColorButton').textContent =
-				this.data.color.paddle;
-			document.querySelector('.color-display-paddle').style.backgroundColor =
-				this.data.color.paddle;
-			document.querySelector('.color-display-paddle').style.boxShadow =
-				`0rem 0rem 1.5rem 0rem ${this.data.color.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle}`;
+			changeColor(
+				'paddleColorButton',
+				'paddle',
+				'.color-display-paddle',
+				'.color-display-paddle'
+			);
 		});
 
+		// 공 색상 선택
 		const ballColorPicker = document.getElementById('ballColorPicker');
 		ballColorPicker.addEventListener('change', (e) => {
 			this.data.color.ball = e.target.value;
-			document.getElementById('ballColorButton').textContent =
-				this.data.color.ball;
-			document.querySelector('.color-display-ball').style.backgroundColor =
-				this.data.color.ball;
-			document.querySelector('.color-display-ball').style.boxShadow =
-				`0rem 0rem 1.5rem 0rem ${this.data.color.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball}`;
+			changeColor(
+				'ballColorButton',
+				'ball',
+				'.color-display-ball',
+				'.color-display-ball'
+			);
 		});
 
+		// 리셋 버튼
 		const resetButton = document.querySelector(
 			'.horizontalButton button:nth-child(1)'
 		);
@@ -179,7 +198,35 @@ class GameSettingDetailed {
 				headcount: deepCopy(this.initial.headcount),
 				nickname: deepCopy(this.initial.nickname)
 			};
-			changeUrlData('gameSettingDetailed', this.data);
+
+			document
+				.querySelectorAll('.activate-button')
+				.forEach((container, index) => {
+					container.querySelectorAll('button').forEach((btn, btnIndex) => {
+						btn.classList.remove('selected');
+						// index : active-button 첫번째, 두번쨰
+						// btnInex : 세가지 선택지 중 두번째 항목
+						if ((index === 0 || index === 1) && btnIndex === 1) {
+							btn.classList.add('selected');
+						}
+					});
+				});
+
+			paddleColorPicker.value = this.data.color.paddle;
+			ballColorPicker.value = this.data.color.ball;
+
+			changeColor(
+				'paddleColorButton',
+				'paddle',
+				'.color-display-paddle',
+				'.color-display-paddle'
+			);
+			changeColor(
+				'ballColorButton',
+				'ball',
+				'.color-display-ball',
+				'.color-display-ball'
+			);
 		});
 
 		const confirmButton = document.querySelector(

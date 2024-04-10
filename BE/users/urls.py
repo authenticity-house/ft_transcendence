@@ -1,5 +1,5 @@
 from django.urls import path, include, re_path
-from .views import ConfirmEmailView, CustomRegisterView
+from .views import ConfirmEmailView, CustomRegisterView, FriendAPIView
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
@@ -11,4 +11,5 @@ urlpatterns = [
         ConfirmEmailView.as_view(),
         name="account_confirm_email",
     ),
+    path("friends/", FriendAPIView.as_view(), name="friends"),
 ]
