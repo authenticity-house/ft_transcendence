@@ -42,7 +42,7 @@ class OnlineGameSettingTournament {
 
 		const virticalbuttonConfigs = [
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },
-			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
+			{ text: '확인', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
 		const initialIndex = this.data.max_headcount;
@@ -59,11 +59,12 @@ class OnlineGameSettingTournament {
 								<p class="text-subtitle-1-left" style="padding-left: 1rem;">
 									방 제목
 								</p>
+
 								<input
-									class="game-setting-room-container"
+									class="game-setting-room-container input-size-60"
 									type="text"
-									class="input-size-60"
-									value=${this.data.room_name}
+									value="${this.data.room_name.replace(/"/g, '&quot;')}"
+									maxlength="12"
 								/>
 							</div>
 							<div class="game-setting-number-container">

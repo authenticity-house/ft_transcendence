@@ -59,10 +59,10 @@ class GameSettingPage {
 									방 제목
 								</p>
 								<input
-									class="game-setting-room-container"
+									class="game-setting-room-container input-size-60"
 									type="text"
-									class="input-size-60"
-									value=${this.data.room_name}
+									value="${this.data.room_name.replace(/"/g, '&quot;')}"
+									maxlength="12"
 								/>
 							</div>
 							<div class="game-setting-nickname-container">
