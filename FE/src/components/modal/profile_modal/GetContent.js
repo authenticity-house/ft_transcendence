@@ -1,6 +1,7 @@
 import { myFriendContent } from './MyFriendContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
+import { statsContent } from './StatsContent.js';
 
 export function getContent(id) {
 	if (id === 'match-record') {
@@ -331,5 +332,18 @@ export function getContent(id) {
 
 		myFriendContent.mount(data);
 		myFriendContent.addEventListeners();
+	} else if (id === 'stats') {
+		const data = {
+			ratingChange: [
+				1000, 1050, 1100, 1050, 1100, 1150, 1100, 1150, 1200, 1150, 1200, 1250
+			],
+			attackTendency: [
+				{ title: '공격형', value: 50, color: '#ff5d84' },
+				{ title: '혼합형', value: 30, color: '#ffd164' },
+				{ title: '방어형', value: 20, color: '#5ad7ff' }
+			]
+		};
+		const toolTip = statsContent.mount(data);
+		statsContent.addEventListeners(toolTip);
 	}
 }

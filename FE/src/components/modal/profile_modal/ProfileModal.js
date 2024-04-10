@@ -4,10 +4,13 @@ import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
+
 import { getCookie, removeCSRF } from '../../../utils/getCookie.js';
 import { hideModal } from '../modalUtiils.js';
 
 import apiEndpoints from '../../../constants/apiConfig.js';
+
+import { statsContent } from './StatsContent.js';
 
 const html = String.raw;
 
@@ -176,7 +179,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="stats-tab"
 											>
-												통계
+												${statsContent.template()}
 											</div>
 										</div>
 									</div>
@@ -273,12 +276,12 @@ class ProfileModal {
 		// 클릭된 탭 버튼에 'active' 클래스 추가
 		tabButton.classList.add('active');
 
+		// 모달 열기
+		profileModal.style.display = 'block';
+
 		// 클릭된 탭에 해당하는 컨텐츠 보여주기
 		tab.classList.add('show', 'active');
 		getContent(tabId);
-
-		// 모달 열기
-		profileModal.style.display = 'block';
 	}
 }
 
