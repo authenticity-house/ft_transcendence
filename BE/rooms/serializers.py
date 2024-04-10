@@ -19,4 +19,6 @@ class RoomListSerializer(serializers.Serializer):
     room_number = serializers.IntegerField()
     room_name = serializers.CharField(max_length=255)
     battle_mode = serializers.IntegerField()
+    current_player = serializers.IntegerField()
     max_player = serializers.IntegerField()
+    rating = serializers.IntegerField()

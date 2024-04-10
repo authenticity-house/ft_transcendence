@@ -15,7 +15,7 @@ class RoomManager:
 
     @classmethod
     def add_room(cls, room_info) -> int:
-        room_number = cls.next_room_number()
+        room_number = cls.__next_room_number()
         room = Room(
             room_number=room_number,
             room_name=room_info["room_name"],
@@ -31,7 +31,7 @@ class RoomManager:
         return room_number
 
     @classmethod
-    def next_room_number(cls):
+    def __next_room_number(cls):
         cls._last_room_number += 1
         return cls._last_room_number
 

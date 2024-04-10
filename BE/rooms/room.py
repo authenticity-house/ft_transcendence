@@ -58,6 +58,7 @@ class Room:
             "level": self._level,
             "total_score": self._total_score,
             "color": {"paddle": self._paddle_color, "ball": self._ball_color},
+            "current_player": len(self._users),
             "max_player": self._max_player,
             "room_name": self._room_name,
             "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
