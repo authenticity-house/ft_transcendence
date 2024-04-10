@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .room_manager import RoomManager
+from rooms.services import RoomManager
 
 
 class RoomCreateSerializer(serializers.Serializer):

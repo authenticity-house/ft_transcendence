@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import RoomCreateSerializer, RoomListSerializer
-from .room_manager import RoomManager
+from rooms.services import RoomManager
 
 
 class RoomView(APIView):
