@@ -11,7 +11,7 @@ class Room:
         room_number: int = -1,
         room_name: str = DEFAULT_ROOM_NAME,
         battle_mode: int = 0,
-        max_player: int = 2,
+        max_headcount: int = 2,
         total_score: int = 15,
         level: int = 2,
         paddle_color: str = DEFAULT_PADDLE_COLOR,
@@ -19,7 +19,7 @@ class Room:
     ) -> None:
         self._room_name: str = room_name
         self._battle_mode: int = battle_mode
-        self._max_player: int = max_player
+        self._max_headcount: int = max_headcount
         self._total_score: int = total_score
         self._level: int = level
         self._paddle_color: str = paddle_color
@@ -58,8 +58,8 @@ class Room:
             "level": self._level,
             "total_score": self._total_score,
             "color": {"paddle": self._paddle_color, "ball": self._ball_color},
-            "current_player": len(self._users),
-            "max_player": self._max_player,
+            "current_headcount": len(self._users),
+            "max_headcount": self._max_headcount,
             "room_name": self._room_name,
             "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
         }
