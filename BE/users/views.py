@@ -15,7 +15,7 @@ from allauth.account.utils import send_email_confirmation
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
-from users.serializers import FriendshipSerializer
+from users.serializers import UserProfileSerializer
 
 
 class ConfirmEmailView(APIView):
@@ -92,7 +92,7 @@ class FriendAPIView(APIView):
 
         try:
             user_profile = User.objects.get(pk=user_pk)
-            serializer = FriendshipSerializer(user_profile.friends.all(), many=True)
+            serializer = UserProfileSerializer(user_profile.friends.all(), many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
