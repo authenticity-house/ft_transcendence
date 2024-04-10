@@ -4,7 +4,7 @@ from .views import (
     CustomRegisterView,
     FriendAPIView,
     CheckDuplicateAPIView,
-    UserPrefixSearchView,
+    UserPrefixSearchView, UserDetailView,
 )
 
 urlpatterns = [
@@ -20,4 +20,5 @@ urlpatterns = [
     ),
     path("friends/", FriendAPIView.as_view(), name="friends"),
     path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
+    # path("detail/{pk}/", UserDetailView.as_view(), name="another_user_detail"),
 ]

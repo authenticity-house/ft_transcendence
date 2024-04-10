@@ -168,3 +168,12 @@ class UserPrefixSearchView(APIView):
         user_profile_list = User.objects.filter(nickname__startswith=prefix)
         serializer = UserProfileSerializer(user_profile_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# class UserDetailView(APIView):
+#     authentication_classes = [SessionAuthentication]
+#     permission_classes = [IsAuthenticated]
+#
+    # def get(self, request, pk):
+    #     print(pk)
+    #     return Response(pk)
