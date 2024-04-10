@@ -3,6 +3,7 @@ import HorizontalButton from '../../components/HorizontalButton.js';
 import VerticalButton from '../../components/VerticalButton.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 import { pongImage } from '../../components/pongImage.js';
+import { createRoomAPI } from './createRoomAPI.js';
 
 const html = String.raw;
 
@@ -170,8 +171,7 @@ class OnlineGameSettingTournament {
 			this.resetData();
 			updateRoomName(newData);
 			newData.total_score *= 5;
-
-			changeUrlData('waitingRoom', newData);
+			createRoomAPI(newData);
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');
