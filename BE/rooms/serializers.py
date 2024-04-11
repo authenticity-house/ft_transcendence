@@ -14,6 +14,9 @@ class RoomCreateSerializer(serializers.Serializer):
         room_number = RoomManager.add_room(validated_data)
         return room_number
 
+    def update(self, instance, validated_data):
+        pass
+
 
 class RoomListSerializer(serializers.Serializer):
     room_number = serializers.IntegerField()
@@ -22,3 +25,9 @@ class RoomListSerializer(serializers.Serializer):
     current_headcount = serializers.IntegerField()
     max_headcount = serializers.IntegerField()
     rating = serializers.IntegerField()
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass

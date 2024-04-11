@@ -38,7 +38,7 @@ class RoomManager:
 
     @classmethod
     def join_room(cls, room_number, user) -> None:
-        if room_number not in cls._rooms.keys():
+        if room_number not in cls._rooms:
             raise RoomError("Invalid room number")
         room = cls._rooms[room_number]
         room.add_user(user)

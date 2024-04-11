@@ -17,7 +17,7 @@ format:
 
 lint:
 	@echo "Linting code with pylint"
-	@venv/bin/pylint backend users stats
+	@venv/bin/pylint backend users stats rooms
 
 type:
 	@echo "Typechecking with mypy"

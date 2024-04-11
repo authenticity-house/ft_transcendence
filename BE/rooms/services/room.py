@@ -2,12 +2,12 @@ from .room_user import RoomUser
 from .exceptions import RoomError
 
 
-class Room:
+class Room:  # pylint: disable=R0902
     DEFAULT_ROOM_NAME = "내 방으로 들어와!"
     DEFAULT_PADDLE_COLOR = "5AD7FF"
     DEFAULT_BALL_COLOR = "FFD164"
 
-    def __init__(
+    def __init__(  # pylint: disable=R0913
         self,
         room_number: int = -1,
         room_name: str = DEFAULT_ROOM_NAME,
@@ -33,7 +33,7 @@ class Room:
     def add_user(self, user) -> None:
         if self.__is_full():
             raise RoomError("Room is full")
-        if any(usr._nickname == user.nickname for usr in self._users):
+        if any(usr._nickname == user.nickname for usr in self._users):  # pylint: disable=W0212
             raise RoomError("User already joined")
 
         nickname = user.nickname
