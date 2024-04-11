@@ -24,6 +24,65 @@ function updateModalContent(id, newContent) {
 	}
 }
 
+let isDuplicateChecked = false;
+
+function handleDuplicateCheck(e, inputName) {
+	e.preventDefault();
+	if (isDuplicateChecked) return;
+	// eslint-disable-next-line no-use-before-define
+	checkDuplicate(
+		inputName,
+		'REGISTER_CHECK_URL',
+		'add-modal-text',
+		'중복된 아이디입니다.<br />다시 입력해주세요.'
+	);
+}
+
+let boundHandleDuplicateCheck;
+
+function addCheckDuplicateEventListener(inputName) {
+	const checkButton = document.getElementById(`check-${inputName}`);
+	if (checkButton) {
+		// handleDuplicateCheck 함수에 inputName을 바인딩하고 결과를 변수에 저장
+		boundHandleDuplicateCheck = handleDuplicateCheck.bind(null, inputName);
+
+		// 바인드된 함수를 이벤트 리스너로 추가
+		checkButton.addEventListener('click', boundHandleDuplicateCheck);
+	}
+}
+
+function removeCheckDuplicateEventListener(inputName) {
+	const checkButton = document.getElementById(`check-${inputName}`);
+	if (checkButton && boundHandleDuplicateCheck) {
+		// 이전에 추가된 바인드된 함수를 이용하여 이벤트 리스너 제거
+		checkButton.removeEventListener('click', boundHandleDuplicateCheck);
+
+		// 바인드된 함수 참조를 null로 설정하여 참조를 해제
+		boundHandleDuplicateCheck = null;
+	}
+}
+
+function addInputChangeEventListener(inputName) {
+	const inputElement = document.querySelector(`input[name="${inputName}"]`);
+	const checkButton = document.getElementById(`check-${inputName}`);
+	const checkbuttonText = checkButton.querySelector('p');
+
+	if (inputElement) {
+		inputElement.addEventListener(
+			'input',
+			() => {
+				// 입력 내용이 변경될 때 중복 확인 상태 변수를 false로 설정하여 버튼을 다시 활성화
+				isDuplicateChecked = false;
+				checkButton.classList.add('head_blue_neon_15');
+				checkbuttonText.classList.add('blue_neon_10');
+
+				addCheckDuplicateEventListener(inputName); // 입력 값이 변경되면 중복 확인 이벤트 리스너를 다시 추가
+			},
+			{ once: true } // 이벤트리스너 한번만 실행
+		);
+	}
+}
+
 function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
 	const inputElement = document.querySelector(`input[name="${inputName}"]`);
 	const checkButton = document.getElementById(`check-${inputName}`);
@@ -37,19 +96,21 @@ function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
 		)
 			.then((response) => {
 				if (response.ok) {
-					// 사용가능
 					console.log('사용가능');
 					checkButton.classList.remove('head_blue_neon_15');
-
 					checkbuttonText.classList.remove('blue_neon_10');
-				} else if (response.status === 409) {
-					// 중복됨
-					console.log('중복됨');
-					checkButton.classList.add('head_blue_neon_15');
-					checkbuttonText.classList.add('blue_neon_10');
 
+					isDuplicateChecked = true;
+					addInputChangeEventListener(inputName);
+				} else if (response.status === 409) {
+					console.log('중복됨');
 					updateModalContent(modalId, modalMessage);
 					showModal('registerDupModal');
+
+					checkButton.classList.add('head_blue_neon_15');
+					checkbuttonText.classList.add('blue_neon_10');
+					// 중복됨 상태에서도 중복 확인 상태 변수를 true로 설정하여 추가적인 클릭 방지
+					isDuplicateChecked = true;
 				}
 				return response.json();
 			})
@@ -143,8 +204,6 @@ class RegisterPage {
 			console.log(inputValue);
 			alert('사용 가능한 닉네임');
 		});
-
-		// --------------------------------------------------------------------------------
 
 		// --------------------------------------------------------------------------------
 
