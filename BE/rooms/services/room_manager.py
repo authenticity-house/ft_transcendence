@@ -52,7 +52,7 @@ class RoomManager:
             "battle_mode": 1,
             "current_headcount": 1,
             "max_headcount": 2,
-            "rating": 1487
+            "rating": 1487,
         }
         test_room_info2 = {
             "room_number": 999,
@@ -60,7 +60,7 @@ class RoomManager:
             "battle_mode": 2,
             "current_headcount": 5,
             "max_headcount": 7,
-            "rating": 2398
+            "rating": 2398,
         }
         lst = [test_room_info1, test_room_info2]
         for room in cls._rooms.values():

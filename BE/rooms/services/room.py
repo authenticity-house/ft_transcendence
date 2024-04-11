@@ -33,9 +33,12 @@ class Room:
     def add_user(self, user) -> None:
         if self.__is_full():
             raise RoomError("Room is full")
+        if any(usr._nickname == user.nickname for usr in self._users):
+            raise RoomError("User already joined")
 
         nickname = user.nickname
-        rating = user.stats.rating
+        # rating = user.stats.rating
+        rating = 1000
         img_url = user.profile_url
 
         user = RoomUser(nickname, rating, img_url)
@@ -45,7 +48,8 @@ class Room:
 
     def delete_user(self, user) -> None:
         nickname = user.nickname
-        rating = user.stats.rating
+        # rating = user.stats.rating
+        rating = 1000
 
         for idx, room_user in enumerate(self._users):
             if room_user.nickname == nickname:
@@ -65,7 +69,11 @@ class Room:
             "current_headcount": self.__current_headcount(),
             "max_headcount": self._max_headcount,
             "room_name": self._room_name,
-            "rating": 0 if self.__current_headcount() == 0 else self._total_rating // self.__current_headcount(),
+            "rating": (
+                0
+                if self.__current_headcount() == 0
+                else self._total_rating // self.__current_headcount()
+            ),
         }
 
     def users_info(self) -> list:
