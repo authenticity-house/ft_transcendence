@@ -11,7 +11,8 @@ function getApiEndpoints() {
 	return {
 		LOGIN_URL: `${USERS_URL}login/`,
 		REGISTRATION_URL: `${USERS_URL}registration/`,
-		LOGOUT_URL: `${USERS_URL}logout/`
+		LOGOUT_URL: `${USERS_URL}logout/`,
+		REGISTER_CHECK_URL: `${USERS_URL}check/?`
 	};
 }
 

@@ -3,17 +3,61 @@ import BoldTitle from '../../components/BoldTitle.js';
 import TextInputBox from '../../components/TextInputBox.js';
 import ButtonMedium from '../../components/ButtonMedium.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
-import { formDataToJson } from '../../utils/formDataToJson.js';
 import { areAllFieldsFilled } from '../../utils/areAllFieldsFilled.js';
 
+import { registerDupModal } from './registerDupModal.js';
 import { registerModal } from './registerModal.js';
 import { registerLoadingModal } from './registerLoadingModal.js';
 import { registerFailModal } from './registerFailModal.js';
-import { hideModal, showModal } from '../../components/modal/modalUtils.js';
 
+import { registerAPI } from './registerAPI.js';
 import apiEndpoints from '../../constants/apiConfig.js';
 
+import { showModal } from '../../components/modal/modalUtils.js';
+
 const html = String.raw;
+
+function updateModalContent(id, newContent) {
+	const contentElement = document.getElementById(id);
+	if (contentElement) {
+		contentElement.innerHTML = newContent;
+	}
+}
+
+function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
+	const inputElement = document.querySelector(`input[name="${inputName}"]`);
+	const checkButton = document.getElementById(`check-${inputName}`);
+	const checkbuttonText = checkButton.querySelector('p');
+
+	const inputValue = inputElement.value;
+
+	if (inputValue) {
+		fetch(
+			`${apiEndpoints[endpointUrl]}${inputName}=${encodeURIComponent(inputValue)}`
+		)
+			.then((response) => {
+				if (response.ok) {
+					// 사용가능
+					console.log('사용가능');
+					checkButton.classList.remove('head_blue_neon_15');
+
+					checkbuttonText.classList.remove('blue_neon_10');
+				} else if (response.status === 409) {
+					// 중복됨
+					console.log('중복됨');
+					checkButton.classList.add('head_blue_neon_15');
+					checkbuttonText.classList.add('blue_neon_10');
+
+					updateModalContent(modalId, modalMessage);
+					showModal('registerDupModal');
+				}
+				return response.json();
+			})
+			.then((data) => {
+				console.log(data);
+			});
+	}
+}
 
 class RegisterPage {
 	template() {
@@ -67,7 +111,8 @@ class RegisterPage {
 				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
-			${registerFailModal()} ${registerModal()} ${registerLoadingModal()}
+			${registerDupModal()} ${registerFailModal()} ${registerModal()}
+			${registerLoadingModal()}
 		`;
 	}
 
@@ -75,9 +120,12 @@ class RegisterPage {
 		const idCheck = document.getElementById('check-username');
 		idCheck.addEventListener('click', (e) => {
 			e.preventDefault();
-			const inputValue = document.querySelector('input[name="username"]').value;
-			console.log(inputValue);
-			alert('사용 가능한 아이디');
+			checkDuplicate(
+				'username',
+				'REGISTER_CHECK_URL',
+				'add-modal-text',
+				'중복된 아이디입니다.<br />다시 입력해주세요.'
+			);
 		});
 
 		const emailCheck = document.getElementById('check-email');
@@ -110,41 +158,7 @@ class RegisterPage {
 			if (!areAllFieldsFilled(formData)) {
 				alert('모두 입력해주세요.');
 			} else {
-				const payload = formDataToJson(formData);
-				console.log('Form data:', payload);
-				showModal('registerLoadingModal');
-
-				fetch(apiEndpoints.REGISTRATION_URL, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: payload
-				})
-					.then((res) => {
-						let modalToShow;
-
-						// 200 : OK
-						if (res.ok) {
-							if (res.status === 201) {
-								// 201 : Created
-								modalToShow = 'registerModal';
-							}
-						}
-						if (res.status === 400 || res.status === 403) {
-							// 비밀번호 다름, 아이디/닉네임/이메일 중복
-							modalToShow = 'registerFailModal';
-						}
-						if (modalToShow) {
-							hideModal('registerLoadingModal', () => {
-								showModal(modalToShow);
-							});
-							return res.json();
-						}
-						throw new Error('Error');
-					})
-					.then((data) => console.log(data))
-					.catch((error) => console.error('Error:', error));
+				registerAPI(formData);
 			}
 		});
 
