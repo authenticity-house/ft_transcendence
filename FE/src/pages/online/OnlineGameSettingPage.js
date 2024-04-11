@@ -4,12 +4,14 @@ import VerticalButton from '../../components/VerticalButton.js';
 import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 import { pongImage } from '../../components/pongImage.js';
+import { createRoomAPI } from './createRoomAPI.js';
 
 const html = String.raw;
 
 class GameSettingPage {
 	constructor() {
 		this.initialData = {
+			room_name: 'room',
 			battle_mode: 1,
 			total_score: 2,
 			level: 2,
@@ -17,9 +19,7 @@ class GameSettingPage {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			headcount: 2,
-			nickname: ['player1', 'player2'],
-			room_name: 'room'
+			max_headcount: 2
 		};
 	}
 
@@ -59,10 +59,10 @@ class GameSettingPage {
 									방 제목
 								</p>
 								<input
-									class="game-setting-room-container"
+									class="game-setting-room-container input-size-60"
 									type="text"
-									class="input-size-60"
-									value=${this.data.room_name}
+									value="${this.data.room_name.replace(/"/g, '&quot;')}"
+									maxlength="12"
 								/>
 							</div>
 							<div class="game-setting-nickname-container">
@@ -109,7 +109,8 @@ class GameSettingPage {
 			newData.total_score *= 5;
 			updateRoomName(newData);
 
-			changeUrlData('waitingRoom', newData);
+			// api 호출 후 방으로 이동
+			createRoomAPI(newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
