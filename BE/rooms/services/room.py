@@ -1,4 +1,5 @@
 from .room_user import RoomUser
+from .exceptions import RoomError
 
 
 class Room:
@@ -30,6 +31,9 @@ class Room:
         self._total_rating: int = 0
 
     def add_user(self, user) -> None:
+        if self.__is_full():
+            raise RoomError("Room is full")
+
         nickname = user.nickname
         rating = user.stats.rating
         img_url = user.profile_url
@@ -49,7 +53,7 @@ class Room:
                 self._total_rating -= rating
                 return
 
-        raise Exception()
+        raise RoomError(f"Can not found such user: {nickname}")
 
     def room_info(self) -> dict:
         return {
@@ -58,10 +62,10 @@ class Room:
             "level": self._level,
             "total_score": self._total_score,
             "color": {"paddle": self._paddle_color, "ball": self._ball_color},
-            "current_headcount": len(self._users),
+            "current_headcount": self.__current_headcount(),
             "max_headcount": self._max_headcount,
             "room_name": self._room_name,
-            "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
+            "rating": 0 if self.__current_headcount() == 0 else self._total_rating // self.__current_headcount(),
         }
 
     def users_info(self) -> list:
@@ -75,3 +79,9 @@ class Room:
             users.append(info)
 
         return users
+
+    def __current_headcount(self) -> int:
+        return len(self._users)
+
+    def __is_full(self) -> bool:
+        return self.__current_headcount() >= self._max_headcount

@@ -1,4 +1,5 @@
 from .room import Room
+from .exceptions import RoomError
 
 
 class RoomManager:
@@ -31,17 +32,19 @@ class RoomManager:
         return room_number
 
     @classmethod
-    def __next_room_number(cls):
+    def __next_room_number(cls) -> int:
         cls._last_room_number += 1
         return cls._last_room_number
 
     @classmethod
-    def attend(cls, room_number, user):
+    def join_room(cls, room_number, user) -> None:
+        if room_number not in cls._rooms.keys():
+            raise RoomError("Invalid room number")
         room = cls._rooms[room_number]
         room.add_user(user)
 
     @classmethod
-    def room_list(cls):
+    def room_list(cls) -> list:
         # debug
         test_room_info1 = {
             "room_number": 998,
