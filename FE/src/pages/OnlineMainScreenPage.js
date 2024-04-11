@@ -1,7 +1,11 @@
 /* eslint-disable no-void */
 import { changeUrl } from '../index.js';
 import { profileWindow } from '../components/ProfileWindow.js';
-import { roomListWindow } from '../components/RoomListWindow.js';
+import {
+	roomListWindow,
+	getRoomElementAll
+} from '../components/RoomListWindow.js';
+import apiEndpoints from '../constants/apiConfig.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
@@ -18,31 +22,9 @@ class OnlineMainScreenPage {
 		};
 		const profileWindowElement = profileWindow(profileData);
 
-		// + MOCK data - roomList
-		const roomList = [
-			{
-				matchMode: '1 vs 1',
-				roomTitle: '아무나 들어오세!',
-				rating: '1000',
-				peopleMax: '2',
-				peopleNow: '1'
-			},
-			{
-				matchMode: 'tournament',
-				roomTitle: '8인 토너먼트 고수만!',
-				rating: '3000',
-				peopleMax: '8',
-				peopleNow: '3'
-			},
-			{
-				matchMode: '1 vs 1',
-				roomTitle: '아무나 들어오세!',
-				rating: '1000',
-				peopleMax: '2',
-				peopleNow: '1'
-			}
-		];
-		const roomListWindowElement = roomListWindow(roomList);
+		const roomsData = this.getRoomsData();
+		const roomListWindowElement = roomListWindow(roomsData);
+
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -54,23 +36,35 @@ class OnlineMainScreenPage {
 	}
 
 	addEventListeners() {
+		const roomListContainer = document.querySelector('.room-list-container');
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
-		const createRoom = document.querySelector('.create-room-button');
 
 		refreshButton.addEventListener('click', () => {
-			// + 방 목록 데이터 다시 가져오기 로직 추가
 			refreshImg.style.animation = 'none';
 			setTimeout(() => {
 				refreshImg.style.animation = '';
 			}, 10);
+			// 방 데이터 가져오기
+			const roomsData = this.getRoomsData();
+			// 기존 방 리스트들 삭제
+			while (roomListContainer.firstChild) {
+				roomListContainer.removeChild(roomListContainer.firstChild);
+			}
+			// 새로운 방 데이터로 방 리스트 생성
+			const newRoomsHtml = getRoomElementAll(roomsData);
+			const newRoomsList = document
+				.createRange()
+				.createContextualFragment(newRoomsHtml);
+			roomListContainer.appendChild(newRoomsList);
 		});
 
-		const roomTempButton = document.querySelectorAll('.single-room-button');
-		roomTempButton.forEach((button) => {
-			button.addEventListener('click', () => {
+		roomListContainer.addEventListener('click', (event) => {
+			const { target } = event;
+			// 클릭된 요소가 .single-room-button인 경우에만 changeUrl('waitingRoom') 호출
+			if (target && target.closest('.single-room-button')) {
 				changeUrl('waitingRoom');
-			});
+			}
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');
@@ -78,9 +72,22 @@ class OnlineMainScreenPage {
 			changeUrl('play');
 		});
 
+		const createRoom = document.querySelector('.create-room-button');
 		createRoom.addEventListener('click', () => {
 			changeUrl('onlineSetting');
 		});
+	}
+
+	getRoomsData() {
+		const request = new XMLHttpRequest();
+		request.open('GET', apiEndpoints.ROOMS_URL, false);
+		request.send();
+
+		if (request.status === 200) {
+			return JSON.parse(request.responseText);
+		}
+		console.error('Error fetching data:', request.statusText);
+		return null;
 	}
 }
 

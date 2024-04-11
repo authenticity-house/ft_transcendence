@@ -4,22 +4,23 @@ function getRoomElementAll(roomList) {
 	let allRoom = '';
 	roomList.forEach((room) => {
 		const color =
-			room.matchMode === 'tournament'
+			room.battle_mode === 2
 				? ['head_pink_neon_15', 'pink_neon_10']
 				: ['head_blue_neon_15', 'blue_neon_10'];
+		const battleMode = room.battle_mode === 2 ? '토너먼트' : '1 vs 1';
 
 		const singleRoom = html`
 			<button class="single-room-button ${color[0]}">
 				<div class="single-room-match-mode">
-					<span class="${color[1]} display-light18">${room.matchMode}</span>
+					<span class="${color[1]} display-light18">${battleMode}</span>
 				</div>
 				<div class="single-room-title">
-					<p class="display-light16">${room.roomTitle}</p>
+					<p class="display-light16">${room.room_name}</p>
 				</div>
 				<div class="single-room-bottom display-light16">
-					<span>레이팅: ${room.rating}점대</span>
+					<span>레이팅: ${room.rating}점</span>
 					<div class="single-room-people">
-						<span>${room.peopleNow} / ${room.peopleMax}</span>
+						<span>${room.current_headcount} / ${room.max_headcount}</span>
 					</div>
 				</div>
 			</button>

@@ -8,8 +8,8 @@ from .room_manager import RoomManager
 
 
 class RoomView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         rooms = RoomManager.room_list()
