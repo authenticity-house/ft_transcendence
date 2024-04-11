@@ -170,10 +170,14 @@ class UserPrefixSearchView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# class UserDetailView(APIView):
-#     authentication_classes = [SessionAuthentication]
-#     permission_classes = [IsAuthenticated]
-#
-    # def get(self, request, pk):
-    #     print(pk)
-    #     return Response(pk)
+class UserProfileView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_pk):
+        try:
+            user_profile = User.objects.get(pk=user_pk)
+            serializer = UserProfileSerializer(user_profile)
+            return Response(serializer.data)
+        except ObjectDoesNotExist as exc:
+            raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
