@@ -11,6 +11,10 @@ import ButtonBackArrow from '../components/ButtonBackArrow.js';
 const html = String.raw;
 
 class OnlineMainScreenPage {
+	constructor() {
+		this.refreshButtonEnabled = true; // 새로고침 버튼 클릭 가능 여부를 추적하는 변수
+	}
+
 	template() {
 		// + Mock data - profileData
 		const profileData = {
@@ -41,10 +45,17 @@ class OnlineMainScreenPage {
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
 		refreshButton.addEventListener('click', () => {
+			if (!this.refreshButtonEnabled) return; // 클릭 가능 여부를 체크하여 클릭 무시
+
 			refreshImg.style.animation = 'none';
 			setTimeout(() => {
 				refreshImg.style.animation = '';
 			}, 10);
+			this.refreshButtonEnabled = false; // 클릭 비활성화
+			setTimeout(() => {
+				this.refreshButtonEnabled = true; // 3초 후에 다시 클릭 가능하도록 활성화
+			}, 3000);
+
 			// 방 데이터 가져오기
 			const roomsData = this.getRoomsData();
 			// 기존 방 리스트들 삭제
