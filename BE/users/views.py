@@ -166,8 +166,11 @@ class UserPrefixSearchView(APIView):
         prefix = query_params["prefix"]
 
         user_profile_list = User.objects.filter(nickname__startswith=prefix)
-        serializer = UserProfileSerializer(user_profile_list, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if user_profile_list.exists():
+            serializer = UserProfileSerializer(user_profile_list, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class UserProfileView(APIView):
