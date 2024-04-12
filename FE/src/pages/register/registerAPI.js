@@ -8,7 +8,7 @@ export function registerAPI(formData) {
 	showModal('registerLoadingModal');
 
 	fetch(apiEndpoints.REGISTRATION_URL, {
-		method: 'GET',
+		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
