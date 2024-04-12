@@ -164,6 +164,8 @@ class UserPrefixSearchView(APIView):
             raise InvalidQueryParams("'prefix'")
 
         prefix = query_params["prefix"]
+        if prefix == "":
+            raise ParseError(detail="prefix value is empty")
 
         user_profile_list = User.objects.filter(nickname__startswith=prefix)
         if user_profile_list.exists():
