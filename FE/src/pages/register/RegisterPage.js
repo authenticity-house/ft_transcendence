@@ -24,6 +24,14 @@ function updateModalContent(id, newContent) {
 	}
 }
 
+function emailValidCheck(email) {
+	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+	if (!emailRegex.test(email)) {
+		return false;
+	}
+	return true;
+}
+
 const isDuplicateChecked = {
 	username: false,
 	email: false,
@@ -88,6 +96,8 @@ function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
 	}
 }
 
+// -----------------------------------------------------------------------------
+
 class RegisterPage {
 	template() {
 		const titleComponent = new BoldTitle('회원가입', 'yellow');
@@ -150,6 +160,7 @@ class RegisterPage {
 		idCheck.addEventListener('click', (e) => {
 			e.preventDefault();
 			if (isDuplicateChecked.username) return;
+			// 아이디 형식 확인
 			checkDuplicate(
 				'username',
 				'REGISTER_CHECK_URL',
@@ -163,18 +174,29 @@ class RegisterPage {
 			e.preventDefault();
 			if (isDuplicateChecked.email) return;
 
-			checkDuplicate(
-				'email',
-				'REGISTER_CHECK_URL',
-				'add-modal-text',
-				'중복된 이메일입니다.<br />다시 입력해주세요.'
-			);
+			// 이메일 형식 확인
+			const inputElement = document.querySelector(`input[name="email"]`);
+			if (!emailValidCheck(inputElement.value)) {
+				updateModalContent(
+					'add-modal-text',
+					'이메일 형식이 맞지 않습니다.<br />다시 입력해주세요.'
+				);
+				showModal('registerDupModal');
+			} else
+				checkDuplicate(
+					'email',
+					'REGISTER_CHECK_URL',
+					'add-modal-text',
+					'중복된 이메일입니다.<br />다시 입력해주세요.'
+				);
 		});
 
 		const nicknameCheck = document.getElementById('check-nickname');
 		nicknameCheck.addEventListener('click', (e) => {
 			e.preventDefault();
 			if (isDuplicateChecked.nickname) return;
+
+			// 닉네임 형식 확인
 			checkDuplicate(
 				'nickname',
 				'REGISTER_CHECK_URL',
