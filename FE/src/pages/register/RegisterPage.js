@@ -24,11 +24,31 @@ function updateModalContent(id, newContent) {
 	}
 }
 
+function idValidCheck(id) {
+	const idRegex = /^[a-z0-9_-][a-z0-9_-]*$/;
+
+	if (!idRegex.test(id)) return false;
+
+	if (!(id.length >= 4 && id.length <= 12)) return false;
+
+	return true;
+}
+
 function emailValidCheck(email) {
-	const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-	if (!emailRegex.test(email)) {
-		return false;
-	}
+	const emailRegex = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,4}$/;
+	if (!emailRegex.test(email)) return false;
+
+	if (!(email.length <= 250)) return false;
+
+	return true;
+}
+
+function nicknameValidCheck(id) {
+	const nicknameRegex = /^[a-z0-9_-][a-z0-9_-]*$/;
+	if (!nicknameRegex.test(id)) return false;
+
+	if (!(id.length >= 2 && id.length <= 12)) return false;
+
 	return true;
 }
 
@@ -56,7 +76,7 @@ function addInputChangeEventListener(inputName) {
 	}
 }
 
-function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
+function checkDuplicate(inputName, endpointUrl, modalMessage) {
 	const inputElement = document.querySelector(`input[name="${inputName}"]`);
 	const checkButton = document.getElementById(`check-${inputName}`);
 	const checkbuttonText = checkButton.querySelector('p');
@@ -81,7 +101,7 @@ function checkDuplicate(inputName, endpointUrl, modalId, modalMessage) {
 				} else if (response.status === 409) {
 					console.log('중복됨');
 
-					updateModalContent(modalId, modalMessage);
+					updateModalContent('add-modal-text', modalMessage);
 					showModal('registerDupModal');
 
 					checkButton.classList.add('head_blue_neon_15');
@@ -161,12 +181,19 @@ class RegisterPage {
 			e.preventDefault();
 			if (isDuplicateChecked.username) return;
 			// 아이디 형식 확인
-			checkDuplicate(
-				'username',
-				'REGISTER_CHECK_URL',
-				'add-modal-text',
-				'중복된 아이디입니다.<br />다시 입력해주세요.'
-			);
+			const inputElement = document.querySelector(`input[name="username"]`);
+			if (!idValidCheck(inputElement.value)) {
+				updateModalContent(
+					'add-modal-text',
+					'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.'
+				);
+				showModal('registerDupModal');
+			} else
+				checkDuplicate(
+					'username',
+					'REGISTER_CHECK_URL',
+					'중복된 아이디입니다.<br />다시 입력해주세요.'
+				);
 		});
 
 		const emailCheck = document.getElementById('check-email');
@@ -186,7 +213,6 @@ class RegisterPage {
 				checkDuplicate(
 					'email',
 					'REGISTER_CHECK_URL',
-					'add-modal-text',
 					'중복된 이메일입니다.<br />다시 입력해주세요.'
 				);
 		});
@@ -195,14 +221,20 @@ class RegisterPage {
 		nicknameCheck.addEventListener('click', (e) => {
 			e.preventDefault();
 			if (isDuplicateChecked.nickname) return;
-
 			// 닉네임 형식 확인
-			checkDuplicate(
-				'nickname',
-				'REGISTER_CHECK_URL',
-				'add-modal-text',
-				'중복된 닉네임입니다.<br />다시 입력해주세요.'
-			);
+			const inputElement = document.querySelector(`input[name="nickname"]`);
+			if (!nicknameValidCheck(inputElement.value)) {
+				updateModalContent(
+					'add-modal-text',
+					'닉네임 형식이 맞지 않습니다.<br />2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.'
+				);
+				showModal('registerDupModal');
+			} else
+				checkDuplicate(
+					'nickname',
+					'REGISTER_CHECK_URL',
+					'중복된 닉네임입니다.<br />다시 입력해주세요.'
+				);
 		});
 
 		// --------------------------------------------------------------------------------
@@ -215,14 +247,18 @@ class RegisterPage {
 			const formData = new FormData(confirmForm);
 
 			if (!areAllFieldsFilled(formData)) {
-				alert('모두 입력해주세요.');
-			} else if (!isDuplicateChecked.username)
-				alert('아이디 중복체크를 완료해주세요');
-			else if (!isDuplicateChecked.email)
-				alert('이메일 중복체크를 완료해주세요');
-			else if (!isDuplicateChecked.nickname)
-				alert('닉네임 중복체크를 완료해주세요');
-			else {
+				updateModalContent('add-modal-text', '모두 입력해주세요.');
+				showModal('registerDupModal');
+			} else if (!isDuplicateChecked.username) {
+				updateModalContent('add-modal-text', '아이디 중복체크를 완료해주세요.');
+				showModal('registerDupModal');
+			} else if (!isDuplicateChecked.email) {
+				updateModalContent('add-modal-text', '이메일 중복체크를 완료해주세요.');
+				showModal('registerDupModal');
+			} else if (!isDuplicateChecked.nickname) {
+				updateModalContent('add-modal-text', '닉네임 중복체크를 완료해주세요.');
+				showModal('registerDupModal');
+			} else {
 				registerAPI(formData);
 			}
 		});

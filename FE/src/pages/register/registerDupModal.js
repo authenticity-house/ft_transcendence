@@ -14,7 +14,7 @@ export function registerDupModal() {
 				<div class="modal-content modal-content-style head_white_neon_15">
 					<div class="modal-body">
 						<div
-							class="display-light28 modal-content-body-text"
+							class="display-light24 modal-content-body-text"
 							style="line-height:180%"
 							id="add-modal-text"
 						></div>
