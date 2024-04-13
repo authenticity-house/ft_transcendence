@@ -1,3 +1,17 @@
+import { changeUrl } from '../../../index.js';
+import { getContent } from './GetContent.js';
+import { myFriendContent } from './MyFriendContent.js';
+import { myInfoContent } from './MyInfoContent.js';
+import { myRecordContent } from './MyRecordContent.js';
+import { userSearchContent } from './UserSearchContent.js';
+
+import { getCookie, removeCSRF } from '../../../utils/getCookie.js';
+import { hideModal } from '../modalUtils.js';
+
+import apiEndpoints from '../../../constants/apiConfig.js';
+
+import { statsContent } from './StatsContent.js';
+
 const html = String.raw;
 
 class ProfileModal {
@@ -133,7 +147,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
 											>
-												내 기록
+												${myInfoContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -141,7 +155,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="match-record-tab"
 											>
-												경기 기록
+												${myRecordContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -149,7 +163,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="user-search-tab"
 											>
-												유저 검색
+												${userSearchContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -157,7 +171,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="my-friend-tab"
 											>
-												내 친구
+												${myFriendContent.template()}
 											</div>
 											<div
 												class="tab-pane fade"
@@ -165,7 +179,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="stats-tab"
 											>
-												통계
+												${statsContent.template()}
 											</div>
 										</div>
 									</div>
@@ -205,10 +219,42 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
+				getContent(selectedTabContentId);
 			});
 		});
 
 		// 로그아웃 버튼에 대한 이벤트 리스너도 여기에 추가할 수 있습니다.
+		const logout = document.getElementById('logout-button');
+		logout.addEventListener('click', () => {
+			const csrfToken = getCookie('csrftoken');
+
+			// const csrfToken = Cookies.get('csrftoken');
+
+			fetch(apiEndpoints.LOGOUT_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				},
+				mode: 'same-origin'
+			})
+				.then((res) => {
+					// 200 : OK
+					if (res.ok) {
+						removeCSRF();
+						hideModal('profile-modal', () => {
+							setTimeout(() => {
+								changeUrl('');
+							}, 100);
+						});
+
+						return res.json();
+					}
+					throw new Error('Error');
+				})
+				.then((data) => console.log(data))
+				.catch((error) => console.error('Error:', error));
+		});
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
@@ -230,11 +276,12 @@ class ProfileModal {
 		// 클릭된 탭 버튼에 'active' 클래스 추가
 		tabButton.classList.add('active');
 
-		// 클릭된 탭에 해당하는 컨텐츠 보여주기
-		tab.classList.add('show', 'active');
-
 		// 모달 열기
 		profileModal.style.display = 'block';
+
+		// 클릭된 탭에 해당하는 컨텐츠 보여주기
+		tab.classList.add('show', 'active');
+		getContent(tabId);
 	}
 }
 

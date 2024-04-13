@@ -1,7 +1,7 @@
 import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
-import RegisterPage from './pages/RegisterPage.js';
+import RegisterPage from './pages/register/RegisterPage.js';
 
 import GameSettingPage from './pages/GameSettingPage.js';
 import GameSettingTournament from './pages/GameSettingTournament.js';
@@ -24,7 +24,9 @@ import {
 	headerAddEventListeners,
 	profileButton
 } from './components/ProfileButton.js';
-import { profileModal } from './components/modal/profileModal.js';
+import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
+
+import Test from './pages/test.js';
 
 const html = String.raw;
 
@@ -127,7 +129,8 @@ window.onpopstate = () => {
 		url === 'game' ||
 		url === 'duelstats' ||
 		url === 'tournament' ||
-		url === 'tournamentResult'
+		url === 'tournamentResult' ||
+		url === 'test'
 	) {
 		alert('유효하지 않은 요청입니다.');
 		changeUrl('');
@@ -138,6 +141,14 @@ window.onpopstate = () => {
 };
 
 // 새로 고침 시 홈페이지로 주소 변경
+// window.onload = () => {
+//	history.pushState(null, null, homeLink);
+// };
+
 window.onload = () => {
-	history.pushState(null, null, homeLink);
+	const currentPath = window.location.pathname;
+	if (currentPath.includes('/test')) {
+		root.innerHTML = Test.template();
+		Test.addEventListeners();
+	} else history.pushState(null, null, homeLink);
 };

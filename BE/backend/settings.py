@@ -34,6 +34,12 @@ ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]"]
 
 ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+    ]
+}
+
 REST_AUTH = {
     "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
     "USER_DETAILS_SERIALIZER": "users.serializers.CustomUserDetailsSerializer",
@@ -163,12 +169,11 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email Configurations
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"  # 메일 호스트 서버
-EMAIL_PORT = 465  # gmail과 통신하는 포트, TLS: 587 / SSL: 465
+EMAIL_BACKEND = "backend.mail_backends.CustomEmailBackend"
+EMAIL_HOST = os.environ.get("EMAIL_HOST")  # 메일 호스트 서버
+EMAIL_PORT = os.environ.get("EMAIL_PORT")  # TLS: 587 / SSL: 465
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")  # 발신할 이메일
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")  # 발신할 메일의 비밀번호
-
 
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False  # TLS 보안 방법
@@ -191,3 +196,27 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[Pong]"
 
 APPEND_SLASH = False
+
+# Django 로깅 설정
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",  # 원하는 디버그 레벨 설정
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django.contrib.auth": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "rest_framework.authentication": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}

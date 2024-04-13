@@ -1,4 +1,4 @@
-import { profileModal } from './modal/profileModal.js';
+import { profileModal } from './modal/profile_modal/ProfileModal.js';
 
 const html = String.raw;
 

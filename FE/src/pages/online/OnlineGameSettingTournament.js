@@ -1,9 +1,9 @@
-import { changeUrl, changeUrlData, gamewsmanager } from '../../index.js';
+import { changeUrl, changeUrlData } from '../../index.js';
 import HorizontalButton from '../../components/HorizontalButton.js';
 import VerticalButton from '../../components/VerticalButton.js';
-import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 import { pongImage } from '../../components/pongImage.js';
+import { createRoomAPI } from './createRoomAPI.js';
 
 const html = String.raw;
 
@@ -17,8 +17,7 @@ class OnlineGameSettingTournament {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			headcount: 4,
-			nickname: ['', '', '', ''],
+			max_headcount: 4,
 			room_name: 'room'
 		};
 	}
@@ -43,10 +42,10 @@ class OnlineGameSettingTournament {
 
 		const virticalbuttonConfigs = [
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },
-			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
+			{ text: '확인', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
-		const initialIndex = this.data.headcount;
+		const initialIndex = this.data.max_headcount;
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -60,11 +59,12 @@ class OnlineGameSettingTournament {
 								<p class="text-subtitle-1-left" style="padding-left: 1rem;">
 									방 제목
 								</p>
+
 								<input
-									class="game-setting-room-container"
+									class="game-setting-room-container input-size-60"
 									type="text"
-									class="input-size-60"
-									value=${this.data.room_name}
+									value="${this.data.room_name.replace(/"/g, '&quot;')}"
+									maxlength="12"
 								/>
 							</div>
 							<div class="game-setting-number-container">
@@ -143,6 +143,10 @@ class OnlineGameSettingTournament {
 		});
 
 		function updateRoomName(res) {
+			res.max_headcount = parseInt(
+				document.querySelector('input.in-num').value,
+				10
+			);
 			res.room_name = document.querySelector(
 				'.game-setting-room-container'
 			).value;
@@ -168,8 +172,7 @@ class OnlineGameSettingTournament {
 			this.resetData();
 			updateRoomName(newData);
 			newData.total_score *= 5;
-
-			changeUrlData('waitingRoom', newData);
+			createRoomAPI(newData);
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');

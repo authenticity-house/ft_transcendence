@@ -1,5 +1,5 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
-import { removeModalBackdrop } from '../components/modal/modalUtiils.js';
+import { removeModalBackdrop } from '../components/modal/modalUtils.js';
 import GamePage from '../pages/GamePage.js';
 
 import * as msg from './messages.js';

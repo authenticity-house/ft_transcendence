@@ -7,11 +7,7 @@ class DuelGraphStats {
 				<div class="score-trend-title display-light24">득점 추이</div>
 				<div class="score-trend-canvas-container">
 					<div class="score-trend-canvas-text-container display-light10"></div>
-					<canvas
-						class="score-trend-canvas-draw-container"
-						width="335"
-						height="360"
-					></canvas>
+					<canvas class="score-trend-canvas-draw-container"></canvas>
 				</div>
 				<div class="score-trend-player-name-container display-light16">
 					<div class="score-trend-player-name-wrapper">
@@ -35,7 +31,7 @@ class DuelGraphStats {
 		return html`
 			<div class="score-position-container">
 				<div class="score-position-title display-light24">득점 위치</div>
-				<canvas class="score-position-canvas" width="280" height="356"></canvas>
+				<canvas class="score-position-canvas"></canvas>
 				<div class="score-position-player-name-container display-light16">
 					<div class="score-position-player-left-wrapper">
 						<div class="score-player-name-margin-right">
@@ -113,6 +109,36 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
+	static getWidthHeight(widthRem, heightRem) {
+		const windowWidth = window.innerWidth;
+
+		let canvasWidth = 0;
+		let canvasHeight = 0;
+		if (windowWidth > 2560) {
+			canvasWidth = widthRem * 16;
+			canvasHeight = heightRem * 16;
+		} else if (windowWidth > 1920) {
+			canvasWidth = widthRem * 10;
+			canvasHeight = heightRem * 10;
+		} else if (windowWidth > 1440) {
+			canvasWidth = widthRem * 8;
+			canvasHeight = heightRem * 8;
+		} else if (windowWidth > 1024) {
+			canvasWidth = widthRem * 6;
+			canvasHeight = heightRem * 6;
+		} else if (windowWidth > 768) {
+			canvasWidth = widthRem * 4;
+			canvasHeight = heightRem * 4;
+		} else if (windowWidth > 425) {
+			canvasWidth = widthRem * 3;
+			canvasHeight = heightRem * 3;
+		} else {
+			canvasWidth = widthRem * 2;
+			canvasHeight = heightRem * 2;
+		}
+		return [canvasWidth, canvasHeight];
+	}
+
 	static appendScoreTrendGraph(
 		leftScoreTrend,
 		rightScoreTrend,
@@ -122,6 +148,12 @@ class DuelGraphStats {
 		const canvas = graphContainer
 			? graphContainer.querySelector('.score-trend-canvas-draw-container')
 			: document.querySelector('.score-trend-canvas-draw-container');
+
+		// canvas : 33.5rem , 36rem
+		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = responsiveWidth;
+		canvas.height = reponsiveHeight;
+
 		const widthCount = leftScoreTrend.length + 1;
 		const widthDivide = canvas.width / widthCount;
 
@@ -162,6 +194,11 @@ class DuelGraphStats {
 		const canvas = graphContainer
 			? graphContainer.querySelector('.score-position-canvas')
 			: document.querySelector('.score-position-canvas');
+		// canvas : 28rem, 35.6rem
+		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = responsiveWidth;
+		canvas.height = reponsiveHeight;
+
 		const ctx = canvas.getContext('2d');
 		const canvasHeight = canvas.height;
 		const canvasWidth = canvas.width;

@@ -31,3 +31,10 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
         model = User
         fields = ("pk", "username", "email", "nickname", "provider", "profile_url")
         read_only_fields = ("pk", "username", "provider")
+
+
+class FriendshipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("pk", "nickname", "profile_url")
+        read_only_fields = ("pk", "nickname", "profile_url")

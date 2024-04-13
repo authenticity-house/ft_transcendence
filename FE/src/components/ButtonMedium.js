@@ -1,8 +1,9 @@
 const html = String.raw;
 
 class ButtonMedium {
-	constructor(text) {
-		this.text = text;
+	constructor(options) {
+		this.text = options.text;
+		this.type = options.type ? options.type : 'button';
 	}
 
 	template() {

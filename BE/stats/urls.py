@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import MatchAPIView
 
 urlpatterns = [
-    path("match/", views.MatchList.as_view()),
+    path("match/", MatchAPIView.as_view(), name="match"),
 ]
