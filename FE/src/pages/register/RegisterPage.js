@@ -1,254 +1,186 @@
-import { changeUrl } from '../../index.js';
 import BoldTitle from '../../components/BoldTitle.js';
 import TextInputBox from '../../components/TextInputBox.js';
 import ButtonMedium from '../../components/ButtonMedium.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
-import { areAllFieldsFilled } from '../../utils/areAllFieldsFilled.js';
-
-import { registerDupModal } from './registerDupModal.js';
-import { registerModal } from './registerModal.js';
-import { registerLoadingModal } from './registerLoadingModal.js';
-import { registerFailModal } from './registerFailModal.js';
-
-import { registerAPI } from './registerAPI.js';
-import apiEndpoints from '../../constants/apiConfig.js';
-
 import { showModalWithContent } from '../../components/modal/modalUtils.js';
 
+import { changeUrl } from '../../index.js';
+import { areAllFieldsFilled } from '../../utils/areAllFieldsFilled.js';
+
+import { registerAPI } from './registerAPI.js';
 import {
 	idValidCheck,
 	emailValidCheck,
 	nicknameValidCheck
 } from './registerValidCheck.js';
+import { DuplicateChecker } from './DuplicateChecker.js';
 
+import { registerDupModal } from './modals/registerDupModal.js';
+import { registerModal } from './modals/registerModal.js';
+import { registerLoadingModal } from './modals/registerLoadingModal.js';
+import { registerFailModal } from './modals/registerFailModal.js';
+
+// -----------------------------------------------------------------------------
 const html = String.raw;
 
-// ------------------------------------------------------------------
-
-const isDuplicateChecked = {
-	username: false,
-	email: false,
-	nickname: false
-};
-
-// 중복 체크 후 input의 값이 달라질 경우 -> 중복체크 다시 필요
-function addInputChangeEventListener(inputName) {
-	const inputElement = document.querySelector(`input[name="${inputName}"]`);
-	const checkButton = document.getElementById(`check-${inputName}`);
-	const checkbuttonText = checkButton.querySelector('p');
-
-	if (inputElement) {
-		inputElement.addEventListener(
-			'input',
-			() => {
-				isDuplicateChecked[inputName] = false;
-				checkButton.classList.add('head_blue_neon_15');
-				checkbuttonText.classList.add('blue_neon_10');
-			},
-			{ once: true } // 이벤트리스너 한번만 실행
-		);
-	}
-}
-
-// 중복체크
-function checkDuplicate(inputName, endpointUrl, modalMessage) {
-	const inputElement = document.querySelector(`input[name="${inputName}"]`);
-	const checkButton = document.getElementById(`check-${inputName}`);
-	const checkbuttonText = checkButton.querySelector('p');
-
-	const inputValue = inputElement.value;
-
-	if (inputValue) {
-		fetch(
-			`${apiEndpoints[endpointUrl]}${inputName}=${inputValue}`,
-			{ method: 'GET' }
-			// encodeURIComponent : URI로 데이터를 전달하기 위해서 문자열을 인코딩
-		)
-			.then((response) => {
-				if (response.ok) {
-					console.log('사용가능');
-
-					checkButton.classList.remove('head_blue_neon_15');
-					checkbuttonText.classList.remove('blue_neon_10');
-
-					isDuplicateChecked[inputName] = true;
-
-					addInputChangeEventListener(inputName);
-				} else if (response.status === 409) {
-					console.log('중복됨');
-
-					showModalWithContent(
-						'registerDupModal',
-						'add-modal-text',
-						modalMessage
-					);
-
-					checkButton.classList.add('head_blue_neon_15');
-					checkbuttonText.classList.add('blue_neon_10');
-					isDuplicateChecked[inputName] = false;
-				}
-				return response.json();
-			})
-			.then((data) => {
-				console.log(data);
-			});
-	}
-}
-
-// -----------------------------------------------------------------------------
-
-function setupDuplicateCheck(
-	inputName,
-	validCheckFunction,
-	errorMessage,
-	endpointUrl,
-	duplicateMessage
-) {
-	const checkButton = document.querySelector(`#check-${inputName}`);
-	checkButton.addEventListener('click', (e) => {
-		e.preventDefault();
-
-		if (isDuplicateChecked[inputName]) return;
-
-		const inputElement = document.querySelector(`input[name="${inputName}"]`);
-
-		// 유효성 체크
-		if (!validCheckFunction(inputElement.value)) {
-			showModalWithContent('registerDupModal', 'add-modal-text', errorMessage);
-		} else {
-			// 중복 체크
-			checkDuplicate(inputName, endpointUrl, duplicateMessage);
-		}
-	});
-}
-
-// -----------------------------------------------------------------------------
-
 class RegisterPage {
+	constructor() {
+		this.duplicateChecker = new DuplicateChecker();
+		this.setupUI();
+	}
+
+	setupUI() {
+		this.titleComponent = new BoldTitle('회원가입', 'yellow');
+		this.confirmButton = new ButtonMedium({ text: '확인', name: 'submit' });
+		this.backButton = new ButtonBackArrow();
+		this.textInputBoxes = this.createTextInputBoxes();
+	}
+
+	createTextInputBoxes() {
+		const boxesConfig = [
+			{ text: '아이디', button: true, name: 'username' },
+			{ text: '비밀번호', button: false, name: 'password1' },
+			{ text: '비밀번호 확인', button: false, name: 'password2' },
+			{ text: '이메일', button: true, name: 'email' },
+			{ text: '닉네임', button: true, name: 'nickname' }
+		];
+
+		return boxesConfig.map((config) => new TextInputBox(config));
+	}
+
 	template() {
-		const titleComponent = new BoldTitle('회원가입', 'yellow');
-		const textInputBoxId = new TextInputBox({
-			text: '아이디',
-			button: true,
-			name: 'username'
-		});
-		const textInputBoxPassword = new TextInputBox({
-			text: '비밀번호',
-			button: false,
-			name: 'password1'
-		});
-		const textInputBoxPasswordCheck = new TextInputBox({
-			text: '비밀번호 확인',
-			button: false,
-			name: 'password2'
-		});
-		const textInputBoxEmail = new TextInputBox({
-			text: '이메일',
-			button: true,
-			name: 'email'
-		});
-
-		const textInputBoxNickname = new TextInputBox({
-			text: '닉네임',
-			button: true,
-			name: 'nickname'
-		});
-
-		const confirmButton = new ButtonMedium({ text: '확인', name: 'submit' });
-		const backButton = new ButtonBackArrow();
-
 		return html`
 			<div class="small-window head_white_neon_15">
 				<div class="bold-title-no-padding gap-5">
-					${titleComponent.register()}
+					${this.titleComponent.register()}
 
 					<div class="vertical-button-container height-66">
 						<form id="resgister-confirm-form">
 							<div class="bold-title-no-padding gap-1-6">
-								${textInputBoxId.template()} ${textInputBoxPassword.template()}
-								${textInputBoxPasswordCheck.template()}
-								${textInputBoxEmail.template()}
-								${textInputBoxNickname.template()}
+								${this.textInputBoxes.map((box) => box.template()).join('')}
 							</div>
 						</form>
-						<div class="register-confirm">${confirmButton.template()}</div>
+						<div class="register-confirm">${this.confirmButton.template()}</div>
 					</div>
 				</div>
-				<div class="button-back-in-window">${backButton.template()}</div>
+				<div class="button-back-in-window">${this.backButton.template()}</div>
 			</div>
 			${registerDupModal()} ${registerFailModal()} ${registerModal()}
 			${registerLoadingModal()}
 		`;
 	}
+	// ----------------------------------------------------------------------------------------
+
+	// 각 중복확인에 대한 이벤트리스너 추가
+	// 유효성 체크와 중복 체크
+	setupDuplicateCheck(
+		inputName,
+		validCheckFunction,
+		errorMessage,
+		duplicateMessage
+	) {
+		const checkButton = document.querySelector(`#check-${inputName}`);
+		const inputElement = document.querySelector(`input[name="${inputName}"]`);
+
+		checkButton.addEventListener('click', (e) => {
+			e.preventDefault();
+
+			if (this.duplicateChecker.isDuplicateChecked[inputName]) return;
+
+			// 유효성 체크
+			if (!validCheckFunction(inputElement.value)) {
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					errorMessage
+				);
+			} else {
+				// 중복 체크
+				this.duplicateChecker.checkDuplicate(inputName, duplicateMessage);
+			}
+		});
+	}
+
+	// ----------------------------------------------------------------------------------------
+
+	// 회원가입 버튼 클릭 시 유효성 검사
+	areAllFieldsValid(formData, fieldsToCheck) {
+		// 모든 요소를 입력하지 않았을 경우
+		if (!areAllFieldsFilled(formData)) {
+			showModalWithContent(
+				'registerDupModal',
+				'add-modal-text',
+				'모두 입력해주세요.'
+			);
+			return false;
+		}
+
+		// 중복체크가 완료되지 않은 요소를 체크해서 중복체크 요청
+		const notCheckedField = fieldsToCheck.find(
+			({ field }) => !this.duplicateChecker.isDuplicateChecked[field]
+		);
+		if (notCheckedField) {
+			showModalWithContent(
+				'registerDupModal',
+				'add-modal-text',
+				notCheckedField.requestMsg
+			);
+			return false;
+		}
+
+		return true;
+	}
 
 	addEventListeners() {
-		setupDuplicateCheck(
-			'username',
-			idValidCheck,
-			'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
-			'REGISTER_CHECK_URL',
-			'중복된 아이디입니다.<br />다시 입력해주세요.'
-		);
+		const fieldsToCheck = [
+			{
+				field: 'username',
+				validCheck: idValidCheck,
+				errorMsg:
+					'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
+				dupMsg: '중복된 아이디입니다.<br />다시 입력해주세요.',
+				requestMsg: '아이디 중복확인을 해주세요.'
+			},
+			{
+				field: 'email',
+				validCheck: emailValidCheck,
+				errorMsg: '이메일 형식이 맞지 않습니다.<br />다시 입력해주세요.',
+				dupMsg: '중복된 이메일입니다.<br />다시 입력해주세요.',
+				requestMsg: '이메일 중복확인을 해주세요.'
+			},
+			{
+				field: 'nickname',
+				validCheck: nicknameValidCheck,
+				errorMsg:
+					'닉네임 형식이 맞지 않습니다.<br />2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
+				dupMsg: '중복된 닉네임입니다.<br />다시 입력해주세요.',
+				requestMsg: '닉네임 중복확인을 해주세요.'
+			}
+		];
 
-		setupDuplicateCheck(
-			'email',
-			emailValidCheck,
-			'이메일 형식이 맞지 않습니다.<br />다시 입력해주세요.',
-			'REGISTER_CHECK_URL',
-			'중복된 이메일입니다.<br />다시 입력해주세요.'
-		);
+		// 각 요소의 중복확인 버튼 클릭 시 실행할 event 등록
+		fieldsToCheck.forEach(({ field, validCheck, errorMsg, dupMsg }) => {
+			this.setupDuplicateCheck(field, validCheck, errorMsg, dupMsg);
+		});
 
-		setupDuplicateCheck(
-			'nickname',
-			nicknameValidCheck,
-			'닉네임 형식이 맞지 않습니다.<br />2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
-			'REGISTER_CHECK_URL',
-			'중복된 닉네임입니다.<br />다시 입력해주세요.'
-		);
-
-		// --------------------------------------------------------------------------------
-
+		// -----------------------------------------------------------------------
+		// 회원가입 버튼 클릭 시
 		const confirmForm = document.getElementById('resgister-confirm-form');
 		const confirm = document.querySelector('.register-confirm');
 		confirm.addEventListener('click', (e) => {
 			e.preventDefault();
 
 			const formData = new FormData(confirmForm);
-
-			if (!areAllFieldsFilled(formData)) {
-				showModalWithContent(
-					'registerDupModal',
-					'add-modal-text',
-					'모두 입력해주세요.'
-				);
-			} else if (!isDuplicateChecked.username) {
-				showModalWithContent(
-					'registerDupModal',
-					'add-modal-text',
-					'아이디 중복체크를 완료해주세요.'
-				);
-			} else if (!isDuplicateChecked.email) {
-				showModalWithContent(
-					'registerDupModal',
-					'add-modal-text',
-					'이메일 중복체크를 완료해주세요.'
-				);
-			} else if (!isDuplicateChecked.nickname) {
-				showModalWithContent(
-					'registerDupModal',
-					'add-modal-text',
-					'닉네임 중복체크를 완료해주세요.'
-				);
-			} else {
-				registerAPI(formData);
-				Object.keys(isDuplicateChecked).forEach((key) => {
-					isDuplicateChecked[key] = false;
-				});
+			if (!this.areAllFieldsValid(formData, fieldsToCheck)) {
+				return;
 			}
+
+			// 모든 검사를 통과한 경우, 회원가입 API 호출 및 중복 확인 상태 초기화
+			registerAPI(formData);
+			this.duplicateChecker.resetDuplicateCheckStatus();
 		});
 
-		// --------------------------------------------------------------------------------
-
+		// 뒤로 가기 버튼 이벤트 리스너
 		const back = document.querySelector('.button-back-in-window');
 		back.addEventListener('click', () => {
 			changeUrl('');
