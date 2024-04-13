@@ -4,7 +4,7 @@ import apiEndpoints from '../../constants/apiConfig.js';
 
 export function registerAPI(formData, reset) {
 	const payload = formDataToJson(formData);
-	console.log('Form data:', payload);
+
 	showModal('registerLoadingModal');
 
 	fetch(apiEndpoints.REGISTRATION_URL, {

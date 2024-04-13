@@ -30,13 +30,6 @@ class RegisterPage {
 		this.setupUI();
 	}
 
-	setupUI() {
-		this.titleComponent = new BoldTitle('회원가입', 'yellow');
-		this.confirmButton = new ButtonMedium({ text: '확인', name: 'submit' });
-		this.backButton = new ButtonBackArrow();
-		this.textInputBoxes = this.createTextInputBoxes();
-	}
-
 	createTextInputBoxes() {
 		const boxesConfig = [
 			{ text: '아이디', button: true, name: 'username' },
@@ -47,6 +40,15 @@ class RegisterPage {
 		];
 		return boxesConfig.map((config) => new TextInputBox(config));
 	}
+
+	setupUI() {
+		this.titleComponent = new BoldTitle('회원가입', 'yellow');
+		this.confirmButton = new ButtonMedium({ text: '확인', name: 'submit' });
+		this.backButton = new ButtonBackArrow();
+		this.textInputBoxes = this.createTextInputBoxes();
+	}
+
+	// ----------------------------------------------------------------------------------------
 
 	template() {
 		return html`
@@ -116,32 +118,32 @@ class RegisterPage {
 		}
 
 		// 중복체크가 완료되지 않은 요소를 체크해서 중복체크 요청
-		const notCheckedField = fieldsToCheck.find(
+		const notCheck = fieldsToCheck.find(
 			({ field }) => !this.duplicateChecker.isDuplicateChecked[field]
 		);
-		if (notCheckedField) {
+		if (notCheck) {
 			showModalWithContent(
 				'registerDupModal',
 				'add-modal-text',
-				notCheckedField.requestMsg
+				notCheck.requestMsg
 			);
 			return false;
 		}
 
 		// 비밀번호와 비밀번호 확인 동일한지 체크
-		const passCheck = passwordValidCheck();
+		const passCheck = passwordValidCheck(); // 유효하지 않을 경우 에러 메시지 반환
 		if (passCheck) {
 			showModalWithContent('registerDupModal', 'add-modal-text', passCheck);
 			return false;
 		}
-		// 비밀번호가 아이디랑 유사한 정도 체크
+
 		return true;
 	}
 
 	addEventListeners() {
 		const fieldsToCheck = [
 			{
-				field: 'username',
+				field: 'usernaㅈme',
 				validCheck: idValidCheck,
 				errorMsg:
 					'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
