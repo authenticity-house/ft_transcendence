@@ -13,6 +13,12 @@ const html = String.raw;
 class OnlineMainScreenPage {
 	constructor() {
 		this.refreshButtonEnabled = true; // 새로고침 버튼 클릭 가능 여부를 추적하는 변수
+		this.setUI();
+	}
+
+	async setUI() {
+		this.roomsData = await this.getRoomsData();
+		this.roomListWindowElement = roomListWindow(this.roomsData);
 	}
 
 	template() {
@@ -26,14 +32,11 @@ class OnlineMainScreenPage {
 		};
 		const profileWindowElement = profileWindow(profileData);
 
-		const roomsData = this.getRoomsData();
-		const roomListWindowElement = roomListWindow(roomsData);
-
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="large-window head_white_neon_15">
-				${profileWindowElement} ${roomListWindowElement}
+				${profileWindowElement} ${this.roomListWindowElement}
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
@@ -44,7 +47,7 @@ class OnlineMainScreenPage {
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
-		refreshButton.addEventListener('click', () => {
+		refreshButton.addEventListener('click', async () => {
 			if (!this.refreshButtonEnabled) return; // 클릭 가능 여부를 체크하여 클릭 무시
 
 			refreshImg.style.animation = 'none';
@@ -57,7 +60,7 @@ class OnlineMainScreenPage {
 			}, 3000);
 
 			// 방 데이터 가져오기
-			const roomsData = this.getRoomsData();
+			const roomsData = await this.getRoomsData();
 			// 기존 방 리스트들 삭제
 			while (roomListContainer.firstChild) {
 				roomListContainer.removeChild(roomListContainer.firstChild);
@@ -89,16 +92,28 @@ class OnlineMainScreenPage {
 		});
 	}
 
-	getRoomsData() {
-		const request = new XMLHttpRequest();
-		request.open('GET', apiEndpoints.ROOMS_URL, false);
-		request.send();
+	async getRoomsData() {
+		// const request = new XMLHttpRequest();
+		// request.open('GET', apiEndpoints.ROOMS_URL, false);
+		// request.send();
 
-		if (request.status === 200) {
-			return JSON.parse(request.responseText);
+		// if (request.status === 200) {
+		//	return JSON.parse(request.responseText);
+		// }
+		// console.error('Error fetching data:', request.statusText);
+		// return null;
+
+		try {
+			const response = await fetch(apiEndpoints.ROOMS_URL, { method: 'GET' });
+			if (response.ok) {
+				const data = await response.json();
+				return data;
+			}
+			console.error('Error fetching data:', response.statusText);
+			return null;
+		} catch (error) {
+			return null;
 		}
-		console.error('Error fetching data:', request.statusText);
-		return null;
 	}
 }
 
