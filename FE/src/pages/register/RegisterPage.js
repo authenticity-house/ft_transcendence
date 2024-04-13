@@ -143,7 +143,7 @@ class RegisterPage {
 	addEventListeners() {
 		const fieldsToCheck = [
 			{
-				field: 'usernaㅈme',
+				field: 'username',
 				validCheck: idValidCheck,
 				errorMsg:
 					'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
