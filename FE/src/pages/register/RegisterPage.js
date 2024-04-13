@@ -13,10 +13,7 @@ import { registerFailModal } from './registerFailModal.js';
 import { registerAPI } from './registerAPI.js';
 import apiEndpoints from '../../constants/apiConfig.js';
 
-import {
-	showModal,
-	updateModalContent
-} from '../../components/modal/modalUtils.js';
+import { showModalWithContent } from '../../components/modal/modalUtils.js';
 
 import {
 	idValidCheck,
@@ -34,6 +31,7 @@ const isDuplicateChecked = {
 	nickname: false
 };
 
+// 중복 체크 후 input의 값이 달라질 경우 -> 중복체크 다시 필요
 function addInputChangeEventListener(inputName) {
 	const inputElement = document.querySelector(`input[name="${inputName}"]`);
 	const checkButton = document.getElementById(`check-${inputName}`);
@@ -52,6 +50,7 @@ function addInputChangeEventListener(inputName) {
 	}
 }
 
+// 중복체크
 function checkDuplicate(inputName, endpointUrl, modalMessage) {
 	const inputElement = document.querySelector(`input[name="${inputName}"]`);
 	const checkButton = document.getElementById(`check-${inputName}`);
@@ -78,8 +77,11 @@ function checkDuplicate(inputName, endpointUrl, modalMessage) {
 				} else if (response.status === 409) {
 					console.log('중복됨');
 
-					updateModalContent('add-modal-text', modalMessage);
-					showModal('registerDupModal');
+					showModalWithContent(
+						'registerDupModal',
+						'add-modal-text',
+						modalMessage
+					);
 
 					checkButton.classList.add('head_blue_neon_15');
 					checkbuttonText.classList.add('blue_neon_10');
@@ -91,6 +93,33 @@ function checkDuplicate(inputName, endpointUrl, modalMessage) {
 				console.log(data);
 			});
 	}
+}
+
+// -----------------------------------------------------------------------------
+
+function setupDuplicateCheck(
+	inputName,
+	validCheckFunction,
+	errorMessage,
+	endpointUrl,
+	duplicateMessage
+) {
+	const checkButton = document.querySelector(`#check-${inputName}`);
+	checkButton.addEventListener('click', (e) => {
+		e.preventDefault();
+
+		if (isDuplicateChecked[inputName]) return;
+
+		const inputElement = document.querySelector(`input[name="${inputName}"]`);
+
+		// 유효성 체크
+		if (!validCheckFunction(inputElement.value)) {
+			showModalWithContent('registerDupModal', 'add-modal-text', errorMessage);
+		} else {
+			// 중복 체크
+			checkDuplicate(inputName, endpointUrl, duplicateMessage);
+		}
+	});
 }
 
 // -----------------------------------------------------------------------------
@@ -153,66 +182,29 @@ class RegisterPage {
 	}
 
 	addEventListeners() {
-		const idCheck = document.getElementById('check-username');
-		idCheck.addEventListener('click', (e) => {
-			e.preventDefault();
-			if (isDuplicateChecked.username) return;
-			// 아이디 형식 확인
-			const inputElement = document.querySelector(`input[name="username"]`);
-			if (!idValidCheck(inputElement.value)) {
-				updateModalContent(
-					'add-modal-text',
-					'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.'
-				);
-				showModal('registerDupModal');
-			} else
-				checkDuplicate(
-					'username',
-					'REGISTER_CHECK_URL',
-					'중복된 아이디입니다.<br />다시 입력해주세요.'
-				);
-		});
+		setupDuplicateCheck(
+			'username',
+			idValidCheck,
+			'아이디 형식이 맞지 않습니다.<br />4~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
+			'REGISTER_CHECK_URL',
+			'중복된 아이디입니다.<br />다시 입력해주세요.'
+		);
 
-		const emailCheck = document.getElementById('check-email');
-		emailCheck.addEventListener('click', (e) => {
-			e.preventDefault();
-			if (isDuplicateChecked.email) return;
+		setupDuplicateCheck(
+			'email',
+			emailValidCheck,
+			'이메일 형식이 맞지 않습니다.<br />다시 입력해주세요.',
+			'REGISTER_CHECK_URL',
+			'중복된 이메일입니다.<br />다시 입력해주세요.'
+		);
 
-			// 이메일 형식 확인
-			const inputElement = document.querySelector(`input[name="email"]`);
-			if (!emailValidCheck(inputElement.value)) {
-				updateModalContent(
-					'add-modal-text',
-					'이메일 형식이 맞지 않습니다.<br />다시 입력해주세요.'
-				);
-				showModal('registerDupModal');
-			} else
-				checkDuplicate(
-					'email',
-					'REGISTER_CHECK_URL',
-					'중복된 이메일입니다.<br />다시 입력해주세요.'
-				);
-		});
-
-		const nicknameCheck = document.getElementById('check-nickname');
-		nicknameCheck.addEventListener('click', (e) => {
-			e.preventDefault();
-			if (isDuplicateChecked.nickname) return;
-			// 닉네임 형식 확인
-			const inputElement = document.querySelector(`input[name="nickname"]`);
-			if (!nicknameValidCheck(inputElement.value)) {
-				updateModalContent(
-					'add-modal-text',
-					'닉네임 형식이 맞지 않습니다.<br />2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.'
-				);
-				showModal('registerDupModal');
-			} else
-				checkDuplicate(
-					'nickname',
-					'REGISTER_CHECK_URL',
-					'중복된 닉네임입니다.<br />다시 입력해주세요.'
-				);
-		});
+		setupDuplicateCheck(
+			'nickname',
+			nicknameValidCheck,
+			'닉네임 형식이 맞지 않습니다.<br />2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.',
+			'REGISTER_CHECK_URL',
+			'중복된 닉네임입니다.<br />다시 입력해주세요.'
+		);
 
 		// --------------------------------------------------------------------------------
 
@@ -224,17 +216,29 @@ class RegisterPage {
 			const formData = new FormData(confirmForm);
 
 			if (!areAllFieldsFilled(formData)) {
-				updateModalContent('add-modal-text', '모두 입력해주세요.');
-				showModal('registerDupModal');
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					'모두 입력해주세요.'
+				);
 			} else if (!isDuplicateChecked.username) {
-				updateModalContent('add-modal-text', '아이디 중복체크를 완료해주세요.');
-				showModal('registerDupModal');
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					'아이디 중복체크를 완료해주세요.'
+				);
 			} else if (!isDuplicateChecked.email) {
-				updateModalContent('add-modal-text', '이메일 중복체크를 완료해주세요.');
-				showModal('registerDupModal');
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					'이메일 중복체크를 완료해주세요.'
+				);
 			} else if (!isDuplicateChecked.nickname) {
-				updateModalContent('add-modal-text', '닉네임 중복체크를 완료해주세요.');
-				showModal('registerDupModal');
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					'닉네임 중복체크를 완료해주세요.'
+				);
 			} else {
 				registerAPI(formData);
 				Object.keys(isDuplicateChecked).forEach((key) => {

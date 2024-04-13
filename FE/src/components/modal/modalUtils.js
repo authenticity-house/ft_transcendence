@@ -60,3 +60,9 @@ export function updateModalContent(id, newContent) {
 		contentElement.innerHTML = newContent;
 	}
 }
+
+// 모달 업데이트 및 표시
+export function showModalWithContent(modalId, contentId, content) {
+	updateModalContent(contentId, content);
+	showModal(modalId);
+}
