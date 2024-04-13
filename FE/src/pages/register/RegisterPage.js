@@ -11,7 +11,8 @@ import { registerAPI } from './registerAPI.js';
 import {
 	idValidCheck,
 	emailValidCheck,
-	nicknameValidCheck
+	nicknameValidCheck,
+	passwordValidCheck
 } from './registerValidCheck.js';
 import { DuplicateChecker } from './DuplicateChecker.js';
 
@@ -44,7 +45,6 @@ class RegisterPage {
 			{ text: '이메일', button: true, name: 'email' },
 			{ text: '닉네임', button: true, name: 'nickname' }
 		];
-
 		return boxesConfig.map((config) => new TextInputBox(config));
 	}
 
@@ -57,7 +57,7 @@ class RegisterPage {
 					<div class="vertical-button-container height-66">
 						<form id="resgister-confirm-form">
 							<div class="bold-title-no-padding gap-1-6">
-								${this.textInputBoxes.map((box) => box.template()).join('')}
+								${this.textInputBoxes.map((input) => input.template()).join('')}
 							</div>
 						</form>
 						<div class="register-confirm">${this.confirmButton.template()}</div>
@@ -128,6 +128,13 @@ class RegisterPage {
 			return false;
 		}
 
+		// 비밀번호와 비밀번호 확인 동일한지 체크
+		const passCheck = passwordValidCheck();
+		if (passCheck) {
+			showModalWithContent('registerDupModal', 'add-modal-text', passCheck);
+			return false;
+		}
+		// 비밀번호가 아이디랑 유사한 정도 체크
 		return true;
 	}
 
@@ -176,8 +183,9 @@ class RegisterPage {
 			}
 
 			// 모든 검사를 통과한 경우, 회원가입 API 호출 및 중복 확인 상태 초기화
-			registerAPI(formData);
-			this.duplicateChecker.resetDuplicateCheckStatus();
+			registerAPI(formData, () =>
+				this.duplicateChecker.resetDuplicateCheckStatus()
+			);
 		});
 
 		// 뒤로 가기 버튼 이벤트 리스너

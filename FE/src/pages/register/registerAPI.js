@@ -2,7 +2,7 @@ import { formDataToJson } from '../../utils/formDataToJson.js';
 import { showModal, hideModal } from '../../components/modal/modalUtils.js';
 import apiEndpoints from '../../constants/apiConfig.js';
 
-export function registerAPI(formData) {
+export function registerAPI(formData, reset) {
 	const payload = formDataToJson(formData);
 	console.log('Form data:', payload);
 	showModal('registerLoadingModal');
@@ -22,6 +22,7 @@ export function registerAPI(formData) {
 				if (response.status === 201) {
 					// 201 : Created
 					modalToShow = 'registerModal';
+					reset();
 				}
 			}
 			if (response.status === 400 || response.status === 403) {

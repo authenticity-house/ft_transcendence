@@ -17,16 +17,15 @@ export function registerFailModal() {
 							class="display-light28 modal-content-body-text"
 							style="line-height:180%"
 						>
-							회원가입 실패
+							비밀번호가 아이디와 유사합니다.<br />다시 작성해주세요.
 						</div>
 						<div class="horizontal-button-container" style="gap:4rem">
 							<button
 								type="button"
 								class="button-x-small-flex"
-								id="back-home-button"
 								data-bs-dismiss="modal"
 							>
-								홈으로 돌아가기
+								확인
 							</button>
 						</div>
 					</div>

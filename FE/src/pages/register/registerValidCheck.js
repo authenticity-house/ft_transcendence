@@ -25,3 +25,14 @@ export function nicknameValidCheck(id) {
 
 	return true;
 }
+
+export function passwordValidCheck() {
+	const pass1 = document.querySelector(`input[name="password1"]`);
+	const pass2 = document.querySelector(`input[name="password2"]`);
+
+	if (pass1.value !== pass2.value)
+		return '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+	if (pass1.value.length < 8)
+		return '비밀번호가 너무 짧습니다.<br />9자 이상으로 작성해주세요.';
+	return false;
+}
