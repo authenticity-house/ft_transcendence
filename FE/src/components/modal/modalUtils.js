@@ -53,3 +53,10 @@ export function showModal(element) {
 
 	document.addEventListener('click', handleBackHomeClick);
 }
+
+export function updateModalContent(id, newContent) {
+	const contentElement = document.getElementById(id);
+	if (contentElement) {
+		contentElement.innerHTML = newContent;
+	}
+}
