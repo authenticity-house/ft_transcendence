@@ -13,44 +13,20 @@ import { registerFailModal } from './registerFailModal.js';
 import { registerAPI } from './registerAPI.js';
 import apiEndpoints from '../../constants/apiConfig.js';
 
-import { showModal } from '../../components/modal/modalUtils.js';
+import {
+	showModal,
+	updateModalContent
+} from '../../components/modal/modalUtils.js';
+
+import {
+	idValidCheck,
+	emailValidCheck,
+	nicknameValidCheck
+} from './registerValidCheck.js';
 
 const html = String.raw;
 
-function updateModalContent(id, newContent) {
-	const contentElement = document.getElementById(id);
-	if (contentElement) {
-		contentElement.innerHTML = newContent;
-	}
-}
-
-function idValidCheck(id) {
-	const idRegex = /^[a-z0-9_-][a-z0-9_-]*$/;
-
-	if (!idRegex.test(id)) return false;
-
-	if (!(id.length >= 4 && id.length <= 12)) return false;
-
-	return true;
-}
-
-function emailValidCheck(email) {
-	const emailRegex = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,4}$/;
-	if (!emailRegex.test(email)) return false;
-
-	if (!(email.length <= 250)) return false;
-
-	return true;
-}
-
-function nicknameValidCheck(id) {
-	const nicknameRegex = /^[a-z0-9_-][a-z0-9_-]*$/;
-	if (!nicknameRegex.test(id)) return false;
-
-	if (!(id.length >= 2 && id.length <= 12)) return false;
-
-	return true;
-}
+// ------------------------------------------------------------------
 
 const isDuplicateChecked = {
 	username: false,
@@ -85,7 +61,8 @@ function checkDuplicate(inputName, endpointUrl, modalMessage) {
 
 	if (inputValue) {
 		fetch(
-			`${apiEndpoints[endpointUrl]}${inputName}=${encodeURIComponent(inputValue)}`
+			`${apiEndpoints[endpointUrl]}${inputName}=${inputValue}`,
+			{ method: 'GET' }
 			// encodeURIComponent : URI로 데이터를 전달하기 위해서 문자열을 인코딩
 		)
 			.then((response) => {
@@ -260,6 +237,9 @@ class RegisterPage {
 				showModal('registerDupModal');
 			} else {
 				registerAPI(formData);
+				Object.keys(isDuplicateChecked).forEach((key) => {
+					isDuplicateChecked[key] = false;
+				});
 			}
 		});
 
