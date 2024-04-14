@@ -70,18 +70,26 @@ function getRoomElementAll(roomList) {
 }
 
 function fetchRoomsDataAndDisplay() {
-	fetch(apiEndpoints.ROOMS_URL, { method: 'GET' }).then((res) => {
-		if (res.ok) {
-			const roomsData = res.json();
-			const roomListContainer = document.querySelector('.room-list-container');
-			const allRoomsHtml = getRoomElementAll(roomsData);
-			const roomsList = document
-				.createRange()
-				.createContextualFragment(allRoomsHtml);
-			roomListContainer.appendChild(roomsList);
-		}
-		if (res.status === 403) changeUrl('play');
-	});
+	fetch(apiEndpoints.ROOMS_URL, { method: 'GET' })
+		.then((res) => {
+			if (res.ok) {
+				return res.json();
+			}
+			return null;
+		})
+		.then((roomsData) => {
+			if (roomsData === null) changeUrl('play');
+			else {
+				const roomListContainer = document.querySelector(
+					'.room-list-container'
+				);
+				const allRoomsHtml = getRoomElementAll(roomsData);
+				const roomsList = document
+					.createRange()
+					.createContextualFragment(allRoomsHtml);
+				roomListContainer.appendChild(roomsList);
+			}
+		});
 }
 
 export { fetchProfileDataAndDisplay, fetchRoomsDataAndDisplay };
