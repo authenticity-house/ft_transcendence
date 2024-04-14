@@ -1,11 +1,9 @@
 /* eslint-disable no-void */
 import { changeUrl } from '../index.js';
-import { profileWindow } from '../components/ProfileWindow.js';
 import {
-	roomListWindow,
-	getRoomElementAll
-} from '../components/RoomListWindow.js';
-import apiEndpoints from '../constants/apiConfig.js';
+	fetchProfileDataAndDisplay,
+	fetchRoomsDataAndDisplay
+} from '../components/FetchOnlineMainScreen.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 
 const html = String.raw;
@@ -13,33 +11,45 @@ const html = String.raw;
 class OnlineMainScreenPage {
 	constructor() {
 		this.refreshButtonEnabled = true; // 새로고침 버튼 클릭 가능 여부를 추적하는 변수
-		this.setUI();
-	}
-
-	async setUI() {
-		this.roomsData = await this.getRoomsData();
-		this.roomListWindowElement = roomListWindow(this.roomsData);
 	}
 
 	template() {
-		// + Mock data - profileData
-		const profileData = {
-			image: '',
-			nickName: '종석',
-			winLossRecord: [100, 50, 50],
-			winRate: 50,
-			rating: 4242
-		};
-		const profileWindowElement = profileWindow(profileData);
-
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="large-window head_white_neon_15">
-				${profileWindowElement} ${this.roomListWindowElement}
+				<div class="user-profile-container">
+					<div class="user-profile-wrapper"></div>
+					<span
+						class="user-profile-nickname display-medium48 yellow_neon_10"
+					></span>
+					<div class="user-profile-summary display-light24"></div>
+					<button class="create-room-button head_blue_neon_15">
+						<span class="display-light24 blue_neon_10">방만들기</span>
+					</button>
+				</div>
+				<div class="room-list-window">
+					<div class="room-list-header">
+						<p class="display-medium48 yellow_neon_10">방 목록</p>
+						<button class="room-list-refresh-button">
+							<img
+								src="image/refresh.png"
+								alt="refresh"
+								class="room-list-refresh-img"
+								style="animation: none"
+							/>
+						</button>
+					</div>
+					<div class="room-list-container"></div>
+				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
+	}
+
+	mount() {
+		fetchProfileDataAndDisplay();
+		fetchRoomsDataAndDisplay();
 	}
 
 	addEventListeners() {
@@ -47,9 +57,10 @@ class OnlineMainScreenPage {
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
-		refreshButton.addEventListener('click', async () => {
+		refreshButton.addEventListener('click', () => {
 			if (!this.refreshButtonEnabled) return; // 클릭 가능 여부를 체크하여 클릭 무시
 
+			// click animation
 			refreshImg.style.animation = 'none';
 			setTimeout(() => {
 				refreshImg.style.animation = '';
@@ -59,18 +70,12 @@ class OnlineMainScreenPage {
 				this.refreshButtonEnabled = true; // 3초 후에 다시 클릭 가능하도록 활성화
 			}, 3000);
 
-			// 방 데이터 가져오기
-			const roomsData = await this.getRoomsData();
 			// 기존 방 리스트들 삭제
 			while (roomListContainer.firstChild) {
 				roomListContainer.removeChild(roomListContainer.firstChild);
 			}
-			// 새로운 방 데이터로 방 리스트 생성
-			const newRoomsHtml = getRoomElementAll(roomsData);
-			const newRoomsList = document
-				.createRange()
-				.createContextualFragment(newRoomsHtml);
-			roomListContainer.appendChild(newRoomsList);
+			// 방 데이터 가져와서 띄우기
+			fetchRoomsDataAndDisplay();
 		});
 
 		roomListContainer.addEventListener('click', (event) => {
@@ -90,30 +95,6 @@ class OnlineMainScreenPage {
 		createRoom.addEventListener('click', () => {
 			changeUrl('onlineSetting');
 		});
-	}
-
-	async getRoomsData() {
-		// const request = new XMLHttpRequest();
-		// request.open('GET', apiEndpoints.ROOMS_URL, false);
-		// request.send();
-
-		// if (request.status === 200) {
-		//	return JSON.parse(request.responseText);
-		// }
-		// console.error('Error fetching data:', request.statusText);
-		// return null;
-
-		try {
-			const response = await fetch(apiEndpoints.ROOMS_URL, { method: 'GET' });
-			if (response.ok) {
-				const data = await response.json();
-				return data;
-			}
-			console.error('Error fetching data:', response.statusText);
-			return null;
-		} catch (error) {
-			return null;
-		}
 	}
 }
 
