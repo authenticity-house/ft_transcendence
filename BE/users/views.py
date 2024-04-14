@@ -15,7 +15,7 @@ from allauth.account.utils import send_email_confirmation
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
-from users.serializers import FriendshipSerializer
+from users.serializers import UserProfileSerializer
 
 
 class ConfirmEmailView(APIView):
@@ -92,7 +92,7 @@ class FriendAPIView(APIView):
 
         try:
             user_profile = User.objects.get(pk=user_pk)
-            serializer = FriendshipSerializer(user_profile.friends.all(), many=True)
+            serializer = UserProfileSerializer(user_profile.friends.all(), many=True)
             return Response(serializer.data)
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
@@ -118,7 +118,9 @@ class FriendAPIView(APIView):
 
 class InvalidQueryParams(APIException):
     status_code = 400
-    default_detail = "Query Params key should be 'email', 'nickname', or 'username'."
+
+    def __init__(self, key_str=""):
+        super().__init__(detail=f"Query Params key should be {key_str}.")
 
 
 class CheckDuplicateAPIView(APIView):
@@ -131,7 +133,7 @@ class CheckDuplicateAPIView(APIView):
             raise ParseError(detail="query param is empty")
 
         if not all(key in self.allowed_keys for key in query_params.keys()):
-            raise InvalidQueryParams()
+            raise InvalidQueryParams("'email', 'nickname', or 'username'")
 
         data = self.check_duplicate(**query_params)
         if True in data.values():
@@ -150,3 +152,37 @@ class CheckDuplicateAPIView(APIView):
             data["username"] = User.objects.filter(username=kwargs["username"][0]).exists()
 
         return data
+
+
+class UserPrefixSearchView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        query_params = request.query_params
+        if "prefix" not in query_params.keys():
+            raise InvalidQueryParams("'prefix'")
+
+        prefix = query_params["prefix"]
+        if prefix == "":
+            raise ParseError(detail="prefix value is empty")
+
+        user_profile_list = User.objects.filter(nickname__startswith=prefix)
+        if user_profile_list.exists():
+            serializer = UserProfileSerializer(user_profile_list, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class UserProfileView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_pk):
+        try:
+            user_profile = User.objects.get(pk=user_pk)
+            serializer = UserProfileSerializer(user_profile)
+            return Response(serializer.data)
+        except ObjectDoesNotExist as exc:
+            raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
