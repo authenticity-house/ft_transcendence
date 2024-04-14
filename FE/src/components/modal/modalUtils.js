@@ -53,3 +53,16 @@ export function showModal(element) {
 
 	document.addEventListener('click', handleBackHomeClick);
 }
+
+export function updateModalContent(id, newContent) {
+	const contentElement = document.getElementById(id);
+	if (contentElement) {
+		contentElement.innerHTML = newContent;
+	}
+}
+
+// 모달 업데이트 및 표시
+export function showModalWithContent(modalId, contentId, content) {
+	updateModalContent(contentId, content);
+	showModal(modalId);
+}
