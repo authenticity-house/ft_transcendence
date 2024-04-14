@@ -20,8 +20,11 @@ class DuelStatsPage {
 		const matchDateTimeHtml = DuelBasicStats.getMatchDateTimeHTML(matchData);
 		const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(matchData);
 		const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(matchData);
-		const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(matchData);
-		const scorePositionHtml = DuelGraphStats.getScorePositionHTML(matchData);
+		const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(matchData, true);
+		const scorePositionHtml = DuelGraphStats.getScorePositionHTML(
+			matchData,
+			true
+		);
 		const nextButton = new ButtonSmall('다음');
 
 		return html`
@@ -50,15 +53,19 @@ class DuelStatsPage {
 	mount(data) {
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
-		DuelGraphStats.appendScoresToYAxis(matchData.maxScore);
+		DuelGraphStats.appendScoresToYAxis(matchData.maxScore, false, true);
 		DuelGraphStats.appendScoreTrendGraph(
 			matchData.leftScoreTrend,
-			matchData.rightScoreTrend
+			matchData.rightScoreTrend,
+			false,
+			true
 		);
 		// score-position
 		DuelGraphStats.appendScorePositionGraph(
 			matchData.leftPosition,
-			matchData.rightPosition
+			matchData.rightPosition,
+			false,
+			true
 		);
 	}
 

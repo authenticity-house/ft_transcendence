@@ -39,15 +39,19 @@ function duelCollapseElement(
 	matchRallyHtml,
 	specialStatsHtml,
 	scoreTrendHtml,
-	scorePositionHtml
+	scorePositionHtml,
+	unique
 ) {
+	const uniqueText = unique ? 'unique-' : '';
 	return html`
 		<div class="divider"></div>
 		<div class="basic-stats-container display-light18">${matchRallyHtml}</div>
 		<div class="divider"></div>
 		${specialStatsHtml}
 		<div class="divider"></div>
-		<div class="graph-container">${scoreTrendHtml} ${scorePositionHtml}</div>
+		<div class="${uniqueText}graph-container">
+			${scoreTrendHtml} ${scorePositionHtml}
+		</div>
 	`;
 }
 
@@ -56,7 +60,8 @@ function duelReportWrapper(
 	matchRallyHtml,
 	specialStatsHtml,
 	scoreTrendHtml,
-	scorePositionHtml
+	scorePositionHtml,
+	unique
 ) {
 	const resultElement = duelResultElement(data);
 	const dataTimeElement = duelDateTimeElement(data);
@@ -64,7 +69,8 @@ function duelReportWrapper(
 		matchRallyHtml,
 		specialStatsHtml,
 		scoreTrendHtml,
-		scorePositionHtml
+		scorePositionHtml,
+		unique
 	);
 
 	return html`

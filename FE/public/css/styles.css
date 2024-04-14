@@ -1022,6 +1022,13 @@ td {
 	height: 45rem;
 }
 
+.unique-graph-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 45rem;
+}
+
 /* Graph - ScoreTrend */
 .score-trend-container {
 	display: flex;
@@ -1056,6 +1063,16 @@ td {
 	padding: 2rem 0;
 }
 
+.unique-score-trend-canvas-text-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 4rem;
+	height: 100%;
+	padding: 2rem 0;
+}
+
 .score-trend-canvas-text-wrapper {
 	display: flex;
 	justify-content: end;
@@ -1066,7 +1083,22 @@ td {
 	margin: auto;
 }
 
+.unique-score-trend-canvas-text-wrapper {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	height: auto;
+	width: 3em;
+	padding-right: 1rem;
+	margin: auto;
+}
+
 .score-trend-canvas-draw-container {
+	border-left: 0.2rem solid white;
+	border-bottom: 0.2rem solid white;
+}
+
+.unique-score-trend-canvas-draw-container {
 	border-left: 0.2rem solid white;
 	border-bottom: 0.2rem solid white;
 }
@@ -1122,6 +1154,10 @@ td {
 }
 
 .score-position-canvas {
+	border: 0.2rem solid white;
+}
+
+.unique-score-position-canvas {
 	border: 0.2rem solid white;
 }
 

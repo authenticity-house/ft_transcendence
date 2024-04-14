@@ -1,13 +1,19 @@
 const html = String.raw;
 
 class DuelGraphStats {
-	static getScoreTrendHTML(matchData) {
+	static getScoreTrendHTML(matchData, unique) {
+		const uniqueText = unique ? 'unique-' : '';
+
 		return html`
 			<div class="score-trend-container">
 				<div class="score-trend-title display-light24">득점 추이</div>
 				<div class="score-trend-canvas-container">
-					<div class="score-trend-canvas-text-container display-light10"></div>
-					<canvas class="score-trend-canvas-draw-container"></canvas>
+					<div
+						class="${uniqueText}score-trend-canvas-text-container display-light10"
+					></div>
+					<canvas
+						class="${uniqueText}score-trend-canvas-draw-container"
+					></canvas>
 				</div>
 				<div class="score-trend-player-name-container display-light16">
 					<div class="score-trend-player-name-wrapper">
@@ -27,11 +33,13 @@ class DuelGraphStats {
 		`;
 	}
 
-	static getScorePositionHTML(matchData) {
+	static getScorePositionHTML(matchData, unique) {
+		const uniqueText = unique ? 'unique-' : '';
+
 		return html`
 			<div class="score-position-container">
 				<div class="score-position-title display-light24">득점 위치</div>
-				<canvas class="score-position-canvas"></canvas>
+				<canvas class="${uniqueText}score-position-canvas"></canvas>
 				<div class="score-position-player-name-container display-light16">
 					<div class="score-position-player-left-wrapper">
 						<div class="score-player-name-margin-right">
@@ -50,14 +58,19 @@ class DuelGraphStats {
 		`;
 	}
 
-	static appendScoresToYAxis(maxScore, graphContainer) {
+	static appendScoresToYAxis(maxScore, graphContainer, unique) {
+		const uniqueText = unique ? 'unique-' : '';
 		const scoreText = graphContainer
-			? graphContainer.querySelector('.score-trend-canvas-text-container')
-			: document.querySelector('.score-trend-canvas-text-container');
+			? graphContainer.querySelector(
+					`.${uniqueText}score-trend-canvas-text-container`
+				)
+			: document.querySelector(
+					`.${uniqueText}score-trend-canvas-text-container`
+				);
 
 		let scoreTextWrappers = '';
 		for (let score = maxScore; score >= 0; score -= 1) {
-			scoreTextWrappers += `<div class="score-trend-canvas-text-wrapper">${score}</div>`;
+			scoreTextWrappers += `<div class="${uniqueText}score-trend-canvas-text-wrapper">${score}</div>`;
 		}
 		const htmlString = html`${scoreTextWrappers}`;
 		const fragment = document
@@ -66,18 +79,27 @@ class DuelGraphStats {
 		scoreText.appendChild(fragment);
 	}
 
-	static getScoreTextPosition(graphContainer) {
+	static getScoreTextPosition(graphContainer, unique) {
+		const uniqueText = unique ? 'unique-' : '';
 		const scoreParent = graphContainer
-			? graphContainer.querySelector('.score-trend-canvas-text-container')
-			: document.querySelector('.score-trend-canvas-text-container');
+			? graphContainer.querySelector(
+					`.${uniqueText}score-trend-canvas-text-container`
+				)
+			: document.querySelector(
+					`.${uniqueText}score-trend-canvas-text-container`
+				);
 		const scoreParentRect = scoreParent.getBoundingClientRect();
 		const parentY = scoreParentRect.y;
 		const position = [];
 
 		let halfHeight;
 		const scoreTextWrappers = graphContainer
-			? graphContainer.querySelectorAll('.score-trend-canvas-text-wrapper')
-			: document.querySelectorAll('.score-trend-canvas-text-wrapper');
+			? graphContainer.querySelectorAll(
+					`.${uniqueText}score-trend-canvas-text-wrapper`
+				)
+			: document.querySelectorAll(
+					`.${uniqueText}score-trend-canvas-text-wrapper`
+				);
 		scoreTextWrappers.forEach((child) => {
 			const childRect = child.getBoundingClientRect();
 			halfHeight = childRect.height / 2;
@@ -142,12 +164,18 @@ class DuelGraphStats {
 	static appendScoreTrendGraph(
 		leftScoreTrend,
 		rightScoreTrend,
-		graphContainer
+		graphContainer,
+		unique
 	) {
-		const position = this.getScoreTextPosition(graphContainer);
+		const position = this.getScoreTextPosition(graphContainer, unique);
+		const uniqueText = unique ? 'unique-' : '';
 		const canvas = graphContainer
-			? graphContainer.querySelector('.score-trend-canvas-draw-container')
-			: document.querySelector('.score-trend-canvas-draw-container');
+			? graphContainer.querySelector(
+					`.${uniqueText}score-trend-canvas-draw-container`
+				)
+			: document.querySelector(
+					`.${uniqueText}score-trend-canvas-draw-container`
+				);
 
 		// canvas : 33.5rem , 36rem
 		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
@@ -190,10 +218,17 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
-	static appendScorePositionGraph(leftPosition, rightPosition, graphContainer) {
+	static appendScorePositionGraph(
+		leftPosition,
+		rightPosition,
+		graphContainer,
+		unique
+	) {
+		const uniqueText = unique ? 'unique-' : '';
+
 		const canvas = graphContainer
-			? graphContainer.querySelector('.score-position-canvas')
-			: document.querySelector('.score-position-canvas');
+			? graphContainer.querySelector(`.${uniqueText}score-position-canvas`)
+			: document.querySelector(`.${uniqueText}score-position-canvas`);
 		// canvas : 28rem, 35.6rem
 		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
 		canvas.width = responsiveWidth;
