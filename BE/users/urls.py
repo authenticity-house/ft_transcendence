@@ -1,5 +1,12 @@
 from django.urls import path, include, re_path
-from .views import ConfirmEmailView, CustomRegisterView, FriendAPIView, CheckDuplicateAPIView
+from .views import (
+    ConfirmEmailView,
+    CustomRegisterView,
+    FriendAPIView,
+    CheckDuplicateAPIView,
+    UserPrefixSearchView,
+    UserProfileView,
+)
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
@@ -13,4 +20,6 @@ urlpatterns = [
         name="account_confirm_email",
     ),
     path("friends/", FriendAPIView.as_view(), name="friends"),
+    path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
+    path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
 ]

@@ -13,6 +13,7 @@ function getApiEndpoints() {
 		LOGIN_URL: `${USERS_URL}login/`,
 		REGISTRATION_URL: `${USERS_URL}registration/`,
 		LOGOUT_URL: `${USERS_URL}logout/`,
+		REGISTER_CHECK_URL: `${USERS_URL}check/?`,
 		ROOMS_URL: `${ROOMS_URL}`
 	};
 }
