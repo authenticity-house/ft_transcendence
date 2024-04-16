@@ -174,7 +174,6 @@ class UserPrefixSearchView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
 class UserProfileView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -186,3 +185,10 @@ class UserProfileView(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
+
+
+class OAuthView(APIView):
+    def get(self, request):
+        query_params = request.query_params
+        code = query_params["code"]
+        print("code = ", str(code))
