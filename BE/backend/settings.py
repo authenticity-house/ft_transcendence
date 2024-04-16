@@ -158,11 +158,7 @@ USE_I18N = True
 USE_TZ = False
 
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 
 # Static files (CSS, JavaScript, Images)
