@@ -1,5 +1,9 @@
+import os
+from wsgiref import headers
+
+import requests
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -190,5 +194,41 @@ class UserProfileView(APIView):
 class OAuthView(APIView):
     def get(self, request):
         query_params = request.query_params
-        code = query_params["code"]
-        print("code = ", str(code))
+        code = query_params.get("code")
+
+        if not code: # 쿼리 파라미터로 전달 X code 없을 경우
+            return HttpResponse('Code query parameter is missing', status=status.HTTP_400_BAD_REQUEST)
+
+        access_token = self.post_code(code)
+        if access_token is None:  # post_code에서 실패한 경우
+            return HttpResponse('Failed to retrieve access token', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        user_data = self.get_user_data(access_token)
+        if user_data is None:  # get_user_data에서 실패한 경우
+            return HttpResponse('Failed to retrieve user data', status=status.HTTP_400_BAD_REQUEST)
+
+        return JsonResponse(user_data)  # 성공한 경우 JSON 반환, 42에서 받아온 유저 정보
+
+    def post_code(self, code):
+        url = "https://api.intra.42.fr/oauth/token"
+        data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "client_id": os.getenv("CLIENT_ID"),
+            "client_secret": os.getenv("CLIENT_SECRET"),
+            "redirect_uri": os.getenv("REDIRECT_URI"),
+            "scope": "public",
+        }
+        response = requests.post(url, data=data, timeout=5)
+        if response.status_code == 200:
+            token_data = response.json()
+            token = token_data["access_token"]
+            return token
+
+    def get_user_data(self, access_token):
+        url = "https://api.intra.42.fr/v2/me"
+        headers = {"Authorization": f"Bearer {access_token}"}
+        response = requests.get(url, headers=headers, timeout=5)
+        if response.status_code == 200:
+            user_data = response.json()
+            return user_data
