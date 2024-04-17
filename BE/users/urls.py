@@ -6,6 +6,7 @@ from .views import (
     CheckDuplicateAPIView,
     UserPrefixSearchView,
     UserProfileView,
+    CheckLoginStatusAPIView,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path("friends/", FriendAPIView.as_view(), name="friends"),
     path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
+    path("check-login/", CheckLoginStatusAPIView.as_view(), name="check_login_status"),
 ]
