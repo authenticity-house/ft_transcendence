@@ -1,5 +1,4 @@
 import os
-from sqlite3 import IntegrityError
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,10 +18,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
-from users.serializers import UserProfileSerializer, UserSerializer
-
-from django.db import IntegrityError, transaction
-
+from users.serializers import UserProfileSerializer
 
 class ConfirmEmailView(APIView):
     permission_classes = [AllowAny]
@@ -193,55 +189,54 @@ class UserProfileView(APIView):
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
 
 
-class OAuthView(RegisterView):
+class OAuthView(APIView):
     def get(self, request):
         query_params = request.query_params
         code = query_params.get("code")
 
         if not code:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Failed to get code."}, status=status.HTTP_400_BAD_REQUEST)
 
         access_token = self.get_access_token(code)
         if access_token is None:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"detail": "Failed to get access token"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         user_data = self.get_user_data(access_token)
         if user_data is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Failed to get user data"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # 사용자 생성 또는 가져오기
             user, created = self.get_or_create_user(user_data)
-
-            # 바로 로그인 처리
             perform_login(request, user, email_verification="none")
-
-            # 로그인 후 홈페이지로 리다이렉션
-            print('로그인 성공')
             return HttpResponseRedirect("/")
 
-        # 중복된 username, email 존재할 경우
         except ValidationError as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-            # ValidationError 발생 시 실패 페이지로 리다이렉션
-            # return HttpResponseRedirect("/failure/")
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"detail": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def get_access_token(self, code):
+        client_id = os.getenv("CLIENT_ID")
+        client_secret = os.getenv("CLIENT_SECRET")
+        redirect_uri = os.getenv("REDIRECT_URI")
+
+        if not all([client_id, client_secret, redirect_uri]):
+            raise Exception("Missing environment variables for OAuth configuration")
+
         url = "https://api.intra.42.fr/oauth/token"
         data = {
             "grant_type": "authorization_code",
             "code": code,
-            "client_id": os.getenv("CLIENT_ID"),
-            "client_secret": os.getenv("CLIENT_SECRET"),
-            "redirect_uri": os.getenv("REDIRECT_URI"),
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "redirect_uri": redirect_uri,
             "scope": "public",
         }
         response = requests.post(url, data=data, timeout=5)
 
         if response.status_code == 200:
             token_data = response.json()
-            token = token_data["access_token"]
-            return token
+            return token_data.get("access_token")
         return None
 
     def get_user_data(self, access_token):
@@ -250,49 +245,39 @@ class OAuthView(RegisterView):
         response = requests.get(url, headers=headers, timeout=5)
         if response.status_code == 200:
             data = response.json()
-            filtered_data = {
+            return {
                 'username': data.get('login'),
                 'email': data.get('email'),
                 'profile_url': data.get('image', {}).get('link')
             }
-            return filtered_data
         return None
 
     def get_or_create_user(self, data):
-        # 중복 확인
-        if User.objects.filter(email=data['email']).exists():
-            user = User.objects.get(email=data['email'])
-            return user, False
+        user, created = User.objects.get_or_create(
+            email=data['email'],
+            defaults={'username': self.generate_unique_username(data['username']),
+                      'nickname': self.generate_unique_nickname(data['username']),
+                      'profile_url': data.get('profile_url', ''),
+                      'provider': data.get('provider', '42')}
+        )
+        if created:
+            user.set_unusable_password()
+            user.save()
+        return user, created
 
-        try:
-            with transaction.atomic():
-                original_username = data['username']
-                original_nickname = data.get(original_username)
-                username = original_username
-                nickname = original_nickname
+    def generate_unique_username(self, username):
+        new_username = username
+        counter = 1
+        while User.objects.filter(username=new_username).exists():
+            new_username = f"{username}_{counter}"
+            counter += 1
+        return new_username
 
-                # username 및 nickname 고유성 확인 및 조정
-                counter = 1
-                while User.objects.filter(username=username).exists():
-                    username = f"{original_username}_{counter}"
-                    counter += 1
-
-                counter = 1
-                while User.objects.filter(nickname=nickname).exists():
-                    nickname = f"{original_nickname}_{counter}"
-                    counter += 1
-
-                user = User.objects.create(
-                    username=username,
-                    email=data['email'],
-                    nickname=nickname,
-                    profile_url=data.get('profile_url', ''),
-                    provider=data.get('provider', '42')
-                )
-                user.set_unusable_password()
-                user.save()
-                return user, True
-
-        except IntegrityError:
-            raise ValidationError('회원가입 중 오류가 발생했습니다.')
+    def generate_unique_nickname(self, nickname):
+        new_nickname = nickname
+        counter = 1
+        while User.objects.filter(nickname=new_nickname).exists():
+            new_nickname = f"{nickname}_{counter}"
+            counter += 1
+        return new_nickname
 
