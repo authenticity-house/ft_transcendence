@@ -263,19 +263,29 @@ class OAuthView(RegisterView):
         if User.objects.filter(email=data['email']).exists():
             user = User.objects.get(email=data['email'])
             return user, False
-        # if User.objects.filter(username=data['username']).exists():
-        #     user = User.objects.get(username=data['username'])
-        #     return user, False
-        # if User.objects.filter(nickname=data['nickname']).exists():
-        #     user = User.objects.get(nickname=data['nickname'])
-        #     return user, False
 
         try:
             with transaction.atomic():
+                original_username = data['username']
+                original_nickname = data.get(original_username)
+                username = original_username
+                nickname = original_nickname
+
+                # username 및 nickname 고유성 확인 및 조정
+                counter = 1
+                while User.objects.filter(username=username).exists():
+                    username = f"{original_username}_{counter}"
+                    counter += 1
+
+                counter = 1
+                while User.objects.filter(nickname=nickname).exists():
+                    nickname = f"{original_nickname}_{counter}"
+                    counter += 1
+
                 user = User.objects.create(
-                    username=data['username'],
+                    username=username,
                     email=data['email'],
-                    nickname=data.get('nickname', data['username']),
+                    nickname=nickname,
                     profile_url=data.get('profile_url', ''),
                     provider=data.get('provider', '42')
                 )
