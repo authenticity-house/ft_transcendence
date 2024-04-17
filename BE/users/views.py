@@ -1,4 +1,5 @@
 import os
+from sqlite3 import IntegrityError
 
 import requests
 from django.core.exceptions import ObjectDoesNotExist
@@ -6,19 +7,21 @@ from django.http import HttpResponseRedirect
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound, ParseError, APIException
+from rest_framework.exceptions import NotFound, ParseError, APIException, ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from allauth.account.adapter import get_adapter
-from allauth.account.utils import send_email_confirmation
+from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
-from users.serializers import UserProfileSerializer
+from users.serializers import UserProfileSerializer, UserSerializer
+
+from django.db import IntegrityError, transaction
 
 
 class ConfirmEmailView(APIView):
@@ -190,7 +193,7 @@ class UserProfileView(APIView):
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
 
 
-class OAuthView(APIView):
+class OAuthView(RegisterView):
     def get(self, request):
         query_params = request.query_params
         code = query_params.get("code")
@@ -202,12 +205,26 @@ class OAuthView(APIView):
         if access_token is None:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        data = self.get_user_data(access_token)
-        if data is None:
+        user_data = self.get_user_data(access_token)
+        if user_data is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        print(data)
-        return Response(status=status.HTTP_200_OK)
-        # return HttpResponseRedirect("/")
+
+        try:
+            # 사용자 생성 또는 가져오기
+            user, created = self.get_or_create_user(user_data)
+
+            # 바로 로그인 처리
+            perform_login(request, user, email_verification="none")
+
+            # 로그인 후 홈페이지로 리다이렉션
+            print('로그인 성공')
+            return HttpResponseRedirect("/")
+
+        # 중복된 username, email 존재할 경우
+        except ValidationError as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            # ValidationError 발생 시 실패 페이지로 리다이렉션
+            # return HttpResponseRedirect("/failure/")
 
     def get_access_token(self, code):
         url = "https://api.intra.42.fr/oauth/token"
@@ -233,11 +250,39 @@ class OAuthView(APIView):
         response = requests.get(url, headers=headers, timeout=5)
         if response.status_code == 200:
             data = response.json()
-            # 필요한 데이터만 추출
             filtered_data = {
-                'login': data.get('login'),
+                'username': data.get('login'),
                 'email': data.get('email'),
-                'image': data.get('image', {}).get('link')
+                'profile_url': data.get('image', {}).get('link')
             }
             return filtered_data
         return None
+
+    def get_or_create_user(self, data):
+        # 중복 확인
+        if User.objects.filter(email=data['email']).exists():
+            user = User.objects.get(email=data['email'])
+            return user, False
+        # if User.objects.filter(username=data['username']).exists():
+        #     user = User.objects.get(username=data['username'])
+        #     return user, False
+        # if User.objects.filter(nickname=data['nickname']).exists():
+        #     user = User.objects.get(nickname=data['nickname'])
+        #     return user, False
+
+        try:
+            with transaction.atomic():
+                user = User.objects.create(
+                    username=data['username'],
+                    email=data['email'],
+                    nickname=data.get('nickname', data['username']),
+                    profile_url=data.get('profile_url', ''),
+                    provider=data.get('provider', '42')
+                )
+                user.set_unusable_password()
+                user.save()
+                return user, True
+
+        except IntegrityError:
+            raise ValidationError('회원가입 중 오류가 발생했습니다.')
+
