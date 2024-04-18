@@ -12,6 +12,8 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.room_number = -1
         self.room_group_name = "room"
 
+        self.room = None
+
     def connect(self):
         self.user = self.scope["user"]
         # 비인증 유저 거부
@@ -24,17 +26,18 @@ class RoomConsumer(JsonWebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         self.accept()
 
+        self.room = RoomManager.get_room(int(self.room_number))
+        self.broadcast("room.info", "get room info")
+
     def receive_json(self, content, **kwargs):
         msg_type = content.get("type", "invalid")
         msg_body = content.get("data", "")
-        if msg_type == "room.join":
-            self.room_join()
+        # if msg_type == "room.join":
+        #     self.room_join()
 
-        # self.broadcast("update.state", msg_body)  # Todo: 방 정보 갱신 함수 구현
-        print(RoomManager.room_list())
-
-    def room_join(self):
-        RoomManager.join_room(int(self.room_number), self.user)
+    def room_info(self, event):
+        info = self.room.room_info()
+        self.send_json(info)
 
     def broadcast(self, msg_type, msg_body):
         async_to_sync(self.channel_layer.group_send)(

@@ -38,7 +38,7 @@ class RoomManager:
 
     @classmethod
     def join_room(cls, room_number, user) -> None:
-        room = cls.__get_room(room_number)
+        room = cls.get_room(room_number)
         room.add_user(user)
 
     @classmethod
@@ -51,11 +51,11 @@ class RoomManager:
 
     @classmethod
     def room_info(cls, room_number):
-        room = cls.__get_room(room_number)
+        room = cls.get_room(room_number)
         return room.room_info()
 
     @classmethod
-    def __get_room(cls, room_number) -> Room:
+    def get_room(cls, room_number) -> Room:
         if room_number not in cls._rooms:
             raise RoomError("Invalid room number")
         return cls._rooms[room_number]
