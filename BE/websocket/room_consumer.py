@@ -32,8 +32,13 @@ class RoomConsumer(JsonWebsocketConsumer):
     def receive_json(self, content, **kwargs):
         msg_type = content.get("type", "invalid")
         msg_body = content.get("data", "")
-        # if msg_type == "room.join":
-        #     self.room_join()
+        if msg_type == "room.exit":
+            self.room_exit()
+
+    def room_exit(self):
+        self.room.delete_user(self.user)
+        self.broadcast("room.info", "get room info")
+        self.close()
 
     def room_info(self, event):
         info = self.room.room_info()
