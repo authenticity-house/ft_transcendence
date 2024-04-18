@@ -35,6 +35,9 @@ class PlayModePage {
 						.querySelector('.button-click-online')
 						.querySelector('.button-large');
 					onlineButton.classList.add('disabled');
+				} else if (res.status === 200) {
+					const backButton = document.querySelector('.button-back-arrow-box');
+					backButton.classList.add('button-display-none');
 				}
 			})
 			.catch((error) => {

@@ -307,6 +307,9 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	cursor: pointer;
 }
 
+.button-display-none {
+	display: none;
+}
 .border-style-none {
 	border-style: none;
 }
