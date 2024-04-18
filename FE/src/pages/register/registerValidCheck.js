@@ -9,7 +9,7 @@ export function idValidCheck(id) {
 }
 
 export function emailValidCheck(email) {
-	const emailRegex = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,4}(\.[a-z]{2,4})?$/;
+	const emailRegex = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z0-9]{2,8}(\.[a-z]{2,8})?$/;
 
 	if (!emailRegex.test(email)) return false;
 
