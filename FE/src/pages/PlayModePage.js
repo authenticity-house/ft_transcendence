@@ -1,7 +1,7 @@
 import { changeUrl } from '../index.js';
 import ButtonLarge from '../components/ButtonLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
-import { fetchLoginCheck } from '../components/FetchLoginCheck.js';
+import apiEndpoints from '../constants/apiConfig.js';
 
 const html = String.raw;
 
@@ -28,13 +28,18 @@ class PlayModePage {
 	}
 
 	mount() {
-		const isLoggedIn = fetchLoginCheck();
-		if (isLoggedIn === false) {
-			const onlineButton = document
-				.querySelector('.button-click-online')
-				.querySelector('.button-large');
-			onlineButton.classList.add('disabled');
-		}
+		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' })
+			.then((res) => {
+				if (res.status === 403) {
+					const onlineButton = document
+						.querySelector('.button-click-online')
+						.querySelector('.button-large');
+					onlineButton.classList.add('disabled');
+				}
+			})
+			.catch((error) => {
+				console.error('Error fetching login status:', error);
+			});
 	}
 
 	addEventListeners() {
