@@ -222,3 +222,18 @@ class OAuthView(APIView):
                 {"detail": "An unexpected error occurred"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class CheckLoginStatusAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response(
+            {
+                "user_id": request.user.id,
+                "username": request.user.username,
+                "is_authenticated": True,
+            }
+        )
+
