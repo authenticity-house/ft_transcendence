@@ -1,6 +1,3 @@
-import os
-
-import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 
@@ -19,6 +16,9 @@ from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
 from users.serializers import UserProfileSerializer
+
+from users.oauth import get_access_token, get_user_data, get_or_create_user
+
 
 class ConfirmEmailView(APIView):
     permission_classes = [AllowAny]
@@ -197,87 +197,28 @@ class OAuthView(APIView):
         if not code:
             return Response({"detail": "Failed to get code."}, status=status.HTTP_400_BAD_REQUEST)
 
-        access_token = self.get_access_token(code)
+        access_token = get_access_token(code)
         if access_token is None:
-            return Response({"detail": "Failed to get access token"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"detail": "Failed to get access token"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
-        user_data = self.get_user_data(access_token)
+        user_data = get_user_data(access_token)
         if user_data is None:
-            return Response({"detail": "Failed to get user data"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Failed to get user data"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
-            user, created = self.get_or_create_user(user_data)
+            user, _ = get_or_create_user(user_data)
             perform_login(request, user, email_verification="none")
             return HttpResponseRedirect("/")
 
         except ValidationError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"detail": "An unexpected error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def get_access_token(self, code):
-        client_id = os.getenv("CLIENT_ID")
-        client_secret = os.getenv("CLIENT_SECRET")
-        redirect_uri = os.getenv("REDIRECT_URI")
-
-        if not all([client_id, client_secret, redirect_uri]):
-            raise Exception("Missing environment variables for OAuth configuration")
-
-        url = "https://api.intra.42.fr/oauth/token"
-        data = {
-            "grant_type": "authorization_code",
-            "code": code,
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "redirect_uri": redirect_uri,
-            "scope": "public",
-        }
-        response = requests.post(url, data=data, timeout=5)
-
-        if response.status_code == 200:
-            token_data = response.json()
-            return token_data.get("access_token")
-        return None
-
-    def get_user_data(self, access_token):
-        url = "https://api.intra.42.fr/v2/me"
-        headers = {"Authorization": f"Bearer {access_token}"}
-        response = requests.get(url, headers=headers, timeout=5)
-        if response.status_code == 200:
-            data = response.json()
-            return {
-                'username': data.get('login'),
-                'email': data.get('email'),
-                'profile_url': data.get('image', {}).get('link')
-            }
-        return None
-
-    def get_or_create_user(self, data):
-        user, created = User.objects.get_or_create(
-            email=data['email'],
-            defaults={'username': self.generate_unique_username(data['username']),
-                      'nickname': self.generate_unique_nickname(data['username']),
-                      'profile_url': data.get('profile_url', ''),
-                      'provider': data.get('provider', '42')}
-        )
-        if created:
-            user.set_unusable_password()
-            user.save()
-        return user, created
-
-    def generate_unique_username(self, username):
-        new_username = username
-        counter = 1
-        while User.objects.filter(username=new_username).exists():
-            new_username = f"{username}_{counter}"
-            counter += 1
-        return new_username
-
-    def generate_unique_nickname(self, nickname):
-        new_nickname = nickname
-        counter = 1
-        while User.objects.filter(nickname=new_nickname).exists():
-            new_nickname = f"{nickname}_{counter}"
-            counter += 1
-        return new_nickname
-
+        except Exception:  # pylint: disable=broad-exception-caught
+            return Response(
+                {"detail": "An unexpected error occurred"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
