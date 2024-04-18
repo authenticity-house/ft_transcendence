@@ -24,15 +24,19 @@ class TournamentResultPage {
 			const resultData = DuelStatsData.getDuelStatsData(content[i]);
 			const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(resultData);
 			const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(resultData);
-			const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(resultData);
-			const scorePositionHtml = DuelGraphStats.getScorePositionHTML(resultData);
+			const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(resultData, true);
+			const scorePositionHtml = DuelGraphStats.getScorePositionHTML(
+				resultData,
+				true
+			);
 
 			duelReports += duelReportWrapper(
 				resultData,
 				matchRallyHtml,
 				specialStatsHtml,
 				scoreTrendHtml,
-				scorePositionHtml
+				scorePositionHtml,
+				true
 			);
 		}
 
@@ -56,22 +60,29 @@ class TournamentResultPage {
 			'.duel-report-container'
 		);
 
-		const graphContainers =
-			duelReportContainer.querySelectorAll('.graph-container');
+		const graphContainers = duelReportContainer.querySelectorAll(
+			'.unique-graph-container'
+		);
 		graphContainers.forEach((graphContainer) => {
 			const matchData = DuelStatsData.getMountDuelStatsData(content[i]);
 			// score-trend
-			DuelGraphStats.appendScoresToYAxis(matchData.maxScore, graphContainer);
+			DuelGraphStats.appendScoresToYAxis(
+				matchData.maxScore,
+				graphContainer,
+				true
+			);
 			DuelGraphStats.appendScoreTrendGraph(
 				matchData.leftScoreTrend,
 				matchData.rightScoreTrend,
-				graphContainer
+				graphContainer,
+				true
 			);
 			// score-position
 			DuelGraphStats.appendScorePositionGraph(
 				matchData.leftPosition,
 				matchData.rightPosition,
-				graphContainer
+				graphContainer,
+				true
 			);
 			i += 1;
 		});
