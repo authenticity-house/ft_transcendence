@@ -100,7 +100,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								changeUrl('onlineMainScreen');
+								changeUrl('play');
 								return null;
 							}
 							return res.json();

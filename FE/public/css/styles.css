@@ -337,9 +337,10 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	width: 54rem;
 	height: 18rem;
-	/* margin: 2rem 0rem; */
 	font-size: 5.2rem;
 	border-radius: 3rem;
+	color: #ffffff;
+	border-color: #ffffff;
 }
 
 .medium-window {
