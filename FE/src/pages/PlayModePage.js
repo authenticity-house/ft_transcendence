@@ -1,18 +1,18 @@
 import { changeUrl } from '../index.js';
 import ButtonLarge from '../components/ButtonLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { fetchLoginCheck } from '../components/FetchLoginCheck.js';
 
 const html = String.raw;
 
 class PlayModePage {
 	template() {
-		const localButton = new ButtonLarge('LOCAL', false);
-		// 나중에 로그인 작업 후, 변경해야 할 것 -> Guest Login 시, true로 / 42Login 또는 일반Login 시 false로 설정하기
-		const onlineButton = new ButtonLarge('ONLINE', false);
+		const localButton = new ButtonLarge('LOCAL');
+		const onlineButton = new ButtonLarge('ONLINE');
 		const backButton = new ButtonBackArrow();
 
 		return html`
-			<div class="select-container ">
+			<div class="select-container">
 				<div class="select-wrapper button-click-local">
 					${localButton.template()}
 				</div>
@@ -27,14 +27,30 @@ class PlayModePage {
 		`;
 	}
 
+	mount() {
+		const isLoggedIn = fetchLoginCheck();
+		if (isLoggedIn === false) {
+			const onlineButton = document
+				.querySelector('.button-click-online')
+				.querySelector('.button-large');
+			onlineButton.classList.add('disabled');
+		}
+	}
+
 	addEventListeners() {
-		const local = document.querySelector('.button-click-local');
+		const local = document
+			.querySelector('.button-click-local')
+			.querySelector('.button-large');
 		local.addEventListener('click', () => {
 			changeUrl('match');
 		});
-		const online = document.querySelector('.button-click-online');
+		const online = document
+			.querySelector('.button-click-online')
+			.querySelector('.button-large');
 		online.addEventListener('click', () => {
-			changeUrl('onlineMainScreen');
+			if (online.classList.contains('disabled'))
+				console.log('ONLINE Button Clicked! Not LoggedIn');
+			else changeUrl('onlineMainScreen');
 		});
 		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
