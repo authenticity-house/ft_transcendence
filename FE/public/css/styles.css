@@ -307,9 +307,10 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	cursor: pointer;
 }
 
-.button-display-none {
+.display-none {
 	display: none;
 }
+
 .border-style-none {
 	border-style: none;
 }
@@ -1325,6 +1326,11 @@ td {
 }
 
 /* Component - ProfileButton */
+.modal-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
 .profile-button-container {
 	position: absolute;
 	top: 6rem;
@@ -1358,13 +1364,22 @@ td {
 	height: 12rem;
 	justify-content: center;
 	align-items: center;
-	border-radius: 100rem;
-	border-style: none;
+	border-radius: 50%;
+	border: 0.1rem solid #fff;
+	overflow: hidden;
 }
 
 .user-profile-img {
-	max-width: 100%;
-	max-height: 100%;
+	width: 12rem;
+	height: 12rem;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.user-profile-none-img {
+	width: 80%;
+	height: 80%;
+	object-fit: cover;
 	border-radius: 50%;
 }
 

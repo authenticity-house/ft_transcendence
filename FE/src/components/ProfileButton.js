@@ -3,15 +3,15 @@ import { profileModal } from './modal/profile_modal/ProfileModal.js';
 const html = String.raw;
 
 // 추후 유저 프로필 이미지 인자로 받아오기
-function profileButton(image) {
-	const profileImage = image || 'image/default-profile.png';
+function profileButton() {
+	// const profileImage = image || 'image/default-profile.png';
 	return html`
-		<div class="profile-button-container">
+		<div class="profile-button-container modal-hidden">
 			<button
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#profile-modal"
-				class="info-modal-button"
+				class="info-modal-button modal-hidden"
 				id="header-stats-button"
 			>
 				<img src="image/statistics.svg" alt="stats" class="info-modal-img" />
@@ -21,7 +21,7 @@ function profileButton(image) {
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#profile-modal"
-				class="info-modal-button"
+				class="info-modal-button modal-hidden"
 				id="header-my-friend-button"
 			>
 				<img src="image/my-friend.svg" alt="friend" class="info-modal-img" />
@@ -31,7 +31,7 @@ function profileButton(image) {
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#profile-modal"
-				class="info-modal-button"
+				class="info-modal-button modal-hidden"
 				id="header-user-search-button"
 			>
 				<img src="image/search.svg" alt="search" class="info-modal-img" />
@@ -41,7 +41,7 @@ function profileButton(image) {
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#profile-modal"
-				class="info-modal-button"
+				class="info-modal-button modal-hidden"
 				id="header-my-record-button"
 			>
 				<img src="image/match-record.svg" alt="record" class="info-modal-img" />
@@ -51,10 +51,14 @@ function profileButton(image) {
 				type="button"
 				data-bs-toggle="modal"
 				data-bs-target="#profile-modal"
-				class="info-modal-button user-profile-button"
+				class="info-modal-button user-profile-button head_white_neon_15"
 				id="header-my-info-button"
 			>
-				<img src="${profileImage}" alt="user" class="user-profile-img" />
+				<img
+					src="image/question-mark.png"
+					alt="user"
+					class="user-profile-none-img"
+				/>
 			</button>
 		</div>
 	`;
