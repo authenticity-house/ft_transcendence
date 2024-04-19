@@ -1367,6 +1367,7 @@ td {
 	border-radius: 50%;
 	border: 0.1rem solid #fff;
 	overflow: hidden;
+	position: relative;
 }
 
 .user-profile-img {
@@ -1381,6 +1382,12 @@ td {
 	height: 80%;
 	object-fit: cover;
 	border-radius: 50%;
+	opacity: 30%;
+}
+
+.modal-login-tooltip {
+	display: none;
+	position: absolute;
 }
 
 /* Component - ProfileWindow */

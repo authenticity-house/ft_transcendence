@@ -51,11 +51,14 @@ class PlayModePage {
 					document.querySelectorAll('.modal-hidden').forEach((element) => {
 						element.classList.remove('modal-hidden');
 					});
-					// 로그인 성공 - 모달 유저 프로필 변경
+					// 로그인 성공 - 유저 프로필 모달 클릭 시, 모달 열리게 설정
 					const userProfile = document.querySelector('.user-profile-button');
+					userProfile.setAttribute('data-bs-toggle', 'modal');
+					userProfile.setAttribute('data-bs-target', '#profile-modal');
+					// 로그인 성공 - 모달 유저 프로필 변경
 					userProfile.innerHTML = '';
 					const userImgElement = document.createElement('img');
-					// 유저 이미지 URL 받아서 넣을 예정
+					// (+) 유저 이미지 URL 받아서 넣을 예정
 					userImgElement.src = 'image/default-profile.png';
 					userImgElement.alt = 'user';
 					userImgElement.classList.add('user-profile-img');
@@ -78,9 +81,7 @@ class PlayModePage {
 			.querySelector('.button-click-online')
 			.querySelector('.button-large');
 		online.addEventListener('click', () => {
-			if (online.classList.contains('disabled'))
-				console.log('ONLINE Button Clicked! Not LoggedIn');
-			else changeUrl('onlineMainScreen');
+			if (!online.classList.contains('disabled')) changeUrl('onlineMainScreen');
 		});
 		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {

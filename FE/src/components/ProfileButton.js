@@ -2,9 +2,7 @@ import { profileModal } from './modal/profile_modal/ProfileModal.js';
 
 const html = String.raw;
 
-// 추후 유저 프로필 이미지 인자로 받아오기
 function profileButton() {
-	// const profileImage = image || 'image/default-profile.png';
 	return html`
 		<div class="profile-button-container modal-hidden">
 			<button
@@ -49,8 +47,6 @@ function profileButton() {
 			</button>
 			<button
 				type="button"
-				data-bs-toggle="modal"
-				data-bs-target="#profile-modal"
 				class="info-modal-button user-profile-button head_white_neon_15"
 				id="header-my-info-button"
 			>
@@ -59,6 +55,7 @@ function profileButton() {
 					alt="user"
 					class="user-profile-none-img"
 				/>
+				<div class="modal-login-tooltip display-light18">로그인 필요</div>
 			</button>
 		</div>
 	`;
@@ -82,7 +79,18 @@ function headerAddEventListeners() {
 				profileModal.openModal('stats');
 			}
 			if (button.id === 'header-my-info-button') {
-				profileModal.openModal('my-info');
+				const myInfoButton = document.getElementById('header-my-info-button');
+				if (myInfoButton.querySelector('.user-profile-none-img')) {
+					// 비 로그인 시, 모달 창 가지 않고 '로그인 필요' 띄우기
+					const tooltip = myInfoButton.querySelector('.modal-login-tooltip');
+					tooltip.style.display = 'block';
+					setTimeout(() => {
+						tooltip.style.display = 'none';
+					}, 1000);
+				} else {
+					// 로그인 시, 모달 창 띄우기
+					profileModal.openModal('my-info');
+				}
 			}
 		});
 	});
