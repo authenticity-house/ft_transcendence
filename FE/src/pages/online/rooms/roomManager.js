@@ -1,6 +1,7 @@
 import createRoomAPI from './createRoomAPI.js';
 import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
+import { changeUrlData } from '../../../index.js';
 
 export function exitRoom(ws) {
 	const message = {
@@ -22,6 +23,8 @@ async function joinRoomWebsocket(roomNumber) {
 		ws.onmessage = (e) => {
 			const message = JSON.parse(e.data);
 			console.log('웹소켓 메시지', message);
+			message.ws = ws;
+			changeUrlData('waitingRoom', message);
 		};
 		// exitRoom(ws);
 	} catch (error) {
