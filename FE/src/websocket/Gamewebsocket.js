@@ -1,10 +1,11 @@
 import { MessageManager } from './MessageManager.js';
+import { getWebsocketUrl } from '../utils/getWebsocketUrl.js';
 
 export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		this.ws = new WebSocket(this.getUrl());
+		this.ws = new WebSocket(getWebsocketUrl('game-server'));
 
 		this.messageManager = new MessageManager(this);
 
@@ -37,18 +38,6 @@ export class Gamewebsocket {
 	}
 
 	// -----------------------------------------------------------------------------
-
-	getUrl() {
-		const { protocol, hostname, port } = location;
-
-		// HTTPS인 경우 wss, 아니면 ws
-		const wsProtocol = protocol === 'https:' ? 'wss' : 'ws';
-		// 포트 번호가 있으면 URL에 포함시키고, 없으면 포트 번호 없이 도메인만 사용
-		const wsPort = port ? `:${port}` : '';
-		const wsUrl = `${wsProtocol}://${hostname}${wsPort}/ws/game-server/`;
-
-		return wsUrl;
-	}
 
 	initializeEventListeners() {
 		document.addEventListener('keydown', (event) => this.handleKeyDown(event));
