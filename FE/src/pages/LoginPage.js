@@ -5,6 +5,7 @@ import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
 import apiEndpoints from '../constants/apiConfig.js';
+import { CLIENT_ID, REDIRECT_URI } from '../constants/constants.js';
 
 const html = String.raw;
 
@@ -129,8 +130,8 @@ class LoginPage {
 
 		const login42 = document.querySelector('.login-42');
 		login42.addEventListener('click', () => {
-			window.location.href =
-				'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-bd4e13d8c5985218248a27937e7f99476cb6818a2417eb1aa3e9bcc1de456674&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Foauth%2F&response_type=code';
+			// window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-bd4e13d8c5985218248a27937e7f99476cb6818a2417eb1aa3e9bcc1de456674&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Foauth%2F&response_type=code`;
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 		});
 
 		const loginGuest = document.querySelector('.login-guest');
