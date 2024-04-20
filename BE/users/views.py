@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound, ParseError, APIException, ValidationError
+from rest_framework.exceptions import NotFound, ParseError, APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -197,26 +197,27 @@ class OAuthView(APIView):
         if not code:
             return Response({"detail": "Failed to get code."}, status=status.HTTP_400_BAD_REQUEST)
 
-        access_token = get_access_token(code)
-        if access_token is None:
-            return Response(
-                {"detail": "Failed to get access token"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        try:
+            access_token = get_access_token(code)
+            if access_token is None:
+                raise Exception("Access token is None")  # pylint: disable=broad-except
+        except ValueError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        user_data = get_user_data(access_token)
-        if user_data is None:
-            return Response(
-                {"detail": "Failed to get user data"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        try:
+            user_data = get_user_data(access_token)
+            if user_data is None:
+                raise Exception("User data is None")  # pylint: disable=broad-except
+        except Exception as e:  # pylint: disable=broad-except
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
             user, _ = get_or_create_user(user_data)
             perform_login(request, user, email_verification="none")
             return HttpResponseRedirect("/")
 
-        except ValidationError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception:  # pylint: disable=broad-exception-caught
             return Response(
                 {"detail": "An unexpected error occurred"},
@@ -236,4 +237,3 @@ class CheckLoginStatusAPIView(APIView):
                 "is_authenticated": True,
             }
         )
-

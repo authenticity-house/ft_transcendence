@@ -1,4 +1,6 @@
 import requests
+from requests.exceptions import RequestException
+
 from backend.settings import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 from .models import User
@@ -17,18 +19,29 @@ def get_access_token(code):
         "redirect_uri": REDIRECT_URI,
         "scope": "public",
     }
-    response = requests.post(url, data=data, timeout=5)
+    # pylint: disable=broad-except
+    try:
+        response = requests.post(url, data=data, timeout=5)
+    except RequestException as e:
+        raise Exception("Failed to communicate with OAuth server") from e
 
     if response.status_code == 200:
         token_data = response.json()
         return token_data.get("access_token")
+
     return None
 
 
 def get_user_data(access_token):
     url = "https://api.intra.42.fr/v2/me"
     headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get(url, headers=headers, timeout=5)
+
+    # pylint: disable=broad-except
+    try:
+        response = requests.get(url, headers=headers, timeout=5)
+    except RequestException as e:
+        raise Exception("Failed to communicate with OAuth server") from e
+
     if response.status_code == 200:
         data = response.json()
         return {
