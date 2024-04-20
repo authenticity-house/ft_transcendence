@@ -13,9 +13,9 @@ import TournamentResultPage from './pages/TournamentResultPage.js';
 
 import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
 
-import OnlineGameSettingPage from './pages/online/OnlineGameSettingPage.js';
-import OnlineGameSettingDetailed from './pages/online/OnlineGameSettingDetailed.js';
-import OnlineGameSettingTournament from './pages/online/OnlineGameSettingTournament.js';
+import OnlineGameSettingPage from './pages/online/gameSetting/OnlineGameSettingPage.js';
+import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSettingDetailed.js';
+import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
 
 import WaitingRoomPage from './pages/WaitingRoomPage.js';
 
