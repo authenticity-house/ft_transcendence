@@ -343,8 +343,15 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	height: 18rem;
 	font-size: 5.2rem;
 	border-radius: 3rem;
-	color: #ffffff;
-	border-color: #ffffff;
+
+	font-family: 'GongGothicLight', sans-serif;
+	padding: 1rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border: 0.4rem solid #fff;
+	background-color: transparent;
+	color: #fff;
 }
 
 .medium-window {
