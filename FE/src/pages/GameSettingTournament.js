@@ -71,6 +71,7 @@ class GameSettingTournament {
 										<span class="plus"></span>
 									</div>
 								</div>
+								<p class="nickname-error-text display-light18"></p>
 							</div>
 
 							<!-- 닉네임 입력 테두리 -->
@@ -189,6 +190,33 @@ class GameSettingTournament {
 			changeUrlData('gameSettingDetailed', this.data);
 		});
 
+		// 닉네임 입력 체크
+		function nicknameCheck(nicknames) {
+			const uniqueNicknames = new Set();
+			for (const nickname of nicknames) {
+				// 길이가 1 미만인 경우
+				if (nickname.length < 1) {
+					document.querySelector('.nickname-error-text').textContent =
+						'입력하지 않은 닉네임이 존재합니다.';
+					return false;
+				}
+				// 공백이 포함된 경우
+				if (nickname.includes(' ')) {
+					document.querySelector('.nickname-error-text').textContent =
+						'닉네임에 공백이 포함되어 있습니다.';
+					return false;
+				}
+				// 중복된 닉네임이 있는 경우
+				if (uniqueNicknames.has(nickname)) {
+					document.querySelector('.nickname-error-text').textContent =
+						'중복된 닉네임이 존재합니다.';
+					return false;
+				}
+				uniqueNicknames.add(nickname);
+			}
+			return true;
+		}
+
 		// 시작 버튼
 		const startButton = document.querySelector(
 			'.verticalButton button:nth-child(2)'
@@ -198,10 +226,14 @@ class GameSettingTournament {
 			this.resetData();
 
 			updateNicknamesData(newData);
-			newData.total_score *= 5;
-
-			const gamewebsocket = new Gamewebsocket(newData);
-			gamewsmanager.register(gamewebsocket);
+			// nickname check
+			const nicknameCheckResult = nicknameCheck(newData.nickname);
+			// 닉네임 체크해서 무사한 경우만 통과
+			if (nicknameCheckResult) {
+				newData.total_score *= 5;
+				const gamewebsocket = new Gamewebsocket(newData);
+				gamewsmanager.register(gamewebsocket);
+			}
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
