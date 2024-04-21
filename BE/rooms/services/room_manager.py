@@ -5,7 +5,7 @@ from .exceptions import RoomError
 class RoomManager:
     _instance = None
     _rooms: dict = {}
-    _last_room_number: int = -1
+    _last_room_number: int = 0
 
     def __new__(cls):
         if cls._instance is None:
