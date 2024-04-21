@@ -5,6 +5,7 @@ import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
 import apiEndpoints from '../constants/apiConfig.js';
+import { CLIENT_ID, REDIRECT_URI } from '../constants/constants.js';
 
 const html = String.raw;
 
@@ -129,7 +130,7 @@ class LoginPage {
 
 		const login42 = document.querySelector('.login-42');
 		login42.addEventListener('click', () => {
-			console.log('login42');
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 		});
 
 		const loginGuest = document.querySelector('.login-guest');
