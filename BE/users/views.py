@@ -200,7 +200,7 @@ class OAuthView(APIView):
         try:
             access_token = get_access_token(code)
             if access_token is None:
-                raise Exception("Access token is None")  # pylint: disable=broad-except
+                raise Exception("Access token is None")  # pylint: disable=broad-exception-raised
         except ValueError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:  # pylint: disable=broad-exception-caught
@@ -209,7 +209,7 @@ class OAuthView(APIView):
         try:
             user_data = get_user_data(access_token)
             if user_data is None:
-                raise Exception("User data is None")  # pylint: disable=broad-except
+                raise Exception("User data is None")  # pylint: disable=broad-exception-raised
         except Exception as e:  # pylint: disable=broad-except
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
