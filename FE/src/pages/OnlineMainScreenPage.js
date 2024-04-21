@@ -1,5 +1,5 @@
 /* eslint-disable no-void */
-import { changeUrl } from '../index.js';
+import { changeUrl, changeUrlData } from '../index.js';
 import {
 	fetchProfileDataAndDisplay,
 	fetchRoomsDataAndDisplay
@@ -80,9 +80,13 @@ class OnlineMainScreenPage {
 
 		roomListContainer.addEventListener('click', (event) => {
 			const { target } = event;
-			// 클릭된 요소가 .single-room-button인 경우에만 changeUrl('waitingRoom') 호출
 			if (target && target.closest('.single-room-button')) {
-				changeUrl('waitingRoom');
+				const button = target.closest('.single-room-button');
+				const { id } = button;
+				const roomNumber = id.split('room-number-')[1];
+
+				console.log(roomNumber);
+				changeUrlData('waitingRoom', roomNumber);
 			}
 		});
 
