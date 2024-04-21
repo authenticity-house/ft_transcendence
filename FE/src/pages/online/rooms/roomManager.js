@@ -3,16 +3,6 @@ import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
 import { changeUrlData } from '../../../index.js';
 
-//export function joinRoom(roomNumber) {
-//	// 방 참가 API
-
-//	joinRoomAPI(roomNumber);
-//	// - 방 참가 성공
-//	//   - 방 참가 웹소켓
-//	joinRoomWebsocket(roomNumber);
-//	// - 방 참가 실패
-//}
-
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
 
@@ -39,7 +29,6 @@ export class RoomWebsocket {
 			this.ws.onopen = () => {
 				console.log('connected');
 
-				// 연결이 성공적으로 열린 후에 메시지 수신을 위한 이벤트 리스너를 설정
 				this.ws.onmessage = (e) => {
 					const message = JSON.parse(e.data);
 					console.log(message);
