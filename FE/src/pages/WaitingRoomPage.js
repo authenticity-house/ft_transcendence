@@ -7,15 +7,20 @@ import { getRoomContainer } from '../components/WaitingRoomInfo.js';
 
 import ButtonExtraLarge from '../components/ButtonExtraLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
-import { exitRoom } from './online/rooms/roomManager.js';
+
+import { RoomWebsocket } from './online/rooms/roomManager.js';
 
 const html = String.raw;
 
 class WaitingRoomPage {
-	template(message) {
-		this.message = message;
-		this.ws = message.ws;
-		console.log(this.message);
+	joinWebsocket(roomNumber) {
+		this.roomWsManager = new RoomWebsocket();
+
+		this.roomWsManager.joinRoomWebsocket(roomNumber);
+	}
+
+	template(roomNumber) {
+		this.joinWebsocket(roomNumber);
 		// MOCK data
 		const data = {
 			roomInfo: {
@@ -94,10 +99,9 @@ class WaitingRoomPage {
 		statusButton.addEventListener('click', () => {
 			console.log('click!');
 		});
-
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
-			exitRoom(this.ws);
+			this.roomWsManager.exitRoom();
 			changeUrl('onlineMainScreen');
 		});
 	}

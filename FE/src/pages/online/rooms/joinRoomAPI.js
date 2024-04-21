@@ -3,10 +3,10 @@ import { getCookie } from '../../../utils/getCookie.js';
 
 // 방 번호 받아와서 방 참가 API 호출
 // POST /api/rooms/<room_number>/
-export default function joinRoomAPI(roomNumber) {
+export default async function joinRoomAPI(roomNumber) {
 	const csrfToken = getCookie('csrftoken');
 
-	fetch(`${apiEndpoints.ROOMS_URL}${roomNumber}/`, {
+	return fetch(`${apiEndpoints.ROOMS_URL}${roomNumber}/`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -16,7 +16,6 @@ export default function joinRoomAPI(roomNumber) {
 		// 201 : Created
 		if (res.ok || res.status === 201) {
 			// 방 참가 api 호출 성공
-			console.log('방 참가 api 호출 성공');
 			return true;
 		}
 		// 400 : 방 참가 실패
