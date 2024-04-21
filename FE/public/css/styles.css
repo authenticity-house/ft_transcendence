@@ -1340,19 +1340,18 @@ td {
 
 .profile-button-container {
 	position: absolute;
-	top: 6rem;
+	top: 9rem;
 	right: 6rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 1rem;
 	height: 12rem;
 }
 
 .info-modal-button {
 	display: flex;
-	width: 12rem;
-	height: 10rem;
+	width: 9.5rem;
+	height: 9.5rem;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -1361,25 +1360,27 @@ td {
 }
 
 .info-modal-img {
-	width: 5rem;
-	height: 5rem;
+	width: 3rem;
+	height: 3rem;
 }
 
 .user-profile-button {
 	display: flex;
-	width: 12rem;
-	height: 12rem;
+	width: 8rem;
+	height: 8rem;
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
 	border: 0.1rem solid #fff;
 	overflow: hidden;
 	position: relative;
+	margin-left: 2.8rem;
+	margin-bottom: 1rem;
 }
 
 .user-profile-img {
-	width: 12rem;
-	height: 12rem;
+	width: 8rem;
+	height: 8rem;
 	object-fit: cover;
 	border-radius: 50%;
 }
