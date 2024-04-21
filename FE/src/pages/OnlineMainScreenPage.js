@@ -19,7 +19,7 @@ class OnlineMainScreenPage {
 		return html`
 			<div class="large-window head_white_neon_15">
 				<div class="user-profile-container">
-					<div class="user-profile-wrapper"></div>
+					<div class="user-profile-img-wrapper"></div>
 					<span
 						class="user-profile-nickname display-medium48 yellow_neon_10"
 					></span>

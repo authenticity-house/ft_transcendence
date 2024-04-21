@@ -25,8 +25,8 @@ function fetchProfileDataAndDisplay() {
 	const imgElement = document.createElement('img');
 	imgElement.src = ImgSrc;
 	imgElement.alt = 'user';
-	imgElement.className = 'user-profile-img';
-	document.querySelector('.user-profile-wrapper').appendChild(imgElement);
+	imgElement.className = 'user-profile-summary-img';
+	document.querySelector('.user-profile-img-wrapper').appendChild(imgElement);
 	// 2. nickName
 	const nickNameElement = document.querySelector('.user-profile-nickname');
 	nickNameElement.textContent = profileData.nickName;

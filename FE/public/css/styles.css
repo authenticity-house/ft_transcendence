@@ -1409,10 +1409,20 @@ td {
 	border-right: 0.2rem solid #ffffff;
 }
 
-.user-profile-wrapper {
+.user-profile-img-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	width: 16rem;
 	height: 16rem;
-	border-radius: 100rem;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.user-profile-summary-img {
+	width: 16rem;
+	height: 16rem;
+	border-radius: 50%;
 }
 
 .user-profile-summary {
@@ -1595,9 +1605,19 @@ td {
 }
 
 .user-seat-box-img-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 10rem;
 	height: 10rem;
 	border-radius: 50%;
+}
+
+.user-seat-box-img {
+	width: 9rem;
+	height: 9rem;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-seat-box-ready-state {
@@ -1612,6 +1632,9 @@ td {
 }
 
 .user-seat-box-block-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 9rem;
 	height: 9rem;
 }
@@ -1885,6 +1908,13 @@ td {
 	gap: 1rem;
 	border-radius: 100rem;
 	background: #dfdfdf;
+}
+
+.my-info-user-profile-image {
+	width: 20rem;
+	height: 20rem;
+	object-fit: cover;
+	border-radius: 50%;
 }
 
 .my-info-content-image-edit {
