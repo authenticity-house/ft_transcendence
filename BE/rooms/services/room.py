@@ -52,7 +52,7 @@ class Room:  # pylint: disable=R0902
         rating = 1000
 
         for idx, room_user in enumerate(self._users):
-            if room_user.nickname == nickname:
+            if room_user._nickname == nickname:
                 self._users.pop(idx)
                 self._total_rating -= rating
                 return
