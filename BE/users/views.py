@@ -10,12 +10,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from allauth.account.adapter import get_adapter
-from allauth.account.utils import send_email_confirmation
+from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User
 from users.serializers import UserProfileSerializer
+
+from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
 class ConfirmEmailView(APIView):
@@ -185,6 +187,42 @@ class UserProfileView(APIView):
             return Response(serializer.data)
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
+
+
+class OAuthView(APIView):
+    def get(self, request):
+        query_params = request.query_params
+        code = query_params.get("code")
+
+        if not code:
+            return Response({"detail": "Failed to get code."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            access_token = get_access_token(code)
+            if access_token is None:
+                raise Exception("Access token is None")  # pylint: disable=broad-exception-raised
+        except ValueError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            user_data = get_user_data(access_token)
+            if user_data is None:
+                raise Exception("User data is None")  # pylint: disable=broad-exception-raised
+        except Exception as e:  # pylint: disable=broad-except
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            user, _ = get_or_create_user(user_data)
+            perform_login(request, user, email_verification="none")
+            return HttpResponseRedirect("/")
+
+        except Exception:  # pylint: disable=broad-exception-caught
+            return Response(
+                {"detail": "An unexpected error occurred"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class CheckLoginStatusAPIView(APIView):

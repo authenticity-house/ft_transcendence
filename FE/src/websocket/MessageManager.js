@@ -3,7 +3,7 @@ import { removeModalBackdrop } from '../components/modal/modalUtils.js';
 import GamePage from '../pages/GamePage.js';
 
 import * as msg from './messages.js';
-import { MessageType, SubType, Winner } from './constWebsocket.js';
+import { MessageType, SubType, Winner } from '../constants/constants.js';
 
 export class MessageManager {
 	constructor(websocket) {
