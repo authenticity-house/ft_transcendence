@@ -67,6 +67,13 @@ class LoginPage {
 		`;
 	}
 
+	mount() {
+		// 프로필 모달 숨기기
+		document
+			.querySelector('.profile-button-container')
+			.classList.add('modal-hidden');
+	}
+
 	addEventListeners() {
 		const loginForm = document.getElementById('login-form');
 		loginForm.addEventListener('submit', (e) => {
@@ -101,7 +108,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								changeUrl('onlineMainScreen');
+								changeUrl('play');
 								return null;
 							}
 							return res.json();
