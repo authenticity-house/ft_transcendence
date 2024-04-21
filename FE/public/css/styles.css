@@ -2,6 +2,7 @@
 @import 'color.css';
 @import 'font.css';
 
+/*
 @media (max-width: 2560px) {
 	html {
 		font-size: 62.5%;
@@ -36,6 +37,10 @@
 	html {
 		font-size: 12.5%;
 	}
+} */
+
+html {
+	font-size: 62.5%;
 }
 
 body {
