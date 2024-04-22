@@ -1,10 +1,10 @@
 /* eslint-disable no-void */
-import { changeUrl, changeUrlData } from '../index.js';
+import { changeUrl, changeUrlData } from '../../index.js';
 import {
 	fetchProfileDataAndDisplay,
 	fetchRoomsDataAndDisplay
-} from '../components/FetchOnlineMainScreen.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+} from '../../components/FetchOnlineMainScreen.js';
+import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 
 const html = String.raw;
 

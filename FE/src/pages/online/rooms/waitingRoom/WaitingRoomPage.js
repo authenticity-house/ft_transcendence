@@ -1,14 +1,11 @@
-import { changeUrl } from '../index.js';
-import {
-	getUserSeatBox,
-	getUserProfileBox
-} from '../components/WaitingRoomUserBox.js';
-import { getRoomContainer } from '../components/WaitingRoomInfo.js';
+import { changeUrl } from '../../../../index.js';
+import { getUserSeatBox, getUserProfileBox } from './WaitingRoomUserBox.js';
+import { getRoomContainer } from './WaitingRoomInfo.js';
 
-import ButtonExtraLarge from '../components/ButtonExtraLarge.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import ButtonExtraLarge from '../../../../components/ButtonExtraLarge.js';
+import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 
-import { RoomWebsocket } from './online/rooms/roomManager.js';
+import { RoomWebsocket } from '../roomManager.js';
 
 const html = String.raw;
 
