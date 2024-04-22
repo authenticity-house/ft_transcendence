@@ -1,10 +1,12 @@
 /* eslint-disable no-void */
-import { changeUrl, changeUrlData } from '../../index.js';
+import { changeUrl } from '../../index.js';
 import {
 	fetchProfileDataAndDisplay,
 	fetchRoomsDataAndDisplay
 } from '../../components/FetchOnlineMainScreen.js';
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
+
+import { joinRoom } from './rooms/roomManager.js';
 
 const html = String.raw;
 
@@ -85,8 +87,7 @@ class OnlineMainScreenPage {
 				const { id } = button;
 				const roomNumber = id.split('room-number-')[1];
 
-				console.log(roomNumber);
-				changeUrlData('waitingRoom', roomNumber);
+				joinRoom(roomNumber);
 			}
 		});
 

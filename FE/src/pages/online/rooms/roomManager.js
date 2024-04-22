@@ -14,7 +14,14 @@ export async function createAndJoinRoom(data) {
 		return false;
 	// 방 참가
 	await joinRoomAPI(roomNumber);
-	console.log('방참가완료');
+	changeUrlData('waitingRoom', roomNumber);
+
+	return true;
+}
+
+export async function joinRoom(roomNumber) {
+	// 방 참가
+	await joinRoomAPI(roomNumber);
 	changeUrlData('waitingRoom', roomNumber);
 
 	return true;
@@ -29,10 +36,7 @@ export class RoomWebsocket {
 			this.ws.onopen = () => {
 				console.log('connected');
 
-				this.ws.onmessage = (e) => {
-					const message = JSON.parse(e.data);
-					console.log(message);
-				};
+				this.receiveMessages();
 			};
 		} catch (error) {
 			console.error('웹소켓 연결 실패', error);
@@ -48,5 +52,25 @@ export class RoomWebsocket {
 		this.ws.send(JSON.stringify(message));
 		this.ws.close();
 		console.log('방 나가기');
+	}
+
+	receiveMessages() {
+		this.ws.onmessage = (e) => {
+			const message = JSON.parse(e.data);
+			console.log('메시지 받음');
+			console.log(message);
+
+			//switch (e.type) {
+			//	case 'room.info':
+			//		// 데이터 다시 로딩
+
+			//		break;
+
+			//	default:
+			//		console.log('default');
+			//		console.log(message);
+			//		break;
+			//}
+		};
 	}
 }
