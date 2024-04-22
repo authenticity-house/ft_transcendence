@@ -19,6 +19,7 @@ export default async function joinRoomAPI(roomNumber) {
 			return true;
 		}
 		// 400 : 방 참가 실패
+		// fulfilled : 꽉참
 		return false;
 	});
 }
