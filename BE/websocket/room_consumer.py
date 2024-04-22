@@ -12,8 +12,6 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.room_number = -1
         self.room_group_name = "room"
 
-        self.room = None
-
     def connect(self):
         self.user = self.scope["user"]
         # 비인증 유저 거부
@@ -25,8 +23,6 @@ class RoomConsumer(JsonWebsocketConsumer):
 
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         self.accept()
-
-        self.room = RoomManager.get_room(int(self.room_number))
         self.broadcast("room.info", "get room info")
 
     def receive_json(self, content, **kwargs):
@@ -36,12 +32,14 @@ class RoomConsumer(JsonWebsocketConsumer):
             self.room_exit()
 
     def room_exit(self):
-        self.room.delete_user(self.user)
+        room = self.__get_room()
+        room.delete_user(self.user)
         self.broadcast("room.info", "get room info")
         self.close()
 
     def room_info(self, event):
-        info = self.room.room_info()
+        room = self.__get_room()
+        info = room.room_info()
         self.send_json(info)
 
     def broadcast(self, msg_type, msg_body):
@@ -55,3 +53,6 @@ class RoomConsumer(JsonWebsocketConsumer):
 
     def disconnect(self, code):
         async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)
+
+    def __get_room(self):
+        return RoomManager.get_room(int(self.room_number))
