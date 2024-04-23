@@ -98,6 +98,10 @@ class Room:  # pylint: disable=R0902
 
         raise RoomError(f"Can not found such user: {user.nickname}")
 
+    def is_host(self, user) -> bool:
+        host_user = self._users[0]
+        return host_user._nickname == user.nickname
+
     def __current_headcount(self) -> int:
         return len(self._users)
 

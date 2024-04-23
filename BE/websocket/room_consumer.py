@@ -33,8 +33,21 @@ class RoomConsumer(JsonWebsocketConsumer):
 
     def room_exit(self):
         room = self.__get_room()
+        if RoomManager.is_host(self.room_number, self.user):
+            self.broadcast("room.end", "get room info")
+            RoomManager.delete_room(self.room_number)
+            self.close()
+            return
+
         room.delete_user(self.user)
         self.broadcast("room.info", "get room info")
+        self.close()
+
+    def room_end(self, event):
+        msg = {
+            "type": "room.end"
+        }
+        self.send_json(msg)
         self.close()
 
     def room_info(self, event):
