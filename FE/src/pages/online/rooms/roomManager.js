@@ -23,7 +23,6 @@ export async function joinRoom(roomNumber) {
 	// 방 참가
 	const check = await joinRoomAPI(roomNumber);
 	if (!check) {
-		console.log('방 꽉참');
 		return false;
 	}
 	changeUrlData('waitingRoom', roomNumber);

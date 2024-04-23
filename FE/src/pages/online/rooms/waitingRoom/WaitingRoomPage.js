@@ -11,6 +11,7 @@ const html = String.raw;
 
 class WaitingRoomPage {
 	template() {
+		this.readyState = false;
 		const backButton = new ButtonBackArrow();
 		return html`
 			<div class="large-window flex-direction-column head_white_neon_15">
@@ -26,11 +27,14 @@ class WaitingRoomPage {
 
 	async mount(roomNumber) {
 		this.joinWebsocket(roomNumber);
-		const msg = await this.roomWsManager.receiveMessages(this.render);
-		console.log(msg);
+		try {
+			const msg = await this.roomWsManager.receiveMessages(this.render);
 
-		this.buttonMount(msg);
-		this.addAsyncEventListeners();
+			this.buttonMount(msg);
+			this.addAsyncEventListeners();
+		} catch (error) {
+			console.error('Error mounting the room:', error);
+		}
 	}
 
 	joinWebsocket(roomNumber) {
@@ -39,19 +43,15 @@ class WaitingRoomPage {
 	}
 
 	buttonMount(data) {
-		let readyButton;
-		if (data.my_info.host) {
-			readyButton = new ButtonExtraLarge('시작', 'yellow');
-		} else if (data.my_info.ready_state) {
-			readyButton = new ButtonExtraLarge('대기', 'pink');
-		} else {
-			readyButton = new ButtonExtraLarge('준비', 'blue');
-		}
+		const buttonText = data.my_info.host ? '시작' : '준비';
+		const buttonColor = data.my_info.host ? 'yellow' : 'blue';
+		this.readyButton = new ButtonExtraLarge(buttonText, buttonColor);
 		const readyButtonContainer = document.getElementById(
 			'readyButtonContainer'
 		);
 		if (readyButtonContainer)
-			readyButtonContainer.innerHTML = readyButton.template();
+			readyButtonContainer.innerHTML = this.readyButton.template();
+		this.isHost = data.my_info.host;
 	}
 
 	render(data) {
@@ -76,8 +76,16 @@ class WaitingRoomPage {
 	addAsyncEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
+			if (!this.isHost) {
+				const newText = !this.readyState ? '대기' : '준비';
+				const newColor = !this.readyState ? 'pink' : 'blue';
+				this.readyState = !this.readyState;
+				this.readyButton.updateTextAndColor(newText, newColor);
+			}
+			// 웹소켓으로 state 정보 보내기
 			console.log('click!');
 		});
+
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.roomWsManager.exitRoom();
