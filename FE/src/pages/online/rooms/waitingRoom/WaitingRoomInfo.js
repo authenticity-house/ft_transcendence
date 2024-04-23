@@ -22,7 +22,6 @@ function getRoomInfoContent(roomInfo) {
 
 	const battleMode = ['1 vs 1', '토너먼트'];
 	const level = ['쉬움', '보통', '어려움'];
-	const totalScore = [5, 10, 15];
 
 	const playModeTextColor =
 		roomInfo.battle_mode === 1 ? 'blue_neon_10' : 'pink_neon_10';
@@ -36,21 +35,21 @@ function getRoomInfoContent(roomInfo) {
 	const roomNameElement = createStyledElement(
 		'span',
 		'room-info-content-text display-light16',
-		`${roomInfo.roomName}`
+		`${roomInfo.room_name}`
 	);
 	roomInfoContent.appendChild(roomNameElement);
 
 	const averageRatingElement = createStyledElement(
 		'span',
 		'room-info-content-text',
-		`평균 레이팅: ${roomInfo.average_rating}`
+		`평균 레이팅: ${roomInfo.rating}`
 	);
 	roomInfoContent.appendChild(averageRatingElement);
 
 	const totalScoreElement = createStyledElement(
 		'span',
 		'room-info-content-text',
-		`승점: ${totalScore[roomInfo.total_score - 1]}점`
+		`승점: ${roomInfo.total_score}점`
 	);
 	roomInfoContent.appendChild(totalScoreElement);
 

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="user",
             name="profile_url",
-            field=models.CharField(default="/profile/default.png", max_length=250),
+            field=models.CharField(default="/image/default-profile.png", max_length=250),
         ),
         migrations.CreateModel(
             name="Friendship",

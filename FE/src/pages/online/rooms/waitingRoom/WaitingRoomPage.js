@@ -10,88 +10,70 @@ import { RoomWebsocket } from '../roomManager.js';
 const html = String.raw;
 
 class WaitingRoomPage {
-	joinWebsocket(roomNumber) {
-		this.roomWsManager = new RoomWebsocket();
-
-		this.roomWsManager.joinRoomWebsocket(roomNumber);
-	}
-
-	template(roomNumber) {
-		this.joinWebsocket(roomNumber);
-		// MOCK data
-		const data = {
-			roomInfo: {
-				battle_mode: 2,
-				level: 2,
-				total_score: 2,
-				color: {
-					paddle: '#5AD7FF',
-					ball: '#FFD164'
-				},
-				maxPlayer: 4,
-				roomName: '토너먼트 고수만 오세요! 퐁퐁퐁퐁퐁퐁퐁퐁퐁퐁',
-				average_rating: 1500
-			},
-			userInfo: [
-				{
-					image: '',
-					nickName: 'jeongrol',
-					rating: 1000,
-					roomPosition: 0,
-					host: true,
-					readyState: false
-				},
-				{
-					image: '',
-					nickName: 'jooyoo',
-					rating: 1500,
-					roomPosition: 1,
-					host: false,
-					readyState: false
-				},
-				{
-					image: '',
-					nickName: 'wonyang',
-					rating: 2000,
-					roomPosition: 2,
-					host: false,
-					readyState: true
-				}
-			],
-			myInfo: {
-				roomPosition: 0,
-				host: true,
-				readyState: false
-			}
-		};
-
-		const userSeatElement = getUserSeatBox(data.roomInfo.maxPlayer);
-		getUserProfileBox(userSeatElement, data.userInfo);
-
-		const roomInfoElement = getRoomContainer(data.roomInfo, data.myInfo.host);
-
-		let readyButton;
-		if (data.myInfo.host) {
-			readyButton = new ButtonExtraLarge('시작', 'yellow');
-		} else if (data.myInfo.readyState) {
-			readyButton = new ButtonExtraLarge('대기', 'pink');
-		} else {
-			readyButton = new ButtonExtraLarge('준비', 'blue');
-		}
+	template() {
 		const backButton = new ButtonBackArrow();
-
 		return html`
 			<div class="large-window flex-direction-column head_white_neon_15">
 				<div class="waiting-room-main">
-					${userSeatElement.outerHTML} ${roomInfoElement.outerHTML}
+					<div id="userSeatElement"></div>
+					<div id="roomInfoElement"></div>
 				</div>
-				<div class="waiting-room-footer">${readyButton.template()}</div>
+				<div class="waiting-room-footer" id="readyButtonContainer"></div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
 	}
 
-	addEventListeners() {
+	async mount(roomNumber) {
+		this.joinWebsocket(roomNumber);
+		const msg = await this.roomWsManager.receiveMessages(this.render);
+		console.log(msg);
+
+		this.buttonMount(msg);
+		this.addAsyncEventListeners();
+	}
+
+	joinWebsocket(roomNumber) {
+		this.roomWsManager = new RoomWebsocket();
+		this.roomWsManager.joinRoomWebsocket(roomNumber);
+	}
+
+	buttonMount(data) {
+		let readyButton;
+		if (data.my_info.host) {
+			readyButton = new ButtonExtraLarge('시작', 'yellow');
+		} else if (data.my_info.ready_state) {
+			readyButton = new ButtonExtraLarge('대기', 'pink');
+		} else {
+			readyButton = new ButtonExtraLarge('준비', 'blue');
+		}
+		const readyButtonContainer = document.getElementById(
+			'readyButtonContainer'
+		);
+		if (readyButtonContainer)
+			readyButtonContainer.innerHTML = readyButton.template();
+	}
+
+	render(data) {
+		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
+		getUserProfileBox(userSeatElement, data.user_info);
+
+		const userSeatContainer = document.getElementById('userSeatElement');
+
+		userSeatContainer.innerHTML = '';
+		userSeatContainer.appendChild(userSeatElement);
+
+		// room info
+		const roomInfoElement = getRoomContainer(data.room_info, data.my_info.host);
+		const roomInfoContainer = document.getElementById('roomInfoElement');
+
+		roomInfoContainer.innerHTML = '';
+		roomInfoContainer.appendChild(roomInfoElement);
+	}
+
+	addEventListeners() {}
+
+	addAsyncEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
 			console.log('click!');

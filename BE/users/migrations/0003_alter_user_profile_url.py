@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             model_name="user",
             name="profile_url",
             field=models.CharField(
-                default="http://localhost:8000/api/profile/default.png", max_length=250
+                default="http://localhost:8000/api/image/default-profile.png", max_length=250
             ),
         ),
     ]
