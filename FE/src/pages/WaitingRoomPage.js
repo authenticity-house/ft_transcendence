@@ -7,11 +7,15 @@ import { getRoomContainer } from '../components/WaitingRoomInfo.js';
 
 import ButtonExtraLarge from '../components/ButtonExtraLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { exitRoom } from './online/rooms/roomManager.js';
 
 const html = String.raw;
 
 class WaitingRoomPage {
-	template() {
+	template(message) {
+		this.message = message;
+		this.ws = message.ws;
+		console.log(this.message);
 		// MOCK data
 		const data = {
 			roomInfo: {
@@ -93,6 +97,7 @@ class WaitingRoomPage {
 
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
+			exitRoom(this.ws);
 			changeUrl('onlineMainScreen');
 		});
 	}

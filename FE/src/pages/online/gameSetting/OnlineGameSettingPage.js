@@ -1,10 +1,10 @@
-import { changeUrl, changeUrlData, gamewsmanager } from '../../index.js';
-import HorizontalButton from '../../components/HorizontalButton.js';
-import VerticalButton from '../../components/VerticalButton.js';
-import { Gamewebsocket } from '../../websocket/Gamewebsocket.js';
-import ButtonBackArrow from '../../components/ButtonBackArrow.js';
-import { pongImage } from '../../components/pongImage.js';
-import { createRoomAPI } from './createRoomAPI.js';
+import { changeUrl, changeUrlData, gamewsmanager } from '../../../index.js';
+import HorizontalButton from '../../../components/HorizontalButton.js';
+import VerticalButton from '../../../components/VerticalButton.js';
+import { Gamewebsocket } from '../../../websocket/Gamewebsocket.js';
+import ButtonBackArrow from '../../../components/ButtonBackArrow.js';
+import { pongImage } from '../../../components/pongImage.js';
+import { createAndJoinRoom } from '../rooms/roomManager.js';
 
 const html = String.raw;
 
@@ -110,7 +110,7 @@ class GameSettingPage {
 			updateRoomName(newData);
 
 			// api 호출 후 방으로 이동
-			createRoomAPI(newData);
+			createAndJoinRoom(newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {

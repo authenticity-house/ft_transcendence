@@ -1,10 +1,11 @@
 from .room import Room
+from .exceptions import RoomError
 
 
 class RoomManager:
     _instance = None
     _rooms: dict = {}
-    _last_room_number: int = -1
+    _last_room_number: int = 0
 
     def __new__(cls):
         if cls._instance is None:
@@ -31,36 +32,30 @@ class RoomManager:
         return room_number
 
     @classmethod
-    def __next_room_number(cls):
+    def __next_room_number(cls) -> int:
         cls._last_room_number += 1
         return cls._last_room_number
 
     @classmethod
-    def attend(cls, room_number, user):
-        room = cls._rooms[room_number]
+    def join_room(cls, room_number, user) -> None:
+        room = cls.get_room(room_number)
         room.add_user(user)
 
     @classmethod
-    def room_list(cls):
-        # debug
-        test_room_info1 = {
-            "room_number": 998,
-            "room_name": "1대1 한 판 붙자!",
-            "battle_mode": 1,
-            "current_headcount": 1,
-            "max_headcount": 2,
-            "rating": 1487,
-        }
-        test_room_info2 = {
-            "room_number": 999,
-            "room_name": "내 방으로 들어와!!",
-            "battle_mode": 2,
-            "current_headcount": 5,
-            "max_headcount": 7,
-            "rating": 2398,
-        }
-        lst = [test_room_info1, test_room_info2]
+    def room_list(cls) -> list:
+        lst = []
         for room in cls._rooms.values():
             info = room.room_info()
             lst.append(info)
         return lst
+
+    @classmethod
+    def room_info(cls, room_number):
+        room = cls.get_room(room_number)
+        return room.room_info()
+
+    @classmethod
+    def get_room(cls, room_number) -> Room:
+        if room_number not in cls._rooms:
+            raise RoomError("Invalid room number")
+        return cls._rooms[room_number]
