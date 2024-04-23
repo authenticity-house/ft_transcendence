@@ -82,7 +82,7 @@ class Room:  # pylint: disable=R0902
         for idx, room_user in enumerate(self._users):
             info = room_user.info()
             info["host"] = idx == 0
-            info["roomPosition"] = idx
+            info["room_position"] = idx
 
             users.append(info)
 
