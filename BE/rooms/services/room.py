@@ -88,6 +88,16 @@ class Room:  # pylint: disable=R0902
 
         return users
 
+    def my_info(self, user) -> dict:
+        for idx, room_user in enumerate(self._users):
+            if room_user._nickname == user.nickname:
+                info = room_user.info()
+                info["host"] = idx == 0
+                info["room_position"] = idx
+                return info
+
+        raise RoomError(f"Can not found such user: {user.nickname}")
+
     def __current_headcount(self) -> int:
         return len(self._users)
 
