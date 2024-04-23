@@ -1,12 +1,12 @@
-import BoldTitle from '../components/BoldTitle.js';
-import ButtonSmall from '../components/ButtonSmall.js';
+import BoldTitle from '../../components/BoldTitle.js';
+import ButtonSmall from '../../components/ButtonSmall.js';
 import {
 	bracketTemplate,
 	addUserBracket,
 	addWireBracket,
 	getUserPosition,
 	replaceTitle
-} from '../components/TournamentBracket.js';
+} from '../../components/TournamentBracket.js';
 
 const html = String.raw;
 

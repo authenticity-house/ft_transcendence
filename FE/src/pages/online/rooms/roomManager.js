@@ -3,47 +3,9 @@ import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
 import { changeUrlData } from '../../../index.js';
 
-export function exitRoom(ws) {
-	const message = {
-		type: 'room.exit'
-	};
-	ws.send(JSON.stringify(message));
-	ws.close();
-	console.log('방 나가기');
-}
-
-async function joinRoomWebsocket(roomNumber) {
-	try {
-		const url = getWebsocketUrl(`room/${roomNumber}`);
-		const ws = new WebSocket(url);
-
-		ws.onopen = () => {
-			console.log('connected');
-		};
-		ws.onmessage = (e) => {
-			const message = JSON.parse(e.data);
-			console.log('웹소켓 메시지', message);
-			message.ws = ws;
-			changeUrlData('waitingRoom', message);
-		};
-		// exitRoom(ws);
-	} catch (error) {
-		console.error('웹소켓 연결 실패', error);
-	}
-}
-
-export function joinRoom(roomNumber) {
-	// 방 참가 API
-
-	joinRoomAPI(roomNumber);
-	// - 방 참가 성공
-	//   - 방 참가 웹소켓
-	joinRoomWebsocket(roomNumber);
-	// - 방 참가 실패
-}
-
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
+
 	console.log('방번호', roomNumber);
 
 	if (!roomNumber)
@@ -51,6 +13,66 @@ export async function createAndJoinRoom(data) {
 		// ?? 방을 만들지 못할 경우?
 		return false;
 	// 방 참가
-	joinRoom(roomNumber);
+	await joinRoomAPI(roomNumber);
+	changeUrlData('waitingRoom', roomNumber);
+
 	return true;
+}
+
+export async function joinRoom(roomNumber) {
+	// 방 참가
+	const check = await joinRoomAPI(roomNumber);
+	if (!check) {
+		console.log('방 꽉참');
+		return false;
+	}
+	changeUrlData('waitingRoom', roomNumber);
+	return true;
+}
+
+export class RoomWebsocket {
+	joinRoomWebsocket(roomNumber) {
+		try {
+			const url = getWebsocketUrl(`room/${roomNumber}`);
+			this.ws = new WebSocket(url);
+
+			this.ws.onopen = () => {
+				console.log('connected');
+
+				this.receiveMessages();
+			};
+		} catch (error) {
+			console.error('웹소켓 연결 실패', error);
+			return false;
+		}
+		return true;
+	}
+
+	exitRoom() {
+		const message = {
+			type: 'room.exit'
+		};
+		this.ws.send(JSON.stringify(message));
+		this.ws.close();
+		console.log('방 나가기');
+	}
+
+	receiveMessages() {
+		this.ws.onmessage = (e) => {
+			const message = JSON.parse(e.data);
+			console.log(message);
+
+			// switch (message.type) {
+			//	case 'room.info':
+			//		// 데이터 다시 로딩
+
+			//		break;
+
+			//	default:
+			//		console.log('default');
+			//		console.log(message);
+			//		break;
+			// }
+		};
+	}
 }
