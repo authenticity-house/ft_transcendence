@@ -50,9 +50,14 @@ class RoomManager:
         return lst
 
     @classmethod
-    def room_info(cls, room_number):
+    def room_info(cls, room_number, user):
         room = cls.get_room(room_number)
-        return room.room_info()
+        info = {
+            "room_info": room.room_info(),
+            "user_info": room.users_info(),
+            "my_info": room.my_info(user)
+        }
+        return info
 
     @classmethod
     def get_room(cls, room_number) -> Room:

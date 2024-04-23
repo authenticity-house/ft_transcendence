@@ -18,7 +18,7 @@ class RoomConsumer(JsonWebsocketConsumer):
         if not self.user.is_authenticated:
             self.close()
 
-        self.room_number = self.scope["url_route"]["kwargs"]["room_number"]
+        self.room_number = int(self.scope["url_route"]["kwargs"]["room_number"])
         self.room_group_name = f"room_{self.room_number}"
 
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
@@ -38,8 +38,7 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.close()
 
     def room_info(self, event):
-        room = self.__get_room()
-        info = room.room_info()
+        info = RoomManager.room_info(self.room_number, self.user)
         info["type"] = "room.info"
         self.send_json(info)
 
@@ -56,4 +55,4 @@ class RoomConsumer(JsonWebsocketConsumer):
         async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)
 
     def __get_room(self):
-        return RoomManager.get_room(int(self.room_number))
+        return RoomManager.get_room(self.room_number)
