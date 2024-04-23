@@ -75,7 +75,7 @@ def get_or_create_user(data):
         defaults={
             "username": data["username"],
             "nickname": generate_unique_nickname(data["nickname"]),
-            "profile_url": data.get("profile_url", "image/default-profile.png"),
+            "profile_url": data.get("profile_url", "profile/default.png"),
             "provider": data.get("provider", "42"),
         },
     )
