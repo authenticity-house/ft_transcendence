@@ -40,6 +40,7 @@ class RoomConsumer(JsonWebsocketConsumer):
     def room_info(self, event):
         room = self.__get_room()
         info = room.room_info()
+        info["type"] = "room.info"
         self.send_json(info)
 
     def broadcast(self, msg_type, msg_body):
