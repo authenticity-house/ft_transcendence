@@ -12,6 +12,8 @@ const html = String.raw;
 class WaitingRoomPage {
 	template() {
 		this.readyState = false;
+		this.isHost = false;
+
 		const backButton = new ButtonBackArrow();
 		return html`
 			<div class="large-window flex-direction-column head_white_neon_15">
@@ -30,7 +32,7 @@ class WaitingRoomPage {
 		try {
 			const msg = await this.roomWsManager.receiveMessages(this.render);
 
-			this.buttonMount(msg);
+			this.mountButton(msg);
 			this.addAsyncEventListeners();
 		} catch (error) {
 			console.error('Error mounting the room:', error);
@@ -42,7 +44,7 @@ class WaitingRoomPage {
 		this.roomWsManager.joinRoomWebsocket(roomNumber);
 	}
 
-	buttonMount(data) {
+	mountButton(data) {
 		const buttonText = data.my_info.host ? '시작' : '준비';
 		const buttonColor = data.my_info.host ? 'yellow' : 'blue';
 		this.readyButton = new ButtonExtraLarge(buttonText, buttonColor);
@@ -55,6 +57,7 @@ class WaitingRoomPage {
 	}
 
 	render(data) {
+		// user info
 		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
 		getUserProfileBox(userSeatElement, data.user_info);
 
