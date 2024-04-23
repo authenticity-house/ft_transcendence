@@ -30,6 +30,8 @@ class RoomConsumer(JsonWebsocketConsumer):
         msg_body = content.get("data", "")
         if msg_type == "room.exit":
             self.room_exit()
+        elif msg_type == "room.change.state":
+            self.change_state()
 
     def room_exit(self):
         room = self.__get_room()
@@ -54,6 +56,11 @@ class RoomConsumer(JsonWebsocketConsumer):
         info = RoomManager.room_info(self.room_number, self.user)
         info["type"] = "room.info"
         self.send_json(info)
+
+    def change_state(self):
+        room = self.__get_room()
+        room.change_state(self.user)
+        self.broadcast("room.info", "get room info")
 
     def broadcast(self, msg_type, msg_body):
         async_to_sync(self.channel_layer.group_send)(

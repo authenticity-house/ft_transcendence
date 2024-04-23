@@ -102,6 +102,11 @@ class Room:  # pylint: disable=R0902
         host_user = self._users[0]
         return host_user._nickname == user.nickname
 
+    def change_state(self, user):
+        for room_user in self._users:
+            if user.nickname == room_user._nickname:
+                room_user.change_ready_state()
+
     def __current_headcount(self) -> int:
         return len(self._users)
 
