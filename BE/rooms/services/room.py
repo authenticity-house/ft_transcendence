@@ -107,6 +107,12 @@ class Room:  # pylint: disable=R0902
             if user.nickname == room_user._nickname:
                 room_user.change_ready_state()
 
+    def change_info(self, info):
+        self._level = info["level"]
+        self._total_score = info["total_score"]
+        self._paddle_color = info["color"]["paddle"]
+        self._ball_color = info["color"]["ball"]
+
     def __current_headcount(self) -> int:
         return len(self._users)
 
