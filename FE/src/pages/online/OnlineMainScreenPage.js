@@ -87,7 +87,7 @@ class OnlineMainScreenPage {
 				const { id } = button;
 				const roomNumber = id.split('room-number-')[1];
 
-				joinRoom(roomNumber);
+				if (!joinRoom(roomNumber)) console.log('방 참가 실패');
 			}
 		});
 
