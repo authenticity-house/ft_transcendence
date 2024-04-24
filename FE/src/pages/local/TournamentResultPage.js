@@ -1,11 +1,11 @@
-import { changeUrl } from '../index.js';
-import BoldTitle from '../components/BoldTitle.js';
-import ButtonSmall from '../components/ButtonSmall.js';
-import { duelReportWrapper } from '../components/DuelReport.js';
-import DuelStatsData from '../components/DuelStatsData.js';
-import DuelBasicStats from '../components/DuelBasicStats.js';
-import DuelSpecialStats from '../components/DuelSpecialStats.js';
-import DuelGraphStats from '../components/DuelGraphStats.js';
+import { changeUrl } from '../../index.js';
+import BoldTitle from '../../components/BoldTitle.js';
+import ButtonSmall from '../../components/ButtonSmall.js';
+import { duelReportWrapper } from '../../components/DuelReport.js';
+import DuelStatsData from '../../components/DuelStatsData.js';
+import DuelBasicStats from '../../components/DuelBasicStats.js';
+import DuelSpecialStats from '../../components/DuelSpecialStats.js';
+import DuelGraphStats from '../../components/DuelGraphStats.js';
 
 const html = String.raw;
 

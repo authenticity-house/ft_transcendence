@@ -1,17 +1,23 @@
-import { changeUrl } from '../index.js';
-import {
-	getUserSeatBox,
-	getUserProfileBox
-} from '../components/WaitingRoomUserBox.js';
-import { getRoomContainer } from '../components/WaitingRoomInfo.js';
+import { changeUrl } from '../../../../index.js';
+import { getUserSeatBox, getUserProfileBox } from './WaitingRoomUserBox.js';
+import { getRoomContainer } from './WaitingRoomInfo.js';
 
-import ButtonExtraLarge from '../components/ButtonExtraLarge.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import ButtonExtraLarge from '../../../../components/ButtonExtraLarge.js';
+import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
+
+import { RoomWebsocket } from '../roomManager.js';
 
 const html = String.raw;
 
 class WaitingRoomPage {
-	template() {
+	joinWebsocket(roomNumber) {
+		this.roomWsManager = new RoomWebsocket();
+
+		this.roomWsManager.joinRoomWebsocket(roomNumber);
+	}
+
+	template(roomNumber) {
+		this.joinWebsocket(roomNumber);
 		// MOCK data
 		const data = {
 			roomInfo: {
@@ -90,9 +96,9 @@ class WaitingRoomPage {
 		statusButton.addEventListener('click', () => {
 			console.log('click!');
 		});
-
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
+			this.roomWsManager.exitRoom();
 			changeUrl('onlineMainScreen');
 		});
 	}

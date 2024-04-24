@@ -49,7 +49,10 @@ function getRoomElementAll(roomList) {
 		const battleMode = room.battle_mode === 2 ? '토너먼트' : '1 vs 1';
 
 		const singleRoom = html`
-			<button class="single-room-button ${color[0]}">
+			<button
+				class="single-room-button ${color[0]}"
+				id="room-number-${room.room_number}"
+			>
 				<div class="single-room-match-mode">
 					<span class="${color[1]} display-light18">${battleMode}</span>
 				</div>

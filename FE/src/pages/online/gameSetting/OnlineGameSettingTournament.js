@@ -1,13 +1,13 @@
-import { changeUrl, changeUrlData, gamewsmanager } from '../index.js';
-import HorizontalButton from '../components/HorizontalButton.js';
-import VerticalButton from '../components/VerticalButton.js';
-import InputNickname from '../components/InputNickname.js';
-import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { changeUrl, changeUrlData } from '../../../index.js';
+import HorizontalButton from '../../../components/HorizontalButton.js';
+import VerticalButton from '../../../components/VerticalButton.js';
+import ButtonBackArrow from '../../../components/ButtonBackArrow.js';
+import { pongImage } from '../../../components/pongImage.js';
+import { createAndJoinRoom } from '../rooms/roomManager.js';
 
 const html = String.raw;
 
-class GameSettingTournament {
+class OnlineGameSettingTournament {
 	constructor() {
 		this.initialData = {
 			battle_mode: 2,
@@ -17,8 +17,8 @@ class GameSettingTournament {
 				paddle: '#5AD7FF',
 				ball: '#FFD164'
 			},
-			headcount: 4,
-			nickname: ['', '', '', '']
+			max_headcount: 4,
+			room_name: 'room'
 		};
 	}
 
@@ -42,20 +42,31 @@ class GameSettingTournament {
 
 		const virticalbuttonConfigs = [
 			{ text: '세부설정', classes: 'head_blue_neon_15 blue_neon_10' },
-			{ text: '시작', classes: 'head_blue_neon_15 blue_neon_10' }
+			{ text: '확인', classes: 'head_blue_neon_15 blue_neon_10' }
 		];
 		const verticalButton = new VerticalButton(virticalbuttonConfigs);
-		const initialIndex = this.data.headcount;
-		const inputNickname1 = new InputNickname();
+		const initialIndex = this.data.max_headcount;
 		const backButton = new ButtonBackArrow();
 
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
-					<div class="horizontalButton">${horizontalButton.template()}</div>
 					<div class="game-setting-content-container">
+						<div class="horizontalButton">${horizontalButton.template()}</div>
 						<!-- 인원수 선택 및 닉네임 설정 -->
 						<div class="game-setting-tournament-container">
+							<div class="text-inputbox-room-container">
+								<p class="text-subtitle-1-left" style="padding-left: 1rem;">
+									방 제목
+								</p>
+
+								<input
+									class="game-setting-room-container input-size-60"
+									type="text"
+									value="${this.data.room_name.replace(/"/g, '&quot;')}"
+									maxlength="12"
+								/>
+							</div>
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
 								<p class="text-subtitle-1-left">참여인원</p>
@@ -75,16 +86,7 @@ class GameSettingTournament {
 
 							<!-- 닉네임 입력 테두리 -->
 							<div class="game-setting-nickname-container">
-								<!-- 닉네임 입력 타이틀 + 입력 창 -->
-								<div class="input-nickname-container">
-									<div class="text-subtitle-1 width-14">닉네임 입력</div>
-									<div class="input-nickname-two-col">
-										${inputNickname1.containDiv(
-											initialIndex,
-											this.data.nickname
-										)}
-									</div>
-								</div>
+								${pongImage('onlineTournament')}
 							</div>
 						</div>
 					</div>
@@ -96,31 +98,6 @@ class GameSettingTournament {
 	}
 
 	addEventListeners() {
-		function addInputNickname(count) {
-			const containerIdx = count > 4 ? 2 : 1; // 4명 초과시 두 번째 col 사용
-			const container = document.querySelector(
-				`.input-nickname-col-${containerIdx}`
-			);
-			if (!container) return;
-
-			if (container.children.length < 4 || (containerIdx === 1 && count <= 4)) {
-				const newInput = document.createElement('div');
-				newInput.className = `input-nickname`;
-				newInput.innerHTML = new InputNickname(count).template();
-				container.appendChild(newInput);
-			}
-		}
-
-		function removeInputNickname(count) {
-			// 4명 이하면 1번째 Col, 초과면 2번째 Col
-			const containerIdx = Math.ceil(count / 4);
-			const container = document.querySelector(
-				`.input-nickname-col-${containerIdx}`
-			);
-			if (!container || container.children.length === 0) return;
-			container.removeChild(container.lastElementChild);
-		}
-
 		// 1, 8이 되었을 때 -, + 버튼 비활성화
 		function updateButtonsState(count) {
 			const minusButton = document.querySelector('.minus');
@@ -142,13 +119,11 @@ class GameSettingTournament {
 
 			if (this.classList.contains('minus')) {
 				if (count > 3) {
-					removeInputNickname(count);
 					count -= 1;
 				}
 			} else if (this.classList.contains('plus')) {
 				if (count < 8) {
 					count += 1;
-					addInputNickname(count);
 				}
 			}
 			input.value = count;
@@ -164,18 +139,17 @@ class GameSettingTournament {
 			'.horizontalButton button:nth-child(1)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('gameSetting', null);
+			changeUrlData('onlineSetting', null);
 		});
 
-		function updateNicknamesData(res) {
-			const nicknameInputs = document.querySelectorAll(
-				'.input-nickname input[type="text"]'
-			);
-			res.headcount = parseInt(
+		function updateRoomName(res) {
+			res.max_headcount = parseInt(
 				document.querySelector('input.in-num').value,
 				10
 			);
-			res.nickname = Array.from(nicknameInputs).map((input) => input.value);
+			res.room_name = document.querySelector(
+				'.game-setting-room-container'
+			).value;
 		}
 
 		// 세부 설정 버튼
@@ -185,8 +159,8 @@ class GameSettingTournament {
 		detailedButton.addEventListener('click', () => {
 			// const newData = this.data;
 			// this.resetData();
-			updateNicknamesData(this.data);
-			changeUrlData('gameSettingDetailed', this.data);
+			updateRoomName(this.data);
+			changeUrlData('onlineDetailed', this.data);
 		});
 
 		// 시작 버튼
@@ -196,19 +170,17 @@ class GameSettingTournament {
 		startButton.addEventListener('click', () => {
 			const newData = this.data;
 			this.resetData();
-
-			updateNicknamesData(newData);
+			updateRoomName(newData);
 			newData.total_score *= 5;
-
-			const gamewebsocket = new Gamewebsocket(newData);
-			gamewsmanager.register(gamewebsocket);
+			createAndJoinRoom(newData);
 		});
+
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.resetData();
-			changeUrl('match');
+			changeUrl('onlineMainScreen');
 		});
 	}
 }
 
-export default new GameSettingTournament();
+export default new OnlineGameSettingTournament();
