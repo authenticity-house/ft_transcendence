@@ -13,7 +13,7 @@ function getUserSeatBox(maxPlayer) {
 			const blockImage = document.createElement('img');
 			blockImage.src = 'image/block.svg';
 			blockImage.alt = 'block';
-			blockImage.className = 'user-profile-img';
+			blockImage.className = 'user-seat-box-img';
 			blockContainer.appendChild(blockImage);
 			userSeatBox.appendChild(blockContainer);
 		}
@@ -40,7 +40,7 @@ function getUserProfileBox(userSeatElement, userInfo) {
 
 			const htmlString = html`
 				<div class="user-seat-box-img-container">
-					<img src="${userImage}" alt="user" class="user-profile-img" />
+					<img src="${userImage}" alt="user" class="user-seat-box-img" />
 				</div>
 				<span>${user.nickName}</span>
 				<span>레이팅: ${user.rating}</span>

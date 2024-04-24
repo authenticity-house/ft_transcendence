@@ -9,7 +9,7 @@ class MyInfoContent {
 						<div class="my-info-content-image-container">
 							<div class="my-info-content-image">
 								<img
-									class="user-profile-img"
+									class="my-info-user-profile-image"
 									src="image/default-profile.png"
 									alt="profile"
 								/>

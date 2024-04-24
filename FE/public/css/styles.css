@@ -1340,19 +1340,18 @@ td {
 
 .profile-button-container {
 	position: absolute;
-	top: 6rem;
+	top: 9rem;
 	right: 6rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 1rem;
 	height: 12rem;
 }
 
 .info-modal-button {
 	display: flex;
-	width: 12rem;
-	height: 10rem;
+	width: 9.5rem;
+	height: 9.5rem;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -1361,25 +1360,27 @@ td {
 }
 
 .info-modal-img {
-	width: 5rem;
-	height: 5rem;
+	width: 3rem;
+	height: 3rem;
 }
 
 .user-profile-button {
 	display: flex;
-	width: 12rem;
-	height: 12rem;
+	width: 8rem;
+	height: 8rem;
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
 	border: 0.1rem solid #fff;
 	overflow: hidden;
 	position: relative;
+	margin-left: 2.8rem;
+	margin-bottom: 1rem;
 }
 
 .user-profile-img {
-	width: 12rem;
-	height: 12rem;
+	width: 8rem;
+	height: 8rem;
 	object-fit: cover;
 	border-radius: 50%;
 }
@@ -1409,10 +1410,20 @@ td {
 	border-right: 0.2rem solid #ffffff;
 }
 
-.user-profile-wrapper {
+.user-profile-img-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	width: 16rem;
 	height: 16rem;
-	border-radius: 100rem;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.user-profile-summary-img {
+	width: 16rem;
+	height: 16rem;
+	border-radius: 50%;
 }
 
 .user-profile-summary {
@@ -1595,9 +1606,19 @@ td {
 }
 
 .user-seat-box-img-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 10rem;
 	height: 10rem;
 	border-radius: 50%;
+}
+
+.user-seat-box-img {
+	width: 9rem;
+	height: 9rem;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-seat-box-ready-state {
@@ -1612,6 +1633,9 @@ td {
 }
 
 .user-seat-box-block-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 9rem;
 	height: 9rem;
 }
@@ -1885,6 +1909,13 @@ td {
 	gap: 1rem;
 	border-radius: 100rem;
 	background: #dfdfdf;
+}
+
+.my-info-user-profile-image {
+	width: 20rem;
+	height: 20rem;
+	object-fit: cover;
+	border-radius: 50%;
 }
 
 .my-info-content-image-edit {
