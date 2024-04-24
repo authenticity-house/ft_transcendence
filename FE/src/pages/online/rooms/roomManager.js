@@ -2,6 +2,7 @@ import createRoomAPI from './createRoomAPI.js';
 import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
 import { changeUrlData } from '../../../index.js';
+import { showModal } from '../../../components/modal/modalUtils.js';
 
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
@@ -69,6 +70,9 @@ export class RoomWebsocket {
 
 						break;
 
+					case 'room.end':
+						showModal('roomEndModal');
+						break;
 					default:
 						console.log('default');
 						break;

@@ -36,6 +36,12 @@ function handleBackHomeClick(event) {
 		// 이벤트 리스너 제거
 		document.removeEventListener('click', handleBackHomeClick);
 	}
+	if (event.target && event.target.id === 'back-list-button') {
+		removeModalBackdrop();
+		changeUrl('onlineMainScreen');
+		// 이벤트 리스너 제거
+		document.removeEventListener('click', handleBackHomeClick);
+	}
 }
 
 // 모달 띄운 후 홈으로 돌아가기 버튼 누르면 홈으로 돌아감

@@ -6,6 +6,7 @@ import ButtonExtraLarge from '../../../../components/ButtonExtraLarge.js';
 import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 
 import { RoomWebsocket } from '../roomManager.js';
+import { roomEndModal } from '../roomEndModal.js';
 
 const html = String.raw;
 
@@ -26,6 +27,7 @@ class WaitingRoomPage {
 				<div class="waiting-room-footer">${this.readyButton.template()}</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
+			${roomEndModal()}
 		`;
 	}
 
