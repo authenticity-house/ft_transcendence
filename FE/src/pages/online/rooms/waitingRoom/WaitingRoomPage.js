@@ -1,4 +1,4 @@
-import { changeUrl } from '../../../../index.js';
+import { changeUrl, changeUrlData } from '../../../../index.js';
 import { getUserSeatBox, getUserProfileBox } from './WaitingRoomUserBox.js';
 import { getRoomContainer } from './WaitingRoomInfo.js';
 
@@ -34,9 +34,9 @@ class WaitingRoomPage {
 	async mount(roomNumber) {
 		this.joinWebsocket(roomNumber);
 		try {
-			const msg = await this.roomWsManager.receiveMessages(this.render);
-
-			this.updateReadyButton(msg);
+			this.msg = await this.roomWsManager.receiveMessages(this.render);
+			console.log(this.msg);
+			this.updateReadyButton(this.msg);
 		} catch (error) {
 			console.error('Error mounting the room:', error);
 		}
@@ -53,6 +53,15 @@ class WaitingRoomPage {
 		const buttonColor = this.isHost ? 'yellow' : 'blue';
 
 		this.readyButton.updateTextAndColor(buttonText, buttonColor);
+
+		const modifyButton = document.querySelector('.room-info-modify-button');
+		console.log('수정');
+		if (modifyButton) {
+			modifyButton.addEventListener('click', () => {
+				this.msg.room_info.total_score /= 5;
+				changeUrlData('modifySetting', this.msg.room_info);
+			});
+		}
 	}
 
 	render(data) {

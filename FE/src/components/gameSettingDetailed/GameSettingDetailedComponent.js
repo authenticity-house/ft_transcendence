@@ -76,23 +76,10 @@ class GameSettingDetailedComponent {
 	}
 
 	resetData() {
-		this.data = {
-			battle_mode: deepCopy(this.initial.battle_mode),
-			total_score: 2,
-			level: 2,
-			color: {
-				paddle: '#5AD7FF',
-				ball: '#FFD164'
-			}
-		};
-
-		if (this.type === 'local') {
-			this.data.headcount = deepCopy(this.initial.headcount);
-			this.data.nickname = deepCopy(this.initial.nickname);
-		} else if (this.type === 'online') {
-			this.data.max_headcount = deepCopy(this.initial.max_headcount);
-			this.data.room_name = 'room';
-		}
+		this.data.total_score = 2;
+		this.data.level = 2;
+		this.data.color.paddle = '#5AD7FF';
+		this.data.color.ball = '#FFD164';
 	}
 
 	resetUI() {

@@ -18,6 +18,7 @@ import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSett
 import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
 
 import WaitingRoomPage from './pages/online/rooms/waitingRoom/WaitingRoomPage.js';
+import modifyGameSetting from './pages/online/rooms/ModifyGameSetting.js';
 
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import {
@@ -73,7 +74,8 @@ const routes = {
 	onlineSetting: OnlineGameSettingPage,
 	onlineSettingTournament: OnlineGameSettingTournament,
 	onlineDetailed: OnlineGameSettingDetailed,
-	waitingRoom: WaitingRoomPage
+	waitingRoom: WaitingRoomPage,
+	modifySetting: modifyGameSetting
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
