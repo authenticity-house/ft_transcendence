@@ -2,6 +2,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
 
 from rooms.services import RoomManager
+from rooms.services.exceptions import RoomError
 
 
 class RoomConsumer(JsonWebsocketConsumer):
@@ -53,7 +54,10 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.close()
 
     def room_info(self, event):
-        info = RoomManager.room_info(self.room_number, self.user)
+        try:
+            info = RoomManager.room_info(self.room_number, self.user)
+        except RoomError as e:
+            return
         info["type"] = "room.info"
         self.send_json(info)
 
@@ -76,8 +80,11 @@ class RoomConsumer(JsonWebsocketConsumer):
             },
         )
 
-    def disconnect(self, code):
+    def leave_group(self):
         async_to_sync(self.channel_layer.group_discard)(self.room_group_name, self.channel_name)
+
+    def disconnect(self, code):
+        self.leave_group()
 
     def __get_room(self):
         return RoomManager.get_room(self.room_number)
