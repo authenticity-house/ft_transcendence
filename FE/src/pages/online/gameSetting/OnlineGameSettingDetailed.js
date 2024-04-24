@@ -1,119 +1,71 @@
 import { changeUrlData } from '../../../index.js';
 import HorizontalButton from '../../../components/HorizontalButton.js';
+import {
+	createColorPicker,
+	createButtonConfigs,
+	createConfig,
+	deepCopy
+} from '../../../components/gameSettingDetailed/gameSettingUtils.js';
 
 const html = String.raw;
 
-function createColorPicker(colorCode, pickerId, buttonId) {
-	const colorPicker = `<input type="color" id="${pickerId}" value="${colorCode}" class="color-picker-hidden"/>`;
-	const colorDisplayButton = `<button class="button-select" id="${buttonId}" onclick="document.getElementById('${pickerId}').click()">${colorCode}</button>`;
-
-	return { colorPicker, colorDisplayButton };
-}
-
-function createButtonConfigs(buttonTexts, classes) {
-	return buttonTexts.map((text) => ({ text, classes }));
-}
-
-function createConfig(texts, classesPrefix, selectedIndices) {
-	return texts.map((text, index) => ({
-		text,
-		classes: `${classesPrefix}${selectedIndices === index + 1 ? ' selected' : ''}`
-	}));
-}
-
-function deepCopy(src) {
-	return JSON.parse(JSON.stringify(src));
-}
-
 class OnlineGameSettingDetailed {
+	createScoreAndLevelConfig() {
+		const scoreTexts = ['5', '10', '15'];
+		const levelTexts = ['쉬움', '보통', '어려움'];
+
+		return {
+			score: new HorizontalButton(
+				createConfig(scoreTexts, 'button-select', this.data.total_score),
+				'54rem'
+			),
+			level: new HorizontalButton(
+				createConfig(levelTexts, 'button-select', this.data.level),
+				'54rem'
+			)
+		};
+	}
+
+	createColorConfig() {
+		return {
+			paddleColor: createColorPicker(
+				this.data.color.paddle,
+				'paddleColorPicker',
+				'paddleColorButton'
+			),
+			ballColor: createColorPicker(
+				this.data.color.ball,
+				'ballColorPicker',
+				'ballColorButton'
+			)
+		};
+	}
+
+	createButtons() {
+		const buttonTexts = ['초기화', '완료'];
+		const buttonClasses =
+			'button-reset-complete head_blue_neon_15 blue_neon_10';
+		return new HorizontalButton(
+			createButtonConfigs(buttonTexts, buttonClasses),
+			'51rem'
+		);
+	}
+
 	template(initial) {
 		this.initial = initial;
 		this.data = deepCopy(initial);
 
-		const scoreTexts = ['5', '10', '15'];
-		const levelTexts = ['쉬움', '보통', '어려움'];
-
-		const scoreConfigs = createConfig(
-			scoreTexts,
-			'button-select',
-			this.data.total_score
-		);
-		const levelConfigs = createConfig(
-			levelTexts,
-			'button-select',
-			this.data.level
-		);
-
-		const score = new HorizontalButton(scoreConfigs, '54rem');
-		const level = new HorizontalButton(levelConfigs, '54rem');
-
-		const paddleColor = createColorPicker(
-			this.data.color.paddle,
-			'paddleColorPicker',
-			'paddleColorButton'
-		);
-		const ballColor = createColorPicker(
-			this.data.color.ball,
-			'ballColorPicker',
-			'ballColorButton'
-		);
-
-		const buttonTexts = ['초기화', '완료'];
-		const buttonClasses =
-			'button-reset-complete head_blue_neon_15 blue_neon_10';
-		const virticalbuttonConfigs = createButtonConfigs(
-			buttonTexts,
-			buttonClasses
-		);
-		const horizontalButton = new HorizontalButton(
-			virticalbuttonConfigs,
-			'51rem'
-		);
+		const { score, level } = this.createScoreAndLevelConfig();
+		const { paddleColor, ballColor } = this.createColorConfig();
+		const horizontalButton = this.createButtons();
 
 		return html`
 			<div class="game-setting-window head_white_neon_15">
 				<div class="game-setting-container">
 					<div class="game-setting-content-container width-66">
-						<div class="horizontal-button-container activate-button width-66">
-							<p class="text-subtitle-1">승점</p>
-							<div>${score.template()}</div>
-						</div>
-						<div class="horizontal-button-container activate-button width-66">
-							<p class="text-subtitle-1">난이도</p>
-							<div>${level.template()}</div>
-						</div>
-						<div class="horizontal-button-container width-66">
-							<!-- 패들색/배경색 선택 title 및 버튼 -->
-							<div class="vertical-button-container height-25">
-								<div class="horizontal-button-container width-28">
-									<p class="text-subtitle-1">패들색</p>
-									<div class="horizontal-button-container">
-										${paddleColor.colorPicker}${paddleColor.colorDisplayButton}
-									</div>
-								</div>
-								<div class="horizontal-button-container width-28">
-									<p class="text-subtitle-1">공색</p>
-									<div class="horizontal-button-container">
-										${ballColor.colorPicker}${ballColor.colorDisplayButton}
-									</div>
-								</div>
-							</div>
-							<!-- 패들색/배경색 표시 -->
-							<div class="color-display-back">
-								<div
-									class="color-display-paddle"
-									style="background-color: ${this.data.color.paddle};
-									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
-										.paddle}, 0rem 0rem 1.5rem 0rem ${this.data.color.paddle};"
-								></div>
-								<div
-									class="color-display-ball"
-									style="background-color: ${this.data.color.ball};
-									box-shadow: 0rem 0rem 1.5rem 0rem ${this.data.color
-										.ball}, 0rem 0rem 1.5rem 0rem ${this.data.color.ball};"
-								></div>
-							</div>
-						</div>
+						${this.createButtonSection('승점', score)}
+						${this.createButtonSection('난이도', level)}
+						${this.createColorSection(paddleColor, ballColor)}
 					</div>
 					<div class="horizontalButton">${horizontalButton.template()}</div>
 				</div>
@@ -121,113 +73,146 @@ class OnlineGameSettingDetailed {
 		`;
 	}
 
+	createButtonSection(title, component) {
+		return html`
+			<div class="horizontal-button-container activate-button width-66">
+				<p class="text-subtitle-1">${title}</p>
+				<div>${component.template()}</div>
+			</div>
+		`;
+	}
+
+	createColorSection(paddleColor, ballColor) {
+		return html`
+			<div class="horizontal-button-container width-66">
+				<div class="vertical-button-container height-25">
+					${this.createColorPickerSection('패들색', paddleColor)}
+					${this.createColorPickerSection('공색', ballColor)}
+				</div>
+				<div class="color-display-back">
+					${this.createColorDisplay('paddle', this.data.color.paddle)}
+					${this.createColorDisplay('ball', this.data.color.ball)}
+				</div>
+			</div>
+		`;
+	}
+
+	createColorPickerSection(title, colorComponent) {
+		return html`
+			<div class="horizontal-button-container width-28">
+				<p class="text-subtitle-1">${title}</p>
+				<div class="horizontal-button-container">
+					${colorComponent.colorPicker}${colorComponent.colorDisplayButton}
+				</div>
+			</div>
+		`;
+	}
+
+	createColorDisplay(type, color) {
+		return html`
+			<div
+				class="color-display-${type}"
+				style="background-color: ${color};
+                box-shadow: 0rem 0rem 1.5rem 0rem ${color}, 0rem 0rem 1.5rem 0rem ${color};"
+			></div>
+		`;
+	}
+
+	// -----------------------------------------------------------------
+
+	onButtonClicked(container, clickedBtn, index, btnIndex) {
+		container.querySelectorAll('button').forEach((innerBtn) => {
+			innerBtn.classList.remove('selected');
+		});
+		clickedBtn.classList.add('selected');
+
+		if (index === 0) {
+			this.data.total_score = btnIndex + 1;
+		} else if (index === 1) {
+			this.data.level = btnIndex + 1;
+		}
+	}
+
 	activateButtons(containerSelector) {
 		document.querySelectorAll(containerSelector).forEach((container, index) => {
 			container.querySelectorAll('button').forEach((btn, btnIndex) => {
-				btn.addEventListener('click', (event) => {
-					const clickedBtn = event.target;
-					container.querySelectorAll('button').forEach((innerBtn) => {
-						innerBtn.classList.remove('selected');
-					});
-					clickedBtn.classList.add('selected');
-					if (index === 0) {
-						this.data.total_score = btnIndex + 1;
-					} else if (index === 1) {
-						this.data.level = btnIndex + 1;
+				btn.addEventListener('click', () =>
+					this.onButtonClicked(container, btn, index, btnIndex)
+				);
+			});
+		});
+	}
+
+	changeColor(elementId, element, elementColorSelector) {
+		const color = this.data.color[element];
+		document.getElementById(elementId).textContent = color;
+		document.querySelector(elementColorSelector).style.backgroundColor = color;
+		document.querySelector(elementColorSelector).style.boxShadow =
+			`0rem 0rem 1.5rem 0rem ${color}, 0rem 0rem 1.5rem 0rem ${color}`;
+	}
+
+	addColorPickerEventListener(pickerId, colorKey, buttonId, displayClass) {
+		const picker = document.getElementById(pickerId);
+		picker.addEventListener('change', (e) => {
+			this.data.color[colorKey] = e.target.value;
+			this.changeColor(buttonId, colorKey, displayClass);
+		});
+	}
+
+	resetData() {
+		this.data = {
+			battle_mode: deepCopy(this.initial.battle_mode),
+			total_score: 2,
+			level: 2,
+			color: {
+				paddle: '#5AD7FF',
+				ball: '#FFD164'
+			},
+			max_headcount: deepCopy(this.initial.max_headcount),
+			room_name: 'room'
+		};
+	}
+
+	resetUI() {
+		document
+			.querySelectorAll('.activate-button')
+			.forEach((container, index) => {
+				container.querySelectorAll('button').forEach((btn, btnIndex) => {
+					btn.classList.remove('selected');
+					if ((index === 0 || index === 1) && btnIndex === 1) {
+						btn.classList.add('selected');
 					}
 				});
 			});
-		});
+
+		document.getElementById('paddleColorPicker').value = this.data.color.paddle;
+		document.getElementById('ballColorPicker').value = this.data.color.ball;
+		this.changeColor('paddleColorButton', 'paddle', '.color-display-paddle');
+		this.changeColor('ballColorButton', 'ball', '.color-display-ball');
 	}
 
 	addEventListeners() {
 		this.activateButtons('.activate-button');
 
-		// 색상 변경
-		const changeColor = (
-			elementId,
-			element,
-			elementColorSelector,
-			boxShadowSelector
-		) => {
-			document.getElementById(elementId).textContent = this.data.color[element];
-			// 패들, 공 색깔
-			document.querySelector(elementColorSelector).style.backgroundColor =
-				this.data.color[element];
-			// 패들, 공 효과 색깔
-			document.querySelector(boxShadowSelector).style.boxShadow =
-				`0rem 0rem 1.5rem 0rem ${this.data.color[element]}, 0rem 0rem 1.5rem 0rem ${this.data.color[element]}`;
-		};
+		this.addColorPickerEventListener(
+			'paddleColorPicker',
+			'paddle',
+			'paddleColorButton',
+			'.color-display-paddle'
+		);
+		this.addColorPickerEventListener(
+			'ballColorPicker',
+			'ball',
+			'ballColorButton',
+			'.color-display-ball'
+		);
 
-		// 패들 색상 선택
-		const paddleColorPicker = document.getElementById('paddleColorPicker');
-		paddleColorPicker.addEventListener('change', (e) => {
-			this.data.color.paddle = e.target.value;
-			changeColor(
-				'paddleColorButton',
-				'paddle',
-				'.color-display-paddle',
-				'.color-display-paddle'
-			);
-		});
-
-		// 공 색상 선택
-		const ballColorPicker = document.getElementById('ballColorPicker');
-		ballColorPicker.addEventListener('change', (e) => {
-			this.data.color.ball = e.target.value;
-			changeColor(
-				'ballColorButton',
-				'ball',
-				'.color-display-ball',
-				'.color-display-ball'
-			);
-		});
-
-		// 리셋 버튼
 		const resetButton = document.querySelector(
 			'.horizontalButton button:nth-child(1)'
 		);
 		resetButton.addEventListener('click', () => {
-			this.data = {
-				battle_mode: deepCopy(this.initial.battle_mode),
-				total_score: 2,
-				level: 2,
-				color: {
-					paddle: '#5AD7FF',
-					ball: '#FFD164'
-				},
-				max_headcount: deepCopy(this.initial.max_headcount),
-				room_name: 'room'
-			};
-
-			document
-				.querySelectorAll('.activate-button')
-				.forEach((container, index) => {
-					container.querySelectorAll('button').forEach((btn, btnIndex) => {
-						btn.classList.remove('selected');
-						// index : active-button 첫번째, 두번쨰
-						// btnInex : 세가지 선택지 중 두번째 항목
-						if ((index === 0 || index === 1) && btnIndex === 1) {
-							btn.classList.add('selected');
-						}
-					});
-				});
-
-			paddleColorPicker.value = this.data.color.paddle;
-			ballColorPicker.value = this.data.color.ball;
-
-			changeColor(
-				'paddleColorButton',
-				'paddle',
-				'.color-display-paddle',
-				'.color-display-paddle'
-			);
-			changeColor(
-				'ballColorButton',
-				'ball',
-				'.color-display-ball',
-				'.color-display-ball'
-			);
+			this.resetData();
+			this.resetUI();
 		});
 
 		const confirmButton = document.querySelector(
@@ -241,5 +226,4 @@ class OnlineGameSettingDetailed {
 		});
 	}
 }
-
 export default new OnlineGameSettingDetailed();

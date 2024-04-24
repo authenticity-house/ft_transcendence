@@ -39,8 +39,6 @@ export class RoomWebsocket {
 
 			this.ws.onopen = () => {
 				console.log('connected');
-
-				// this.receiveMessages();
 			};
 		} catch (error) {
 			console.error('웹소켓 연결 실패', error);
