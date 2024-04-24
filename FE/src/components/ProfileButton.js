@@ -13,7 +13,7 @@ function profileButton() {
 				id="header-stats-button"
 			>
 				<img src="image/statistics.svg" alt="stats" class="info-modal-img" />
-				<span class="display-light24">통계</span>
+				<span class="display-light18">통계</span>
 			</button>
 			<button
 				type="button"
@@ -23,7 +23,7 @@ function profileButton() {
 				id="header-my-friend-button"
 			>
 				<img src="image/my-friend.svg" alt="friend" class="info-modal-img" />
-				<span class="display-light24">내 친구</span>
+				<span class="display-light18">내 친구</span>
 			</button>
 			<button
 				type="button"
@@ -33,7 +33,7 @@ function profileButton() {
 				id="header-user-search-button"
 			>
 				<img src="image/search.svg" alt="search" class="info-modal-img" />
-				<span class="display-light24">유저 검색</span>
+				<span class="display-light18">유저 검색</span>
 			</button>
 			<button
 				type="button"
@@ -43,7 +43,7 @@ function profileButton() {
 				id="header-my-record-button"
 			>
 				<img src="image/match-record.svg" alt="record" class="info-modal-img" />
-				<span class="display-light24">경기 기록</span>
+				<span class="display-light18">경기 기록</span>
 			</button>
 			<button
 				type="button"
@@ -55,7 +55,7 @@ function profileButton() {
 					alt="user"
 					class="user-profile-none-img"
 				/>
-				<div class="modal-login-tooltip display-light18">로그인 필요</div>
+				<div class="modal-login-tooltip display-light14">로그인 필요</div>
 			</button>
 		</div>
 	`;
