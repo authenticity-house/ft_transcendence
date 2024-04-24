@@ -1,5 +1,5 @@
-import { changeUrlData } from '../../index.js';
-import HorizontalButton from '../../components/HorizontalButton.js';
+import { changeUrlData } from '../../../index.js';
+import HorizontalButton from '../../../components/HorizontalButton.js';
 
 const html = String.raw;
 
