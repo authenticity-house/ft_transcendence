@@ -30,7 +30,7 @@ function createColorDisplay(type, color) {
 	`;
 }
 
-export function createColorSection(paddleColor, ballColor) {
+export function createColorSection(paddleColor, ballColor, color) {
 	return html`
 		<div class="horizontal-button-container width-66">
 			<div class="vertical-button-container height-25">
@@ -38,8 +38,8 @@ export function createColorSection(paddleColor, ballColor) {
 				${createColorPickerSection('공색', ballColor)}
 			</div>
 			<div class="color-display-back">
-				${createColorDisplay('paddle', this.data.color.paddle)}
-				${createColorDisplay('ball', this.data.color.ball)}
+				${createColorDisplay('paddle', color.paddle)}
+				${createColorDisplay('ball', color.ball)}
 			</div>
 		</div>
 	`;

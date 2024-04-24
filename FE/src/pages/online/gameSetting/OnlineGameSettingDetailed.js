@@ -1,4 +1,4 @@
-import GameSettingDetailedComponent from '../../../components/gameSettingDetailed/GameSettingDetailedComponent';
+import GameSettingDetailedComponent from '../../../components/gameSettingDetailed/GameSettingDetailedComponent.js';
 
 class OnlineGameSettingDetailed {
 	constructor() {

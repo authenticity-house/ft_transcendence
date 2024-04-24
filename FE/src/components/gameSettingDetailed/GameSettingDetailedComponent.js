@@ -1,9 +1,8 @@
 import { changeUrlData } from '../../index.js';
-import HorizontalButton from '../HorizontalButton.js';
 import {
-	createColorPicker,
-	createButtonConfigs,
-	createConfig,
+	createColorConfig,
+	createScoreAndLevelConfig,
+	createButtons,
 	deepCopy
 } from './gameSettingUtils.js';
 
@@ -12,55 +11,14 @@ import { createButtonSection, createColorSection } from './gameSettingHTML.js';
 const html = String.raw;
 
 class GameSettingDetailedComponent {
-	createScoreAndLevelConfig() {
-		const scoreTexts = ['5', '10', '15'];
-		const levelTexts = ['쉬움', '보통', '어려움'];
-
-		return {
-			score: new HorizontalButton(
-				createConfig(scoreTexts, 'button-select', this.data.total_score),
-				'54rem'
-			),
-			level: new HorizontalButton(
-				createConfig(levelTexts, 'button-select', this.data.level),
-				'54rem'
-			)
-		};
-	}
-
-	createColorConfig() {
-		return {
-			paddleColor: createColorPicker(
-				this.data.color.paddle,
-				'paddleColorPicker',
-				'paddleColorButton'
-			),
-			ballColor: createColorPicker(
-				this.data.color.ball,
-				'ballColorPicker',
-				'ballColorButton'
-			)
-		};
-	}
-
-	createButtons() {
-		const buttonTexts = ['초기화', '완료'];
-		const buttonClasses =
-			'button-reset-complete head_blue_neon_15 blue_neon_10';
-		return new HorizontalButton(
-			createButtonConfigs(buttonTexts, buttonClasses),
-			'51rem'
-		);
-	}
-
 	template(initial, type) {
 		this.initial = initial;
 		this.data = deepCopy(initial);
 		this.type = type;
 
-		const { score, level } = this.createScoreAndLevelConfig();
-		const { paddleColor, ballColor } = this.createColorConfig();
-		const horizontalButton = this.createButtons();
+		const { score, level } = createScoreAndLevelConfig(this.data);
+		const { paddleColor, ballColor } = createColorConfig(this.data.color);
+		const horizontalButton = createButtons();
 
 		return html`
 			<div class="game-setting-window head_white_neon_15">
@@ -68,7 +26,7 @@ class GameSettingDetailedComponent {
 					<div class="game-setting-content-container width-66">
 						${createButtonSection('승점', score)}
 						${createButtonSection('난이도', level)}
-						${createColorSection(paddleColor, ballColor)}
+						${createColorSection(paddleColor, ballColor, this.data.color)}
 					</div>
 					<div class="horizontalButton">${horizontalButton.template()}</div>
 				</div>
@@ -118,30 +76,22 @@ class GameSettingDetailedComponent {
 	}
 
 	resetData() {
+		this.data = {
+			battle_mode: deepCopy(this.initial.battle_mode),
+			total_score: 2,
+			level: 2,
+			color: {
+				paddle: '#5AD7FF',
+				ball: '#FFD164'
+			}
+		};
+
 		if (this.type === 'local') {
-			this.data = {
-				battle_mode: deepCopy(this.initial.battle_mode),
-				total_score: 2,
-				level: 2,
-				color: {
-					paddle: '#5AD7FF',
-					ball: '#FFD164'
-				},
-				headcount: deepCopy(this.initial.headcount),
-				nickname: deepCopy(this.initial.nickname)
-			};
-		} else {
-			this.data = {
-				battle_mode: deepCopy(this.initial.battle_mode),
-				total_score: 2,
-				level: 2,
-				color: {
-					paddle: '#5AD7FF',
-					ball: '#FFD164'
-				},
-				max_headcount: deepCopy(this.initial.max_headcount),
-				room_name: 'room'
-			};
+			this.data.headcount = deepCopy(this.initial.headcount);
+			this.data.nickname = deepCopy(this.initial.nickname);
+		} else if (this.type === 'online') {
+			this.data.max_headcount = deepCopy(this.initial.max_headcount);
+			this.data.room_name = 'room';
 		}
 	}
 
@@ -173,19 +123,23 @@ class GameSettingDetailedComponent {
 	}
 
 	addConfirmEventListener() {
+		if (!(this.type === 'local' || this.type === 'online')) return;
+
 		const confirmButton = document.querySelector(
 			'.horizontalButton button:nth-child(2)'
 		);
-		const oneOnone = this.type === 'local' ? 'gameSetting' : 'onlineSetting';
-		const tournament =
-			this.type === 'local'
-				? 'gameSettingTournament'
-				: 'onlineSettingTournament';
-
 		confirmButton.addEventListener('click', () => {
-			if (this.data.battle_mode === 1) changeUrlData(oneOnone, this.data);
-			else if (this.data.battle_mode === 2)
-				changeUrlData(tournament, this.data);
+			let setting = '';
+
+			if (this.data.battle_mode === 1) {
+				setting = this.type === 'local' ? 'gameSetting' : 'onlineSetting';
+			} else if (this.data.battle_mode === 2) {
+				setting =
+					this.type === 'local'
+						? 'gameSettingTournament'
+						: 'onlineSettingTournament';
+			}
+			if (setting) changeUrlData(setting, this.data);
 		});
 	}
 
