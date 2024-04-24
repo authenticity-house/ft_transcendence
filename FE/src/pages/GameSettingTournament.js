@@ -184,10 +184,10 @@ class GameSettingTournament {
 			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
-			// const newData = this.data;
-			// this.resetData();
-			updateNicknamesData(this.data);
-			changeUrlData('gameSettingDetailed', this.data);
+			const newData = this.data;
+			this.resetData();
+			updateNicknamesData(newData);
+			changeUrlData('gameSettingDetailed', newData);
 		});
 
 		// 닉네임 입력 체크
