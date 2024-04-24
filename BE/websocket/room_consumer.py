@@ -48,15 +48,15 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.broadcast("room.info", "get room info")
         self.close()
 
-    def room_end(self, event):
+    def room_end(self, event):  # pylint: disable=unused-argument
         msg = {"type": "room.end"}
         self.send_json(msg)
         self.close()
 
-    def room_info(self, event):
+    def room_info(self, event):  # pylint: disable=unused-argument
         try:
             info = RoomManager.room_info(self.room_number, self.user)
-        except RoomError as e:
+        except RoomError:
             return
         info["type"] = "room.info"
         self.send_json(info)
