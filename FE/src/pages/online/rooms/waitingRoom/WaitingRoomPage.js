@@ -7,10 +7,15 @@ import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 
 import { RoomWebsocket } from '../roomManager.js';
 import { roomEndModal } from '../roomEndModal.js';
+import ModifyGameSetting from '../ModifyGameSetting.js';
 
 const html = String.raw;
 
 class WaitingRoomPage {
+	constructor() {
+		this.modifyPage = ModifyGameSetting;
+	}
+
 	template() {
 		this.readyState = false;
 		this.isHost = false;
@@ -18,7 +23,7 @@ class WaitingRoomPage {
 		const backButton = new ButtonBackArrow();
 		this.readyButton = new ButtonExtraLarge('로딩 중', 'gray');
 
-		return html`
+		this.page = html`
 			<div class="large-window flex-direction-column head_white_neon_15">
 				<div class="waiting-room-main">
 					<div id="userSeatElement"></div>
@@ -29,6 +34,7 @@ class WaitingRoomPage {
 			</div>
 			${roomEndModal()}
 		`;
+		return this.page;
 	}
 
 	async mount(roomNumber) {
@@ -53,15 +59,6 @@ class WaitingRoomPage {
 		const buttonColor = this.isHost ? 'yellow' : 'blue';
 
 		this.readyButton.updateTextAndColor(buttonText, buttonColor);
-
-		const modifyButton = document.querySelector('.room-info-modify-button');
-		console.log('수정');
-		if (modifyButton) {
-			modifyButton.addEventListener('click', () => {
-				this.msg.room_info.total_score /= 5;
-				changeUrlData('modifySetting', this.msg.room_info);
-			});
-		}
 	}
 
 	render(data) {
@@ -76,6 +73,15 @@ class WaitingRoomPage {
 		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
 	}
 
+	backWaitingRoom(data) {
+		document.querySelector('#root').innerHTML = this.page;
+		this.readyButton.updateTextAndColor('시작', 'yellow');
+		// 웹소켓 메시지 보내기
+		console.log(data);
+		this.msg.room_info = data;
+		this.render(this.msg);
+	}
+
 	addEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
@@ -87,6 +93,19 @@ class WaitingRoomPage {
 			}
 			// 웹소켓으로 state 정보 보내기
 			console.log('click!');
+		});
+
+		document.body.addEventListener('click', (event) => {
+			if (event.target.classList.contains('room-info-modify-button')) {
+				console.log('수정하기');
+
+				const root = document.querySelector('#root');
+				root.innerHTML = this.modifyPage.template(this.msg.room_info);
+				this.modifyPage.addEventListeners();
+				this.modifyPage.setOnConfirmCallback(this.backWaitingRoom.bind(this));
+
+				// changeUrlData('modifySetting', this.msg.room_info);
+			}
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');

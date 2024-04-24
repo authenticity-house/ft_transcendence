@@ -109,6 +109,10 @@ class GameSettingDetailedComponent {
 		});
 	}
 
+	getModifiedData() {
+		return this.data;
+	}
+
 	addConfirmEventListener() {
 		if (!(this.type === 'local' || this.type === 'online')) return;
 

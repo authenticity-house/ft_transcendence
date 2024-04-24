@@ -74,8 +74,7 @@ const routes = {
 	onlineSetting: OnlineGameSettingPage,
 	onlineSettingTournament: OnlineGameSettingTournament,
 	onlineDetailed: OnlineGameSettingDetailed,
-	waitingRoom: WaitingRoomPage,
-	modifySetting: modifyGameSetting
+	waitingRoom: WaitingRoomPage
 };
 
 // When the page is loaded, the root element is filled with the template of the current page
