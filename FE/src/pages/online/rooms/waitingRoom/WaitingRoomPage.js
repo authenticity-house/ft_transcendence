@@ -15,13 +15,15 @@ class WaitingRoomPage {
 		this.isHost = false;
 
 		const backButton = new ButtonBackArrow();
+		this.readyButton = new ButtonExtraLarge('로딩 중', 'gray');
+
 		return html`
 			<div class="large-window flex-direction-column head_white_neon_15">
 				<div class="waiting-room-main">
 					<div id="userSeatElement"></div>
 					<div id="roomInfoElement"></div>
 				</div>
-				<div class="waiting-room-footer" id="readyButtonContainer"></div>
+				<div class="waiting-room-footer">${this.readyButton.template()}</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
 		`;
@@ -32,8 +34,7 @@ class WaitingRoomPage {
 		try {
 			const msg = await this.roomWsManager.receiveMessages(this.render);
 
-			this.mountButton(msg);
-			this.addAsyncEventListeners();
+			this.updateReadyButton(msg);
 		} catch (error) {
 			console.error('Error mounting the room:', error);
 		}
@@ -44,39 +45,27 @@ class WaitingRoomPage {
 		this.roomWsManager.joinRoomWebsocket(roomNumber);
 	}
 
-	mountButton(data) {
-		const buttonText = data.my_info.host ? '시작' : '준비';
-		const buttonColor = data.my_info.host ? 'yellow' : 'blue';
-		this.readyButton = new ButtonExtraLarge(buttonText, buttonColor);
-		const readyButtonContainer = document.getElementById(
-			'readyButtonContainer'
-		);
-		if (readyButtonContainer)
-			readyButtonContainer.innerHTML = this.readyButton.template();
+	updateReadyButton(data) {
 		this.isHost = data.my_info.host;
+		const buttonText = this.isHost ? '시작' : '준비';
+		const buttonColor = this.isHost ? 'yellow' : 'blue';
+
+		this.readyButton.updateTextAndColor(buttonText, buttonColor);
 	}
 
 	render(data) {
-		// user info
 		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
 		getUserProfileBox(userSeatElement, data.user_info);
 
-		const userSeatContainer = document.getElementById('userSeatElement');
+		document.getElementById('userSeatElement').innerHTML = '';
+		document.getElementById('userSeatElement').appendChild(userSeatElement);
 
-		userSeatContainer.innerHTML = '';
-		userSeatContainer.appendChild(userSeatElement);
-
-		// room info
 		const roomInfoElement = getRoomContainer(data.room_info, data.my_info.host);
-		const roomInfoContainer = document.getElementById('roomInfoElement');
-
-		roomInfoContainer.innerHTML = '';
-		roomInfoContainer.appendChild(roomInfoElement);
+		document.getElementById('roomInfoElement').innerHTML = '';
+		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
 	}
 
-	addEventListeners() {}
-
-	addAsyncEventListeners() {
+	addEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
 			if (!this.isHost) {
