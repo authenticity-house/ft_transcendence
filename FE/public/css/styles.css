@@ -549,14 +549,13 @@ td {
 /* GameSettingTournament*/
 
 .num-block {
-	float: left;
-	width: 100%;
-	align-items: center;
+	display: flex;
+	width: 14rem;
+	/* align-items: center; */
 }
 
 /* head count */
 .head-count .num-in {
-	float: left;
 	width: 14rem;
 }
 
@@ -565,10 +564,10 @@ td {
 	float: left;
 	width: 3.6rem;
 	height: 3.6rem;
-	/*line-height: 32px;*/
 	text-align: center;
 	position: relative;
 	cursor: pointer;
+	margin-left: 1rem;
 }
 
 .head-count .num-in span.dis:before,
@@ -618,7 +617,6 @@ td {
 /* head count */
 .text-light-15 {
 	width: 1.5rem;
-	/* flex-shrink: 0; */
 	color: #fff;
 	text-align: center;
 	font-size: 2rem;
@@ -626,6 +624,13 @@ td {
 	font-weight: 300;
 	line-height: normal;
 }
+
+.nickname-error-text {
+	width: 100%;
+	color: #ff5d84;
+	text-align: end;
+}
+
 .input-nickname-box {
 	width: 20rem;
 	height: 4rem;
@@ -670,14 +675,6 @@ td {
 	flex-shrink: 0;
 }
 
-/* 인원수 설정 */
-.game-setting-number-container {
-	display: flex;
-	padding-left: 1rem;
-	align-items: center;
-	gap: 2rem;
-	align-self: stretch;
-}
 /* 인원 수 선택 및 닉네임 입력 컨테이너 두가지 포함 */
 .game-setting-tournament-container {
 	display: flex;
@@ -686,6 +683,16 @@ td {
 	align-items: center;
 	gap: 2rem;
 	flex-shrink: 0;
+}
+
+/* 인원수 설정 */
+.game-setting-number-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 4rem;
+	padding: 0 1rem;
+	gap: 2rem;
 }
 /* GameSettingPage*/
 
@@ -722,9 +729,8 @@ td {
 }
 
 .text-subtitle-1-left {
-	width: 14rem;
+	width: 20rem;
 	color: #fff;
-	text-align: flex-start;
 	font-size: 2.4rem;
 	font-style: normal;
 	font-weight: 300;
