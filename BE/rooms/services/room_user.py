@@ -26,3 +26,6 @@ class RoomUser:
             "rating": self._rating,
             "ready_state": self._ready_state == RoomUser.Status.READY,
         }
+
+    def is_same(self, user) -> bool:
+        return self._nickname == user.nickname

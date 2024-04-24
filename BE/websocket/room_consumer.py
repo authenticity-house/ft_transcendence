@@ -48,9 +48,7 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.close()
 
     def room_end(self, event):
-        msg = {
-            "type": "room.end"
-        }
+        msg = {"type": "room.end"}
         self.send_json(msg)
         self.close()
 

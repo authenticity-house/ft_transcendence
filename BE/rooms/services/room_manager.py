@@ -64,7 +64,7 @@ class RoomManager:
         info = {
             "room_info": room.room_info(),
             "user_info": room.users_info(),
-            "my_info": room.my_info(user)
+            "my_info": room.my_info(user),
         }
         return info
 
