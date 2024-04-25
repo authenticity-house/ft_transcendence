@@ -42,6 +42,15 @@ class RoomManager:
         room.add_user(user)
 
     @classmethod
+    def delete_room(cls, room_number) -> None:
+        cls._rooms.pop(room_number)
+
+    @classmethod
+    def is_host(cls, room_number, user) -> bool:
+        room = cls.get_room(room_number)
+        return room.is_host(user)
+
+    @classmethod
     def room_list(cls) -> list:
         lst = []
         for room in cls._rooms.values():
@@ -55,7 +64,7 @@ class RoomManager:
         info = {
             "room_info": room.room_info(),
             "user_info": room.users_info(),
-            "my_info": room.my_info(user)
+            "my_info": room.my_info(user),
         }
         return info
 

@@ -47,17 +47,16 @@ class Room:  # pylint: disable=R0902
         self._total_rating += rating
 
     def delete_user(self, user) -> None:
-        nickname = user.nickname
         # rating = user.stats.rating
         rating = 1000
 
         for idx, room_user in enumerate(self._users):
-            if room_user._nickname == nickname:
+            if room_user.is_same(user):
                 self._users.pop(idx)
                 self._total_rating -= rating
                 return
 
-        raise RoomError(f"Can not found such user: {nickname}")
+        raise RoomError(f"Can not found such user: {user.nickname}")
 
     def room_info(self) -> dict:
         return {
@@ -90,13 +89,29 @@ class Room:  # pylint: disable=R0902
 
     def my_info(self, user) -> dict:
         for idx, room_user in enumerate(self._users):
-            if room_user._nickname == user.nickname:
+            if room_user.is_same(user):
                 info = room_user.info()
                 info["host"] = idx == 0
                 info["room_position"] = idx
                 return info
 
         raise RoomError(f"Can not found such user: {user.nickname}")
+
+    def is_host(self, user) -> bool:
+        host_user = self._users[0]
+        return host_user.is_same(user)
+
+    def change_state(self, user):
+        for room_user in self._users:
+            if room_user.is_same(user):
+                room_user.change_ready_state()
+                break
+
+    def change_info(self, info):
+        self._level = info["level"]
+        self._total_score = info["total_score"]
+        self._paddle_color = info["color"]["paddle"]
+        self._ball_color = info["color"]["ball"]
 
     def __current_headcount(self) -> int:
         return len(self._users)
