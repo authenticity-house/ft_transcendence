@@ -15,8 +15,6 @@ class ModifyGameSetting {
 	}
 
 	addEventListeners() {
-		// this.setting.setOnConfirmCallback(this.onConfirmCallback.bind(this));
-
 		this.setting.addEventListeners();
 
 		const confirmButton = document.querySelector(
