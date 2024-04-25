@@ -1,4 +1,3 @@
-import { changeUrlData } from '../../index.js';
 import {
 	createColorConfig,
 	createScoreAndLevelConfig,
@@ -11,10 +10,9 @@ import { createButtonSection, createColorSection } from './gameSettingHTML.js';
 const html = String.raw;
 
 class GameSettingDetailedComponent {
-	template(initial, type) {
+	template(initial) {
 		this.initial = initial;
 		this.data = deepCopy(initial);
-		this.type = type;
 
 		const { score, level } = createScoreAndLevelConfig(this.data);
 		const { paddleColor, ballColor } = createColorConfig(this.data.color);
@@ -113,27 +111,6 @@ class GameSettingDetailedComponent {
 		return this.data;
 	}
 
-	addConfirmEventListener() {
-		if (!(this.type === 'local' || this.type === 'online')) return;
-
-		const confirmButton = document.querySelector(
-			'.horizontalButton button:nth-child(2)'
-		);
-		confirmButton.addEventListener('click', () => {
-			let setting = '';
-
-			if (this.data.battle_mode === 1) {
-				setting = this.type === 'local' ? 'gameSetting' : 'onlineSetting';
-			} else if (this.data.battle_mode === 2) {
-				setting =
-					this.type === 'local'
-						? 'gameSettingTournament'
-						: 'onlineSettingTournament';
-			}
-			if (setting) changeUrlData(setting, this.data);
-		});
-	}
-
 	addEventListeners() {
 		this.activateButtons('.activate-button');
 
@@ -150,7 +127,6 @@ class GameSettingDetailedComponent {
 			'.color-display-ball'
 		);
 		this.addResetEventListener();
-		this.addConfirmEventListener();
 	}
 }
 export default GameSettingDetailedComponent;

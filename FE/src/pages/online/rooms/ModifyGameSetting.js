@@ -1,5 +1,4 @@
 import GameSettingDetailedComponent from '../../../components/gameSettingDetailed/GameSettingDetailedComponent.js';
-import { changeUrlData } from '../../../index.js';
 
 class ModifyGameSetting {
 	constructor() {

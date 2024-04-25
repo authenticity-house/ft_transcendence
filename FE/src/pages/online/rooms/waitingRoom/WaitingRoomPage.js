@@ -1,4 +1,4 @@
-import { changeUrl, changeUrlData } from '../../../../index.js';
+import { changeUrl } from '../../../../index.js';
 import { getUserSeatBox, getUserProfileBox } from './WaitingRoomUserBox.js';
 import { getRoomContainer } from './WaitingRoomInfo.js';
 
