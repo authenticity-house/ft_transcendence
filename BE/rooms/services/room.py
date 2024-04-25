@@ -105,6 +105,7 @@ class Room:  # pylint: disable=R0902
         for room_user in self._users:
             if room_user.is_same(user):
                 room_user.change_ready_state()
+                break
 
     def change_info(self, info):
         self._level = info["level"]
