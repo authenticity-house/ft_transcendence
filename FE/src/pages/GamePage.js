@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
+
 import { changeUrl } from '../index.js';
 import { exitModal } from '../components/modal/exitModal.js';
 import * as utils from './gamePageUtils.js';
@@ -55,11 +59,14 @@ class GamePage {
 
 	addToScene(func) {
 		const result = func();
-		if (Array.isArray(result)) {
-			result.forEach((obj) => this.scene.add(obj));
-		} else {
-			this.scene.add(result);
-		}
+
+		// this.scene.add(result);
+		// if (result instanceof THREE.Object3D) {
+		this.scene.add(result);
+		// } else {
+		// 	console.error('추가하려는 객체가 THREE.Object3D의 인스턴스가 아닙니다.');
+		// 	console.log(func);
+		// }
 		return result;
 	}
 
@@ -71,12 +78,16 @@ class GamePage {
 		this.createObjects();
 
 		this.renderer.render(this.scene, this.camera);
+
 		document.addEventListener('resize', this.handleResize);
 	}
 
 	createObjects() {
-		this.addToScene(utils.addLights);
-		this.addToScene(utils.createBoard);
+		this.addToScene(utils.addAmbientLight);
+		this.addToScene(utils.addPointLights);
+
+		this.addToScene(utils.createBoardLine);
+		this.addToScene(utils.createBoardPlane);
 		this.addToScene(utils.createDashedLine);
 
 		this.ballMesh = this.addToScene(() => utils.createBall(this.initial));
@@ -94,13 +105,48 @@ class GamePage {
 			utils.createPaddleLight(this.paddleMesh2, this.initial, 'right')
 		);
 
-		this.addToScene(utils.createReadyText);
+		this.createReadyText();
 
 		this.setPositions();
 		this.setNicknames();
 	}
 
 	// --------------------------------
+	createReadyText() {
+		const fontLoader = new FontLoader();
+
+		fontLoader.load('fonts/esamanru_medium.typeface.json', (font) => {
+			const textGeometry = new TextGeometry('Ready', {
+				font,
+				size: 0.4,
+				height: 0.1,
+				curveSegments: 12,
+				bevelEnabled: true,
+				bevelThickness: 0.03,
+				bevelSize: 0.01,
+				bevelOffset: 0,
+				bevelSegments: 1
+			});
+			const textMaterial = new THREE.MeshPhysicalMaterial({
+				color: 0xffffff,
+				metalness: 0.5,
+				roughness: 0.5,
+				clearcoat: 1,
+				clearcoatRoughness: 0.5,
+				emissive: 0xff00ff,
+				emissiveIntensity: 0.5
+			});
+			const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+			textMesh.visible = false;
+			textMesh.position.x = -0.96;
+			textMesh.position.y = -0.13;
+			textMesh.position.z = 0.5;
+			textMesh.name = 'readyText';
+
+			this.scene.add(textMesh);
+		});
+	}
+
 	setPositions() {
 		this.ballMesh.position.set(this.initial.ball.x, this.initial.ball.y, -0.01);
 		this.paddleMesh1.position.set(

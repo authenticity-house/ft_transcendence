@@ -1,6 +1,4 @@
 import * as THREE from 'three';
-import { FontLoader } from '../../node_modules/three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/TextGeometry.js';
 
 export function setupScene() {
 	const scene = new THREE.Scene();
@@ -29,21 +27,29 @@ export function createRenderer() {
 	return renderer;
 }
 
-export function addLights() {
+export function addAmbientLight() {
 	const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+	return ambientLight;
+}
 
+export function addPointLights() {
 	const pointLight = new THREE.PointLight(0xffffff, 1, 1000);
 	pointLight.position.set(0, 0, 1);
 
-	return { ambientLight, pointLight };
+	return pointLight;
 }
-
-export function createBoard() {
+export function createBoardLine() {
 	const board = new THREE.BoxGeometry(6, 4, 0.1);
+
 	const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
 	const edges = new THREE.EdgesGeometry(board);
+
 	const line = new THREE.LineSegments(edges, lineMaterial);
 
+	return line;
+}
+
+export function createBoardPlane() {
 	const plane = new THREE.PlaneGeometry(6, 4);
 	const planeMaterial = new THREE.MeshPhysicalMaterial({
 		color: 0x000000,
@@ -53,9 +59,11 @@ export function createBoard() {
 		clearcoatRoughness: 0.5,
 		side: THREE.DoubleSide
 	});
+
 	const planeMesh = new THREE.Mesh(plane, planeMaterial);
 	planeMesh.position.z = -0.05;
-	return { line, planeMesh };
+
+	return planeMesh;
 }
 
 export function createDashedLine() {
@@ -131,39 +139,4 @@ export function createPaddleLight(paddleMesh, initial, pos) {
 	}
 
 	return paddleLightGroup;
-}
-
-export function createReadyText() {
-	const fontLoader = new FontLoader();
-
-	fontLoader.load('fonts/esamanru_medium.typeface.json', (font) => {
-		const textGeometry = new TextGeometry('Ready', {
-			font,
-			size: 0.4,
-			height: 0.1,
-			curveSegments: 12,
-			bevelEnabled: true,
-			bevelThickness: 0.03,
-			bevelSize: 0.01,
-			bevelOffset: 0,
-			bevelSegments: 1
-		});
-		const textMaterial = new THREE.MeshPhysicalMaterial({
-			color: 0xffffff,
-			metalness: 0.5,
-			roughness: 0.5,
-			clearcoat: 1,
-			clearcoatRoughness: 0.5,
-			emissive: 0xff00ff,
-			emissiveIntensity: 0.5
-		});
-
-		const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-		textMesh.visible = false;
-		textMesh.position.x = -0.96;
-		textMesh.position.y = -0.13;
-		textMesh.position.z = 0.5;
-
-		return textMesh;
-	});
 }

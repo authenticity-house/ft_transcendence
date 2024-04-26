@@ -100,15 +100,17 @@ export class MessageManager {
 	}
 
 	toggleFinalAnimation() {
-		const lastChild =
-			this.gamepage.scene.children[this.gamepage.scene.children.length - 1];
+		const readyText = this.gamepage.scene.getObjectByName('readyText');
 
-		if (this.frame === 200) lastChild.visible = true;
-		if (this.frame >= 275 && this.frame < 300 && this.frame % 4 === 0)
-			lastChild.visible = !lastChild.visible;
-		if (this.frame === 300) lastChild.visible = false;
+		if (readyText) {
+			if (this.frame === 200) readyText.visible = true;
+			if (this.frame >= 275 && this.frame < 300 && this.frame % 4 === 0)
+				readyText.visible = !readyText.visible;
+			if (this.frame === 300) readyText.visible = false;
+		} else {
+			console.error('Ready text not found');
+		}
 	}
-
 	// -----------------------------------------------------------------------------
 
 	checkWinner() {
