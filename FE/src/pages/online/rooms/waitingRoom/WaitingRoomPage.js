@@ -6,10 +6,16 @@ import ButtonExtraLarge from '../../../../components/ButtonExtraLarge.js';
 import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 
 import { RoomWebsocket } from '../roomManager.js';
+import { roomEndModal } from '../roomEndModal.js';
+import ModifyGameSetting from '../ModifyGameSetting.js';
 
 const html = String.raw;
 
 class WaitingRoomPage {
+	constructor() {
+		this.modifyPage = ModifyGameSetting;
+	}
+
 	template() {
 		this.readyState = false;
 		this.isHost = false;
@@ -17,7 +23,7 @@ class WaitingRoomPage {
 		const backButton = new ButtonBackArrow();
 		this.readyButton = new ButtonExtraLarge('로딩 중', 'gray');
 
-		return html`
+		this.page = html`
 			<div class="large-window flex-direction-column head_white_neon_15">
 				<div class="waiting-room-main">
 					<div id="userSeatElement"></div>
@@ -26,15 +32,20 @@ class WaitingRoomPage {
 				<div class="waiting-room-footer">${this.readyButton.template()}</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
+			${roomEndModal()}
 		`;
+		return this.page;
 	}
 
 	async mount(roomNumber) {
 		this.joinWebsocket(roomNumber);
-		try {
-			const msg = await this.roomWsManager.receiveMessages(this.render);
 
-			this.updateReadyButton(msg);
+		try {
+			this.msg = await this.roomWsManager.receiveMessages(this.render);
+			console.log(this.msg);
+
+			this.updateReadyButton(this.msg);
+			this.addModifyEventListener();
 		} catch (error) {
 			console.error('Error mounting the room:', error);
 		}
@@ -54,6 +65,23 @@ class WaitingRoomPage {
 		this.readyButton.updateTextAndColor(buttonText, buttonColor);
 	}
 
+	addModifyEventListener() {
+		const roomInfoContainer = document.getElementById('roomInfoElement');
+		roomInfoContainer.addEventListener('click', (event) => {
+			console.log('클릭됨');
+			const modifyButton = event.target.closest('.room-info-modify-button');
+
+			if (modifyButton) {
+				const root = document.querySelector('#root');
+				root.innerHTML = this.modifyPage.template(
+					this.roomWsManager.getRoomInfo()
+				);
+				this.modifyPage.addEventListeners();
+				this.modifyPage.setOnConfirmCallback(this.backWaitingRoom.bind(this));
+			}
+		});
+	}
+
 	render(data) {
 		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
 		getUserProfileBox(userSeatElement, data.user_info);
@@ -66,6 +94,18 @@ class WaitingRoomPage {
 		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
 	}
 
+	// ----------------------------------------------------------
+
+	async backWaitingRoom(data) {
+		document.querySelector('#root').innerHTML = this.page;
+		this.readyButton.updateTextAndColor('시작', 'yellow');
+
+		this.roomWsManager.sendChangeInfo(data);
+
+		this.addModifyEventListener();
+		this.addEventListeners();
+	}
+
 	addEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
@@ -76,6 +116,7 @@ class WaitingRoomPage {
 				this.readyButton.updateTextAndColor(newText, newColor);
 			}
 			// 웹소켓으로 state 정보 보내기
+			this.roomWsManager.sendReadyState();
 			console.log('click!');
 		});
 
