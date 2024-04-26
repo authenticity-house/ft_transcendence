@@ -40,6 +40,10 @@ export class RoomWebsocket {
 		this.ws.close();
 	}
 
+	isOpen() {
+		return this.ws.readyState === this.ws.OPEN;
+	}
+
 	joinRoomWebsocket(roomNumber) {
 		try {
 			const url = getWebsocketUrl(`room/${roomNumber}`);
@@ -53,10 +57,6 @@ export class RoomWebsocket {
 			return false;
 		}
 		return true;
-	}
-
-	isOpen() {
-		return this.ws.readyState === this.ws.OPEN;
 	}
 
 	exitRoom() {

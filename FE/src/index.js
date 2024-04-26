@@ -147,9 +147,14 @@ window.onpopstate = () => {
 // };
 
 window.onload = () => {
+	gamewsmanager.unregister();
 	const currentPath = window.location.pathname;
 	if (currentPath.includes('/test')) {
 		root.innerHTML = Test.template();
 		Test.addEventListeners();
 	} else history.pushState(null, null, homeLink);
 };
+
+window.addEventListener('beforeunload', () => {
+	gamewsmanager.unregister();
+});
