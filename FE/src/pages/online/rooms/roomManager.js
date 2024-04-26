@@ -48,6 +48,10 @@ export class RoomWebsocket {
 		return true;
 	}
 
+	isOpen() {
+		return this.ws.readyState === this.ws.OPEN;
+	}
+
 	exitRoom() {
 		const message = {
 			type: 'room.exit'

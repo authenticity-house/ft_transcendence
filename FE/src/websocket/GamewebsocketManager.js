@@ -1,16 +1,21 @@
 export class GamewebsocketManager {
 	constructor() {
-		this.gamews = null;
+		this.ws = null;
 	}
 
-	register(gamews) {
-		this.gamews = gamews;
+	register(ws) {
+		this.ws = ws;
 	}
 
 	unregister() {
-		if (this.gamews && this.gamews.isOpen()) {
-			this.gamews.messageManager.sendGameDisconnect();
+		if (this.ws && this.ws.isOpen()) {
+			if (this.ws.messageManager) {
+				this.ws.messageManager.sendGameDisconnect();
+			}
+			if (this.ws.exitRoom) {
+				this.ws.exitRoom();
+			}
 		}
-		this.gamews = null;
+		this.ws = null;
 	}
 }
