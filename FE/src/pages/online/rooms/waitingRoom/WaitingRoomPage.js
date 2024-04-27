@@ -8,9 +8,22 @@ import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 import { RoomWebsocket } from '../roomManager.js';
 import { roomModal } from '../roomModal.js';
 import ModifyGameSetting from './ModifyGameSetting.js';
+import { Gamewebsocket } from '../../../../game/Gamewebsocket.js';
 
 const html = String.raw;
 
+function checkReadyStates(data) {
+	const maxHeadcount = data.room_info.max_headcount;
+
+	let readyCount = 0;
+
+	data.user_info.forEach((user) => {
+		if (user.ready_state === true) {
+			readyCount += 1;
+		}
+	});
+	return readyCount === maxHeadcount - 1;
+}
 class WaitingRoomPage {
 	constructor() {
 		this.modifyPage = ModifyGameSetting;
@@ -71,6 +84,16 @@ class WaitingRoomPage {
 		const roomInfoElement = getRoomContainer(data.room_info, data.my_info.host);
 		document.getElementById('roomInfoElement').innerHTML = '';
 		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
+
+		// data.start_state === true
+		if (data.my_info.host) {
+			const readyButton = document.querySelector('.button-extra-large');
+			if (checkReadyStates(data)) {
+				readyButton.classList.remove('disabled');
+			} else {
+				readyButton.classList.add('disabled');
+			}
+		}
 	}
 
 	updateReadyButton(data) {
@@ -79,6 +102,11 @@ class WaitingRoomPage {
 		const buttonColor = this.isHost ? 'yellow' : 'blue';
 
 		this.readyButton.updateTextAndColor(buttonText, buttonColor);
+
+		if (this.isHost) {
+			const readyButton = document.querySelector('.button-extra-large');
+			readyButton.classList.add('disabled');
+		}
 	}
 
 	addModifyEventListener() {
@@ -118,9 +146,14 @@ class WaitingRoomPage {
 				const newColor = !this.readyState ? 'pink' : 'blue';
 				this.readyState = !this.readyState;
 				this.readyButton.updateTextAndColor(newText, newColor);
+				this.roomWsManager.sendReadyState();
 			}
-
-			this.roomWsManager.sendReadyState();
+			// else {
+			//	this.roomWsManager.close();
+			//	// gamewsmanager.unregister();
+			//	const gamewebsocket = new Gamewebsocket(this.msg.room_info);
+			//	gamewsmanager.register(gamewebsocket);
+			// }
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');
