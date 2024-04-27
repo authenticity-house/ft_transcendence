@@ -19,7 +19,7 @@ class User(AbstractUser):
     profile_url = models.CharField(max_length=250, null=False, default="/profile/default.png")
     date_updated = models.DateTimeField(auto_now=True)
     friends = models.ManyToManyField(
-        "self", through="Friendship", through_fields=("user1", "user2"), blank=True
+        "self", through="Friendship", through_fields=("from_user", "to_user"), blank=True
     )
 
     first_name = None
@@ -32,6 +32,8 @@ class User(AbstractUser):
 
 
 class Friendship(models.Model):
-    user1 = models.ForeignKey(User, related_name="user1_friendship", on_delete=models.CASCADE)
-    user2 = models.ForeignKey(User, related_name="user2_friendship", on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name="receiver", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name="sender", on_delete=models.CASCADE)
+    are_we_friend = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
