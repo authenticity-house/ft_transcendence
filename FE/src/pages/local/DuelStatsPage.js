@@ -74,7 +74,7 @@ class DuelStatsPage {
 		back.addEventListener('click', () => {
 			this.data.sendMsg();
 			if (this.data.sendMsg.name === 'bound sendGameDisconnect')
-				changeUrl('match');
+				changeUrl('matchMode');
 		});
 	}
 }

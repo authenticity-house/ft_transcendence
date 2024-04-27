@@ -177,7 +177,7 @@ class GamePage {
 
 			console.log('match_end');
 
-			changeUrl('match'); // local
+			changeUrl('matchMode'); // local
 			// online
 		});
 	}

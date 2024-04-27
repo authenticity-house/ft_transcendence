@@ -91,7 +91,7 @@ class GameSettingPage {
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.resetData();
-			changeUrl('match');
+			changeUrl('matchMode');
 		});
 	}
 }

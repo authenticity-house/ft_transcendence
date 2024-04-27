@@ -118,7 +118,7 @@ class OnlineMainScreenPage {
 
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 
 		const createRoom = document.querySelector('.create-room-button');
