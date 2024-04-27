@@ -16,10 +16,10 @@ export default async function joinRoomAPI(roomNumber) {
 		// 201 : Created
 		if (res.ok || res.status === 201) {
 			// 방 참가 api 호출 성공
-			return true;
+			return false;
 		}
 		// 400 : 방 참가 실패
 		// fulfilled : 꽉참
-		return false;
+		return res.status;
 	});
 }

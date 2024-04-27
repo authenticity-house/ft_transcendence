@@ -22,13 +22,12 @@ export async function createAndJoinRoom(data) {
 
 export async function joinRoom(roomNumber) {
 	// 방 참가
-	const check = await joinRoomAPI(roomNumber);
-	if (!check) {
-		return false;
+	const error = await joinRoomAPI(roomNumber);
+	if (error) {
+		return error;
 	}
 	changeUrlData('waitingRoom', roomNumber);
-
-	return true;
+	return false;
 }
 
 export class RoomWebsocket {
@@ -86,7 +85,7 @@ export class RoomWebsocket {
 						break;
 
 					case 'room.end':
-						showModal('roomEndModal');
+						showModal('roomModal');
 						break;
 					default:
 						console.log('default');

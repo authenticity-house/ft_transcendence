@@ -87,7 +87,6 @@ class GameSettingPage {
 			// 웹소켓 만들기
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);
-			// changeUrlData('game', newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
