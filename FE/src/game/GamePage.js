@@ -11,6 +11,7 @@ const html = String.raw;
 class GamePage {
 	constructor(initial) {
 		this.initial = initial;
+
 		this.scene = null;
 		this.camera = null;
 		this.renderer = null;
@@ -57,19 +58,6 @@ class GamePage {
 		`;
 	}
 
-	addToScene(func) {
-		const result = func();
-
-		// this.scene.add(result);
-		// if (result instanceof THREE.Object3D) {
-		this.scene.add(result);
-		// } else {
-		// 	console.error('추가하려는 객체가 THREE.Object3D의 인스턴스가 아닙니다.');
-		// 	console.log(func);
-		// }
-		return result;
-	}
-
 	init() {
 		this.scene = utils.setupScene();
 		this.camera = utils.createCamera();
@@ -80,6 +68,12 @@ class GamePage {
 		this.renderer.render(this.scene, this.camera);
 
 		document.addEventListener('resize', this.handleResize);
+	}
+
+	addToScene(func) {
+		const result = func();
+		this.scene.add(result);
+		return result;
 	}
 
 	createObjects() {
@@ -111,7 +105,7 @@ class GamePage {
 		this.setNicknames();
 	}
 
-	// --------------------------------
+	// --------------------------------------------------------------------------------
 	createReadyText() {
 		const fontLoader = new FontLoader();
 
@@ -166,6 +160,8 @@ class GamePage {
 			this.initial.nickname.player2;
 	}
 
+	// --------------------------------------------------------------------------------
+
 	handleResize() {
 		this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
@@ -180,7 +176,9 @@ class GamePage {
 			this.initial.sendMsg();
 
 			console.log('match_end');
-			changeUrl('match');
+
+			changeUrl('match'); // local
+			// online
 		});
 	}
 }

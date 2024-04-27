@@ -1,8 +1,9 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
 import { removeModalBackdrop } from '../components/modal/modalUtils.js';
-import GamePage from '../pages/GamePage.js';
+import GamePage from './GamePage.js';
 
-import * as msg from './messages.js';
+import { GameMessages as msg } from './Gamemessages.js';
+
 import { MessageType, SubType, Winner } from '../constants/constants.js';
 
 export class MessageManager {

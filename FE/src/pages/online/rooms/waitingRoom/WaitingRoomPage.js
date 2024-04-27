@@ -7,7 +7,7 @@ import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 
 import { RoomWebsocket } from '../roomManager.js';
 import { roomEndModal } from '../roomEndModal.js';
-import ModifyGameSetting from '../ModifyGameSetting.js';
+import ModifyGameSetting from './ModifyGameSetting.js';
 
 const html = String.raw;
 
@@ -50,11 +50,27 @@ class WaitingRoomPage {
 			console.error('Error mounting the room:', error);
 		}
 	}
+	// --------------------------------------------------------------------------------
 
 	joinWebsocket(roomNumber) {
 		this.roomWsManager = new RoomWebsocket();
 		this.roomWsManager.joinRoomWebsocket(roomNumber);
+
 		gamewsmanager.register(this.roomWsManager);
+	}
+
+	// --------------------------------------------------------------------------------
+
+	render(data) {
+		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
+		getUserProfileBox(userSeatElement, data.user_info);
+
+		document.getElementById('userSeatElement').innerHTML = '';
+		document.getElementById('userSeatElement').appendChild(userSeatElement);
+
+		const roomInfoElement = getRoomContainer(data.room_info, data.my_info.host);
+		document.getElementById('roomInfoElement').innerHTML = '';
+		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
 	}
 
 	updateReadyButton(data) {
@@ -82,19 +98,7 @@ class WaitingRoomPage {
 		});
 	}
 
-	render(data) {
-		const userSeatElement = getUserSeatBox(data.room_info.max_headcount);
-		getUserProfileBox(userSeatElement, data.user_info);
-
-		document.getElementById('userSeatElement').innerHTML = '';
-		document.getElementById('userSeatElement').appendChild(userSeatElement);
-
-		const roomInfoElement = getRoomContainer(data.room_info, data.my_info.host);
-		document.getElementById('roomInfoElement').innerHTML = '';
-		document.getElementById('roomInfoElement').appendChild(roomInfoElement);
-	}
-
-	// ----------------------------------------------------------
+	// --------------------------------------------------------------------------------
 
 	async backWaitingRoom(data) {
 		document.querySelector('#root').innerHTML = this.page;
@@ -115,9 +119,8 @@ class WaitingRoomPage {
 				this.readyState = !this.readyState;
 				this.readyButton.updateTextAndColor(newText, newColor);
 			}
-			// 웹소켓으로 state 정보 보내기
+
 			this.roomWsManager.sendReadyState();
-			console.log('click!');
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');
