@@ -2,6 +2,7 @@ import createRoomAPI from './createRoomAPI.js';
 import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
 import { changeUrlData } from '../../../index.js';
+import { showModal } from '../../../components/modal/modalUtils.js';
 
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
@@ -31,6 +32,14 @@ export async function joinRoom(roomNumber) {
 }
 
 export class RoomWebsocket {
+	send(message) {
+		this.ws.send(JSON.stringify(message));
+	}
+
+	close() {
+		this.ws.close();
+	}
+
 	joinRoomWebsocket(roomNumber) {
 		try {
 			const url = getWebsocketUrl(`room/${roomNumber}`);
@@ -38,8 +47,6 @@ export class RoomWebsocket {
 
 			this.ws.onopen = () => {
 				console.log('connected');
-
-				// this.receiveMessages();
 			};
 		} catch (error) {
 			console.error('웹소켓 연결 실패', error);
@@ -52,9 +59,14 @@ export class RoomWebsocket {
 		const message = {
 			type: 'room.exit'
 		};
-		this.ws.send(JSON.stringify(message));
-		this.ws.close();
+		this.send(message);
+		this.close();
+
 		console.log('방 나가기');
+	}
+
+	getRoomInfo() {
+		return this.info.room_info;
 	}
 
 	async receiveMessages(render) {
@@ -66,9 +78,12 @@ export class RoomWebsocket {
 					case 'room.info':
 						render(message);
 						resolve(message);
-
+						this.info = message;
 						break;
 
+					case 'room.end':
+						showModal('roomEndModal');
+						break;
 					default:
 						console.log('default');
 						break;
@@ -77,5 +92,18 @@ export class RoomWebsocket {
 		});
 	}
 
-	// send
+	sendChangeInfo(change) {
+		const message = {
+			type: 'room.change.info',
+			data: change
+		};
+		this.send(message);
+	}
+
+	sendReadyState() {
+		const message = {
+			type: 'room.change.state'
+		};
+		this.send(message);
+	}
 }

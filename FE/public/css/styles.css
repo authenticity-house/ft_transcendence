@@ -734,7 +734,7 @@ td {
 }
 
 .text-subtitle-1-left {
-	width: 20rem;
+	width: auto;
 	color: #fff;
 	font-size: 2.4rem;
 	font-style: normal;
@@ -762,6 +762,10 @@ td {
 
 .width-28 {
 	width: 28rem;
+}
+
+.width-20 {
+	width: 20rem;
 }
 
 .width-14 {
