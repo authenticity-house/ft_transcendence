@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound, ParseError, APIException
+from rest_framework.exceptions import NotFound, ParseError, APIException, ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -14,7 +14,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
-from users.models import User
+from users.models import User, Friendship
 from users.serializers import UserProfileSerializer
 
 from users.oauth import get_access_token, get_user_data, get_or_create_user
@@ -99,23 +99,38 @@ class FriendAPIView(APIView):
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
 
+
+class SentFriendRequestsAPIView(APIView):
     def post(self, request):
-        user_pk = request.user.pk
-        friend_pk = request.data.get("friend_pk")
+        user_pk: int = request.user.pk
+        friend_pk_str = request.data.get("friend_pk")
+        friend_pk: int = int(friend_pk_str) if friend_pk_str.isdigit() else None
+
+        if friend_pk is None:
+            raise ParseError(detail="friend_pk is empty")
+
+        if user_pk == friend_pk:
+            raise ValidationError(detail="You cannot add yourself as a friend")
 
         try:
             user_profile = User.objects.get(pk=user_pk)
             friend_profile = User.objects.get(pk=friend_pk)
 
-            user_profile.friends.add(friend_profile)
+            from_user_to_friend, _ = Friendship.objects.get_or_create(
+                from_user=user_profile, to_user=friend_profile
+            )
+            _, _ = Friendship.objects.get_or_create(from_user=friend_profile, to_user=user_profile)
+
+            if from_user_to_friend.are_we_friend is False:
+                from_user_to_friend.are_we_friend = True
+                from_user_to_friend.save()
+
             return Response(
                 {"detail": "success"},
-                status=status.HTTP_201_CREATED,
+                status=status.HTTP_200_OK,
             )
         except ObjectDoesNotExist as exc:
-            raise NotFound(
-                detail=f"User does not exist: pk={user_pk} or friend_pk={friend_pk}"
-            ) from exc
+            raise NotFound(detail=f"User does not exist: friend_pk={friend_pk}") from exc
 
 
 class InvalidQueryParams(APIException):
