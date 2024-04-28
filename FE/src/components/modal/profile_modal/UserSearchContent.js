@@ -30,14 +30,20 @@ class UserSearchContent {
 
 		for (let i = 0; i < data.length; i += 1) {
 			const userSearchNode = new UserNode(data[i]);
+			userSearches += `
+				<button class="user-node-button" data-bs-target="#profileFriendModal" data-bs-toggle="modal">
+			`;
 			userSearches += userSearchNode.template();
+			userSearches += '</button>';
 		}
 
 		const userSearch = document.querySelector('.user-search-result');
 		userSearch.innerHTML = userSearches;
 	}
 
-	addEventListeners() {}
+	addEventListeners() {
+		// const userSearchNodes = document.querySelectorAll('.user-search-node-container');
+	}
 }
 
 export const userSearchContent = new UserSearchContent();

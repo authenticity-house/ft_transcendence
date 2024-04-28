@@ -2137,6 +2137,13 @@ td {
 	gap: 3rem;
 }
 
+.user-node-button {
+	padding: 0;
+	border: none;
+	width: 20rem;
+	border-radius: 3rem;
+}
+
 /* MyFriendContent.js */
 .my-friend-content-container {
 	display: flex;
