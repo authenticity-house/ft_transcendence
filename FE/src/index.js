@@ -76,12 +76,12 @@ let urlState;
 fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
 	if (res.status === 200) {
 		// 로그인 되어 있으면, PlayModePage
-		history.pushState(null, null, `${homeLink}play`);
-		urlState = `${homeLink}play`;
+		history.pushState(null, null, `${homeLink}playMode`);
+		urlState = `${homeLink}playMode`;
 		console.log(urlState);
-		root.innerHTML = routes.play.template();
-		routes.play.mount();
-		routes.play.addEventListeners();
+		root.innerHTML = routes.playMode.template();
+		routes.playMode.mount();
+		routes.playMode.addEventListeners();
 	} else {
 		// 로그인 안되어 있을 시, LoginPage
 		history.pushState(null, null, `${homeLink}`);
@@ -148,7 +148,15 @@ logo.addEventListener('click', () => {
 
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
+	// 방 대기실에서 뒤로가기 눌렀을 시, 방 웹소켓 연결 끊기
+	if (urlState === '/waitingRoom') {
+		gamewsmanager.unregister();
+	}
 	const url = window.location.href.split('/').pop();
+	if (url === 'waitingRoom') {
+		alert('이미 방을 나갔습니다.');
+		history.back();
+	}
 	if (url === 'gameBlock') {
 		// 뒤로가기, 앞으로가기 눌러서 이동하면 안되는 페이지가 나옴 -> urlState로 다시 이동
 		history.forward();

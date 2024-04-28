@@ -139,7 +139,7 @@ class OnlineGameSettingTournament {
 			'.horizontalButton button:nth-child(1)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('onlineSetting', null);
+			changeUrlData('onlineSetting', null, 'notHistory');
 		});
 
 		function updateRoomName(res) {
@@ -160,7 +160,7 @@ class OnlineGameSettingTournament {
 			// const newData = this.data;
 			// this.resetData();
 			updateRoomName(this.data);
-			changeUrlData('onlineDetailed', this.data);
+			changeUrlData('onlineDetailed', this.data, 'notHistory');
 		});
 
 		// 시작 버튼
