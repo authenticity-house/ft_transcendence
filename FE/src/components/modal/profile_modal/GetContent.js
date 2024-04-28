@@ -2,9 +2,44 @@ import { myFriendContent } from './MyFriendContent.js';
 import { myRecordContent } from './MyRecordContent.js';
 import { userSearchContent } from './UserSearchContent.js';
 import { statsContent } from './StatsContent.js';
+import { myInfoContent } from './MyInfoContent.js';
+import apiEndpoints from '../../../constants/apiConfig.js';
+import { getCookie } from '../../../utils/getCookie.js';
 
 export function getContent(id) {
-	if (id === 'match-record') {
+	if (id === 'my-info') {
+		// my-info 탭을 클릭했을 때 내 정보를 렌더링
+		// mock-data
+		// const data = {
+		// 	pk: 1,
+		// 	username: 'superjeongmin',
+		// 	email: 'jeongmin@student.42seoul.kr',
+		// 	nickname: '',
+		// 	provider: 'PONG',
+		// 	profile_url: ''
+		// };
+		const csrfToken = getCookie('csrftoken');
+
+		fetch(apiEndpoints.MY_INFO_URL, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						console.log(data);
+						myInfoContent.mount(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
 		// mock-data
 		const data = [
