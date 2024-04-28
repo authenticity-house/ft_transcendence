@@ -198,7 +198,7 @@ export class MessageManager {
 							...message.data,
 							sendMsg: this.sendGameOver.bind(this)
 						},
-						true
+						false
 					);
 				}
 				break;
@@ -211,7 +211,7 @@ export class MessageManager {
 						content: message.data,
 						sendMsg: this.sendGameDisconnect.bind(this)
 					},
-					true
+					false
 				);
 				break;
 
@@ -237,7 +237,7 @@ export class MessageManager {
 						...message.data,
 						sendMsg: this.sendGameMatchInitSetting.bind(this)
 					},
-					true
+					false
 				);
 				break;
 			case SubType.MATCH_INIT_SETTING:
@@ -269,7 +269,7 @@ export class MessageManager {
 							...message.data,
 							sendMsg: this.sendGameDisconnect.bind(this)
 						},
-						true
+						false
 					);
 				// 토너먼트의 경우 다음 매치 요청
 				else
@@ -279,7 +279,7 @@ export class MessageManager {
 							...message.data,
 							sendMsg: this.sendGameNextMatch.bind(this)
 						},
-						true
+						false
 					);
 
 				break;

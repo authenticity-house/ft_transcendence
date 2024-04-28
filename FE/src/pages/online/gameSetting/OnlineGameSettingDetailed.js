@@ -29,7 +29,7 @@ class OnlineGameSettingDetailed {
 			changeUrlData(
 				setting[this.battleMode],
 				this.setting.getModifiedData(),
-				true
+				false
 			);
 		});
 	}

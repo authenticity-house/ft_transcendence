@@ -21,6 +21,7 @@ import {
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 import apiEndpoints from './constants/apiConfig.js';
+import { removeModalBackdrop } from './components/modal/modalUtils.js';
 
 const html = String.raw;
 
@@ -111,8 +112,8 @@ export const changeUrl = (url) => {
 	routes[url].addEventListeners();
 };
 
-export const changeUrlData = (url, data, notHistoryState) => {
-	if (notHistoryState !== true) {
+export const changeUrlData = (url, data, historyState = true) => {
+	if (historyState) {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
 			urlState = `${homeLink}gameSetting`;
@@ -141,6 +142,8 @@ logo.addEventListener('click', () => {
 
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
+	// 모달창 열려 있을 시, 닫고 진행
+	removeModalBackdrop();
 	// 방 대기실에서 뒤로가기 눌렀을 시, 방 웹소켓 연결 끊기
 	if (urlState === '/waitingRoom') {
 		gamewsmanager.unregister();
@@ -150,6 +153,7 @@ window.addEventListener('popstate', () => {
 		alert('이미 방을 나갔습니다.');
 		history.back();
 	}
+
 	if (url === 'gameBlock') {
 		// 뒤로가기, 앞으로가기 눌러서 이동하면 안되는 페이지가 나옴 -> urlState로 다시 이동
 		history.forward();
