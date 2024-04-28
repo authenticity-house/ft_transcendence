@@ -89,13 +89,28 @@ class FriendAPIView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def find_all_friends_with_each_other(self, login_user_id):
+        friendships = Friendship.objects.filter(
+            from_user_id=login_user_id,
+            are_we_friend=True,
+            to_user__receiver__to_user_id=login_user_id,
+            to_user__receiver__are_we_friend=True,
+        )
+
+        friends = []
+        for friendship in friendships:
+            friends.append(friendship.to_user)
+
+        return friends
+
     def get(self, request):
         user_pk = request.user.pk
 
         try:
-            user_profile = User.objects.get(pk=user_pk)
-            serializer = UserProfileSerializer(user_profile.friends.all(), many=True)
+            friends = self.find_all_friends_with_each_other(login_user_id=user_pk)
+            serializer = UserProfileSerializer(friends, many=True)
             return Response(serializer.data)
+
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
 
