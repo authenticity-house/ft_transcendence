@@ -1,5 +1,8 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
-import { removeModalBackdrop } from '../components/modal/modalUtils.js';
+import {
+	removeModalBackdrop,
+	showModal
+} from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
 
 import { GameMessages as msg } from './Gamemessages.js';
@@ -220,6 +223,7 @@ export class MessageManager {
 			case SubType.CONNECTION_ESTABLISHED:
 				if (message.mode === 'online') {
 					// !!!!! 로딩 중 모달 띄우기
+					showModal('loadingModal');
 					// 다른 유저를 기다리는 중입니다.
 					break;
 				}

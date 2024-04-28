@@ -18,7 +18,7 @@ import { DuplicateChecker } from './DuplicateChecker.js';
 
 import { registerDupModal } from './modals/registerDupModal.js';
 import { registerModal } from './modals/registerModal.js';
-import { registerLoadingModal } from './modals/registerLoadingModal.js';
+import { loadingModal } from './modals/loadingModal.js';
 import { registerFailModal } from './modals/registerFailModal.js';
 
 // -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ class RegisterPage {
 				<div class="button-back-in-window">${this.backButton.template()}</div>
 			</div>
 			${registerDupModal()} ${registerFailModal()} ${registerModal()}
-			${registerLoadingModal()}
+			${loadingModal()}
 		`;
 	}
 	// ----------------------------------------------------------------------------------------

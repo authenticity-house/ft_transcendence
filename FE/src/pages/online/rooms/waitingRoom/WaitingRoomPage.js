@@ -8,6 +8,7 @@ import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 import { RoomWebsocket } from '../roomManager.js';
 import { roomModal } from '../roomModal.js';
 import ModifyGameSetting from './ModifyGameSetting.js';
+import { loadingModal } from '../../../register/modals/loadingModal.js';
 
 const html = String.raw;
 
@@ -45,7 +46,7 @@ class WaitingRoomPage {
 				<div class="waiting-room-footer">${this.readyButton.template()}</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
-			${roomModal()}
+			${roomModal()}${loadingModal()}
 		`;
 		return this.page;
 	}
