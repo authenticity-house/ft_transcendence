@@ -17,6 +17,7 @@ const html = String.raw;
 
 class ProfileModal {
 	template() {
+		this.userPk = 0;
 		return html`
 			<div
 				class="modal fade"
@@ -355,7 +356,7 @@ class ProfileModal {
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
 				console.log(selectedTabContentId);
-				getContent(selectedTabContentId);
+				getContent(selectedTabContentId, this.userPk);
 			});
 		});
 
@@ -423,6 +424,7 @@ class ProfileModal {
 	}
 
 	openFriendModal(userPk) {
+		this.userPk = userPk;
 		const friendProfileModal = document.getElementById('friend-profile-modal');
 		const tab = document.getElementById('friend-info');
 		const tabButton = document.getElementById('friend-info-tab');
