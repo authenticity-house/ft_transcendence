@@ -74,7 +74,7 @@ class LoginPage {
 			.classList.add('modal-hidden');
 		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
 			if (res.status === 200) {
-				changeUrl('play');
+				changeUrl('playMode');
 			}
 		});
 	}

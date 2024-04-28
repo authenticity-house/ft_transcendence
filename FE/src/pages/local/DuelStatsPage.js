@@ -75,7 +75,7 @@ class DuelStatsPage {
 			this.data.sendMsg();
 			if (this.data.sendMsg.name === 'bound sendGameDisconnect') {
 				history.pushState(null, null, 'gameBlock');
-				changeUrl('match');
+				changeUrl('matchMode');
 			}
 		});
 	}
