@@ -5,7 +5,8 @@ export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		this.ws = new WebSocket(getWebsocketUrl('game-server'));
+		this.url = typeof this.initial === 'object' ? '/game-server/' : initial;
+		this.ws = new WebSocket(getWebsocketUrl(this.url));
 
 		this.messageManager = new MessageManager(this);
 
