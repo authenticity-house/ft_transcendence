@@ -78,7 +78,6 @@ fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
 		// 로그인 되어 있으면, PlayModePage
 		history.pushState(null, null, `${homeLink}playMode`);
 		urlState = `${homeLink}playMode`;
-		console.log(urlState);
 		root.innerHTML = routes.playMode.template();
 		routes.playMode.mount();
 		routes.playMode.addEventListeners();
@@ -86,8 +85,6 @@ fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
 		// 로그인 안되어 있을 시, LoginPage
 		history.pushState(null, null, `${homeLink}`);
 		urlState = `${homeLink}`;
-		console.log(urlState);
-
 		root.innerHTML = routes[''].template();
 		routes[''].mount();
 		routes[''].addEventListeners();
@@ -99,7 +96,6 @@ export const changeUrlInstance = (url, instance) => {
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
 		urlState = `${homeLink}${url}`;
-		console.log(urlState);
 	}
 	root.innerHTML = instance.template();
 	instance.addEventListeners();
@@ -109,7 +105,6 @@ export const changeUrl = (url) => {
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
 		urlState = `${homeLink}${url}`;
-		console.log(urlState);
 	}
 	root.innerHTML = routes[url].template();
 	if (typeof routes[url].mount === 'function') routes[url].mount();
@@ -121,11 +116,9 @@ export const changeUrlData = (url, data, historyState) => {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
 			urlState = `${homeLink}gameSetting`;
-			console.log(urlState);
 		} else {
 			history.pushState(null, null, `${homeLink}${url}`);
 			urlState = `${homeLink}${url}`;
-			console.log(urlState);
 		}
 	}
 	root.innerHTML = routes[url].template(data);
@@ -165,8 +158,6 @@ window.addEventListener('popstate', () => {
 	} else {
 		// url page 띄우기
 		urlState = `${homeLink}${url}`;
-		console.log(urlState);
-
 		root.innerHTML = routes[url].template();
 		if (typeof routes[url].mount === 'function') routes[url].mount();
 		routes[url].addEventListeners();
