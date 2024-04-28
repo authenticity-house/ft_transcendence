@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "daphne",
     "channels",
     "websocket",
+    "online",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
