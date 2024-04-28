@@ -18,7 +18,8 @@ function getApiEndpoints() {
 		REGISTER_CHECK_URL: `${USERS_URL}check/?`,
 		ROOMS_URL: `${ROOMS_URL}`,
 		MY_INFO_URL: `${USERS_URL}user/`,
-		SEARCH_USER_URL: `${USERS_URL}search/?prefix=`
+		SEARCH_USER_URL: `${USERS_URL}search/?prefix=`,
+		FRIEND_PROFILE_URL: `${USERS_URL}detail/`
 	};
 }
 

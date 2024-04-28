@@ -11,6 +11,7 @@ import { hideModal } from '../modalUtils.js';
 import apiEndpoints from '../../../constants/apiConfig.js';
 
 import { statsContent } from './StatsContent.js';
+import { friendInfoContent } from './FriendInfoContent.js';
 
 const html = String.raw;
 
@@ -272,7 +273,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="friend-info-tab"
 											>
-												${myInfoContent.template()}
+												${friendInfoContent.template()}
 											</div>
 											<div
 												class="tab-pane friend-tab-pane fade"
@@ -419,6 +420,32 @@ class ProfileModal {
 		// 클릭된 탭에 해당하는 컨텐츠 보여주기
 		tab.classList.add('show', 'active');
 		getContent(tabId);
+	}
+
+	openFriendModal(userPk) {
+		const friendProfileModal = document.getElementById('friend-profile-modal');
+		const tab = document.getElementById('friend-info');
+		const tabButton = document.getElementById('friend-info-tab');
+
+		// 모든 탭 컨텐츠 숨김 처리
+		document.querySelectorAll('.friend-tab-pane').forEach((pane) => {
+			pane.classList.remove('show', 'active');
+		});
+
+		// 모든 탭 버튼의 'active' 클래스 제거
+		document.querySelectorAll('.friend-profile-nav-link').forEach((navLink) => {
+			navLink.classList.remove('active');
+		});
+
+		// 정보 탭 버튼에 'active' 클래스 추가
+		tabButton.classList.add('active');
+
+		// 모달 열기
+		friendProfileModal.style.display = 'block';
+
+		// 클릭된 탭에 해당하는 컨텐츠 보여주기
+		tab.classList.add('show', 'active');
+		getContent('friend-info', userPk);
 	}
 }
 

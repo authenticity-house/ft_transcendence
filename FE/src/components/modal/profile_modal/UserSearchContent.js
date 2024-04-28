@@ -1,6 +1,7 @@
 import apiEndpoints from '../../../constants/apiConfig.js';
 import { getCookie } from '../../../utils/getCookie.js';
 import UserNode from '../../UserNode.js';
+import { profileModal } from './ProfileModal.js';
 
 const html = String.raw;
 
@@ -33,7 +34,7 @@ class UserSearchContent {
 		for (let i = 0; i < data.length; i += 1) {
 			const userSearchNode = new UserNode(data[i]);
 			userSearches += `
-				<button class="user-node-button" data-bs-target="#friend-profile-modal" data-bs-toggle="modal">
+				<button id="friend-profile-button-${data[i].pk}" class="user-node-button" data-bs-target="#friend-profile-modal" data-bs-toggle="modal">
 			`;
 			userSearches += userSearchNode.template();
 			userSearches += '</button>';
@@ -41,6 +42,17 @@ class UserSearchContent {
 
 		const userSearch = document.querySelector('.user-search-result');
 		userSearch.innerHTML = userSearches;
+	}
+
+	addProfileModalEventListeners() {
+		const userSearchNodes = document.querySelectorAll('.user-node-button');
+
+		userSearchNodes.forEach((userSearchNode) => {
+			userSearchNode.addEventListener('click', () => {
+				const userPk = userSearchNode.id.split('-')[3];
+				profileModal.openFriendModal(userPk);
+			});
+		});
 	}
 
 	addEventListeners() {
@@ -66,6 +78,7 @@ class UserSearchContent {
 					.then((res) => res.json())
 					.then((res) => {
 						this.mount(res);
+						this.addProfileModalEventListeners();
 					})
 					.catch((err) => {
 						console.error('에러 발생: ', err);

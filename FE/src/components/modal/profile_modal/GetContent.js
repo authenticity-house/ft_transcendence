@@ -5,8 +5,11 @@ import { statsContent } from './StatsContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import apiEndpoints from '../../../constants/apiConfig.js';
 import { getCookie } from '../../../utils/getCookie.js';
+import { friendInfoContent } from './FriendInfoContent.js';
 
-export function getContent(id) {
+const csrfToken = getCookie('csrftoken');
+
+export function getContent(id, userPk) {
 	if (id === 'my-info') {
 		// my-info 탭을 클릭했을 때 내 정보를 렌더링
 		// mock-data
@@ -18,7 +21,6 @@ export function getContent(id) {
 		// 	provider: 'PONG',
 		// 	profile_url: ''
 		// };
-		const csrfToken = getCookie('csrftoken');
 
 		fetch(apiEndpoints.MY_INFO_URL, {
 			method: 'GET',
@@ -275,5 +277,27 @@ export function getContent(id) {
 		};
 		const toolTip = statsContent.mount(data);
 		statsContent.addEventListeners(toolTip);
+	} else if (id === 'friend-info') {
+		console.log(userPk);
+
+		fetch(`${apiEndpoints.FRIEND_PROFILE_URL}${userPk}/`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						console.log(data);
+						friendInfoContent.mount(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 }
