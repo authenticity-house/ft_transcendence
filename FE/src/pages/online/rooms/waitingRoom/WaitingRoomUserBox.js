@@ -1,7 +1,7 @@
 const html = String.raw;
 
-function getUserSeatBox(maxPlayer) {
-	const blockIndex = maxPlayer;
+function getUserSeatBox(maxHeadcount) {
+	const blockIndex = maxHeadcount;
 	const userSeatContainer = document.createElement('div');
 	userSeatContainer.className = 'waiting-room-users-container';
 	for (let i = 0; i < 8; i += 1) {
@@ -13,7 +13,7 @@ function getUserSeatBox(maxPlayer) {
 			const blockImage = document.createElement('img');
 			blockImage.src = 'image/block.svg';
 			blockImage.alt = 'block';
-			blockImage.className = 'user-profile-img';
+			blockImage.className = 'user-seat-box-img';
 			blockContainer.appendChild(blockImage);
 			userSeatBox.appendChild(blockContainer);
 		}
@@ -28,21 +28,22 @@ function getUserProfileBox(userSeatElement, userInfo) {
 	userSeatBoxAll.forEach((seatBox, index) => {
 		const user = userInfo[index];
 		if (userInfo[index]) {
-			const userImage = user.image || 'image/default-profile.png';
+			const userImage = user.image || '/image/default-profile.png';
+
 			let readyStateString = '방장';
 			let readyStateColor = 'head_yellow_neon_15 yellow_neon_10';
 			if (user.host === false) {
-				readyStateString = user.readyState ? '준비완료' : '대기 중';
-				readyStateColor = user.readyState
+				readyStateString = user.ready_state ? '준비완료' : '대기 중';
+				readyStateColor = user.ready_state
 					? 'head_pink_neon_15 pink_neon_10'
 					: 'head_blue_neon_15 blue_neon_10';
 			}
 
 			const htmlString = html`
 				<div class="user-seat-box-img-container">
-					<img src="${userImage}" alt="user" class="user-profile-img" />
+					<img src="${userImage}" alt="user" class="user-seat-box-img" />
 				</div>
-				<span>${user.nickName}</span>
+				<span>${user.nickname}</span>
 				<span>레이팅: ${user.rating}</span>
 				<div class="user-seat-box-ready-state ${readyStateColor}">
 					<span>${readyStateString}</span>

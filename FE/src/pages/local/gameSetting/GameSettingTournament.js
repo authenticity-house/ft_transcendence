@@ -1,9 +1,9 @@
-import { changeUrl, changeUrlData, gamewsmanager } from '../index.js';
-import HorizontalButton from '../components/HorizontalButton.js';
-import VerticalButton from '../components/VerticalButton.js';
-import InputNickname from '../components/InputNickname.js';
-import { Gamewebsocket } from '../websocket/Gamewebsocket.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+import { changeUrl, changeUrlData, gamewsmanager } from '../../../index.js';
+import HorizontalButton from '../../../components/HorizontalButton.js';
+import VerticalButton from '../../../components/VerticalButton.js';
+import InputNickname from '../../../components/InputNickname.js';
+import { Gamewebsocket } from '../../../websocket/Gamewebsocket.js';
+import ButtonBackArrow from '../../../components/ButtonBackArrow.js';
 
 const html = String.raw;
 
@@ -58,7 +58,7 @@ class GameSettingTournament {
 						<div class="game-setting-tournament-container">
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
-								<p class="text-subtitle-1-left">참여인원</p>
+								<p class="text-subtitle-1-left width-20">참여인원</p>
 								<div class="num-block head-count">
 									<div class="num-in">
 										<span class="minus"></span>
@@ -71,6 +71,7 @@ class GameSettingTournament {
 										<span class="plus"></span>
 									</div>
 								</div>
+								<p class="nickname-error-text display-light18"></p>
 							</div>
 
 							<!-- 닉네임 입력 테두리 -->
@@ -183,11 +184,38 @@ class GameSettingTournament {
 			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
-			// const newData = this.data;
-			// this.resetData();
-			updateNicknamesData(this.data);
-			changeUrlData('gameSettingDetailed', this.data);
+			const newData = this.data;
+			this.resetData();
+			updateNicknamesData(newData);
+			changeUrlData('gameSettingDetailed', newData);
 		});
+
+		// 닉네임 입력 체크
+		function nicknameCheck(nicknames) {
+			const uniqueNicknames = new Set();
+			for (const nickname of nicknames) {
+				// 길이가 1 미만인 경우
+				if (nickname.length < 1) {
+					document.querySelector('.nickname-error-text').textContent =
+						'입력하지 않은 닉네임이 존재합니다.';
+					return false;
+				}
+				// 공백이 포함된 경우
+				if (nickname.includes(' ')) {
+					document.querySelector('.nickname-error-text').textContent =
+						'닉네임에 공백이 포함되어 있습니다.';
+					return false;
+				}
+				// 중복된 닉네임이 있는 경우
+				if (uniqueNicknames.has(nickname)) {
+					document.querySelector('.nickname-error-text').textContent =
+						'중복된 닉네임이 존재합니다.';
+					return false;
+				}
+				uniqueNicknames.add(nickname);
+			}
+			return true;
+		}
 
 		// 시작 버튼
 		const startButton = document.querySelector(
@@ -198,10 +226,14 @@ class GameSettingTournament {
 			this.resetData();
 
 			updateNicknamesData(newData);
-			newData.total_score *= 5;
-
-			const gamewebsocket = new Gamewebsocket(newData);
-			gamewsmanager.register(gamewebsocket);
+			// nickname check
+			const nicknameCheckResult = nicknameCheck(newData.nickname);
+			// 닉네임 체크해서 무사한 경우만 통과
+			if (nicknameCheckResult) {
+				newData.total_score *= 5;
+				const gamewebsocket = new Gamewebsocket(newData);
+				gamewsmanager.register(gamewebsocket);
+			}
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {

@@ -22,7 +22,10 @@ class RoomUser:
     def info(self) -> dict:
         return {
             "image": self._img_url,
-            "nickName": self._nickname,
+            "nickname": self._nickname,
             "rating": self._rating,
-            "readyState": self._ready_state == RoomUser.Status.READY,
+            "ready_state": self._ready_state == RoomUser.Status.READY,
         }
+
+    def is_same(self, user) -> bool:
+        return self._nickname == user.nickname

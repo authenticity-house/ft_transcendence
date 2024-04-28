@@ -1,10 +1,12 @@
 /* eslint-disable no-void */
-import { changeUrl } from '../index.js';
+import { changeUrl } from '../../index.js';
 import {
 	fetchProfileDataAndDisplay,
 	fetchRoomsDataAndDisplay
-} from '../components/FetchOnlineMainScreen.js';
-import ButtonBackArrow from '../components/ButtonBackArrow.js';
+} from '../../components/FetchOnlineMainScreen.js';
+import ButtonBackArrow from '../../components/ButtonBackArrow.js';
+
+import { joinRoom } from './rooms/roomManager.js';
 
 const html = String.raw;
 
@@ -19,7 +21,7 @@ class OnlineMainScreenPage {
 		return html`
 			<div class="large-window head_white_neon_15">
 				<div class="user-profile-container">
-					<div class="user-profile-wrapper"></div>
+					<div class="user-profile-img-wrapper"></div>
 					<span
 						class="user-profile-nickname display-medium48 yellow_neon_10"
 					></span>
@@ -80,9 +82,12 @@ class OnlineMainScreenPage {
 
 		roomListContainer.addEventListener('click', (event) => {
 			const { target } = event;
-			// 클릭된 요소가 .single-room-button인 경우에만 changeUrl('waitingRoom') 호출
 			if (target && target.closest('.single-room-button')) {
-				changeUrl('waitingRoom');
+				const button = target.closest('.single-room-button');
+				const { id } = button;
+				const roomNumber = id.split('room-number-')[1];
+
+				if (!joinRoom(roomNumber)) console.log('방 참가 실패');
 			}
 		});
 

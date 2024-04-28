@@ -1,12 +1,13 @@
 from .room_user import RoomUser
+from .exceptions import RoomError
 
 
-class Room:
+class Room:  # pylint: disable=R0902
     DEFAULT_ROOM_NAME = "내 방으로 들어와!"
     DEFAULT_PADDLE_COLOR = "5AD7FF"
     DEFAULT_BALL_COLOR = "FFD164"
 
-    def __init__(
+    def __init__(  # pylint: disable=R0913
         self,
         room_number: int = -1,
         room_name: str = DEFAULT_ROOM_NAME,
@@ -30,8 +31,14 @@ class Room:
         self._total_rating: int = 0
 
     def add_user(self, user) -> None:
+        if self.__is_full():
+            raise RoomError("Room is full")
+        if any(usr._nickname == user.nickname for usr in self._users):  # pylint: disable=W0212
+            raise RoomError("User already joined")
+
         nickname = user.nickname
-        rating = user.stats.rating
+        # rating = user.stats.rating
+        rating = 1000
         img_url = user.profile_url
 
         user = RoomUser(nickname, rating, img_url)
@@ -40,16 +47,16 @@ class Room:
         self._total_rating += rating
 
     def delete_user(self, user) -> None:
-        nickname = user.nickname
-        rating = user.stats.rating
+        # rating = user.stats.rating
+        rating = 1000
 
         for idx, room_user in enumerate(self._users):
-            if room_user.nickname == nickname:
+            if room_user.is_same(user):
                 self._users.pop(idx)
                 self._total_rating -= rating
                 return
 
-        raise Exception()
+        raise RoomError(f"Can not found such user: {user.nickname}")
 
     def room_info(self) -> dict:
         return {
@@ -58,10 +65,14 @@ class Room:
             "level": self._level,
             "total_score": self._total_score,
             "color": {"paddle": self._paddle_color, "ball": self._ball_color},
-            "current_headcount": len(self._users),
+            "current_headcount": self.__current_headcount(),
             "max_headcount": self._max_headcount,
             "room_name": self._room_name,
-            "rating": 0 if len(self._users) == 0 else self._total_rating // len(self._users),
+            "rating": (
+                0
+                if self.__current_headcount() == 0
+                else self._total_rating // self.__current_headcount()
+            ),
         }
 
     def users_info(self) -> list:
@@ -70,8 +81,40 @@ class Room:
         for idx, room_user in enumerate(self._users):
             info = room_user.info()
             info["host"] = idx == 0
-            info["roomPosition"] = idx
+            info["room_position"] = idx
 
             users.append(info)
 
         return users
+
+    def my_info(self, user) -> dict:
+        for idx, room_user in enumerate(self._users):
+            if room_user.is_same(user):
+                info = room_user.info()
+                info["host"] = idx == 0
+                info["room_position"] = idx
+                return info
+
+        raise RoomError(f"Can not found such user: {user.nickname}")
+
+    def is_host(self, user) -> bool:
+        host_user = self._users[0]
+        return host_user.is_same(user)
+
+    def change_state(self, user):
+        for room_user in self._users:
+            if room_user.is_same(user):
+                room_user.change_ready_state()
+                break
+
+    def change_info(self, info):
+        self._level = info["level"]
+        self._total_score = info["total_score"]
+        self._paddle_color = info["color"]["paddle"]
+        self._ball_color = info["color"]["ball"]
+
+    def __current_headcount(self) -> int:
+        return len(self._users)
+
+    def __is_full(self) -> bool:
+        return self.__current_headcount() >= self._max_headcount

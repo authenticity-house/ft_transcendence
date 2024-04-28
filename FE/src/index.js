@@ -3,21 +3,22 @@ import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/register/RegisterPage.js';
 
-import GameSettingPage from './pages/GameSettingPage.js';
-import GameSettingTournament from './pages/GameSettingTournament.js';
-import GameSettingDetailed from './pages/GameSettingDetailed.js';
+import GameSettingPage from './pages/local/gameSetting/GameSettingPage.js';
+import GameSettingTournament from './pages/local/gameSetting/GameSettingTournament.js';
+import GameSettingDetailed from './pages/local/gameSetting/GameSettingDetailed.js';
 import MatchModePage from './pages/MatchModePage.js';
-import DuelStatsPage from './pages/DuelStatsPage.js';
-import TournamentPage from './pages/TournamentPage.js';
-import TournamentResultPage from './pages/TournamentResultPage.js';
+import DuelStatsPage from './pages/local/DuelStatsPage.js';
+import TournamentPage from './pages/local/TournamentPage.js';
+import TournamentResultPage from './pages/local/TournamentResultPage.js';
 
-import OnlineMainScreenPage from './pages/OnlineMainScreenPage.js';
+import OnlineMainScreenPage from './pages/online/OnlineMainScreenPage.js';
 
-import OnlineGameSettingPage from './pages/online/OnlineGameSettingPage.js';
-import OnlineGameSettingDetailed from './pages/online/OnlineGameSettingDetailed.js';
-import OnlineGameSettingTournament from './pages/online/OnlineGameSettingTournament.js';
+import OnlineGameSettingPage from './pages/online/gameSetting/OnlineGameSettingPage.js';
+import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSettingDetailed.js';
+import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
 
-import WaitingRoomPage from './pages/WaitingRoomPage.js';
+import WaitingRoomPage from './pages/online/rooms/waitingRoom/WaitingRoomPage.js';
+import modifyGameSetting from './pages/online/rooms/ModifyGameSetting.js';
 
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import {
