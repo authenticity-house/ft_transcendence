@@ -20,8 +20,8 @@ import {
 	profileButton
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
+import { hideModal } from './components/modal/modalUtils.js';
 import apiEndpoints from './constants/apiConfig.js';
-import { removeModalBackdrop } from './components/modal/modalUtils.js';
 
 const html = String.raw;
 
@@ -143,7 +143,7 @@ logo.addEventListener('click', () => {
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
 	// 모달창 열려 있을 시, 닫고 진행
-	removeModalBackdrop();
+	hideModal('profile-modal');
 	// 방 대기실에서 뒤로가기 눌렀을 시, 방 웹소켓 연결 끊기
 	if (urlState === '/waitingRoom') {
 		gamewsmanager.unregister();
