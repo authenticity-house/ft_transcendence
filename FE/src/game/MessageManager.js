@@ -238,6 +238,8 @@ export class MessageManager {
 				});
 				changeUrlInstance('game', this.gamepage);
 
+				this.websocket.setupInputMapping();
+
 				this.resetGameData(); // score 정보 초기화
 				this.sendGameStartRequest(); // 게임 시작 요청
 				break;
