@@ -1,6 +1,6 @@
 import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
-import GamePage from './pages/GamePage.js';
+import GamePage from './game/GamePage.js';
 import RegisterPage from './pages/register/RegisterPage.js';
 
 import GameSettingPage from './pages/local/gameSetting/GameSettingPage.js';
@@ -18,9 +18,8 @@ import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSett
 import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
 
 import WaitingRoomPage from './pages/online/rooms/waitingRoom/WaitingRoomPage.js';
-import modifyGameSetting from './pages/online/rooms/ModifyGameSetting.js';
 
-import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
+import { GamewebsocketManager } from './game/GamewebsocketManager.js';
 import {
 	headerAddEventListeners,
 	profileButton
@@ -64,8 +63,8 @@ const routes = {
 	gameSetting: GameSettingPage,
 	gameSettingTournament: GameSettingTournament,
 	gameSettingDetailed: GameSettingDetailed,
-	play: PlayModePage,
-	match: MatchModePage,
+	playMode: PlayModePage,
+	matchMode: MatchModePage,
 	game: GamePage,
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,
@@ -147,9 +146,14 @@ window.onpopstate = () => {
 // };
 
 window.onload = () => {
+	gamewsmanager.unregister();
 	const currentPath = window.location.pathname;
 	if (currentPath.includes('/test')) {
 		root.innerHTML = Test.template();
 		Test.addEventListeners();
 	} else history.pushState(null, null, homeLink);
 };
+
+window.addEventListener('beforeunload', () => {
+	gamewsmanager.unregister();
+});

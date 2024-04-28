@@ -7,6 +7,9 @@ import {
 import ButtonBackArrow from '../../components/ButtonBackArrow.js';
 
 import { joinRoom } from './rooms/roomManager.js';
+import { roomModal } from './rooms/roomModal.js';
+
+import { showModalWithContent } from '../../components/modal/modalUtils.js';
 
 const html = String.raw;
 
@@ -46,6 +49,7 @@ class OnlineMainScreenPage {
 				</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
+			${roomModal()}
 		`;
 	}
 
@@ -54,8 +58,17 @@ class OnlineMainScreenPage {
 		fetchRoomsDataAndDisplay();
 	}
 
-	addEventListeners() {
+	refreshRoomlist() {
 		const roomListContainer = document.querySelector('.room-list-container');
+		// 기존 방 리스트들 삭제
+		while (roomListContainer.firstChild) {
+			roomListContainer.removeChild(roomListContainer.firstChild);
+		}
+		// 방 데이터 가져와서 띄우기
+		fetchRoomsDataAndDisplay();
+	}
+
+	addRefreshRoomEventListener() {
 		const refreshButton = document.querySelector('.room-list-refresh-button');
 		const refreshImg = document.querySelector('.room-list-refresh-img');
 
@@ -71,14 +84,12 @@ class OnlineMainScreenPage {
 			setTimeout(() => {
 				this.refreshButtonEnabled = true; // 3초 후에 다시 클릭 가능하도록 활성화
 			}, 3000);
-
-			// 기존 방 리스트들 삭제
-			while (roomListContainer.firstChild) {
-				roomListContainer.removeChild(roomListContainer.firstChild);
-			}
-			// 방 데이터 가져와서 띄우기
-			fetchRoomsDataAndDisplay();
+			this.refreshRoomlist();
 		});
+	}
+
+	addJoinRoomEventListener() {
+		const roomListContainer = document.querySelector('.room-list-container');
 
 		roomListContainer.addEventListener('click', (event) => {
 			const { target } = event;
@@ -87,13 +98,27 @@ class OnlineMainScreenPage {
 				const { id } = button;
 				const roomNumber = id.split('room-number-')[1];
 
-				if (!joinRoom(roomNumber)) console.log('방 참가 실패');
+				joinRoom(roomNumber).then((error) => {
+					if (error) {
+						showModalWithContent(
+							'roomModal',
+							'room-modal-text',
+							'방에 참가할 수 없습니다. 다른 방에 참가해주세요.'
+						);
+						this.refreshRoomlist();
+					}
+				});
 			}
 		});
+	}
+
+	addEventListeners() {
+		this.addRefreshRoomEventListener();
+		this.addJoinRoomEventListener();
 
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 
 		const createRoom = document.querySelector('.create-room-button');
