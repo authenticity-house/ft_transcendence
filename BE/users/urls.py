@@ -7,7 +7,9 @@ from .views import (
     UserPrefixSearchView,
     UserProfileView,
     OAuthView,
-    CheckLoginStatusAPIView, SentFriendRequestsAPIView,
+    CheckLoginStatusAPIView,
+    SentFriendRequestsAPIView,
+    ReceivedFriendRequestsAPIView,
 )
 
 urlpatterns = [
@@ -23,6 +25,7 @@ urlpatterns = [
     ),
     path("friends/", FriendAPIView.as_view(), name="friends"),
     path("friends/sent/", SentFriendRequestsAPIView.as_view()),
+    path("friends/received/", ReceivedFriendRequestsAPIView.as_view()),
     path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
     path("oauth/", OAuthView.as_view(), name="oauth"),

@@ -152,7 +152,26 @@ class FriendAPIView(APIView):
 
 class SentFriendRequestsAPIView(APIView):
     def get(self, request):
-        pass
+        user_pk = request.user.pk
+
+        sent_friends = Friendship.objects.filter(
+            to_user_id=user_pk, are_we_friend=False
+        ).values_list("from_user", flat=True)
+        sent_friends_object = [User.objects.get(pk=user_pk) for user_pk in sent_friends]
+        serializer = UserProfileSerializer(sent_friends_object, many=True)
+        return Response(serializer.data)
+
+
+class ReceivedFriendRequestsAPIView(APIView):
+    def get(self, request):
+        user_pk = request.user.pk
+
+        received_friends = Friendship.objects.filter(
+            from_user_id=user_pk, are_we_friend=False
+        ).values_list("to_user", flat=True)
+        received_friends_object = [User.objects.get(pk=user_pk) for user_pk in received_friends]
+        serializer = UserProfileSerializer(received_friends_object, many=True)
+        return Response(serializer.data)
 
 
 class InvalidQueryParams(APIException):
