@@ -3,8 +3,8 @@ from channels.generic.websocket import JsonWebsocketConsumer
 
 from rooms.services import RoomManager
 from rooms.services.exceptions import RoomError
+from .game_server import request_game_session
 
-import requests
 
 class RoomConsumer(JsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -27,15 +27,6 @@ class RoomConsumer(JsonWebsocketConsumer):
         self.accept()
         self.broadcast("room.info", "get room info")
 
-        # test
-        url = 'http://game:8000/online/'
-        data = {'test_key': 'hello game!'}
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        response = requests.post(url, json=data, headers=headers)
-        print(response.json())
-
     def receive_json(self, content, **kwargs):
         msg_type = content.get("type", "invalid")
         msg_body = content.get("data", "")
@@ -45,6 +36,9 @@ class RoomConsumer(JsonWebsocketConsumer):
             self.change_state()
         elif msg_type == "room.change.info":
             self.change_info(msg_body)
+        elif msg_type == "room.start.request":
+            url = request_game_session(msg_body)
+            self.game_start(url)
 
     def room_exit(self):
         room = self.__get_room()
@@ -71,6 +65,11 @@ class RoomConsumer(JsonWebsocketConsumer):
         info["type"] = "room.info"
         self.send_json(info)
 
+    def room_game_start(self, event):
+        msg = {"type": "room.game.start", "url": event["data"]}
+        self.send_json(msg)
+        self.close()
+
     def change_state(self):
         room = self.__get_room()
         room.change_state(self.user)
@@ -80,6 +79,10 @@ class RoomConsumer(JsonWebsocketConsumer):
         room = self.__get_room()
         room.change_info(data)
         self.broadcast("room.info", "get room info")
+
+    def game_start(self, url):
+        RoomManager.delete_room(self.room_number)
+        self.broadcast("room.game.start", url)
 
     def broadcast(self, msg_type, msg_body):
         async_to_sync(self.channel_layer.group_send)(
