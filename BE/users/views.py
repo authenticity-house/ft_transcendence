@@ -198,6 +198,28 @@ class ReceivedFriendRequestsAPIView(APIView):
         return Response(serializer.data)
 
 
+class SentFriendRequestDetailAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, friend_pk: int):
+        user_pk: int = request.user.pk
+
+        if user_pk == friend_pk:
+            raise ParseError(detail="You cannot add yourself as a friend")
+
+        friendship = Friendship.objects.filter(
+            Q(from_user_id=user_pk, to_user_id=friend_pk)
+            | Q(from_user_id=friend_pk, to_user_id=user_pk)
+        )
+
+        if friendship.count() == 2 and are_they_friend(*friendship):
+            return Response({"detail": "Already friends."}, status=status.HTTP_400_BAD_REQUEST)
+
+        friendship.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ReceivedFriendRequestDetailAPIView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -224,7 +246,6 @@ class ReceivedFriendRequestDetailAPIView(APIView):
         if user_pk == friend_pk:
             raise ParseError(detail="You cannot add yourself as a friend")
 
-        # 두 조건을 OR 연산으로 한 번에 필터링
         friendship = Friendship.objects.filter(
             Q(from_user_id=user_pk, to_user_id=friend_pk)
             | Q(from_user_id=friend_pk, to_user_id=user_pk)
