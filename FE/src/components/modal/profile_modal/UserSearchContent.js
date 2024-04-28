@@ -31,7 +31,7 @@ class UserSearchContent {
 		for (let i = 0; i < data.length; i += 1) {
 			const userSearchNode = new UserNode(data[i]);
 			userSearches += `
-				<button class="user-node-button" data-bs-target="#profileFriendModal" data-bs-toggle="modal">
+				<button class="user-node-button" data-bs-target="#friend-profile-modal" data-bs-toggle="modal">
 			`;
 			userSearches += userSearchNode.template();
 			userSearches += '</button>';

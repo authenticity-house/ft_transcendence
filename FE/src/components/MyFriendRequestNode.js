@@ -3,7 +3,6 @@ const html = String.raw;
 class MyFriendRequestNode {
 	constructor(data) {
 		this.data = data;
-		console.log(data);
 	}
 
 	template() {

@@ -26,24 +26,21 @@ class ProfileModal {
 			>
 				<div class="modal-dialog modal-dialog-centered">
 					<div
-						class="modal-content head_white_neon_15 display-light28"
-						id="profile-modal-content"
+						class="modal-content head_white_neon_15 display-light28 profile-modal-content"
 					>
 						<button
-							id="profile-modal-close"
 							type="button"
-							class="btn-close btn-close-white"
+							class="btn-close btn-close-white profile-modal-close"
 							data-bs-dismiss="modal"
 							aria-label="Close"
 						></button>
-						<div id="profile-modal-body" class="modal-body">
-							<div id="profile-modal-container" class="container-fluid">
-								<div id="profile-modal-row" class="row">
+						<div class="modal-body profile-modal-body">
+							<div class="container-fluid profile-modal-container">
+								<div class="row profile-modal-row">
 									<!-- 네비게이션 바 -->
-									<div id="profile-modal-nav" class="col-3">
+									<div class="col-3 profile-modal-nav">
 										<div
-											class="nav flex-column nav-pills"
-											id="profile-nav-tab"
+											class="nav flex-column nav-pills profile-nav-tab"
 											role="tablist"
 											aria-orientation="vertical"
 										>
@@ -139,10 +136,10 @@ class ProfileModal {
 										</div>
 									</div>
 									<!-- 선택된 뷰의 내용을 표시하는 부분 -->
-									<div id="profile-modal-content-container" class="col-9">
-										<div class="tab-content" id="nav-tabContent">
+									<div class="profile-modal-content-container col-9">
+										<div class="tab-content nav-tabContent">
 											<div
-												class="tab-pane fade show"
+												class="tab-pane fade"
 												id="my-info"
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
@@ -191,35 +188,102 @@ class ProfileModal {
 			</div>
 			<div
 				class="modal fade"
-				id="profileFriendModal"
+				id="friend-profile-modal"
 				aria-hidden="true"
 				aria-labelledby="profileFriendModalLabel"
 				tabindex="-1"
 			>
 				<div class="modal-dialog modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalToggleLabel2">
-								Modal 2
-							</h1>
-							<button
-								type="button"
-								class="btn-close"
-								data-bs-dismiss="modal"
-								aria-label="Close"
-							></button>
-						</div>
-						<div class="modal-body">
-							Hide this modal and show the first with the button below.
-						</div>
-						<div class="modal-footer">
-							<button
-								class="btn btn-primary"
-								data-bs-target="#profile-modal"
-								data-bs-toggle="modal"
-							>
-								Back to first
-							</button>
+					<div
+						class="modal-content head_white_neon_15 display-light28 profile-modal-content"
+					>
+						<button
+							type="button"
+							class="btn-close btn-close-white profile-modal-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+						<div class="modal-body profile-modal-body">
+							<div class="container-fluid profile-modal-container">
+								<div class="row profile-modal-row">
+									<!-- 네비게이션 바 -->
+									<div class="col-3 profile-modal-nav">
+										<div
+											class="nav flex-column nav-pills profile-nav-tab"
+											role="tablist"
+											aria-orientation="vertical"
+										>
+											<button
+												class="profile-nav-link"
+												id="friend-info-tab"
+												data-toggle="tab"
+												role="tab"
+												aria-controls="friend-info"
+												aria-selected="true"
+											>
+												<img
+													class="profile-icon"
+													src="image/my-info.svg"
+													alt="info"
+												/>
+												정보
+											</button>
+											<button
+												class="profile-nav-link"
+												id="friend-match-record-tab"
+												data-toggle="tab"
+												role="tab"
+												aria-controls="friend-match-record"
+												aria-selected="true"
+											>
+												<img
+													class="profile-icon"
+													src="image/match-record.svg"
+													alt="record"
+												/>
+												경기 기록
+											</button>
+										</div>
+										<div id="return-container">
+											<button
+												id="return-button"
+												class="display-light28"
+												type="button"
+												data-bs-target="#profile-modal"
+												data-bs-toggle="modal"
+											>
+												<img
+													class="profile-icon"
+													src="image/logout.svg"
+													alt="logout"
+												/>
+												<span id="return-text">돌아가기</span>
+											</button>
+										</div>
+									</div>
+									<!-- 선택된 뷰의 내용을 표시하는 부분 -->
+									<div class="profile-modal-content-container col-9">
+										<div class="tab-content nav-tabContent">
+											<div
+												class="tab-pane fade"
+												id="friend-info"
+												role="tabpanel"
+												aria-labelledby="friend-info-tab"
+											>
+												${myInfoContent.template()}
+											</div>
+											<div
+												class="tab-pane fade"
+												id="friend-match-record"
+												role="tabpanel"
+												aria-labelledby="friend-match-record-tab"
+											>
+												${myRecordContent.template()}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -254,6 +318,7 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
+				console.log(selectedTabContentId);
 				getContent(selectedTabContentId);
 			});
 		});

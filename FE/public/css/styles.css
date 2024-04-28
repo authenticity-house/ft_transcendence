@@ -1733,11 +1733,12 @@ td {
 
 /* profile modal */
 
-#profile-modal {
+#profile-modal,
+#friend-profile-modal {
 	--bs-modal-width: 120rem;
 }
 
-#profile-modal-content {
+.profile-modal-content {
 	display: flex;
 	width: 120rem;
 	height: 88rem;
@@ -1748,14 +1749,14 @@ td {
 	background: #141343;
 }
 
-#profile-modal-close {
+.profile-modal-close {
 	position: absolute;
 	top: 2rem;
 	right: 2rem;
 	z-index: 1000;
 }
 
-#profile-modal-body {
+.profile-modal-body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1764,7 +1765,7 @@ td {
 	padding: 0;
 }
 
-#profile-modal-container {
+.profile-modal-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1773,7 +1774,7 @@ td {
 	padding: 0;
 }
 
-#profile-modal-row {
+.profile-modal-row {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1781,7 +1782,7 @@ td {
 	height: 100%;
 }
 
-#profile-modal-nav {
+.profile-modal-nav {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -1791,7 +1792,7 @@ td {
 	padding: 0;
 }
 
-#profile-nav-tab {
+.profile-nav-tab {
 	display: flex;
 	width: 100%;
 	padding: 4rem 0;
@@ -1829,13 +1830,13 @@ td {
 }
 
 .profile-nav-link:hover .profile-icon,
-.profile-nav-link.active .profile-icon,
-.logout-button:hover .profile-icon {
+.profile-nav-link.active .profile-icon {
 	filter: brightness(0) saturate(100%) invert(83%) sepia(30%) saturate(800%)
 		hue-rotate(344deg) brightness(101%) contrast(101%);
 }
 
-#logout-container {
+#logout-container,
+#return-container {
 	display: flex;
 	padding-bottom: 4rem;
 	justify-content: center;
@@ -1844,7 +1845,8 @@ td {
 	align-self: stretch;
 }
 
-#logout-button {
+#logout-button,
+#return-button {
 	display: flex;
 	padding: 0rem 4rem;
 	align-items: center;
@@ -1855,22 +1857,24 @@ td {
 	border: none;
 }
 
-#logout-button:hover .profile-icon {
+#logout-button:hover .profile-icon,
+#return-button:hover .profile-icon {
 	filter: brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(5393%)
 		hue-rotate(355deg) brightness(93%) contrast(128%);
 }
 
-#logout-text {
+#logout-text,
+#return-text {
 	width: 100%;
 }
 
-#profile-modal-content-container {
+.profile-modal-content-container {
 	display: flex;
 	height: 100%;
 	padding: 0;
 }
 
-#nav-tabContent {
+.nav-tabContent {
 	display: flex;
 	width: 100%;
 	height: 100%;
