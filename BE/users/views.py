@@ -151,6 +151,9 @@ class FriendAPIView(APIView):
 
 
 class SentFriendRequestsAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user_pk = request.user.pk
 
@@ -163,6 +166,9 @@ class SentFriendRequestsAPIView(APIView):
 
 
 class ReceivedFriendRequestsAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user_pk = request.user.pk
 
