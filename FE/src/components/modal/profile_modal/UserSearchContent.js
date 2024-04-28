@@ -1,3 +1,5 @@
+import apiEndpoints from '../../../constants/apiConfig.js';
+import { getCookie } from '../../../utils/getCookie.js';
 import UserNode from '../../UserNode.js';
 
 const html = String.raw;
@@ -43,6 +45,33 @@ class UserSearchContent {
 
 	addEventListeners() {
 		// const userSearchNodes = document.querySelectorAll('.user-search-node-container');
+		const userSearchButton = document.querySelector('.user-search-button');
+		const csrfToken = getCookie('csrftoken');
+
+		userSearchButton.addEventListener('click', () => {
+			const userSearchInput = document.querySelector('.user-search-input');
+			const userSearchValue = userSearchInput.value;
+
+			if (userSearchValue === '') {
+				alert('닉네임을 입력해주세요.');
+			} else {
+				// 서버에 요청
+				fetch(apiEndpoints.SEARCH_USER_URL + userSearchValue, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': csrfToken
+					}
+				})
+					.then((res) => res.json())
+					.then((res) => {
+						this.mount(res);
+					})
+					.catch((err) => {
+						console.error('에러 발생: ', err);
+					});
+			}
+		});
 	}
 }
 
