@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("GAME_SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = os.getenv("GAME_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]", "game"]
 
 
 # Application definition

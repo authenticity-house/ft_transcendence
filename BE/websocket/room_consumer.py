@@ -4,6 +4,7 @@ from channels.generic.websocket import JsonWebsocketConsumer
 from rooms.services import RoomManager
 from rooms.services.exceptions import RoomError
 
+import requests
 
 class RoomConsumer(JsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -25,6 +26,15 @@ class RoomConsumer(JsonWebsocketConsumer):
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         self.accept()
         self.broadcast("room.info", "get room info")
+
+        # test
+        url = 'http://game:8000/online/'
+        data = {'test_key': 'hello game!'}
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.post(url, json=data, headers=headers)
+        print(response.json())
 
     def receive_json(self, content, **kwargs):
         msg_type = content.get("type", "invalid")
