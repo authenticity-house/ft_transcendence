@@ -139,6 +139,10 @@ export const gamewsmanager = new GamewebsocketManager();
 const logo = document.querySelector('#logo');
 logo.addEventListener('click', () => {
 	gamewsmanager.unregister();
+	const url = window.location.href.split('/').pop();
+	if (url === 'game') {
+		history.pushState(null, null, 'gameBlock');
+	}
 	window.location.reload(true);
 });
 
