@@ -2,7 +2,7 @@ import { changeUrl, changeUrlData, gamewsmanager } from '../../../index.js';
 import HorizontalButton from '../../../components/HorizontalButton.js';
 import VerticalButton from '../../../components/VerticalButton.js';
 import InputNickname from '../../../components/InputNickname.js';
-import { Gamewebsocket } from '../../../websocket/Gamewebsocket.js';
+import { Gamewebsocket } from '../../../game/Gamewebsocket.js';
 import ButtonBackArrow from '../../../components/ButtonBackArrow.js';
 
 const html = String.raw;
@@ -58,7 +58,7 @@ class GameSettingTournament {
 						<div class="game-setting-tournament-container">
 							<div class="game-setting-number-container">
 								<!-- 게임 인원수 선택 -->
-								<p class="text-subtitle-1-left">참여인원</p>
+								<p class="text-subtitle-1-left width-20">참여인원</p>
 								<div class="num-block head-count">
 									<div class="num-in">
 										<span class="minus"></span>
@@ -238,7 +238,7 @@ class GameSettingTournament {
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.resetData();
-			changeUrl('match');
+			changeUrl('matchMode');
 		});
 	}
 }

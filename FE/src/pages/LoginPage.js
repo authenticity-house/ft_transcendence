@@ -147,7 +147,7 @@ class LoginPage {
 
 		const loginGuest = document.querySelector('.login-guest');
 		loginGuest.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 	}
 }

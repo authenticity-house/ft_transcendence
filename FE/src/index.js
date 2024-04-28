@@ -1,6 +1,6 @@
 import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
-import GamePage from './pages/GamePage.js';
+import GamePage from './game/GamePage.js';
 import RegisterPage from './pages/register/RegisterPage.js';
 import GameSettingPage from './pages/local/gameSetting/GameSettingPage.js';
 import GameSettingTournament from './pages/local/gameSetting/GameSettingTournament.js';
@@ -14,7 +14,7 @@ import OnlineGameSettingPage from './pages/online/gameSetting/OnlineGameSettingP
 import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSettingDetailed.js';
 import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
 import WaitingRoomPage from './pages/online/rooms/waitingRoom/WaitingRoomPage.js';
-import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
+import { GamewebsocketManager } from './game/GamewebsocketManager.js';
 import {
 	headerAddEventListeners,
 	profileButton
@@ -57,8 +57,8 @@ const routes = {
 	gameSetting: GameSettingPage,
 	gameSettingTournament: GameSettingTournament,
 	gameSettingDetailed: GameSettingDetailed,
-	play: PlayModePage,
-	match: MatchModePage,
+	playMode: PlayModePage,
+	matchMode: MatchModePage,
 	game: GamePage,
 	duelstats: DuelStatsPage,
 	tournament: TournamentPage,

@@ -1,7 +1,7 @@
 import { changeUrl, changeUrlData, gamewsmanager } from '../../../index.js';
 import HorizontalButton from '../../../components/HorizontalButton.js';
 import VerticalButton from '../../../components/VerticalButton.js';
-import { Gamewebsocket } from '../../../websocket/Gamewebsocket.js';
+import { Gamewebsocket } from '../../../game/Gamewebsocket.js';
 import ButtonBackArrow from '../../../components/ButtonBackArrow.js';
 import { pongImage } from '../../../components/pongImage.js';
 
@@ -87,12 +87,11 @@ class GameSettingPage {
 			// 웹소켓 만들기
 			const gamewebsocket = new Gamewebsocket(newData);
 			gamewsmanager.register(gamewebsocket);
-			// changeUrlData('game', newData);
 		});
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.resetData();
-			changeUrl('match');
+			changeUrl('matchMode');
 		});
 	}
 }
