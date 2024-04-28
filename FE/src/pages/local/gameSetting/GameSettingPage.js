@@ -67,14 +67,14 @@ class GameSettingPage {
 			'.horizontalButton button:nth-child(2)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('gameSettingTournament', null, 'notHistory');
+			changeUrlData('gameSettingTournament', null, true);
 		});
 
 		const detailedButton = document.querySelector(
 			'.verticalButton button:nth-child(1)'
 		);
 		detailedButton.addEventListener('click', () => {
-			changeUrlData('gameSettingDetailed', this.data, 'notHistory');
+			changeUrlData('gameSettingDetailed', this.data, true);
 		});
 
 		const startButton = document.querySelector(

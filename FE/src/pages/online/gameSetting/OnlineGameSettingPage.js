@@ -94,7 +94,7 @@ class GameSettingPage {
 			'.horizontalButton button:nth-child(2)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('onlineSettingTournament', null, 'notHistory');
+			changeUrlData('onlineSettingTournament', null, true);
 		});
 
 		function updateRoomName(res) {
@@ -108,7 +108,7 @@ class GameSettingPage {
 		);
 		detailedButton.addEventListener('click', () => {
 			updateRoomName(this.data);
-			changeUrlData('onlineDetailed', this.data, 'notHistory');
+			changeUrlData('onlineDetailed', this.data, true);
 		});
 
 		const startButton = document.querySelector(

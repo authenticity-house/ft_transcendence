@@ -29,7 +29,7 @@ class GameSettingDetailed {
 			changeUrlData(
 				setting[this.battleMode],
 				this.setting.getModifiedData(),
-				'notHistory'
+				true
 			);
 		});
 	}

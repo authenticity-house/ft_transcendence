@@ -111,8 +111,8 @@ export const changeUrl = (url) => {
 	routes[url].addEventListeners();
 };
 
-export const changeUrlData = (url, data, historyState) => {
-	if (historyState !== 'notHistory') {
+export const changeUrlData = (url, data, notHistoryState) => {
+	if (notHistoryState !== true) {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
 			urlState = `${homeLink}gameSetting`;

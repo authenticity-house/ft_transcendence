@@ -113,7 +113,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								window.location.reload(true);
+								changeUrl('playMode');
 								return null;
 							}
 							return res.json();
