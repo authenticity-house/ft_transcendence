@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound, ParseError, APIException, ValidationError
+from rest_framework.exceptions import NotFound, ParseError, APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -99,18 +99,20 @@ class FriendAPIView(APIView):
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: pk={user_pk}") from exc
 
-
-class SentFriendRequestsAPIView(APIView):
     def post(self, request):
         user_pk: int = request.user.pk
         friend_pk_str = request.data.get("friend_pk")
-        friend_pk: int = int(friend_pk_str) if friend_pk_str.isdigit() else None
 
-        if friend_pk is None:
+        if friend_pk_str is None:
             raise ParseError(detail="friend_pk is empty")
 
+        if not friend_pk_str.isdigit():
+            raise ParseError(detail="friend_pk can only be int type")
+
+        friend_pk: int = int(friend_pk_str)
+
         if user_pk == friend_pk:
-            raise ValidationError(detail="You cannot add yourself as a friend")
+            raise ParseError(detail="You cannot add yourself as a friend")
 
         try:
             user_profile = User.objects.get(pk=user_pk)
@@ -131,6 +133,11 @@ class SentFriendRequestsAPIView(APIView):
             )
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"User does not exist: friend_pk={friend_pk}") from exc
+
+
+class SentFriendRequestsAPIView(APIView):
+    def get(self, request):
+        pass
 
 
 class InvalidQueryParams(APIException):
