@@ -1800,7 +1800,8 @@ td {
 	align-items: center;
 }
 
-.profile-nav-link {
+.profile-nav-link,
+.friend-profile-nav-link {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -1816,7 +1817,8 @@ td {
 	align-self: stretch;
 }
 
-.profile-nav-link.active {
+.profile-nav-link.active,
+.friend-profile-nav-link.active {
 	text-shadow:
 		0rem 0rem 1rem #ffd164,
 		0rem 0rem 1rem #ffd164;
@@ -1830,7 +1832,9 @@ td {
 }
 
 .profile-nav-link:hover .profile-icon,
-.profile-nav-link.active .profile-icon {
+.profile-nav-link.active .profile-icon,
+.friend-profile-nav-link:hover .profile-icon,
+.friend-profile-nav-link.active .profile-icon {
 	filter: brightness(0) saturate(100%) invert(83%) sepia(30%) saturate(800%)
 		hue-rotate(344deg) brightness(101%) contrast(101%);
 }

@@ -139,7 +139,7 @@ class ProfileModal {
 									<div class="profile-modal-content-container col-9">
 										<div class="tab-content nav-tabContent">
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="my-info"
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
@@ -147,7 +147,7 @@ class ProfileModal {
 												${myInfoContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="match-record"
 												role="tabpanel"
 												aria-labelledby="match-record-tab"
@@ -155,7 +155,7 @@ class ProfileModal {
 												${myRecordContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="user-search"
 												role="tabpanel"
 												aria-labelledby="user-search-tab"
@@ -163,7 +163,7 @@ class ProfileModal {
 												${userSearchContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="my-friend"
 												role="tabpanel"
 												aria-labelledby="my-friend-tab"
@@ -171,7 +171,7 @@ class ProfileModal {
 												${myFriendContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="stats"
 												role="tabpanel"
 												aria-labelledby="stats-tab"
@@ -186,6 +186,8 @@ class ProfileModal {
 					</div>
 				</div>
 			</div>
+
+			<!-- 친구 프로필 모달 -->
 			<div
 				class="modal fade"
 				id="friend-profile-modal"
@@ -214,7 +216,7 @@ class ProfileModal {
 											aria-orientation="vertical"
 										>
 											<button
-												class="profile-nav-link"
+												class="friend-profile-nav-link"
 												id="friend-info-tab"
 												data-toggle="tab"
 												role="tab"
@@ -229,7 +231,7 @@ class ProfileModal {
 												정보
 											</button>
 											<button
-												class="profile-nav-link"
+												class="friend-profile-nav-link"
 												id="friend-match-record-tab"
 												data-toggle="tab"
 												role="tab"
@@ -265,7 +267,7 @@ class ProfileModal {
 									<div class="profile-modal-content-container col-9">
 										<div class="tab-content nav-tabContent">
 											<div
-												class="tab-pane fade"
+												class="tab-pane friend-tab-pane fade"
 												id="friend-info"
 												role="tabpanel"
 												aria-labelledby="friend-info-tab"
@@ -273,7 +275,7 @@ class ProfileModal {
 												${myInfoContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane friend-tab-pane fade"
 												id="friend-match-record"
 												role="tabpanel"
 												aria-labelledby="friend-match-record-tab"
@@ -301,12 +303,45 @@ class ProfileModal {
 				event.preventDefault();
 
 				// 모든 탭 컨텐츠 숨김 처리
-				document.querySelectorAll('.tab-pane').forEach((pane) => {
+				document.querySelectorAll('.my-tab-pane').forEach((pane) => {
 					pane.classList.remove('show', 'active');
 				});
 
 				// 모든 탭 버튼의 'active' 클래스 제거
 				navLinks.forEach((navLink) => {
+					navLink.classList.remove('active');
+				});
+
+				// 클릭된 탭 버튼에 'active' 클래스 추가
+				link.classList.add('active');
+
+				// 클릭된 탭에 해당하는 컨텐츠 보여주기
+				const selectedTabContentId = link.getAttribute('aria-controls');
+				const selectedTabContent =
+					document.getElementById(selectedTabContentId);
+				selectedTabContent.classList.add('show', 'active');
+				console.log(selectedTabContentId);
+				getContent(selectedTabContentId);
+			});
+		});
+
+		// 모든 친구 프로필 탭 버튼 선택
+		const friendNavLinks = document.querySelectorAll(
+			'.friend-profile-nav-link'
+		);
+
+		friendNavLinks.forEach((link) => {
+			link.addEventListener('click', (event) => {
+				// 기본 이벤트 방지
+				event.preventDefault();
+
+				// 모든 탭 컨텐츠 숨김 처리
+				document.querySelectorAll('.friend-tab-pane').forEach((pane) => {
+					pane.classList.remove('show', 'active');
+				});
+
+				// 모든 탭 버튼의 'active' 클래스 제거
+				friendNavLinks.forEach((navLink) => {
 					navLink.classList.remove('active');
 				});
 
@@ -366,7 +401,7 @@ class ProfileModal {
 		const tabButton = document.getElementById(`${tabId}-tab`);
 
 		// 모든 탭 컨텐츠 숨김 처리
-		document.querySelectorAll('.tab-pane').forEach((pane) => {
+		document.querySelectorAll('.my-tab-pane').forEach((pane) => {
 			pane.classList.remove('show', 'active');
 		});
 
