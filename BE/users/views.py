@@ -202,6 +202,22 @@ class ReceivedFriendRequestDetailAPIView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def post(self, request, friend_pk: int):
+        user_pk: int = request.user.pk
+
+        if user_pk == friend_pk:
+            raise ParseError(detail="You cannot add yourself as a friend")
+
+        try:
+            from_to_friendship = Friendship.objects.get(from_user_id=user_pk, to_user_id=friend_pk)
+            from_to_friendship.are_we_friend = True
+            from_to_friendship.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except ObjectDoesNotExist as exc:
+            raise NotFound(
+                detail=f"Friendship does not exist: pk={user_pk}, friend_pk={friend_pk}"
+            ) from exc
+
     def delete(self, request, friend_pk: int):
         user_pk: int = request.user.pk
 
