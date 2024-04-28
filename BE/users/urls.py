@@ -10,6 +10,7 @@ from .views import (
     CheckLoginStatusAPIView,
     SentFriendRequestsAPIView,
     ReceivedFriendRequestsAPIView,
+    ReceivedFriendRequestDetailAPIView,
 )
 
 urlpatterns = [
@@ -25,6 +26,11 @@ urlpatterns = [
     ),
     path("friends/", FriendAPIView.as_view(), name="friends"),
     path("friends/sent/", SentFriendRequestsAPIView.as_view()),
+    path(
+        "friends/received/<int:friend_pk>/",
+        ReceivedFriendRequestDetailAPIView.as_view(),
+        name="delete_friend_request",
+    ),
     path("friends/received/", ReceivedFriendRequestsAPIView.as_view()),
     path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),

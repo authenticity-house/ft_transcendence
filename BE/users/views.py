@@ -1,13 +1,14 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import NotFound, ParseError, APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 from rest_framework.permissions import AllowAny, IsAuthenticated
+
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import send_email_confirmation, perform_login
@@ -16,8 +17,33 @@ from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User, Friendship
 from users.serializers import UserProfileSerializer
-
 from users.oauth import get_access_token, get_user_data, get_or_create_user
+
+
+def get_friend_pk(friend_pk_str: str) -> int:
+    if friend_pk_str is None:
+        raise ParseError(detail="friend_pk is empty")
+
+    if not friend_pk_str.isdigit():
+        raise ParseError(detail="friend_pk can only be int type")
+
+    return int(friend_pk_str)
+
+
+def get_query_param(request, key):
+    query_params = request.query_params
+    if key not in query_params.keys():
+        raise InvalidQueryParams(f"'{key}'")
+
+    value = query_params[key]
+    if value == "":
+        raise ParseError(detail=f"{key} value is empty")
+
+    return value
+
+
+def are_they_friend(from_to: Friendship, to_from: Friendship) -> bool:
+    return from_to.are_we_friend is True and to_from.are_we_friend is True
 
 
 class ConfirmEmailView(APIView):
@@ -116,15 +142,7 @@ class FriendAPIView(APIView):
 
     def post(self, request):
         user_pk: int = request.user.pk
-        friend_pk_str = request.data.get("friend_pk")
-
-        if friend_pk_str is None:
-            raise ParseError(detail="friend_pk is empty")
-
-        if not friend_pk_str.isdigit():
-            raise ParseError(detail="friend_pk can only be int type")
-
-        friend_pk: int = int(friend_pk_str)
+        friend_pk: int = get_friend_pk(request.data.get("friend_pk"))
 
         if user_pk == friend_pk:
             raise ParseError(detail="You cannot add yourself as a friend")
@@ -180,6 +198,29 @@ class ReceivedFriendRequestsAPIView(APIView):
         return Response(serializer.data)
 
 
+class ReceivedFriendRequestDetailAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, friend_pk: int):
+        user_pk: int = request.user.pk
+
+        if user_pk == friend_pk:
+            raise ParseError(detail="You cannot add yourself as a friend")
+
+        # 두 조건을 OR 연산으로 한 번에 필터링
+        friendship = Friendship.objects.filter(
+            Q(from_user_id=user_pk, to_user_id=friend_pk)
+            | Q(from_user_id=friend_pk, to_user_id=user_pk)
+        )
+
+        if friendship.count() == 2 and are_they_friend(*friendship):
+            return Response({"detail": "Already friends."}, status=status.HTTP_400_BAD_REQUEST)
+
+        friendship.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class InvalidQueryParams(APIException):
     status_code = 400
 
@@ -223,11 +264,7 @@ class UserPrefixSearchView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        query_params = request.query_params
-        if "prefix" not in query_params.keys():
-            raise InvalidQueryParams("'prefix'")
-
-        prefix = query_params["prefix"]
+        prefix = get_query_param(request, "prefix")
         if prefix == "":
             raise ParseError(detail="prefix value is empty")
 
