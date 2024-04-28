@@ -105,7 +105,6 @@ export const changeUrlInstance = (url, instance) => {
 	instance.addEventListeners();
 };
 
-// When the user presses the back or forward button, the page is changed
 export const changeUrl = (url) => {
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
@@ -118,10 +117,7 @@ export const changeUrl = (url) => {
 };
 
 export const changeUrlData = (url, data, historyState) => {
-	if (
-		historyState !== 'notHistory'
-		// url !== window.location.href.split('/').pop()
-	) {
+	if (historyState !== 'notHistory') {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
 			urlState = `${homeLink}gameSetting`;
@@ -140,11 +136,11 @@ export const changeUrlData = (url, data, historyState) => {
 export const gamewsmanager = new GamewebsocketManager();
 
 // When the user clicks the logo, the page is changed
-// const logo = document.querySelector('#logo');
-// logo.addEventListener('click', () => {
-//  gamewsmanager.unregister();
-//  changeUrl('');
-// });
+const logo = document.querySelector('#logo');
+logo.addEventListener('click', () => {
+	gamewsmanager.unregister();
+	window.location.reload(true);
+});
 
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
