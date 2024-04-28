@@ -5,16 +5,10 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.user = None
         self.session_number = -1
-        self.session_group_name = "room"
+        self.session_group_name = "session"
 
     async def connect(self):
-        self.user = self.scope["user"]
-        # 비인증 유저 거부
-        if not self.user.is_authenticated:
-            self.close()
-
         self.session_number = int(self.scope["url_route"]["kwargs"]["session_number"])
         self.session_group_name = f"session_{self.session_number}"
 
@@ -24,10 +18,6 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         await self.send_message("connection_established", "You are now connected!")
 
     async def send_message(self, subtype, message, data=None, msg_type="game"):
-        if not self.connected:
-            print("GameConsumer: WebSocket is not connected. Message not sent.")
-            return
-
         msg = {
             "type": msg_type,
             "subtype": subtype,
