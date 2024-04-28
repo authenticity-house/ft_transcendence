@@ -16,9 +16,9 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
             self.close()
 
         self.session_number = int(self.scope["url_route"]["kwargs"]["session_number"])
-        self.session_group_name = f"session_{self.room_number}"
+        self.session_group_name = f"session_{self.session_number}"
 
-        # self.channel_layer.group_add(self.room_group_name, self.channel_name)
+        self.channel_layer.group_add(self.session_group_name, self.channel_name)
 
         await self.accept()
         await self.send_message("connection_established", "You are now connected!")

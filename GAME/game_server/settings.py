@@ -80,6 +80,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "game_server.wsgi.application"
 ASGI_APPLICATION = "game_server.asgi.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
