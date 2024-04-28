@@ -165,7 +165,7 @@ class GameSettingTournament {
 			'.horizontalButton button:nth-child(1)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('gameSetting', null);
+			changeUrlData('gameSetting', null, 'notHistory');
 		});
 
 		function updateNicknamesData(res) {
@@ -187,7 +187,7 @@ class GameSettingTournament {
 			const newData = this.data;
 			this.resetData();
 			updateNicknamesData(newData);
-			changeUrlData('gameSettingDetailed', newData);
+			changeUrlData('gameSettingDetailed', newData, 'notHistory');
 		});
 
 		// 닉네임 입력 체크

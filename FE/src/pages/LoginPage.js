@@ -72,6 +72,11 @@ class LoginPage {
 		document
 			.querySelector('.profile-button-container')
 			.classList.add('modal-hidden');
+		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
+			if (res.status === 200) {
+				changeUrl('play');
+			}
+		});
 	}
 
 	addEventListeners() {
@@ -108,7 +113,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								changeUrl('play');
+								window.location.reload(true);
 								return null;
 							}
 							return res.json();

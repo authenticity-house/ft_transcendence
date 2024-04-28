@@ -233,9 +233,10 @@ class GameSettingDetailed {
 			'.horizontalButton button:nth-child(2)'
 		);
 		confirmButton.addEventListener('click', () => {
-			if (this.data.battle_mode === 1) changeUrlData('gameSetting', this.data);
+			if (this.data.battle_mode === 1)
+				changeUrlData('gameSetting', this.data, 'notHistory');
 			else if (this.data.battle_mode === 2)
-				changeUrlData('gameSettingTournament', this.data);
+				changeUrlData('gameSettingTournament', this.data, 'notHistory');
 		});
 	}
 }

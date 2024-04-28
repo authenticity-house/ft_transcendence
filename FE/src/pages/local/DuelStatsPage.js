@@ -73,8 +73,10 @@ class DuelStatsPage {
 		const back = document.querySelector('.event-click-match');
 		back.addEventListener('click', () => {
 			this.data.sendMsg();
-			if (this.data.sendMsg.name === 'bound sendGameDisconnect')
+			if (this.data.sendMsg.name === 'bound sendGameDisconnect') {
+				history.pushState(null, null, 'gameBlock');
 				changeUrl('match');
+			}
 		});
 	}
 }

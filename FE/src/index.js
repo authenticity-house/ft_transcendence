@@ -2,7 +2,6 @@ import LoginPage from './pages/LoginPage.js';
 import PlayModePage from './pages/PlayModePage.js';
 import GamePage from './pages/GamePage.js';
 import RegisterPage from './pages/register/RegisterPage.js';
-
 import GameSettingPage from './pages/local/gameSetting/GameSettingPage.js';
 import GameSettingTournament from './pages/local/gameSetting/GameSettingTournament.js';
 import GameSettingDetailed from './pages/local/gameSetting/GameSettingDetailed.js';
@@ -10,23 +9,18 @@ import MatchModePage from './pages/MatchModePage.js';
 import DuelStatsPage from './pages/local/DuelStatsPage.js';
 import TournamentPage from './pages/local/TournamentPage.js';
 import TournamentResultPage from './pages/local/TournamentResultPage.js';
-
 import OnlineMainScreenPage from './pages/online/OnlineMainScreenPage.js';
-
 import OnlineGameSettingPage from './pages/online/gameSetting/OnlineGameSettingPage.js';
 import OnlineGameSettingDetailed from './pages/online/gameSetting/OnlineGameSettingDetailed.js';
 import OnlineGameSettingTournament from './pages/online/gameSetting/OnlineGameSettingTournament.js';
-
 import WaitingRoomPage from './pages/online/rooms/waitingRoom/WaitingRoomPage.js';
-
 import { GamewebsocketManager } from './websocket/GamewebsocketManager.js';
 import {
 	headerAddEventListeners,
 	profileButton
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
-
-import Test from './pages/test.js';
+import apiEndpoints from './constants/apiConfig.js';
 
 const html = String.raw;
 
@@ -76,79 +70,97 @@ const routes = {
 	waitingRoom: WaitingRoomPage
 };
 
-// When the page is loaded, the root element is filled with the template of the current page
-root.innerHTML = routes[''].template();
-routes[''].addEventListeners();
+let urlState;
+
+// Page Load - Login Check
+fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
+	if (res.status === 200) {
+		// 로그인 되어 있으면, PlayModePage
+		history.pushState(null, null, `${homeLink}play`);
+		urlState = `${homeLink}play`;
+		console.log(urlState);
+		root.innerHTML = routes.play.template();
+		routes.play.mount();
+		routes.play.addEventListeners();
+	} else {
+		// 로그인 안되어 있을 시, LoginPage
+		history.pushState(null, null, `${homeLink}`);
+		urlState = `${homeLink}`;
+		console.log(urlState);
+
+		root.innerHTML = routes[''].template();
+		routes[''].mount();
+		routes[''].addEventListeners();
+	}
+});
 
 export const changeUrlInstance = (url, instance) => {
+	history.pushState(null, null, `${homeLink}gameBlock`);
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
-		root.innerHTML = instance.template();
-		instance.addEventListeners();
+		urlState = `${homeLink}${url}`;
+		console.log(urlState);
 	}
+	root.innerHTML = instance.template();
+	instance.addEventListeners();
 };
 
 // When the user presses the back or forward button, the page is changed
 export const changeUrl = (url) => {
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
-		root.innerHTML = routes[url].template();
-		if (typeof routes[url].mount === 'function') {
-			routes[url].mount();
-		}
-		routes[url].addEventListeners();
+		urlState = `${homeLink}${url}`;
+		console.log(urlState);
 	}
+	root.innerHTML = routes[url].template();
+	if (typeof routes[url].mount === 'function') routes[url].mount();
+	routes[url].addEventListeners();
 };
 
-export const changeUrlData = (url, data) => {
-	if (url !== window.location.href.split('/').pop()) {
-		history.pushState(null, null, `${homeLink}${url}`);
-		root.innerHTML = routes[url].template(data);
-		if (typeof routes[url].mount === 'function') {
-			routes[url].mount(data);
+export const changeUrlData = (url, data, historyState) => {
+	if (
+		historyState !== 'notHistory'
+		// url !== window.location.href.split('/').pop()
+	) {
+		if (url === 'gameSettingTournament') {
+			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
+			urlState = `${homeLink}gameSetting`;
+			console.log(urlState);
+		} else {
+			history.pushState(null, null, `${homeLink}${url}`);
+			urlState = `${homeLink}${url}`;
+			console.log(urlState);
 		}
-		routes[url].addEventListeners();
 	}
+	root.innerHTML = routes[url].template(data);
+	if (typeof routes[url].mount === 'function') routes[url].mount(data);
+	routes[url].addEventListeners();
 };
 
 export const gamewsmanager = new GamewebsocketManager();
 
 // When the user clicks the logo, the page is changed
-const logo = document.querySelector('#logo');
-logo.addEventListener('click', () => {
-	gamewsmanager.unregister();
-	changeUrl('');
-});
+// const logo = document.querySelector('#logo');
+// logo.addEventListener('click', () => {
+//  gamewsmanager.unregister();
+//  changeUrl('');
+// });
 
 // When the user presses the back or forward button, the page is changed
-window.onpopstate = () => {
-	// 링크가 변경되기 전에 유효하지 않은 요청인지 확인
-	gamewsmanager.unregister();
+window.addEventListener('popstate', () => {
 	const url = window.location.href.split('/').pop();
-	if (
-		url === 'game' ||
-		url === 'duelstats' ||
-		url === 'tournament' ||
-		url === 'tournamentResult' ||
-		url === 'test'
-	) {
-		alert('유효하지 않은 요청입니다.');
-		changeUrl('');
+	if (url === 'gameBlock') {
+		// 뒤로가기, 앞으로가기 눌러서 이동하면 안되는 페이지가 나옴 -> urlState로 다시 이동
+		history.forward();
+	} else if (url === 'game') {
+		urlState = `${homeLink}${url}`;
 	} else {
+		// url page 띄우기
+		urlState = `${homeLink}${url}`;
+		console.log(urlState);
+
 		root.innerHTML = routes[url].template();
+		if (typeof routes[url].mount === 'function') routes[url].mount();
 		routes[url].addEventListeners();
 	}
-};
-
-// 새로 고침 시 홈페이지로 주소 변경
-// window.onload = () => {
-//	history.pushState(null, null, homeLink);
-// };
-
-window.onload = () => {
-	const currentPath = window.location.pathname;
-	if (currentPath.includes('/test')) {
-		root.innerHTML = Test.template();
-		Test.addEventListeners();
-	} else history.pushState(null, null, homeLink);
-};
+});

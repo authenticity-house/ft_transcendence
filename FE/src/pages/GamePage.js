@@ -280,6 +280,7 @@ class GamePage {
 			this.initial.sendMsg();
 
 			console.log('match_end');
+			history.pushState(null, null, 'gameBlock');
 			changeUrl('match');
 		});
 	}
