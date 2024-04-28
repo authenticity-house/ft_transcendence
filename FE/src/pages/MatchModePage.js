@@ -40,7 +40,7 @@ class MatchModePage {
 		});
 		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 	}
 }

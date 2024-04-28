@@ -112,7 +112,10 @@ class TournamentResultPage {
 		const exit = document.querySelector('.exit-button');
 		exit.addEventListener('click', () => {
 			this.data.sendMsg();
-			changeUrl('match');
+			// local
+			changeUrl('matchMode');
+			// online
+			// changeUrl('playMode');
 		});
 	}
 }

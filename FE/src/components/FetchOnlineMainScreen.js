@@ -81,7 +81,7 @@ function fetchRoomsDataAndDisplay() {
 			return null;
 		})
 		.then((roomsData) => {
-			if (roomsData === null) changeUrl('play');
+			if (roomsData === null) changeUrl('playMode');
 			else {
 				const roomListContainer = document.querySelector(
 					'.room-list-container'

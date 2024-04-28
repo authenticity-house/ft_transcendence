@@ -1,9 +1,9 @@
-import GameSettingDetailedComponent from '../../../components/gameSettingDetailed/GameSettingDetailedComponent.js';
+import GameSettingDetailedComponent from '../../../../components/gameSettingDetailed/GameSettingDetailedComponent.js';
 
 class ModifyGameSetting {
 	constructor() {
 		this.setting = new GameSettingDetailedComponent();
-		this.onConfirmCallback = null; // 콜백 함수를 저장할 변수 추가
+		this.onConfirmCallback = null;
 	}
 
 	template(initial) {
@@ -30,7 +30,7 @@ class ModifyGameSetting {
 	}
 
 	setOnConfirmCallback(callback) {
-		this.onConfirmCallback = callback; // 콜백 함수 등록 메서드
+		this.onConfirmCallback = callback;
 	}
 }
 

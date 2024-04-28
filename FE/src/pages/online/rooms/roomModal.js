@@ -1,10 +1,10 @@
 const html = String.raw;
 
-export function roomEndModal() {
+export function roomModal() {
 	return html`
 		<div
 			class="modal fade"
-			id="roomEndModal"
+			id="roomModal"
 			data-bs-backdrop="static"
 			data-bs-keyboard="false"
 			tabindex="-1"
@@ -16,6 +16,7 @@ export function roomEndModal() {
 						<div
 							class="display-light28 modal-content-body-text"
 							style="line-height:180%"
+							id="room-modal-text"
 						>
 							연결이 종료되었습니다. 다른 방에 참가해주세요.
 						</div>
