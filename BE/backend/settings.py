@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("BACKEND_SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = os.getenv("BACKEND_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS: List[str] = ["backend", "localhost", "127.0.0.1", "[::1]"]
 
 ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
