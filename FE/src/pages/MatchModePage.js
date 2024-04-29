@@ -6,8 +6,8 @@ const html = String.raw;
 
 class MatchModePage {
 	template() {
-		const duelButton = new ButtonLarge('1 vs 1', false);
-		const tournamentButton = new ButtonLarge('토너먼트', false);
+		const duelButton = new ButtonLarge('1 vs 1');
+		const tournamentButton = new ButtonLarge('토너먼트');
 		const backButton = new ButtonBackArrow();
 
 		return html`
@@ -26,17 +26,21 @@ class MatchModePage {
 	}
 
 	addEventListeners() {
-		const game = document.querySelector('.button-click-duel');
+		const game = document
+			.querySelector('.button-click-duel')
+			.querySelector('.button-large');
 		game.addEventListener('click', () => {
 			changeUrlData('gameSetting', null);
 		});
-		const tournament = document.querySelector('.button-click-tournament');
+		const tournament = document
+			.querySelector('.button-click-tournament')
+			.querySelector('.button-large');
 		tournament.addEventListener('click', () => {
 			changeUrlData('gameSettingTournament', null);
 		});
 		const back = document.querySelector('.back-arrow');
 		back.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 	}
 }

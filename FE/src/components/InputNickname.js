@@ -16,7 +16,7 @@ class InputNickname {
 			const inputDiv = `<div class="input-nickname">
 								<p class="text-light-15">${i}</p>
 								<input type="text" class="input-nickname-box text-light-15"
-								value="${nicknameValue}" />
+								value="${nicknameValue}" maxlength="12" />
 							</div>`;
 
 			if (i <= 4) {
@@ -33,7 +33,11 @@ class InputNickname {
 
 	template() {
 		return html` <p class="text-light-15">${this.index}</p>
-			<input type="text" class="input-nickname-box text-light-15" />`;
+			<input
+				type="text"
+				class="input-nickname-box text-light-15"
+				maxlength="12"
+			/>`;
 	}
 }
 
