@@ -32,8 +32,8 @@ class User(AbstractUser):
 
 
 class Friendship(models.Model):
-    from_user = models.ForeignKey(User, related_name="receiver", on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name="sender", on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, related_name="sender", on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User, related_name="receiver", on_delete=models.CASCADE)
     are_we_friend = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)

@@ -119,8 +119,8 @@ class FriendAPIView(APIView):
         friendships = Friendship.objects.filter(
             from_user_id=login_user_id,
             are_we_friend=True,
-            to_user__receiver__to_user_id=login_user_id,
-            to_user__receiver__are_we_friend=True,
+            to_user__sender__to_user_id=login_user_id,
+            to_user__sender__are_we_friend=True,
         )
 
         friends = []
