@@ -108,7 +108,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								changeUrl('play');
+								changeUrl('playMode');
 								return null;
 							}
 							return res.json();
@@ -141,7 +141,7 @@ class LoginPage {
 
 		const loginGuest = document.querySelector('.login-guest');
 		loginGuest.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 	}
 }

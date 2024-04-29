@@ -75,7 +75,7 @@ class PlayModePage {
 			.querySelector('.button-click-local')
 			.querySelector('.button-large');
 		local.addEventListener('click', () => {
-			changeUrl('match');
+			changeUrl('matchMode');
 		});
 		const online = document
 			.querySelector('.button-click-online')

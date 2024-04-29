@@ -8,6 +8,10 @@ from .views import (
     UserProfileView,
     OAuthView,
     CheckLoginStatusAPIView,
+    SentFriendRequestsAPIView,
+    ReceivedFriendRequestsAPIView,
+    ReceivedFriendRequestDetailAPIView,
+    SentFriendRequestDetailAPIView,
 )
 
 urlpatterns = [
@@ -22,6 +26,18 @@ urlpatterns = [
         name="account_confirm_email",
     ),
     path("friends/", FriendAPIView.as_view(), name="friends"),
+    path(
+        "friends/sent/<int:friend_pk>/",
+        SentFriendRequestDetailAPIView.as_view(),
+        name="sent_friend_request",
+    ),
+    path("friends/sent/", SentFriendRequestsAPIView.as_view()),
+    path(
+        "friends/received/<int:friend_pk>/",
+        ReceivedFriendRequestDetailAPIView.as_view(),
+        name="received_friend_request",
+    ),
+    path("friends/received/", ReceivedFriendRequestsAPIView.as_view()),
     path("search/", UserPrefixSearchView.as_view(), name="search_user_with_nickname_prefix"),
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
     path("oauth/", OAuthView.as_view(), name="oauth"),
