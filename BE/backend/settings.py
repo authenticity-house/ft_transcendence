@@ -48,6 +48,11 @@ REST_AUTH = {
     "USE_JWT": False,
 }
 
+# oauth
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -156,6 +161,9 @@ TIME_ZONE = "Asia/Seoul"
 USE_I18N = True
 
 USE_TZ = False
+
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 
 # Static files (CSS, JavaScript, Images)

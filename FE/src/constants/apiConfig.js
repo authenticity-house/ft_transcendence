@@ -1,3 +1,4 @@
+// http://127.0.0.1:8080/api/
 function getApiBaseUrl() {
 	const { protocol, hostname, port } = window.location;
 	const apiPort = port ? `:${port}` : '';
@@ -11,8 +12,10 @@ function getApiEndpoints() {
 
 	return {
 		LOGIN_URL: `${USERS_URL}login/`,
+		LOGIN_CHECK_URL: `${USERS_URL}check-login/`,
 		REGISTRATION_URL: `${USERS_URL}registration/`,
 		LOGOUT_URL: `${USERS_URL}logout/`,
+		REGISTER_CHECK_URL: `${USERS_URL}check/?`,
 		ROOMS_URL: `${ROOMS_URL}`
 	};
 }

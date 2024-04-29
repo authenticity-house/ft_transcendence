@@ -5,6 +5,7 @@ import ButtonMedium from '../components/ButtonMedium.js';
 import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
 import apiEndpoints from '../constants/apiConfig.js';
+import { CLIENT_ID, REDIRECT_URI } from '../constants/constants.js';
 
 const html = String.raw;
 
@@ -66,6 +67,13 @@ class LoginPage {
 		`;
 	}
 
+	mount() {
+		// 프로필 모달 숨기기
+		document
+			.querySelector('.profile-button-container')
+			.classList.add('modal-hidden');
+	}
+
 	addEventListeners() {
 		const loginForm = document.getElementById('login-form');
 		loginForm.addEventListener('submit', (e) => {
@@ -100,7 +108,7 @@ class LoginPage {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
 								console.log('login success');
-								changeUrl('onlineMainScreen');
+								changeUrl('playMode');
 								return null;
 							}
 							return res.json();
@@ -129,12 +137,12 @@ class LoginPage {
 
 		const login42 = document.querySelector('.login-42');
 		login42.addEventListener('click', () => {
-			console.log('login42');
+			window.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 		});
 
 		const loginGuest = document.querySelector('.login-guest');
 		loginGuest.addEventListener('click', () => {
-			changeUrl('play');
+			changeUrl('playMode');
 		});
 	}
 }

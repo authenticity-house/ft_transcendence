@@ -1,4 +1,4 @@
-import { changeUrl } from '../../../index.js';
+import { gamewsmanager } from '../../../index.js';
 import { getContent } from './GetContent.js';
 import { myFriendContent } from './MyFriendContent.js';
 import { myInfoContent } from './MyInfoContent.js';
@@ -244,7 +244,9 @@ class ProfileModal {
 						removeCSRF();
 						hideModal('profile-modal', () => {
 							setTimeout(() => {
-								changeUrl('');
+								gamewsmanager.unregister();
+								// 페이지 강제 새로 고침
+								window.location.reload(true);
 							}, 100);
 						});
 

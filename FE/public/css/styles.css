@@ -2,6 +2,7 @@
 @import 'color.css';
 @import 'font.css';
 
+/*
 @media (max-width: 2560px) {
 	html {
 		font-size: 62.5%;
@@ -36,6 +37,10 @@
 	html {
 		font-size: 12.5%;
 	}
+} */
+
+html {
+	font-size: 62.5%;
 }
 
 body {
@@ -307,6 +312,10 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	cursor: pointer;
 }
 
+.display-none {
+	display: none;
+}
+
 .border-style-none {
 	border-style: none;
 }
@@ -337,9 +346,17 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	width: 54rem;
 	height: 18rem;
-	/* margin: 2rem 0rem; */
 	font-size: 5.2rem;
 	border-radius: 3rem;
+
+	font-family: 'GongGothicLight', sans-serif;
+	padding: 1rem;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border: 0.4rem solid #fff;
+	background-color: transparent;
+	color: #fff;
 }
 
 .medium-window {
@@ -537,14 +554,13 @@ td {
 /* GameSettingTournament*/
 
 .num-block {
-	float: left;
-	width: 100%;
-	align-items: center;
+	display: flex;
+	width: 14rem;
+	/* align-items: center; */
 }
 
 /* head count */
 .head-count .num-in {
-	float: left;
 	width: 14rem;
 }
 
@@ -553,10 +569,10 @@ td {
 	float: left;
 	width: 3.6rem;
 	height: 3.6rem;
-	/*line-height: 32px;*/
 	text-align: center;
 	position: relative;
 	cursor: pointer;
+	margin-left: 1rem;
 }
 
 .head-count .num-in span.dis:before,
@@ -606,7 +622,6 @@ td {
 /* head count */
 .text-light-15 {
 	width: 1.5rem;
-	/* flex-shrink: 0; */
 	color: #fff;
 	text-align: center;
 	font-size: 2rem;
@@ -614,6 +629,13 @@ td {
 	font-weight: 300;
 	line-height: normal;
 }
+
+.nickname-error-text {
+	width: 100%;
+	color: #ff5d84;
+	text-align: end;
+}
+
 .input-nickname-box {
 	width: 20rem;
 	height: 4rem;
@@ -658,14 +680,6 @@ td {
 	flex-shrink: 0;
 }
 
-/* 인원수 설정 */
-.game-setting-number-container {
-	display: flex;
-	padding-left: 1rem;
-	align-items: center;
-	gap: 2rem;
-	align-self: stretch;
-}
 /* 인원 수 선택 및 닉네임 입력 컨테이너 두가지 포함 */
 .game-setting-tournament-container {
 	display: flex;
@@ -674,6 +688,16 @@ td {
 	align-items: center;
 	gap: 2rem;
 	flex-shrink: 0;
+}
+
+/* 인원수 설정 */
+.game-setting-number-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 4rem;
+	padding: 0 1rem;
+	gap: 2rem;
 }
 /* GameSettingPage*/
 
@@ -710,9 +734,8 @@ td {
 }
 
 .text-subtitle-1-left {
-	width: 14rem;
+	width: auto;
 	color: #fff;
-	text-align: flex-start;
 	font-size: 2.4rem;
 	font-style: normal;
 	font-weight: 300;
@@ -739,6 +762,10 @@ td {
 
 .width-28 {
 	width: 28rem;
+}
+
+.width-20 {
+	width: 20rem;
 }
 
 .width-14 {
@@ -1022,6 +1049,13 @@ td {
 	height: 45rem;
 }
 
+.unique-graph-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 45rem;
+}
+
 /* Graph - ScoreTrend */
 .score-trend-container {
 	display: flex;
@@ -1056,6 +1090,16 @@ td {
 	padding: 2rem 0;
 }
 
+.unique-score-trend-canvas-text-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	width: 4rem;
+	height: 100%;
+	padding: 2rem 0;
+}
+
 .score-trend-canvas-text-wrapper {
 	display: flex;
 	justify-content: end;
@@ -1066,7 +1110,22 @@ td {
 	margin: auto;
 }
 
+.unique-score-trend-canvas-text-wrapper {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	height: auto;
+	width: 3em;
+	padding-right: 1rem;
+	margin: auto;
+}
+
 .score-trend-canvas-draw-container {
+	border-left: 0.2rem solid white;
+	border-bottom: 0.2rem solid white;
+}
+
+.unique-score-trend-canvas-draw-container {
 	border-left: 0.2rem solid white;
 	border-bottom: 0.2rem solid white;
 }
@@ -1122,6 +1181,10 @@ td {
 }
 
 .score-position-canvas {
+	border: 0.2rem solid white;
+}
+
+.unique-score-position-canvas {
 	border: 0.2rem solid white;
 }
 
@@ -1285,21 +1348,25 @@ td {
 }
 
 /* Component - ProfileButton */
+.modal-hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
 .profile-button-container {
 	position: absolute;
-	top: 6rem;
+	top: 9rem;
 	right: 6rem;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 1rem;
 	height: 12rem;
 }
 
 .info-modal-button {
 	display: flex;
-	width: 12rem;
-	height: 10rem;
+	width: 9.5rem;
+	height: 9.5rem;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -1308,24 +1375,42 @@ td {
 }
 
 .info-modal-img {
-	width: 5rem;
-	height: 5rem;
+	width: 3rem;
+	height: 3rem;
 }
 
 .user-profile-button {
 	display: flex;
-	width: 12rem;
-	height: 12rem;
+	width: 8rem;
+	height: 8rem;
 	justify-content: center;
 	align-items: center;
-	border-radius: 100rem;
-	border-style: none;
+	border-radius: 50%;
+	border: 0.1rem solid #fff;
+	overflow: hidden;
+	position: relative;
+	margin-left: 2.8rem;
+	margin-bottom: 1rem;
 }
 
 .user-profile-img {
-	max-width: 100%;
-	max-height: 100%;
+	width: 8rem;
+	height: 8rem;
+	object-fit: cover;
 	border-radius: 50%;
+}
+
+.user-profile-none-img {
+	width: 80%;
+	height: 80%;
+	object-fit: cover;
+	border-radius: 50%;
+	opacity: 30%;
+}
+
+.modal-login-tooltip {
+	display: none;
+	position: absolute;
 }
 
 /* Component - ProfileWindow */
@@ -1340,10 +1425,20 @@ td {
 	border-right: 0.2rem solid #ffffff;
 }
 
-.user-profile-wrapper {
+.user-profile-img-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	width: 16rem;
 	height: 16rem;
-	border-radius: 100rem;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.user-profile-summary-img {
+	width: 16rem;
+	height: 16rem;
+	border-radius: 50%;
 }
 
 .user-profile-summary {
@@ -1526,9 +1621,19 @@ td {
 }
 
 .user-seat-box-img-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 10rem;
 	height: 10rem;
 	border-radius: 50%;
+}
+
+.user-seat-box-img {
+	width: 9rem;
+	height: 9rem;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-seat-box-ready-state {
@@ -1543,6 +1648,9 @@ td {
 }
 
 .user-seat-box-block-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 9rem;
 	height: 9rem;
 }
@@ -1816,6 +1924,13 @@ td {
 	gap: 1rem;
 	border-radius: 100rem;
 	background: #dfdfdf;
+}
+
+.my-info-user-profile-image {
+	width: 20rem;
+	height: 20rem;
+	object-fit: cover;
+	border-radius: 50%;
 }
 
 .my-info-content-image-edit {

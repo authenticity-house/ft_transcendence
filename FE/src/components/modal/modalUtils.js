@@ -36,6 +36,12 @@ function handleBackHomeClick(event) {
 		// 이벤트 리스너 제거
 		document.removeEventListener('click', handleBackHomeClick);
 	}
+	if (event.target && event.target.id === 'back-list-button') {
+		removeModalBackdrop();
+		changeUrl('onlineMainScreen');
+		// 이벤트 리스너 제거
+		document.removeEventListener('click', handleBackHomeClick);
+	}
 }
 
 // 모달 띄운 후 홈으로 돌아가기 버튼 누르면 홈으로 돌아감
@@ -52,4 +58,17 @@ export function showModal(element) {
 	bsModal.show();
 
 	document.addEventListener('click', handleBackHomeClick);
+}
+
+export function updateModalContent(id, newContent) {
+	const contentElement = document.getElementById(id);
+	if (contentElement) {
+		contentElement.innerHTML = newContent;
+	}
+}
+
+// 모달 업데이트 및 표시
+export function showModalWithContent(modalId, contentId, content) {
+	updateModalContent(contentId, content);
+	showModal(modalId);
 }
