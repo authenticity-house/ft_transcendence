@@ -144,25 +144,38 @@ window.addEventListener('popstate', () => {
 	}
 
 	const url = window.location.href.split('/').pop();
-	if (url === 'waitingRoom') {
-		browserInfo('방 목록에서 방을 참가해주세요.');
-		history.back();
-	}
+	switch (url) {
+		case 'waitingRoom':
+			browserInfo('방 목록에서 방을 참가해주세요.');
+			history.back();
+			break;
 
-	if (url === 'gameBlock') {
-		if (urlState === 'game') browserInfo('게임 중에는 이동이 불가합니다.');
-		else browserInfo('종료된 게임으로 이동이 불가합니다.');
-		history.forward();
-	} else if (url === 'block') {
-		browserInfo('로그인 페이지 전으로는 이동이 불가합니다.');
-		history.forward();
-	} else if (url === 'game') {
-		urlState = `${url}`;
-	} else {
-		// url page 띄우기
-		urlState = `${url}`;
-		root.innerHTML = routes[url].template();
-		if (typeof routes[url].mount === 'function') routes[url].mount();
-		routes[url].addEventListeners();
+		case 'gameBlock':
+			if (urlState === 'game') {
+				browserInfo('게임 중에는 이동이 불가합니다.');
+			} else {
+				browserInfo('종료된 게임으로 이동이 불가합니다.');
+			}
+			history.forward();
+			break;
+
+		case 'block':
+			browserInfo('로그인 페이지 전으로는 이동이 불가합니다.');
+			history.forward();
+			break;
+
+		case 'game':
+			urlState = `${url}`;
+			break;
+
+		default:
+			// url page 띄우기
+			urlState = `${url}`;
+			root.innerHTML = routes[url].template();
+			if (typeof routes[url].mount === 'function') {
+				routes[url].mount();
+			}
+			routes[url].addEventListeners();
+			break;
 	}
 });
