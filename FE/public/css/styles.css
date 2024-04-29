@@ -68,6 +68,21 @@ body {
 	pointer-events: none;
 }
 
+#browser-state-info {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center; /* 텍스트 중앙 정렬 */
+	width: 32rem; /* 너비 지정 */
+	height: 8rem; /* 높이 지정 */
+	border: 0.2rem solid #ff5d84;
+	border-radius: 2rem;
+	top: 1rem;
+	left: 1rem;
+	opacity: 0;
+}
+
 header {
 	display: flex;
 	width: 100%;

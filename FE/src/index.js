@@ -21,7 +21,6 @@ import {
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 import { hideModal } from './components/modal/modalUtils.js';
-import apiEndpoints from './constants/apiConfig.js';
 
 const html = String.raw;
 
@@ -73,30 +72,19 @@ const routes = {
 
 let urlState;
 
-// Page Load - Login Check
-fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
-	if (res.status === 200) {
-		// 로그인 되어 있으면, PlayModePage
-		history.pushState(null, null, `${homeLink}playMode`);
-		urlState = `${homeLink}playMode`;
-		root.innerHTML = routes.playMode.template();
-		routes.playMode.mount();
-		routes.playMode.addEventListeners();
-	} else {
-		// 로그인 안되어 있을 시, LoginPage
-		history.pushState(null, null, `${homeLink}`);
-		urlState = `${homeLink}`;
-		root.innerHTML = routes[''].template();
-		routes[''].mount();
-		routes[''].addEventListeners();
-	}
-});
+// 페이지 로드
+history.pushState(null, null, 'block'); // 로그인페이지에서 뒤로가기 막기
+history.pushState(null, null, `${homeLink}`);
+urlState = '';
+root.innerHTML = routes[''].template();
+routes[''].mount();
+routes[''].addEventListeners();
 
 export const changeUrlInstance = (url, instance) => {
 	history.pushState(null, null, `${homeLink}gameBlock`);
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
-		urlState = `${homeLink}${url}`;
+		urlState = `${url}`;
 	}
 	root.innerHTML = instance.template();
 	instance.addEventListeners();
@@ -105,7 +93,7 @@ export const changeUrlInstance = (url, instance) => {
 export const changeUrl = (url) => {
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
-		urlState = `${homeLink}${url}`;
+		urlState = `${url}`;
 	}
 	root.innerHTML = routes[url].template();
 	if (typeof routes[url].mount === 'function') routes[url].mount();
@@ -116,11 +104,16 @@ export const changeUrlData = (url, data, historyState = true) => {
 	if (historyState) {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
-			urlState = `${homeLink}gameSetting`;
+			urlState = 'gameSetting';
 		} else {
 			history.pushState(null, null, `${homeLink}${url}`);
-			urlState = `${homeLink}${url}`;
+			urlState = `${url}`;
 		}
+	}
+	if (url === 'tournament') {
+		history.pushState(null, null, `${homeLink}gameBlock`);
+		history.pushState(null, null, `${homeLink}game`); // url만 gameSetting으로
+		urlState = 'game';
 	}
 	root.innerHTML = routes[url].template(data);
 	if (typeof routes[url].mount === 'function') routes[url].mount(data);
@@ -140,28 +133,43 @@ logo.addEventListener('click', () => {
 	window.location.reload(true);
 });
 
+function browserInfo(msg) {
+	const browserInfoElement = document.getElementById('browser-state-info');
+	browserInfoElement.textContent = msg;
+	browserInfoElement.style.opacity = 1;
+	browserInfoElement.style.transition = 'opacity 0.5s ease';
+	setTimeout(() => {
+		browserInfoElement.style.opacity = 0;
+	}, 2500);
+}
+
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
 	// 모달창 열려 있을 시, 닫고 진행
 	hideModal('profile-modal');
 	// 방 대기실에서 뒤로가기 눌렀을 시, 방 웹소켓 연결 끊기
-	if (urlState === '/waitingRoom') {
+	if (urlState === 'waitingRoom') {
 		gamewsmanager.unregister();
 	}
+
 	const url = window.location.href.split('/').pop();
 	if (url === 'waitingRoom') {
-		alert('이미 방을 나갔습니다.');
+		browserInfo('방 목록에서 방을 참가해주세요.');
 		history.back();
 	}
 
 	if (url === 'gameBlock') {
-		// 뒤로가기, 앞으로가기 눌러서 이동하면 안되는 페이지가 나옴 -> urlState로 다시 이동
+		if (urlState === 'game') browserInfo('게임 중에는 이동이 불가합니다.');
+		else browserInfo('종료된 게임으로 이동이 불가합니다.');
+		history.forward();
+	} else if (url === 'block') {
+		browserInfo('로그인 페이지 전으로는 이동이 불가합니다.');
 		history.forward();
 	} else if (url === 'game') {
-		urlState = `${homeLink}${url}`;
+		urlState = `${url}`;
 	} else {
 		// url page 띄우기
-		urlState = `${homeLink}${url}`;
+		urlState = `${url}`;
 		root.innerHTML = routes[url].template();
 		if (typeof routes[url].mount === 'function') routes[url].mount();
 		routes[url].addEventListeners();
