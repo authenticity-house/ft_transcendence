@@ -322,7 +322,6 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
-				console.log(selectedTabContentId);
 				getContent(selectedTabContentId);
 			});
 		});
@@ -355,7 +354,6 @@ class ProfileModal {
 				const selectedTabContent =
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
-				console.log(selectedTabContentId);
 				getContent(selectedTabContentId, this.userPk);
 			});
 		});
@@ -391,7 +389,6 @@ class ProfileModal {
 					}
 					throw new Error('Error');
 				})
-				.then((data) => console.log(data))
 				.catch((error) => console.error('Error:', error));
 		});
 	}

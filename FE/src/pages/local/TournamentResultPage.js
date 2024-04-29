@@ -14,8 +14,6 @@ class TournamentResultPage {
 		this.data = data;
 		const { content } = this.data;
 
-		console.log(content);
-
 		const titlComponent = new BoldTitle('게임 결과', 'yellow');
 		const exitButton = new ButtonSmall('나가기');
 		let duelReports = '';

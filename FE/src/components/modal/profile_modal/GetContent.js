@@ -33,7 +33,6 @@ export function getContent(id, userPk) {
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
-						console.log(data);
 						myInfoContent.mount(data);
 					});
 				}
@@ -278,8 +277,6 @@ export function getContent(id, userPk) {
 		const toolTip = statsContent.mount(data);
 		statsContent.addEventListeners(toolTip);
 	} else if (id === 'friend-info') {
-		console.log(userPk);
-
 		fetch(`${apiEndpoints.FRIEND_PROFILE_URL}${userPk}/`, {
 			method: 'GET',
 			headers: {
@@ -291,7 +288,6 @@ export function getContent(id, userPk) {
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
-						console.log(data);
 						friendInfoContent.mount(data);
 					});
 				}
