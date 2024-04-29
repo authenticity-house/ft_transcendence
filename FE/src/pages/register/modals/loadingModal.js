@@ -19,8 +19,9 @@ export function loadingModal() {
 							</div>
 						</div>
 						<div
-							class="display-light28 modal-content-body-text"
+							class="display-light24 modal-content-body-text"
 							style="line-height:180%"
+							id="loding-modal-text"
 						>
 							로딩중
 						</div>

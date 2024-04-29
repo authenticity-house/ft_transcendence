@@ -1,7 +1,8 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
 import {
 	removeModalBackdrop,
-	showModal
+	showModalWithContent,
+	hideModal
 } from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
 
@@ -222,9 +223,11 @@ export class MessageManager {
 		switch (message.subtype) {
 			case SubType.CONNECTION_ESTABLISHED:
 				if (message.mode === 'online') {
-					// !!!!! 로딩 중 모달 띄우기
-					showModal('loadingModal');
-					// 다른 유저를 기다리는 중입니다.
+					showModalWithContent(
+						'loadingModal',
+						'loding-modal-text',
+						'다른 유저를 기다리는 중입니다.'
+					);
 					break;
 				}
 				// 게임 초기 정보 전송
@@ -240,6 +243,7 @@ export class MessageManager {
 				break;
 
 			case SubType.MATCH_INIT_SETTING:
+				hideModal('loadingModal');
 				// 매치 초기화 정보 저장
 				this.setGameSetting(message.data);
 				// 게임 페이지 생성 및 실행
