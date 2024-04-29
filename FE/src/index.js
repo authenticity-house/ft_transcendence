@@ -21,6 +21,7 @@ import {
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 import { hideModal } from './components/modal/modalUtils.js';
+import { browserInfo } from './utils/browserInfo.js';
 
 const html = String.raw;
 
@@ -132,16 +133,6 @@ logo.addEventListener('click', () => {
 	}
 	window.location.reload(true);
 });
-
-function browserInfo(msg) {
-	const browserInfoElement = document.getElementById('browser-state-info');
-	browserInfoElement.textContent = msg;
-	browserInfoElement.style.opacity = 1;
-	browserInfoElement.style.transition = 'opacity 0.5s ease';
-	setTimeout(() => {
-		browserInfoElement.style.opacity = 0;
-	}, 2500);
-}
 
 // When the user presses the back or forward button, the page is changed
 window.addEventListener('popstate', () => {
