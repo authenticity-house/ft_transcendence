@@ -202,7 +202,7 @@ export function getContent(id, userPk) {
 		myRecordContent.addEventListeners();
 	} else if (id === 'user-search') {
 		// user-search 탭을 클릭했을 때 유저 검색을 렌더링
-		userSearchContent.addEventListeners();
+		// userSearchContent.addEventListeners();
 	} else if (id === 'my-friend') {
 		// my-friend 탭을 클릭했을 때 친구 목록을 렌더링
 		// mock-data

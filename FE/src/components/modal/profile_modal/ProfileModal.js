@@ -391,6 +391,8 @@ class ProfileModal {
 				})
 				.catch((error) => console.error('Error:', error));
 		});
+
+		userSearchContent.addEventListeners();
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
