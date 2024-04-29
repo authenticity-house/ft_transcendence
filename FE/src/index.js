@@ -179,3 +179,7 @@ window.addEventListener('popstate', () => {
 			break;
 	}
 });
+
+window.addEventListener('beforeunload', () => {
+	gamewsmanager.unregister();
+});
