@@ -13,6 +13,9 @@ class FriendInfoContent {
 							<span class="display-light28">이름</span>
 						</div>
 					</div>
+					<button class="friend-info-content-add-button head_blue_neon_15">
+						친구 추가
+					</button>
 				</div>
 				<div class="friend-info-content-right">
 					<div class="friend-info-stats-container display-light28">

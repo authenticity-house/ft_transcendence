@@ -1,6 +1,6 @@
 import { myFriendContent } from './MyFriendContent.js';
 import { myRecordContent } from './MyRecordContent.js';
-import { userSearchContent } from './UserSearchContent.js';
+// import { userSearchContent } from './UserSearchContent.js';
 import { statsContent } from './StatsContent.js';
 import { myInfoContent } from './MyInfoContent.js';
 import apiEndpoints from '../../../constants/apiConfig.js';

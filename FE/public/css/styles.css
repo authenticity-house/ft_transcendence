@@ -2004,6 +2004,19 @@ td {
 	align-self: stretch;
 }
 
+.friend-info-content-add-button {
+	display: flex;
+	width: 16rem;
+	height: 6rem;
+	padding: 1rem;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border-radius: 1rem;
+	border: 0.4rem solid #fff;
+}
+
 .my-info-content-right,
 .friend-info-content-right {
 	display: flex;
