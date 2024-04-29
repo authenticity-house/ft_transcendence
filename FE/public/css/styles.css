@@ -1893,23 +1893,26 @@ td {
 	padding: 0;
 }
 
-/* my-info */
+/* my-info, friend-info */
 
-.my-info-content-container {
+.my-info-content-container,
+.friend-info-content-container {
 	display: inline-flex;
 	align-items: flex-start;
 	margin-top: 8rem;
 	gap: 6rem;
 }
 
-.my-info-content-left {
+.my-info-content-left,
+.friend-info-content-left {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10rem;
 }
 
-.my-info-content-image-name-container {
+.my-info-content-image-name-container,
+.friend-info-content-image-name-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1917,13 +1920,15 @@ td {
 	gap: 5rem;
 }
 
-.my-info-content-image-container {
+.my-info-content-image-container,
+.friend-info-content-image-container {
 	position: relative;
 	display: flex;
 	align-items: flex-start;
 }
 
-.my-info-content-image {
+.my-info-content-image,
+.friend-info-content-image {
 	display: flex;
 	width: 20rem;
 	height: 20rem;
@@ -1934,7 +1939,8 @@ td {
 	background: #dfdfdf;
 }
 
-.my-info-user-profile-image {
+.my-info-user-profile-image,
+.friend-info-user-profile-image {
 	width: 20rem;
 	height: 20rem;
 	object-fit: cover;
@@ -1968,6 +1974,14 @@ td {
 	padding-left: 4rem;
 }
 
+.friend-info-content-name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-items: center;
+	gap: 1rem;
+}
+
 .my-info-content-id-password-container {
 	display: flex;
 	width: 30rem;
@@ -1990,7 +2004,8 @@ td {
 	align-self: stretch;
 }
 
-.my-info-content-right {
+.my-info-content-right,
+.friend-info-content-right {
 	display: flex;
 	flex-direction: column;
 	width: 40rem;
@@ -2001,7 +2016,8 @@ td {
 	border: 0.2rem solid #fff;
 }
 
-.my-info-stats-container {
+.my-info-stats-container,
+.friend-info-stats-container {
 	display: flex;
 	width: 25.3rem;
 	flex-direction: column;
@@ -2010,7 +2026,8 @@ td {
 	flex-shrink: 0;
 }
 
-.my-info-content-win-lose-container {
+.my-info-content-win-lose-container,
+.friend-info-content-win-lose-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -2020,14 +2037,16 @@ td {
 	flex-wrap: wrap;
 }
 
-.my-info-content-win-rate-container {
+.my-info-content-win-rate-container,
+.friend-info-content-win-rate-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
 	align-self: stretch;
 }
 
-.my-info-content-rating-container {
+.my-info-content-rating-container,
+.friend-info-content-rating-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;

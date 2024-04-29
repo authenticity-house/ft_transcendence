@@ -3,37 +3,29 @@ const html = String.raw;
 class FriendInfoContent {
 	template() {
 		return html`
-			<div class="my-info-content-container">
-				<div class="my-info-content-left">
-					<div class="my-info-content-image-name-container">
-						<div class="my-info-content-image-container">
-							<div class="my-info-content-image friend-image"></div>
-							<div class="my-info-content-image-edit">
-								<img class="edit-icon" src="image/edit.svg" alt="edit" />
-							</div>
+			<div class="friend-info-content-container">
+				<div class="friend-info-content-left">
+					<div class="friend-info-content-image-name-container">
+						<div class="friend-info-content-image-container">
+							<div class="friend-info-content-image"></div>
 						</div>
-						<div class="my-info-content-name friend-name">
+						<div class="friend-info-content-name">
 							<span class="display-light28">이름</span>
-							<img class="edit-icon" src="image/edit.svg" alt="edit" />
 						</div>
-					</div>
-					<div class="my-info-content-id-password-container">
-						<div class="my-info-content-id"></div>
-						<div class="my-info-content-password"></div>
 					</div>
 				</div>
-				<div class="my-info-content-right">
-					<div class="my-info-stats-container display-light28">
-						<div class="my-info-content-win-lose-container">
+				<div class="friend-info-content-right">
+					<div class="friend-info-stats-container display-light28">
+						<div class="friend-info-content-win-lose-container">
 							<span>N전</span>
 							<span>N승</span>
 							<span>N패</span>
 						</div>
-						<div class="my-info-content-win-rate-container">
+						<div class="friend-info-content-win-rate-container">
 							<span>승률</span>
 							<span>NN%</span>
 						</div>
-						<div class="my-info-content-rating-container">
+						<div class="friend-info-content-rating-container">
 							<span>레이팅</span>
 							<span>NNN점</span>
 						</div>
@@ -44,8 +36,12 @@ class FriendInfoContent {
 	}
 
 	mount(data) {
-		const friendInfoContentImage = document.querySelector('.friend-image');
-		const friendInfoContentName = document.querySelector('.friend-name');
+		const friendInfoContentImage = document.querySelector(
+			'.friend-info-content-image'
+		);
+		const friendInfoContentName = document.querySelector(
+			'.friend-info-content-name'
+		);
 
 		console.log('data: ', data);
 		if (data.profile_url !== '/profile/default.png') {
@@ -68,7 +64,6 @@ class FriendInfoContent {
 
 		friendInfoContentName.innerHTML = `
 			<span class="display-light28">${data.nickname}</span>
-			<img class="edit-icon" src="image/edit.svg" alt="edit" />
 		`;
 	}
 }
