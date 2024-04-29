@@ -82,7 +82,6 @@ class GameSettingPage {
 		// Login Check
 		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
 			if (res.status !== 200) {
-				alert('로그인이 필요한 페이지 입니다!');
 				window.location.reload(true);
 			}
 		});
