@@ -1,5 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.models import Session
+from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -237,3 +239,19 @@ class CheckLoginStatusAPIView(APIView):
                 "is_authenticated": True,
             }
         )
+
+
+class SessionAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        session_id = request.query_params.get('sessionid')
+        if not session_id:
+            return Response({"error": "Session ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            session = Session.objects.get(session_key=session_id)
+            user_id = session.get_decoded().get('_auth_user_id')
+            user = get_user_model().objects.get(id=user_id)
+            user_data = {'nickname': user.nickname}
+            return Response(user_data)
+        except (Session.DoesNotExist, get_user_model().DoesNotExist):
+            return Response({"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST)
