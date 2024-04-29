@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from session.session_manager import DuelManager
+
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -10,6 +12,10 @@ def TestView(request):
     try:
         # JSON 데이터 파싱
         data = json.loads(request.body)
+        info = data["info"]
+        manager = DuelManager(info) # 임시
+        msg = manager.get_send_data("match_init_setting")
+        print(msg)
         # 여기에서 데이터를 처리하는 로직을 추가하세요.
         # 예제에서는 입력된 데이터를 그대로 반환합니다.
         return JsonResponse(

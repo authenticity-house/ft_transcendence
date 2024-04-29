@@ -37,7 +37,9 @@ class RoomConsumer(JsonWebsocketConsumer):
         elif msg_type == "room.change.info":
             self.change_info(msg_body)
         elif msg_type == "room.start.request":
-            url = request_game_session(msg_body)
+            room = self.__get_room()
+            room_info = room.room_info()
+            url = request_game_session(room_info)
             self.game_start(url)
 
     def room_exit(self):
