@@ -74,7 +74,7 @@ const routes = {
 let urlState;
 
 // 페이지 로드
-history.pushState(null, null, 'block'); // 로그인페이지에서 뒤로가기 막기
+history.pushState(null, null, 'loginBlock'); // 로그인페이지에서 뒤로가기 막기
 history.pushState(null, null, `${homeLink}`);
 urlState = '';
 root.innerHTML = routes[''].template();
@@ -159,7 +159,7 @@ window.addEventListener('popstate', () => {
 			history.forward();
 			break;
 
-		case 'block':
+		case 'loginBlock':
 			browserInfo('로그인 페이지 전으로는 이동이 불가합니다.');
 			history.forward();
 			break;
