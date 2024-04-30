@@ -297,13 +297,6 @@ class ReceivedFriendRequestDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class InvalidQueryParams(APIException):
-    status_code = 400
-
-    def __init__(self, key_str=""):
-        super().__init__(detail=f"Query Params key should be {key_str}.")
-
-
 class CheckDuplicateAPIView(APIView):
     allowed_keys = ["email", "nickname", "username"]
 
