@@ -40,11 +40,21 @@ class MatchSerializer(serializers.ModelSerializer):
         player1_rating = 2001
         player2_rating = 2002
 
+        player1_score = player1_data.get("score", 0)
+        player2_score = player2_data.get("score", 0)
+
+        winner_id = (
+            validated_data["player1"].pk
+            if player1_score > player2_score
+            else validated_data["player2"].pk
+        )
+
         additional_data = {
             "player1_attack_type": player1_attack_type,
             "player2_attack_type": player2_attack_type,
             "player1_rating": player1_rating,
             "player2_rating": player2_rating,
+            "winner_id": winner_id,
         }
 
         validated_data.update(**additional_data)
