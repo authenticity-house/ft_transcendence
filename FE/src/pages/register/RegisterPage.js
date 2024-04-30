@@ -20,7 +20,7 @@ import { registerDupModal } from './modals/registerDupModal.js';
 import { registerModal } from './modals/registerModal.js';
 import { registerLoadingModal } from './modals/registerLoadingModal.js';
 import { registerFailModal } from './modals/registerFailModal.js';
-
+import { registerSimilarModal } from './modals/registerSimilarModal.js';
 // -----------------------------------------------------------------------------
 const html = String.raw;
 
@@ -67,8 +67,8 @@ class RegisterPage {
 				</div>
 				<div class="button-back-in-window">${this.backButton.template()}</div>
 			</div>
-			${registerDupModal()} ${registerFailModal()} ${registerModal()}
-			${registerLoadingModal()}
+			${registerDupModal()} ${registerSimilarModal()}${registerFailModal()}
+			${registerModal()} ${registerLoadingModal()}
 		`;
 	}
 	// ----------------------------------------------------------------------------------------

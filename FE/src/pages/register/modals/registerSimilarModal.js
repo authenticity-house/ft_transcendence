@@ -1,10 +1,10 @@
 const html = String.raw;
 
-export function registerFailModal() {
+export function registerSimilarModal() {
 	return html`
 		<div
 			class="modal fade"
-			id="registerFailModal"
+			id="registerSimilarModal"
 			data-bs-backdrop="static"
 			data-bs-keyboard="false"
 			tabindex="-1"
@@ -17,7 +17,7 @@ export function registerFailModal() {
 							class="display-light24 modal-content-body-text"
 							style="line-height:180%"
 						>
-							오류가 발생하여 회원가입에 실패했습니다.<br />다시 시도해주세요.
+							비밀번호가 아이디와 유사합니다.<br />다시 작성해주세요.
 						</div>
 						<div class="horizontal-button-container" style="gap:4rem">
 							<button
