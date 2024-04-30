@@ -30,51 +30,6 @@ class MyFriendContent {
 		`;
 	}
 
-	mount(data) {
-		this.data = data;
-
-		let myFriends = '';
-		let myFriendRequestsSent = '';
-		let myFriendRequestsReceived = '';
-
-		for (let i = 0; i < data.friends.length; i += 1) {
-			const myFriendNode = new UserNode(data.friends[i]);
-			myFriends += `
-				<button class="user-node-button" data-bs-target="#friend-profile-modal" data-bs-toggle="modal">
-			`;
-			myFriends += myFriendNode.template();
-			myFriends += '</button>';
-		}
-
-		for (let i = 0; i < data.friendRequestsSent.length; i += 1) {
-			const myFriendRequestSentNode = new MyFriendRequestNode({
-				nickname: data.friendRequestsSent[i],
-				sent: true
-			});
-			myFriendRequestsSent += myFriendRequestSentNode.template();
-		}
-
-		for (let i = 0; i < data.friendRequestsReceived.length; i += 1) {
-			const myFriendRequestReceivedNode = new MyFriendRequestNode({
-				nickname: data.friendRequestsReceived[i],
-				sent: false
-			});
-			myFriendRequestsReceived += myFriendRequestReceivedNode.template();
-		}
-
-		const myFriend = document.querySelector('.my-friend-row');
-		const myFriendRequestSent = document.querySelector(
-			'.my-friend-request-sent'
-		);
-		const myFriendRequestReceived = document.querySelector(
-			'.my-friend-request-received'
-		);
-
-		myFriend.innerHTML = myFriends;
-		myFriendRequestSent.innerHTML = myFriendRequestsSent;
-		myFriendRequestReceived.innerHTML = myFriendRequestsReceived;
-	}
-
 	mountFriends(data) {
 		let myFriends = '';
 
@@ -155,8 +110,11 @@ class MyFriendContent {
 					}
 				})
 					.then((res) => {
-						if (res.status !== 204)
+						if (res.status !== 204) {
+							this.fetchFriendRequestsSent();
+							this.fetchFriends();
 							throw new Error('친구 요청 취소에 실패했습니다.');
+						}
 					})
 					.then(() => {
 						// 친구 요청 보낸 목록 다시 불러오기
@@ -190,8 +148,11 @@ class MyFriendContent {
 						}
 					})
 						.then((res) => {
-							if (res.status !== 204)
+							if (res.status !== 204) {
+								this.fetchFriendRequestsReceived();
+								this.fetchFriends();
 								throw new Error('친구 요청 수락에 실패했습니다.');
+							}
 						})
 						.then(() => {
 							// 친구 요청 받은 목록 다시 불러오기
@@ -219,8 +180,11 @@ class MyFriendContent {
 						}
 					})
 						.then((res) => {
-							if (res.status !== 204)
+							if (res.status !== 204) {
+								this.fetchFriendRequestsReceived();
+								this.fetchFriends();
 								throw new Error('친구 요청 거절에 실패했습니다.');
+							}
 						})
 						.then(() => {
 							// 친구 요청 받은 목록 다시 불러오기
@@ -248,6 +212,10 @@ class MyFriendContent {
 					this.mountFriends(data);
 					this.addFriendsEventListeners();
 				});
+			} else if (res.status === 403) {
+				alert('로그인이 필요합니다.');
+			} else if (res.status === 404) {
+				alert('친구가 없습니다.');
 			}
 		});
 	}
@@ -266,6 +234,8 @@ class MyFriendContent {
 					this.mountFriendRequestsSent(data);
 					this.addFriendRequestsSentEventListeners();
 				});
+			} else if (res.status === 403) {
+				alert('로그인이 필요합니다.');
 			}
 		});
 	}
@@ -284,6 +254,8 @@ class MyFriendContent {
 					this.mountFriendRequestsReceived(data);
 					this.addFriendRequestsReceivedEventListeners();
 				});
+			} else if (res.status === 403) {
+				alert('로그인이 필요합니다.');
 			}
 		});
 	}

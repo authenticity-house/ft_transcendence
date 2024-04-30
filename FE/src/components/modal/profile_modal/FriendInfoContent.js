@@ -47,7 +47,6 @@ class FriendInfoContent {
 			'.friend-info-content-name'
 		);
 
-		console.log('data: ', data);
 		if (data.profile_url !== '/profile/default.png') {
 			friendInfoContentImage.innerHTML = `
 				<img
