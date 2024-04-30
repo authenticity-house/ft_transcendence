@@ -20,6 +20,14 @@ from users.serializers import UserProfileSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
+class SelfFriendException(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    _custom_detail = {"code": "FRIEND_ERROR_0", "detail": "You cannot add yourself as a friend"}
+
+    def __init__(self, **kwargs):
+        super().__init__(detail=self._custom_detail)
+
+
 class AlreadyFriendException(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
     _custom_detail = {"code": "FRIEND_ERROR_1", "detail": "Already friends."}
@@ -157,7 +165,7 @@ class FriendAPIView(APIView):
         )
 
         if user_pk == friend_pk:
-            raise ParseError(detail="You cannot add yourself as a friend")
+            raise SelfFriendException()
 
         try:
             user_profile = User.objects.get(pk=user_pk)
@@ -228,7 +236,7 @@ class SentFriendRequestDetailAPIView(APIView):
         user_pk: int = request.user.pk
 
         if user_pk == friend_pk:
-            raise ParseError(detail="You cannot add yourself as a friend")
+            raise SelfFriendException()
 
         friendship = Friendship.objects.filter(
             Q(from_user_id=user_pk, to_user_id=friend_pk)
@@ -250,7 +258,7 @@ class ReceivedFriendRequestDetailAPIView(APIView):
         user_pk: int = request.user.pk
 
         if user_pk == friend_pk:
-            raise ParseError(detail="You cannot add yourself as a friend")
+            raise SelfFriendException()
 
         try:
             from_to_friendship = Friendship.objects.get(from_user_id=user_pk, to_user_id=friend_pk)
@@ -266,7 +274,7 @@ class ReceivedFriendRequestDetailAPIView(APIView):
         user_pk: int = request.user.pk
 
         if user_pk == friend_pk:
-            raise ParseError(detail="You cannot add yourself as a friend")
+            raise SelfFriendException()
 
         friendship = Friendship.objects.filter(
             Q(from_user_id=user_pk, to_user_id=friend_pk)
