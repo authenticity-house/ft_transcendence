@@ -17,7 +17,9 @@ class MatchListAPIView(APIView):
         if user_pk is None:
             user_pk: int = request.user.pk
 
-        match_list = Match.objects.filter(Q(player1_id=user_pk) | Q(player2_id=user_pk))
+        match_list = Match.objects.filter(Q(player1_id=user_pk) | Q(player2_id=user_pk)).order_by(
+            "-create_date"
+        )[:12]
         if match_list.exists():
             serializer = MatchListSerializer(match_list, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
