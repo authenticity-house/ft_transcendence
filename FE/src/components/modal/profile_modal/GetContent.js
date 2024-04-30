@@ -1,10 +1,46 @@
 import { myFriendContent } from './MyFriendContent.js';
 import { myRecordContent } from './MyRecordContent.js';
-import { userSearchContent } from './UserSearchContent.js';
+// import { userSearchContent } from './UserSearchContent.js';
 import { statsContent } from './StatsContent.js';
+import { myInfoContent } from './MyInfoContent.js';
+import apiEndpoints from '../../../constants/apiConfig.js';
+import { getCookie } from '../../../utils/getCookie.js';
+import { friendInfoContent } from './FriendInfoContent.js';
 
-export function getContent(id) {
-	if (id === 'match-record') {
+const csrfToken = getCookie('csrftoken');
+
+export function getContent(id, userPk) {
+	if (id === 'my-info') {
+		// my-info 탭을 클릭했을 때 내 정보를 렌더링
+		// mock-data
+		// const data = {
+		// 	pk: 1,
+		// 	username: 'superjeongmin',
+		// 	email: 'jeongmin@student.42seoul.kr',
+		// 	nickname: '',
+		// 	provider: 'PONG',
+		// 	profile_url: ''
+		// };
+
+		fetch(apiEndpoints.MY_INFO_URL, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						myInfoContent.mount(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
 		// mock-data
 		const data = [
@@ -166,135 +202,30 @@ export function getContent(id) {
 		myRecordContent.addEventListeners();
 	} else if (id === 'user-search') {
 		// user-search 탭을 클릭했을 때 유저 검색을 렌더링
-		// mock-data
-		const data = [
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongrol'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'wonyang'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jihylim'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongmin'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'joyoo'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongrol'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'wonyang'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jihylim'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongmin'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'joyoo'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongrol'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'wonyang'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jihylim'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongmin'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'joyoo'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongrol'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'wonyang'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jihylim'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongmin'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'joyoo'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongrol'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'wonyang'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jihylim'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'jeongmin'
-			},
-			{
-				profileImg: 'image/default-profile.png',
-				nickname: 'joyoo'
-			}
-		];
-
-		userSearchContent.mount(data);
-		userSearchContent.addEventListeners();
+		// userSearchContent.addEventListeners();
 	} else if (id === 'my-friend') {
 		// my-friend 탭을 클릭했을 때 친구 목록을 렌더링
 		// mock-data
 		const data = {
 			friends: [
 				{
-					profileImg: 'image/default-profile.png',
+					profile_url: 'image/default-profile.png',
 					nickname: 'jeongrol'
 				},
 				{
-					profileImg: 'image/default-profile.png',
+					profile_url: 'image/default-profile.png',
 					nickname: 'wonyang'
 				},
 				{
-					profileImg: 'image/default-profile.png',
+					profile_url: 'image/default-profile.png',
 					nickname: 'jihylim'
 				},
 				{
-					profileImg: 'image/default-profile.png',
+					profile_url: 'image/default-profile.png',
 					nickname: 'jeongmin'
 				},
 				{
-					profileImg: 'image/default-profile.png',
+					profile_url: 'image/default-profile.png',
 					nickname: 'joyoo'
 				}
 			],
@@ -345,5 +276,25 @@ export function getContent(id) {
 		};
 		const toolTip = statsContent.mount(data);
 		statsContent.addEventListeners(toolTip);
+	} else if (id === 'friend-info') {
+		fetch(`${apiEndpoints.FRIEND_PROFILE_URL}${userPk}/`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						friendInfoContent.mount(data);
+						friendInfoContent.addEventListeners(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 }

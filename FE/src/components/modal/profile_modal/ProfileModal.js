@@ -11,11 +11,13 @@ import { hideModal } from '../modalUtils.js';
 import apiEndpoints from '../../../constants/apiConfig.js';
 
 import { statsContent } from './StatsContent.js';
+import { friendInfoContent } from './FriendInfoContent.js';
 
 const html = String.raw;
 
 class ProfileModal {
 	template() {
+		this.userPk = 0;
 		return html`
 			<div
 				class="modal fade"
@@ -26,24 +28,21 @@ class ProfileModal {
 			>
 				<div class="modal-dialog modal-dialog-centered">
 					<div
-						class="modal-content head_white_neon_15 display-light28"
-						id="profile-modal-content"
+						class="modal-content head_white_neon_15 display-light28 profile-modal-content"
 					>
 						<button
-							id="profile-modal-close"
 							type="button"
-							class="btn-close btn-close-white"
+							class="btn-close btn-close-white profile-modal-close"
 							data-bs-dismiss="modal"
 							aria-label="Close"
 						></button>
-						<div id="profile-modal-body" class="modal-body">
-							<div id="profile-modal-container" class="container-fluid">
-								<div id="profile-modal-row" class="row">
+						<div class="modal-body profile-modal-body">
+							<div class="container-fluid profile-modal-container">
+								<div class="row profile-modal-row">
 									<!-- 네비게이션 바 -->
-									<div id="profile-modal-nav" class="col-3">
+									<div class="col-3 profile-modal-nav">
 										<div
-											class="nav flex-column nav-pills"
-											id="profile-nav-tab"
+											class="nav flex-column nav-pills profile-nav-tab"
 											role="tablist"
 											aria-orientation="vertical"
 										>
@@ -139,10 +138,10 @@ class ProfileModal {
 										</div>
 									</div>
 									<!-- 선택된 뷰의 내용을 표시하는 부분 -->
-									<div id="profile-modal-content-container" class="col-9">
-										<div class="tab-content" id="nav-tabContent">
+									<div class="profile-modal-content-container col-9">
+										<div class="tab-content nav-tabContent">
 											<div
-												class="tab-pane fade show"
+												class="tab-pane my-tab-pane fade"
 												id="my-info"
 												role="tabpanel"
 												aria-labelledby="my-info-tab"
@@ -150,7 +149,7 @@ class ProfileModal {
 												${myInfoContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="match-record"
 												role="tabpanel"
 												aria-labelledby="match-record-tab"
@@ -158,7 +157,7 @@ class ProfileModal {
 												${myRecordContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="user-search"
 												role="tabpanel"
 												aria-labelledby="user-search-tab"
@@ -166,7 +165,7 @@ class ProfileModal {
 												${userSearchContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="my-friend"
 												role="tabpanel"
 												aria-labelledby="my-friend-tab"
@@ -174,12 +173,116 @@ class ProfileModal {
 												${myFriendContent.template()}
 											</div>
 											<div
-												class="tab-pane fade"
+												class="tab-pane my-tab-pane fade"
 												id="stats"
 												role="tabpanel"
 												aria-labelledby="stats-tab"
 											>
 												${statsContent.template()}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 친구 프로필 모달 -->
+			<div
+				class="modal fade"
+				id="friend-profile-modal"
+				aria-hidden="true"
+				aria-labelledby="profileFriendModalLabel"
+				tabindex="-1"
+			>
+				<div class="modal-dialog modal-dialog-centered">
+					<div
+						class="modal-content head_white_neon_15 display-light28 profile-modal-content"
+					>
+						<button
+							type="button"
+							class="btn-close btn-close-white profile-modal-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						></button>
+						<div class="modal-body profile-modal-body">
+							<div class="container-fluid profile-modal-container">
+								<div class="row profile-modal-row">
+									<!-- 네비게이션 바 -->
+									<div class="col-3 profile-modal-nav">
+										<div
+											class="nav flex-column nav-pills profile-nav-tab"
+											role="tablist"
+											aria-orientation="vertical"
+										>
+											<button
+												class="friend-profile-nav-link"
+												id="friend-info-tab"
+												data-toggle="tab"
+												role="tab"
+												aria-controls="friend-info"
+												aria-selected="true"
+											>
+												<img
+													class="profile-icon"
+													src="image/my-info.svg"
+													alt="info"
+												/>
+												정보
+											</button>
+											<button
+												class="friend-profile-nav-link"
+												id="friend-match-record-tab"
+												data-toggle="tab"
+												role="tab"
+												aria-controls="friend-match-record"
+												aria-selected="true"
+											>
+												<img
+													class="profile-icon"
+													src="image/match-record.svg"
+													alt="record"
+												/>
+												경기 기록
+											</button>
+										</div>
+										<div id="return-container">
+											<button
+												id="return-button"
+												class="display-light28"
+												type="button"
+												data-bs-target="#profile-modal"
+												data-bs-toggle="modal"
+											>
+												<img
+													class="profile-icon"
+													src="image/logout.svg"
+													alt="logout"
+												/>
+												<span id="return-text">돌아가기</span>
+											</button>
+										</div>
+									</div>
+									<!-- 선택된 뷰의 내용을 표시하는 부분 -->
+									<div class="profile-modal-content-container col-9">
+										<div class="tab-content nav-tabContent">
+											<div
+												class="tab-pane friend-tab-pane fade"
+												id="friend-info"
+												role="tabpanel"
+												aria-labelledby="friend-info-tab"
+											>
+												${friendInfoContent.template()}
+											</div>
+											<div
+												class="tab-pane friend-tab-pane fade"
+												id="friend-match-record"
+												role="tabpanel"
+												aria-labelledby="friend-match-record-tab"
+											>
+												${myRecordContent.template()}
 											</div>
 										</div>
 									</div>
@@ -202,7 +305,7 @@ class ProfileModal {
 				event.preventDefault();
 
 				// 모든 탭 컨텐츠 숨김 처리
-				document.querySelectorAll('.tab-pane').forEach((pane) => {
+				document.querySelectorAll('.my-tab-pane').forEach((pane) => {
 					pane.classList.remove('show', 'active');
 				});
 
@@ -220,6 +323,38 @@ class ProfileModal {
 					document.getElementById(selectedTabContentId);
 				selectedTabContent.classList.add('show', 'active');
 				getContent(selectedTabContentId);
+			});
+		});
+
+		// 모든 친구 프로필 탭 버튼 선택
+		const friendNavLinks = document.querySelectorAll(
+			'.friend-profile-nav-link'
+		);
+
+		friendNavLinks.forEach((link) => {
+			link.addEventListener('click', (event) => {
+				// 기본 이벤트 방지
+				event.preventDefault();
+
+				// 모든 탭 컨텐츠 숨김 처리
+				document.querySelectorAll('.friend-tab-pane').forEach((pane) => {
+					pane.classList.remove('show', 'active');
+				});
+
+				// 모든 탭 버튼의 'active' 클래스 제거
+				friendNavLinks.forEach((navLink) => {
+					navLink.classList.remove('active');
+				});
+
+				// 클릭된 탭 버튼에 'active' 클래스 추가
+				link.classList.add('active');
+
+				// 클릭된 탭에 해당하는 컨텐츠 보여주기
+				const selectedTabContentId = link.getAttribute('aria-controls');
+				const selectedTabContent =
+					document.getElementById(selectedTabContentId);
+				selectedTabContent.classList.add('show', 'active');
+				getContent(selectedTabContentId, this.userPk);
 			});
 		});
 
@@ -254,9 +389,10 @@ class ProfileModal {
 					}
 					throw new Error('Error');
 				})
-				.then((data) => console.log(data))
 				.catch((error) => console.error('Error:', error));
 		});
+
+		userSearchContent.addEventListeners();
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
@@ -266,7 +402,7 @@ class ProfileModal {
 		const tabButton = document.getElementById(`${tabId}-tab`);
 
 		// 모든 탭 컨텐츠 숨김 처리
-		document.querySelectorAll('.tab-pane').forEach((pane) => {
+		document.querySelectorAll('.my-tab-pane').forEach((pane) => {
 			pane.classList.remove('show', 'active');
 		});
 
@@ -284,6 +420,33 @@ class ProfileModal {
 		// 클릭된 탭에 해당하는 컨텐츠 보여주기
 		tab.classList.add('show', 'active');
 		getContent(tabId);
+	}
+
+	openFriendModal(userPk) {
+		this.userPk = userPk;
+		const friendProfileModal = document.getElementById('friend-profile-modal');
+		const tab = document.getElementById('friend-info');
+		const tabButton = document.getElementById('friend-info-tab');
+
+		// 모든 탭 컨텐츠 숨김 처리
+		document.querySelectorAll('.friend-tab-pane').forEach((pane) => {
+			pane.classList.remove('show', 'active');
+		});
+
+		// 모든 탭 버튼의 'active' 클래스 제거
+		document.querySelectorAll('.friend-profile-nav-link').forEach((navLink) => {
+			navLink.classList.remove('active');
+		});
+
+		// 정보 탭 버튼에 'active' 클래스 추가
+		tabButton.classList.add('active');
+
+		// 모달 열기
+		friendProfileModal.style.display = 'block';
+
+		// 클릭된 탭에 해당하는 컨텐츠 보여주기
+		tab.classList.add('show', 'active');
+		getContent('friend-info', userPk);
 	}
 }
 

@@ -43,26 +43,22 @@ export class DuplicateChecker {
 
 		fetch(`${apiEndpoints.REGISTER_CHECK_URL}${inputName}=${inputValue}`, {
 			method: 'GET'
-		})
-			.then((response) => {
-				if (response.ok) {
-					this.toggleButtonState(checkButton, false);
-					this.isDuplicateChecked[inputName] = true;
+		}).then((response) => {
+			if (response.ok) {
+				this.toggleButtonState(checkButton, false);
+				this.isDuplicateChecked[inputName] = true;
 
-					this.addInputChangeEventListener(inputName);
-				} else if (response.status === 409) {
-					showModalWithContent(
-						'registerDupModal',
-						'add-modal-text',
-						modalMessage
-					);
-					this.toggleButtonState(checkButton, true);
-				}
-				return response.json();
-			})
-			.then((data) => {
-				console.log(data);
-			});
+				this.addInputChangeEventListener(inputName);
+			} else if (response.status === 409) {
+				showModalWithContent(
+					'registerDupModal',
+					'add-modal-text',
+					modalMessage
+				);
+				this.toggleButtonState(checkButton, true);
+			}
+			return response.json();
+		});
 	}
 
 	// 각 중복체크 플래그를 false로 초기화

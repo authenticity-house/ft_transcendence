@@ -36,7 +36,11 @@ class MyFriendContent {
 
 		for (let i = 0; i < data.friends.length; i += 1) {
 			const myFriendNode = new UserNode(data.friends[i]);
+			myFriends += `
+				<button class="user-node-button" data-bs-target="#friend-profile-modal" data-bs-toggle="modal">
+			`;
 			myFriends += myFriendNode.template();
+			myFriends += '</button>';
 		}
 
 		for (let i = 0; i < data.friendRequestsSent.length; i += 1) {

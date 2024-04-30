@@ -7,13 +7,7 @@ class MyInfoContent {
 				<div class="my-info-content-left">
 					<div class="my-info-content-image-name-container">
 						<div class="my-info-content-image-container">
-							<div class="my-info-content-image">
-								<img
-									class="my-info-user-profile-image"
-									src="image/default-profile.png"
-									alt="profile"
-								/>
-							</div>
+							<div class="my-info-content-image"></div>
 							<div class="my-info-content-image-edit">
 								<img class="edit-icon" src="image/edit.svg" alt="edit" />
 							</div>
@@ -24,16 +18,8 @@ class MyInfoContent {
 						</div>
 					</div>
 					<div class="my-info-content-id-password-container">
-						<div class="my-info-content-id">
-							<span class="display-light24">ID</span>
-							<span class="display-light24">: ID</span>
-						</div>
-						<div class="my-info-content-password">
-							<span class="display-light24">비밀번호</span>
-							<button type="button" class="display-light24 head_blue_neon_15">
-								변경
-							</button>
-						</div>
+						<div class="my-info-content-id"></div>
+						<div class="my-info-content-password"></div>
 					</div>
 				</div>
 				<div class="my-info-content-right">
@@ -55,6 +41,59 @@ class MyInfoContent {
 				</div>
 			</div>
 		`;
+	}
+
+	mount(data) {
+		const myInfoContentImage = document.querySelector('.my-info-content-image');
+		const myInfoContentName = document.querySelector('.my-info-content-name');
+		const myInfoContentIdPasswordContainer = document.querySelector(
+			'.my-info-content-id-password-container'
+		);
+
+		if (data.profile_url !== '/profile/default.png') {
+			myInfoContentImage.innerHTML = `
+				<img
+					class="my-info-user-profile-image"
+					src="${data.profile_url}"
+					alt="profile"
+				/>
+			`;
+		} else {
+			myInfoContentImage.innerHTML = `
+				<img
+					class="my-info-user-profile-image"
+					src="image/default-profile.png"
+					alt="profile"
+				/>
+			`;
+		}
+
+		myInfoContentName.innerHTML = `
+			<span class="display-light28">${data.nickname}</span>
+			<img class="edit-icon" src="image/edit.svg" alt="edit" />
+		`;
+
+		if (data.provider === 'PONG') {
+			const myInfoContentId = document.querySelector('.my-info-content-id');
+			const myInfoContentPassword = document.querySelector(
+				'.my-info-content-password'
+			);
+
+			myInfoContentId.innerHTML = `
+				<span class="display-light24">ID</span>
+				<span class="display-light24">${data.username}</span>
+			`;
+
+			myInfoContentPassword.innerHTML = `
+				<span class="display-light24">비밀번호</span>
+				<button type="button" class="display-light24 head_blue_neon_15">
+					변경
+				</button>
+			`;
+
+			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
+			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
+		}
 	}
 }
 

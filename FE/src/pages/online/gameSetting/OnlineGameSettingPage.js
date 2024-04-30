@@ -1,4 +1,5 @@
 import { changeUrl, changeUrlData, gamewsmanager } from '../../../index.js';
+import apiEndpoints from '../../../constants/apiConfig.js';
 import HorizontalButton from '../../../components/HorizontalButton.js';
 import VerticalButton from '../../../components/VerticalButton.js';
 import { Gamewebsocket } from '../../../game/Gamewebsocket.js';
@@ -77,13 +78,22 @@ class GameSettingPage {
 		`;
 	}
 
+	mount() {
+		// Login Check
+		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
+			if (res.status !== 200) {
+				window.location.reload(true);
+			}
+		});
+	}
+
 	addEventListeners() {
 		// 게임 세부 설정 버튼
 		const matchMode = document.querySelector(
 			'.horizontalButton button:nth-child(2)'
 		);
 		matchMode.addEventListener('click', () => {
-			changeUrlData('onlineSettingTournament', null);
+			changeUrlData('onlineSettingTournament', null, false);
 		});
 
 		function updateRoomName(res) {
@@ -97,7 +107,7 @@ class GameSettingPage {
 		);
 		detailedButton.addEventListener('click', () => {
 			updateRoomName(this.data);
-			changeUrlData('onlineDetailed', this.data);
+			changeUrlData('onlineDetailed', this.data, false);
 		});
 
 		const startButton = document.querySelector(
