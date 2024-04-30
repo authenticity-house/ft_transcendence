@@ -38,3 +38,27 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ("pk", "nickname", "profile_url")
         read_only_fields = ("pk", "nickname", "profile_url")
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+    profile_url = serializers.URLField(required=False)
+    nickname = serializers.CharField(required=False, max_length=12)
+
+    class Meta:
+        model = User
+        fields = ["nickname", "password", "profile_url"]
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        profile_url = validated_data.get("profile_url", instance.profile_url)
+        nickname = validated_data.get("nickname", instance.nickname)
+
+        instance.profile_url = profile_url
+        instance.nickname = nickname
+
+        if password:
+            instance.set_password(password)
+
+        instance.save()
+        return instance

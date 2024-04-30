@@ -5,6 +5,7 @@ from django.db.models import Q
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import NotFound, ParseError, APIException
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -16,7 +17,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 from dj_rest_auth.registration.views import RegisterView
 
 from users.models import User, Friendship
-from users.serializers import UserProfileSerializer
+from users.serializers import UserProfileSerializer, UpdateUserSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
@@ -405,3 +406,24 @@ class CheckLoginStatusAPIView(APIView):
                 "is_authenticated": True,
             }
         )
+
+
+class UpdateUserView(RetrieveUpdateAPIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UpdateUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        serializer_data = request.data
+
+        serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
