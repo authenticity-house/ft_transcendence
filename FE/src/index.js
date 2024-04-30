@@ -27,6 +27,7 @@ import {
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 
 import Test from './pages/test.js';
+import { removeModalBackdrop } from './components/modal/modalUtils.js';
 
 const html = String.raw;
 
@@ -124,6 +125,7 @@ logo.addEventListener('click', () => {
 window.onpopstate = () => {
 	// 링크가 변경되기 전에 유효하지 않은 요청인지 확인
 	gamewsmanager.unregister();
+	removeModalBackdrop(); // 온라인 게임 참가 이후 로딩중일때 뒤로가기 하면 backdrop 사라지지 않는 오류
 	const url = window.location.href.split('/').pop();
 	if (
 		url === 'game' ||

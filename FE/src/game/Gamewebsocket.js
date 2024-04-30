@@ -98,6 +98,7 @@ export class Gamewebsocket {
 			type: 'game',
 			subtype: 'key_down',
 			message: 'key!',
+			// ?????? match_id 변경 필요
 			match_id: 1,
 			data: {
 				key_set: Array.from(this.keyDownList)

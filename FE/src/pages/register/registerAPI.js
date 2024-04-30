@@ -5,7 +5,7 @@ import apiEndpoints from '../../constants/apiConfig.js';
 export function registerAPI(formData, reset) {
 	const payload = formDataToJson(formData);
 
-	showModal('registerLoadingModal');
+	showModal('loadingModal');
 
 	fetch(apiEndpoints.REGISTRATION_URL, {
 		method: 'POST',
@@ -30,7 +30,7 @@ export function registerAPI(formData, reset) {
 				modalToShow = 'registerFailModal';
 			}
 			if (modalToShow) {
-				hideModal('registerLoadingModal', () => {
+				hideModal('loadingModal', () => {
 					showModal(modalToShow);
 				});
 				return response.json();

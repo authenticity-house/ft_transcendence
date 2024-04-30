@@ -2,6 +2,7 @@
 @import 'color.css';
 @import 'font.css';
 
+/*
 @media (max-width: 2560px) {
 	html {
 		font-size: 62.5%;
@@ -36,6 +37,10 @@
 	html {
 		font-size: 12.5%;
 	}
+} */
+
+html {
+	font-size: 62.5%;
 }
 
 body {
@@ -851,7 +856,14 @@ td {
 
 .modal-content-body-text {
 	text-align: center;
-	padding: 4rem;
+	padding: 2rem;
+}
+
+.custom-spinner {
+	width: 5rem;
+	height: 5rem;
+	border-width: 0.6rem;
+	margin-top: 2rem;
 }
 
 .game-page-container {
