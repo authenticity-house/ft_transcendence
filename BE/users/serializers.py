@@ -41,23 +41,35 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UpdateUserSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(write_only=True, required=False)
     password = serializers.CharField(write_only=True, required=False)
-    profile_url = serializers.URLField(required=False)
+    profile_url = serializers.CharField(required=False)
     nickname = serializers.CharField(required=False, max_length=12)
 
     class Meta:
         model = User
-        fields = ["nickname", "password", "profile_url"]
+        fields = ["nickname", "password", "old_password", "profile_url"]
+
+    def validate(self, attrs):
+        if 'password' in attrs:
+            if 'old_password' not in attrs:
+                raise serializers.ValidationError({"detail": "Please enter your existing password."})
+
+            user = self.instance
+            if not user.check_password(attrs['old_password']):
+                raise serializers.ValidationError({"detail": "The existing password is incorrect."})
+
+        return super().validate(attrs)
 
     def update(self, instance, validated_data):
-        password = validated_data.pop("password", None)
         profile_url = validated_data.get("profile_url", instance.profile_url)
         nickname = validated_data.get("nickname", instance.nickname)
 
         instance.profile_url = profile_url
         instance.nickname = nickname
 
-        if password:
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
             instance.set_password(password)
 
         instance.save()
