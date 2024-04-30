@@ -127,7 +127,6 @@ class LoginPage {
 						// }
 						throw new Error('Error');
 					})
-					.then((data) => console.log(data))
 					.catch((error) => {
 						console.error('Error:', error);
 						errorMessageElement.textContent =
