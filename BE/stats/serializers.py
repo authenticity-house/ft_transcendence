@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from rest_framework.fields import IntegerField
 from rest_framework.relations import PrimaryKeyRelatedField
 
 from users.models import User
+from users.serializers import UserProfileSerializer
 from .models import Match
 
 attack_type_mapping = {
@@ -9,6 +11,17 @@ attack_type_mapping = {
     1: "TYPE1",
     2: "TYPE2",
 }
+
+
+class MatchListSerializer(serializers.ModelSerializer):
+    player1 = UserProfileSerializer()
+    player2 = UserProfileSerializer()
+    data = serializers.JSONField()
+    winner_id = IntegerField(read_only=True)
+
+    class Meta:
+        model = Match
+        fields = ["player1", "player2", "data", "winner_id"]
 
 
 class MatchSerializer(serializers.ModelSerializer):
