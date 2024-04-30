@@ -91,12 +91,15 @@ class FriendInfoContent {
 		);
 
 		friendInfoContentAddButton.addEventListener('click', () => {
-			fetch(`${apiEndpoints.MY_FRIEND_URL}${data.pk}/`, {
+			fetch(apiEndpoints.MY_FRIEND_URL, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'X-CSRFToken': getCookie('csrftoken')
-				}
+				},
+				body: JSON.stringify({
+					friend_pk: data.pk
+				})
 			})
 				.then((res) => {
 					console.log(res);
@@ -104,11 +107,6 @@ class FriendInfoContent {
 				})
 				.then((res) => {
 					console.log(res);
-					if (res.result === 'success') {
-						alert('친구 추가 요청이 전송되었습니다.');
-					} else {
-						alert('친구 추가 요청이 실패했습니다.');
-					}
 				});
 		});
 	}

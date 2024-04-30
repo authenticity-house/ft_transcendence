@@ -20,7 +20,7 @@ function getApiEndpoints() {
 		MY_INFO_URL: `${USERS_URL}user/`,
 		SEARCH_USER_URL: `${USERS_URL}search/?prefix=`,
 		FRIEND_PROFILE_URL: `${USERS_URL}detail/`,
-		MY_FRIEND_URL: `${USERS_URL}friend/`
+		MY_FRIEND_URL: `${USERS_URL}friends/`
 	};
 }
 
