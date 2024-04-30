@@ -1,8 +1,13 @@
 import json
+
+from asgiref.sync import async_to_sync
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 
+from channels.layers import get_channel_layer
+
+from online.services import OnlineSessionManager
 from session.session_manager import DuelManager
 
 
@@ -13,13 +18,10 @@ def TestView(request):
         # JSON 데이터 파싱
         data = json.loads(request.body)
         info = data["info"]
-        manager = DuelManager(info) # 임시
-        msg = manager.get_send_data("match_init_setting")
-        print(msg)
-        # 여기에서 데이터를 처리하는 로직을 추가하세요.
-        # 예제에서는 입력된 데이터를 그대로 반환합니다.
+        session_number = OnlineSessionManager.add_session(info)
+
         return JsonResponse(
-            {"detail": "Data processed successfully", "url": "/online/oneonone/123/"}, status=200
+            {"detail": "Data processed successfully", "url": f"/online/oneonone/{session_number}/"}, status=200
         )
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
