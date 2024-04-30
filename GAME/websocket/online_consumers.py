@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from online.services import OnlineSessionManager
+from websocket.backend_api import fetch_nickname
 
 
 class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
@@ -9,13 +10,14 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
 
         self.session_number = -1
         self.session_group_name = "session"
+        self.nickname = None
 
     async def connect(self):
         session_key = self.scope['cookies'].get('sessionid', None)
-        print(session_key)
+        self.nickname = await fetch_nickname(session_key)
 
         # 세션 값이 없는 경우 연결 거부
-        if not session_key:
+        if not session_key or not self.nickname:
             await self.close()
 
         self.session_number = int(self.scope["url_route"]["kwargs"]["session_number"])
