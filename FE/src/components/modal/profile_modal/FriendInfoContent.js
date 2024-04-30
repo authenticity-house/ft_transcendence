@@ -1,3 +1,6 @@
+import apiEndpoints from '../../../constants/apiConfig.js';
+import { getCookie } from '../../../utils/getCookie.js';
+
 const html = String.raw;
 
 class FriendInfoContent {
@@ -13,9 +16,7 @@ class FriendInfoContent {
 							<span class="display-light28">이름</span>
 						</div>
 					</div>
-					<button class="friend-info-content-add-button head_blue_neon_15">
-						친구 추가
-					</button>
+					<div class="friend-info-content-add-friend-container"></div>
 				</div>
 				<div class="friend-info-content-right">
 					<div class="friend-info-stats-container display-light28">
@@ -68,6 +69,48 @@ class FriendInfoContent {
 		friendInfoContentName.innerHTML = `
 			<span class="display-light28">${data.nickname}</span>
 		`;
+
+		const friendInfoContentAddButton = document.createElement('button');
+
+		friendInfoContentAddButton.classList.add('friend-info-content-add-button');
+		friendInfoContentAddButton.classList.add('head_blue_neon_15');
+		friendInfoContentAddButton.innerHTML = '친구 추가';
+
+		const friendInfoContentAddFriendContainer = document.querySelector(
+			'.friend-info-content-add-friend-container'
+		);
+
+		// 친구 추가 컨테이너 안에 기존 내용 삭제
+		friendInfoContentAddFriendContainer.innerHTML = '';
+		friendInfoContentAddFriendContainer.appendChild(friendInfoContentAddButton);
+	}
+
+	addEventListeners(data) {
+		const friendInfoContentAddButton = document.querySelector(
+			'.friend-info-content-add-button'
+		);
+
+		friendInfoContentAddButton.addEventListener('click', () => {
+			fetch(`${apiEndpoints.MY_FRIEND_URL}${data.pk}/`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCookie('csrftoken')
+				}
+			})
+				.then((res) => {
+					console.log(res);
+					return res.json();
+				})
+				.then((res) => {
+					console.log(res);
+					if (res.result === 'success') {
+						alert('친구 추가 요청이 전송되었습니다.');
+					} else {
+						alert('친구 추가 요청이 실패했습니다.');
+					}
+				});
+		});
 	}
 }
 

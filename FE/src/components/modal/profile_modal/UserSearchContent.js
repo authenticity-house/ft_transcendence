@@ -55,47 +55,59 @@ class UserSearchContent {
 		});
 	}
 
+	searchUser(userSearchValue) {
+		const csrfToken = getCookie('csrftoken');
+		if (userSearchValue === '') {
+			alert('닉네임을 입력해주세요.');
+		} else {
+			// 서버에 요청
+			fetch(apiEndpoints.SEARCH_USER_URL + userSearchValue, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				}
+			})
+				.then((res) => {
+					if (res.status === 204) {
+						alert('검색 결과가 없습니다.');
+						throw new Error('검색 결과가 없습니다.');
+					}
+					if (res.status === 200) return res.json();
+					throw new Error('검색 결과를 가져오는데 실패했습니다.');
+				})
+				.then((res) => {
+					this.mount(res);
+					this.addProfileModalEventListeners();
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}
+
 	addEventListeners() {
 		// const userSearchNodes = document.querySelectorAll('.user-search-node-container');
 		const userSearchButton = document.querySelector('.user-search-button');
 		const userSearchInput = document.querySelector('.user-search-input');
-		const csrfToken = getCookie('csrftoken');
 
 		userSearchButton.addEventListener('click', () => {
 			const userSearchValue = userSearchInput.value;
-
-			if (userSearchValue === '') {
-				alert('닉네임을 입력해주세요.');
-			} else {
-				// 서버에 요청
-				fetch(apiEndpoints.SEARCH_USER_URL + userSearchValue, {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': csrfToken
-					}
-				})
-					.then((res) => {
-						if (res.status === 204) {
-							alert('검색 결과가 없습니다.');
-							throw new Error('검색 결과가 없습니다.');
-						}
-						if (res.status === 200) return res.json();
-						throw new Error('검색 결과를 가져오는데 실패했습니다.');
-					})
-					.then((res) => {
-						this.mount(res);
-						this.addProfileModalEventListeners();
-					})
-					.catch((err) => {
-						console.log(err);
-					});
-			}
+			this.searchUser(userSearchValue);
 		});
 
+		let searchInProgress = false;
 		userSearchInput.addEventListener('keydown', (e) => {
-			if (e.key === 'Enter') {
-				userSearchButton.click();
+			if (e.key === 'Enter' && !searchInProgress) {
+				// 한글 입력 시 한 번 더 검색되는 문제 해결
+				e.preventDefault();
+				searchInProgress = true;
+				const userSearchValue = userSearchInput.value;
+				this.searchUser(userSearchValue);
+
+				setTimeout(() => {
+					searchInProgress = false;
+				}, 500);
 			}
 		});
 	}
