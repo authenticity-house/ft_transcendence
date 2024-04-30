@@ -17,6 +17,7 @@ class Session:
         self._users.append(nickname)
 
         if len(self._users) == self._total_user:
+            self._manager.set_nickname(self._users)
             msg = self._manager.get_send_data("match_init_setting")
             await self.__broadcast("match.init.setting", msg)
 

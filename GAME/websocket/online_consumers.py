@@ -27,7 +27,7 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         await self.send_message("connection_established", "You are now connected!")
 
-        await OnlineSessionManager.join_session(self.session_number, "test_user")
+        await OnlineSessionManager.join_session(self.session_number, self.nickname)
 
     async def send_message(self, subtype, message, data=None, msg_type="game"):
         msg = {
