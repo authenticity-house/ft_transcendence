@@ -20,6 +20,14 @@ from users.serializers import UserProfileSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
+class AlreadyFriendException(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    _custom_detail = {"code": "FRIEND_ERROR_1", "detail": "Already friends."}
+
+    def __init__(self, **kwargs):
+        super().__init__(detail=self._custom_detail)
+
+
 def get_friend_pk(friend_pk_str: str) -> int:
     if friend_pk_str is None:
         raise ParseError(detail="friend_pk is empty")
@@ -158,7 +166,12 @@ class FriendAPIView(APIView):
             from_user_to_friend, _ = Friendship.objects.get_or_create(
                 from_user=user_profile, to_user=friend_profile
             )
-            _, _ = Friendship.objects.get_or_create(from_user=friend_profile, to_user=user_profile)
+            from_friend_to_user, _ = Friendship.objects.get_or_create(
+                from_user=friend_profile, to_user=user_profile
+            )
+
+            if are_they_friend(from_user_to_friend, from_friend_to_user):
+                raise AlreadyFriendException()
 
             if from_user_to_friend.are_we_friend is False:
                 from_user_to_friend.are_we_friend = True
@@ -218,7 +231,7 @@ class SentFriendRequestDetailAPIView(APIView):
         )
 
         if friendship.count() == 2 and are_they_friend(*friendship):
-            return Response({"detail": "Already friends."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AlreadyFriendException()
 
         friendship.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -256,7 +269,7 @@ class ReceivedFriendRequestDetailAPIView(APIView):
         )
 
         if friendship.count() == 2 and are_they_friend(*friendship):
-            return Response({"detail": "Already friends."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AlreadyFriendException()
 
         friendship.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
