@@ -98,15 +98,18 @@ class FriendInfoContent {
 					'X-CSRFToken': getCookie('csrftoken')
 				},
 				body: JSON.stringify({
-					friend_pk: data.pk
+					friend_pk: String(data.pk)
 				})
 			})
 				.then((res) => {
-					console.log(res);
 					return res.json();
 				})
 				.then((res) => {
-					console.log(res);
+					if (res.detail === 'success') {
+						alert('친구 추가 요청을 보냈습니다.');
+					} else {
+						alert('친구 추가 요청을 보내지 못했습니다.');
+					}
 				});
 		});
 	}
