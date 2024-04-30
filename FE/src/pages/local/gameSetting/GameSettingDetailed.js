@@ -26,7 +26,11 @@ class GameSettingDetailed {
 				2: 'gameSettingTournament'
 			};
 
-			changeUrlData(setting[this.battleMode], this.setting.getModifiedData());
+			changeUrlData(
+				setting[this.battleMode],
+				this.setting.getModifiedData(),
+				false
+			);
 		});
 	}
 }

@@ -159,6 +159,7 @@ class WaitingRoomPage {
 		const backButton = document.querySelector('.button-back-in-window');
 		backButton.addEventListener('click', () => {
 			this.roomWsManager.exitRoom();
+			history.pushState(null, null, 'gameBlock');
 			changeUrl('onlineMainScreen');
 		});
 	}

@@ -192,19 +192,27 @@ export class MessageManager {
 				console.log('game over');
 				if (message.subtype === SubType.TOURNAMENT_TREE) {
 					// 최종 대진표
-					changeUrlData('tournament', {
-						...message.data,
-						sendMsg: this.sendGameOver.bind(this)
-					});
+					changeUrlData(
+						'tournament',
+						{
+							...message.data,
+							sendMsg: this.sendGameOver.bind(this)
+						},
+						false
+					);
 				}
 				break;
 
 			case MessageType.GAME_OVER_RESPONSE:
 				// 최종 경기결과
-				changeUrlData('tournamentResult', {
-					content: message.data,
-					sendMsg: this.sendGameDisconnect.bind(this)
-				});
+				changeUrlData(
+					'tournamentResult',
+					{
+						content: message.data,
+						sendMsg: this.sendGameDisconnect.bind(this)
+					},
+					false
+				);
 				break;
 
 			default:
@@ -223,10 +231,14 @@ export class MessageManager {
 				break;
 			case SubType.TOURNAMENT_TREE:
 				// 대진표 출력 및 게임 매치 초기화 요청
-				changeUrlData('tournament', {
-					...message.data,
-					sendMsg: this.sendGameMatchInitSetting.bind(this)
-				});
+				changeUrlData(
+					'tournament',
+					{
+						...message.data,
+						sendMsg: this.sendGameMatchInitSetting.bind(this)
+					},
+					false
+				);
 				break;
 			case SubType.MATCH_INIT_SETTING:
 				// 매치 초기화 정보 저장
@@ -251,16 +263,24 @@ export class MessageManager {
 
 				// 1vs1 대전의 경우 disconnect
 				if (this.gamesetting.battle_mode === 1)
-					changeUrlData('duelstats', {
-						...message.data,
-						sendMsg: this.sendGameDisconnect.bind(this)
-					});
+					changeUrlData(
+						'duelstats',
+						{
+							...message.data,
+							sendMsg: this.sendGameDisconnect.bind(this)
+						},
+						false
+					);
 				// 토너먼트의 경우 다음 매치 요청
 				else
-					changeUrlData('duelstats', {
-						...message.data,
-						sendMsg: this.sendGameNextMatch.bind(this)
-					});
+					changeUrlData(
+						'duelstats',
+						{
+							...message.data,
+							sendMsg: this.sendGameNextMatch.bind(this)
+						},
+						false
+					);
 
 				break;
 			case SubType.ERROR:

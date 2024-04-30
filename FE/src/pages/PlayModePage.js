@@ -21,7 +21,7 @@ class PlayModePage {
 				</div>
 
 				<div class="back-arrow-container">
-					<div class="back-arrow">${backButton.template()}</div>
+					<div class="back-arrow display-none">${backButton.template()}</div>
 				</div>
 			</div>
 		`;
@@ -42,11 +42,11 @@ class PlayModePage {
 						.querySelector('.button-click-online')
 						.querySelector('.button-large');
 					onlineButton.classList.add('disabled');
-				} else if (res.status === 200) {
-					// 로그인 성공 - 뒤로가기 버튼 없애기
+					// 로그인 X - 뒤로가기 버튼 생기게 하기
 					document
-						.querySelector('.button-back-arrow-box')
-						.classList.add('display-none');
+						.querySelector('.back-arrow')
+						.classList.remove('display-none');
+				} else if (res.status === 200) {
 					// 로그인 성공 - 모달 창 전부 표시
 					document.querySelectorAll('.modal-hidden').forEach((element) => {
 						element.classList.remove('modal-hidden');

@@ -68,6 +68,21 @@ body {
 	pointer-events: none;
 }
 
+#browser-state-info {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 32rem;
+	height: 8rem;
+	border: 0.2rem solid #ffffff;
+	border-radius: 2rem;
+	top: 1.5rem;
+	left: 1.5rem;
+	opacity: 0;
+}
+
 header {
 	display: flex;
 	width: 100%;
