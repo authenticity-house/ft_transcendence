@@ -58,10 +58,10 @@ class UserSearchContent {
 	addEventListeners() {
 		// const userSearchNodes = document.querySelectorAll('.user-search-node-container');
 		const userSearchButton = document.querySelector('.user-search-button');
+		const userSearchInput = document.querySelector('.user-search-input');
 		const csrfToken = getCookie('csrftoken');
 
 		userSearchButton.addEventListener('click', () => {
-			const userSearchInput = document.querySelector('.user-search-input');
 			const userSearchValue = userSearchInput.value;
 
 			if (userSearchValue === '') {
@@ -90,6 +90,12 @@ class UserSearchContent {
 					.catch((err) => {
 						console.log(err);
 					});
+			}
+		});
+
+		userSearchInput.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter') {
+				userSearchButton.click();
 			}
 		});
 	}
