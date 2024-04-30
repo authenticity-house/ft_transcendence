@@ -142,7 +142,11 @@ class FriendAPIView(APIView):
 
     def post(self, request):
         user_pk: int = request.user.pk
-        friend_pk: int = get_friend_pk(request.data.get("friend_pk"))
+        friend_pk: int = (
+            request.data.get("friend_pk")
+            if isinstance(request.data.get("friend_pk"), int)
+            else get_friend_pk(str(request.data.get("friend_pk")))
+        )
 
         if user_pk == friend_pk:
             raise ParseError(detail="You cannot add yourself as a friend")
