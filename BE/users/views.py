@@ -173,9 +173,14 @@ class FriendAPIView(APIView):
             if are_they_friend(from_user_to_friend, from_friend_to_user):
                 raise AlreadyFriendException()
 
-            if from_user_to_friend.are_we_friend is False:
-                from_user_to_friend.are_we_friend = True
-                from_user_to_friend.save()
+            if from_user_to_friend.are_we_friend is True:
+                return Response(
+                    {"code": "FRIEND_ERROR_2", "detail": "Friend request already sent."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            from_user_to_friend.are_we_friend = True
+            from_user_to_friend.save()
 
             return Response(
                 {"detail": "success"},
