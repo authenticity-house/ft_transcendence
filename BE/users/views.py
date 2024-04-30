@@ -36,12 +36,21 @@ class AlreadyFriendException(APIException):
         super().__init__(detail=self._custom_detail)
 
 
+class InvalidQueryParams(APIException):
+    status_code = 400
+
+    def __init__(self, key_str=""):
+        super().__init__(
+            detail={"code": "PARSE_ERROR", "detail": f"Query Params key should be {key_str}."}
+        )
+
+
 def get_friend_pk(friend_pk_str: str) -> int:
     if friend_pk_str is None:
-        raise ParseError(detail="friend_pk is empty")
+        raise ParseError(detail={"code": "PARSE_ERROR", "detail": "friend_pk is empty"})
 
     if not friend_pk_str.isdigit():
-        raise ParseError(detail="friend_pk can only be int type")
+        raise ParseError(detail={"code": "PARSE_ERROR", "detail": "friend_pk can only be int type"})
 
     return int(friend_pk_str)
 
@@ -53,7 +62,7 @@ def get_query_param(request, key):
 
     value = query_params[key]
     if value == "":
-        raise ParseError(detail=f"{key} value is empty")
+        raise ParseError(detail={"code": "PARSE_ERROR", "detail": f"{key} value is empty"})
 
     return value
 
