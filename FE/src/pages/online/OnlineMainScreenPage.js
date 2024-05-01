@@ -1,5 +1,6 @@
 /* eslint-disable no-void */
 import { changeUrl } from '../../index.js';
+import apiEndpoints from '../../constants/apiConfig.js';
 import {
 	fetchProfileDataAndDisplay,
 	fetchRoomsDataAndDisplay
@@ -54,6 +55,12 @@ class OnlineMainScreenPage {
 	}
 
 	mount() {
+		// Login Check
+		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
+			if (res.status !== 200) {
+				window.location.reload(true);
+			}
+		});
 		fetchProfileDataAndDisplay();
 		fetchRoomsDataAndDisplay();
 	}

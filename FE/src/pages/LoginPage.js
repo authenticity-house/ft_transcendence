@@ -6,6 +6,7 @@ import ButtonSmall from '../components/ButtonSmall.js';
 import { formDataToJson } from '../utils/formDataToJson.js';
 import apiEndpoints from '../constants/apiConfig.js';
 import { CLIENT_ID, REDIRECT_URI } from '../constants/constants.js';
+import { browserInfo } from '../utils/browserInfo.js';
 
 const html = String.raw;
 
@@ -72,6 +73,12 @@ class LoginPage {
 		document
 			.querySelector('.profile-button-container')
 			.classList.add('modal-hidden');
+		fetch(apiEndpoints.LOGIN_CHECK_URL, { method: 'GET' }).then((res) => {
+			if (res.status === 200) {
+				browserInfo('로그인 페이지로 이동이 불가합니다.');
+				changeUrl('playMode');
+			}
+		});
 	}
 
 	addEventListeners() {
@@ -120,7 +127,6 @@ class LoginPage {
 						// }
 						throw new Error('Error');
 					})
-					.then((data) => console.log(data))
 					.catch((error) => {
 						console.error('Error:', error);
 						errorMessageElement.textContent =

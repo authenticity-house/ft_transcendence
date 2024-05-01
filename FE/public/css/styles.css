@@ -68,6 +68,21 @@ body {
 	pointer-events: none;
 }
 
+#browser-state-info {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 32rem;
+	height: 8rem;
+	border: 0.2rem solid #ffffff;
+	border-radius: 2rem;
+	top: 1.5rem;
+	left: 1.5rem;
+	opacity: 0;
+}
+
 header {
 	display: flex;
 	width: 100%;
@@ -1740,11 +1755,12 @@ td {
 
 /* profile modal */
 
-#profile-modal {
+#profile-modal,
+#friend-profile-modal {
 	--bs-modal-width: 120rem;
 }
 
-#profile-modal-content {
+.profile-modal-content {
 	display: flex;
 	width: 120rem;
 	height: 88rem;
@@ -1755,14 +1771,14 @@ td {
 	background: #141343;
 }
 
-#profile-modal-close {
+.profile-modal-close {
 	position: absolute;
 	top: 2rem;
 	right: 2rem;
 	z-index: 1000;
 }
 
-#profile-modal-body {
+.profile-modal-body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1771,7 +1787,7 @@ td {
 	padding: 0;
 }
 
-#profile-modal-container {
+.profile-modal-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1780,7 +1796,7 @@ td {
 	padding: 0;
 }
 
-#profile-modal-row {
+.profile-modal-row {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -1788,7 +1804,7 @@ td {
 	height: 100%;
 }
 
-#profile-modal-nav {
+.profile-modal-nav {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -1798,7 +1814,7 @@ td {
 	padding: 0;
 }
 
-#profile-nav-tab {
+.profile-nav-tab {
 	display: flex;
 	width: 100%;
 	padding: 4rem 0;
@@ -1806,7 +1822,8 @@ td {
 	align-items: center;
 }
 
-.profile-nav-link {
+.profile-nav-link,
+.friend-profile-nav-link {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
@@ -1822,7 +1839,8 @@ td {
 	align-self: stretch;
 }
 
-.profile-nav-link.active {
+.profile-nav-link.active,
+.friend-profile-nav-link.active {
 	text-shadow:
 		0rem 0rem 1rem #ffd164,
 		0rem 0rem 1rem #ffd164;
@@ -1837,12 +1855,14 @@ td {
 
 .profile-nav-link:hover .profile-icon,
 .profile-nav-link.active .profile-icon,
-.logout-button:hover .profile-icon {
+.friend-profile-nav-link:hover .profile-icon,
+.friend-profile-nav-link.active .profile-icon {
 	filter: brightness(0) saturate(100%) invert(83%) sepia(30%) saturate(800%)
 		hue-rotate(344deg) brightness(101%) contrast(101%);
 }
 
-#logout-container {
+#logout-container,
+#return-container {
 	display: flex;
 	padding-bottom: 4rem;
 	justify-content: center;
@@ -1851,7 +1871,8 @@ td {
 	align-self: stretch;
 }
 
-#logout-button {
+#logout-button,
+#return-button {
 	display: flex;
 	padding: 0rem 4rem;
 	align-items: center;
@@ -1862,22 +1883,24 @@ td {
 	border: none;
 }
 
-#logout-button:hover .profile-icon {
+#logout-button:hover .profile-icon,
+#return-button:hover .profile-icon {
 	filter: brightness(0) saturate(100%) invert(18%) sepia(63%) saturate(5393%)
 		hue-rotate(355deg) brightness(93%) contrast(128%);
 }
 
-#logout-text {
+#logout-text,
+#return-text {
 	width: 100%;
 }
 
-#profile-modal-content-container {
+.profile-modal-content-container {
 	display: flex;
 	height: 100%;
 	padding: 0;
 }
 
-#nav-tabContent {
+.nav-tabContent {
 	display: flex;
 	width: 100%;
 	height: 100%;
@@ -1892,23 +1915,26 @@ td {
 	padding: 0;
 }
 
-/* my-info */
+/* my-info, friend-info */
 
-.my-info-content-container {
+.my-info-content-container,
+.friend-info-content-container {
 	display: inline-flex;
 	align-items: flex-start;
 	margin-top: 8rem;
 	gap: 6rem;
 }
 
-.my-info-content-left {
+.my-info-content-left,
+.friend-info-content-left {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 10rem;
 }
 
-.my-info-content-image-name-container {
+.my-info-content-image-name-container,
+.friend-info-content-image-name-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -1916,13 +1942,15 @@ td {
 	gap: 5rem;
 }
 
-.my-info-content-image-container {
+.my-info-content-image-container,
+.friend-info-content-image-container {
 	position: relative;
 	display: flex;
 	align-items: flex-start;
 }
 
-.my-info-content-image {
+.my-info-content-image,
+.friend-info-content-image {
 	display: flex;
 	width: 20rem;
 	height: 20rem;
@@ -1933,7 +1961,8 @@ td {
 	background: #dfdfdf;
 }
 
-.my-info-user-profile-image {
+.my-info-user-profile-image,
+.friend-info-user-profile-image {
 	width: 20rem;
 	height: 20rem;
 	object-fit: cover;
@@ -1967,6 +1996,14 @@ td {
 	padding-left: 4rem;
 }
 
+.friend-info-content-name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-items: center;
+	gap: 1rem;
+}
+
 .my-info-content-id-password-container {
 	display: flex;
 	width: 30rem;
@@ -1989,7 +2026,21 @@ td {
 	align-self: stretch;
 }
 
-.my-info-content-right {
+.friend-info-content-add-button {
+	display: flex;
+	width: 16rem;
+	height: 6rem;
+	padding: 1rem;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	border-radius: 1rem;
+	border: 0.4rem solid #fff;
+}
+
+.my-info-content-right,
+.friend-info-content-right {
 	display: flex;
 	flex-direction: column;
 	width: 40rem;
@@ -2000,7 +2051,8 @@ td {
 	border: 0.2rem solid #fff;
 }
 
-.my-info-stats-container {
+.my-info-stats-container,
+.friend-info-stats-container {
 	display: flex;
 	width: 25.3rem;
 	flex-direction: column;
@@ -2009,7 +2061,8 @@ td {
 	flex-shrink: 0;
 }
 
-.my-info-content-win-lose-container {
+.my-info-content-win-lose-container,
+.friend-info-content-win-lose-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -2019,14 +2072,16 @@ td {
 	flex-wrap: wrap;
 }
 
-.my-info-content-win-rate-container {
+.my-info-content-win-rate-container,
+.friend-info-content-win-rate-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
 	align-self: stretch;
 }
 
-.my-info-content-rating-container {
+.my-info-content-rating-container,
+.friend-info-content-rating-container {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
@@ -2069,6 +2124,11 @@ td {
 	border-radius: 3rem;
 	border: 0.2rem solid #fff;
 	gap: 3.5rem;
+}
+
+.user-search-node-container:hover {
+	background: rgba(255, 255, 255, 0.2);
+	cursor: pointer;
 }
 
 .user-search-node-profile {
@@ -2137,6 +2197,14 @@ td {
 	display: flex;
 	width: 66.3rem;
 	gap: 3rem;
+}
+
+.user-node-button {
+	padding: 0;
+	border: none;
+	width: 20rem;
+	height: 28rem;
+	border-radius: 3rem;
 }
 
 /* MyFriendContent.js */

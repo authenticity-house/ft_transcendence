@@ -10,7 +10,7 @@ class UserNode {
 			<div class="user-search-node-container col-4">
 				<img
 					class="user-search-node-profile"
-					src="${this.data.profileImg}"
+					src="${this.data.profile_url}"
 					alt="profile"
 				/>
 				<span class="display-light28">${this.data.nickname}</span>

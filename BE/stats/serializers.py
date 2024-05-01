@@ -1,7 +1,9 @@
 from rest_framework import serializers
+from rest_framework.fields import IntegerField
 from rest_framework.relations import PrimaryKeyRelatedField
 
 from users.models import User
+from users.serializers import UserProfileSerializer
 from .models import Match
 
 attack_type_mapping = {
@@ -11,28 +13,48 @@ attack_type_mapping = {
 }
 
 
+class MatchListSerializer(serializers.ModelSerializer):
+    player1 = UserProfileSerializer()
+    player2 = UserProfileSerializer()
+    data = serializers.JSONField()
+    winner_id = IntegerField(read_only=True)
+
+    class Meta:
+        model = Match
+        fields = ["player1", "player2", "data", "winner_id"]
+
+
 class MatchSerializer(serializers.ModelSerializer):
-    player1_id = PrimaryKeyRelatedField(queryset=User.objects.all())
-    player2_id = PrimaryKeyRelatedField(queryset=User.objects.all())
+    player1 = PrimaryKeyRelatedField(queryset=User.objects.all())
+    player2 = PrimaryKeyRelatedField(queryset=User.objects.all())
     data = serializers.JSONField()
 
     def create(self, validated_data) -> Match:
-        print(validated_data)
         data = validated_data.get("data")
-        player1 = data.get("player1")
-        player2 = data.get("player2")
+        player1_data = data.get("player1")
+        player2_data = data.get("player2")
 
-        player1_attack_type = attack_type_mapping[player1.get("attack_type", 2)]
-        player2_attack_type = attack_type_mapping[player2.get("attack_type", 2)]
+        player1_attack_type = attack_type_mapping.get(player1_data.get("attack_type", 2), "TYPE2")
+        player2_attack_type = attack_type_mapping.get(player2_data.get("attack_type", 2), "TYPE2")
 
         player1_rating = 2001
         player2_rating = 2002
+
+        player1_score = player1_data.get("score", 0)
+        player2_score = player2_data.get("score", 0)
+
+        winner_id = (
+            validated_data["player1"].pk
+            if player1_score > player2_score
+            else validated_data["player2"].pk
+        )
 
         additional_data = {
             "player1_attack_type": player1_attack_type,
             "player2_attack_type": player2_attack_type,
             "player1_rating": player1_rating,
             "player2_rating": player2_rating,
+            "winner_id": winner_id,
         }
 
         validated_data.update(**additional_data)
@@ -41,4 +63,4 @@ class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = ["player1_id", "player2_id", "data"]
+        fields = ["player1", "player2", "data"]
