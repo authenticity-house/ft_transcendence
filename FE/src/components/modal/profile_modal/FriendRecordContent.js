@@ -6,12 +6,12 @@ import DuelStatsData from '../../DuelStatsData.js';
 
 const html = String.raw;
 
-class MyRecordContent {
+class FriendRecordContent {
 	template() {
 		return html`
-			<div class="my-record-content-container">
+			<div class="friend-record-content-container">
 				<span class="yellow_neon_10 display-medium48">경기 기록</span>
-				<div class="my-record-container"></div>
+				<div class="friend-record-container"></div>
 			</div>
 		`;
 	}
@@ -45,13 +45,15 @@ class MyRecordContent {
 			);
 		}
 
-		const myRecordContainer = document.querySelector('.my-record-container');
-		myRecordContainer.innerHTML = duelReports;
+		const friendRecordContainer = document.querySelector(
+			'.friend-record-container'
+		);
+		friendRecordContainer.innerHTML = duelReports;
 
 		let i = 0;
 
 		const graphContainers =
-			myRecordContainer.querySelectorAll('.graph-container');
+			friendRecordContainer.querySelectorAll('.graph-container');
 
 		graphContainers.forEach((container) => {
 			const matchData = DuelStatsData.getMountDuelStatsData(content[i].data);
@@ -71,7 +73,7 @@ class MyRecordContent {
 			i += 1;
 		});
 
-		const toggleContainers = myRecordContainer.querySelectorAll(
+		const toggleContainers = friendRecordContainer.querySelectorAll(
 			'.duel-toggle-container'
 		);
 		toggleContainers.forEach((container) => {
@@ -80,8 +82,12 @@ class MyRecordContent {
 	}
 
 	addEventListeners() {
-		const myRecordContainer = document.querySelector('.my-record-container');
-		const toggleButtons = myRecordContainer.querySelectorAll(
+		console.log('addEventListeners');
+		const friendRecordContainer = document.querySelector(
+			'.friend-record-container'
+		);
+		console.log(friendRecordContainer);
+		const toggleButtons = friendRecordContainer.querySelectorAll(
 			'.duel-toggle-button'
 		);
 		toggleButtons.forEach((button) => {
@@ -98,4 +104,4 @@ class MyRecordContent {
 	}
 }
 
-export const myRecordContent = new MyRecordContent();
+export const friendRecordContent = new FriendRecordContent();
