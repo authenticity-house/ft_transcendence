@@ -10,11 +10,13 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
 
         self.session_number = -1
         self.session_group_name = "session"
+
+        self.pk = -1
         self.nickname = None
 
     async def connect(self):
         session_key = self.scope['cookies'].get('sessionid', None)
-        self.nickname = await fetch_nickname(session_key)
+        self.pk, self.nickname = await fetch_nickname(session_key)
 
         # 세션 값이 없는 경우 연결 거부
         if not session_key or not self.nickname:
