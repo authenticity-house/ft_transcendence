@@ -18,7 +18,18 @@ class Session:
         if len(self._users) == self._total_user:
             self._manager.set_nickname(self._users)
             msg = self._manager.get_send_data("match_init_setting")
-            await self.__broadcast("match.init.setting", msg)
+            await self.__send_message(*msg)
+
+    async def __send_message(self, subtype, message, data=None, msg_type="game"):
+        msg = {
+            "type": msg_type,
+            "subtype": subtype,
+            "mode": "online",
+            "message": message,
+            "data": data or {},
+        }
+
+        await self.__broadcast("match.init.setting", msg)
 
     async def __broadcast(self, msg_type, msg_data):
         channel_layer = get_channel_layer()
