@@ -5,28 +5,28 @@ import {
 	showModalWithContent
 } from '../../components/modal/modalUtils.js';
 import apiEndpoints from '../../constants/apiConfig.js';
+import {
+	registrationMessages,
+	registrationError
+} from '../../constants/constants.js';
 
 async function handleResponse(response) {
 	const data = await response.json();
-
 	const { status, ok } = response;
 
-	const defaultMessage =
-		'오류가 발생하여 회원가입에 실패했습니다.<br />다시 시도해주세요.';
-	let message = defaultMessage;
+	let message = registrationMessages.DEFAULT_ERROR;
 
-	if ((!ok && status === 400) || status === 403) {
+	if (!ok && (status === 400 || status === 403)) {
 		if (
 			data.non_field_errors &&
-			data.non_field_errors[0] ===
-				'The password is too similar to the username.'
+			data.non_field_errors[0] === registrationError.PASSWORD_SIMILAR_ERROR
 		) {
-			message = '비밀번호가 아이디와 유사합니다.<br />다시 작성해주세요.';
+			message = registrationMessages.PASSWORD_SIMILAR_TO_USERNAME;
 		} else if (
 			data.password1 &&
-			data.password1[0] === 'This password is too common.'
+			data.password1[0] === registrationError.PASSWORD_TOO_COMMON_ERROR
 		) {
-			message = '비밀번호가 너무 일반적입니다.<br />다시 작성해주세요.';
+			message = registrationMessages.PASSWORD_TOO_COMMON;
 		}
 	}
 
