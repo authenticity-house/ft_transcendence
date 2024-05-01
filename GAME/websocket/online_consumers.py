@@ -37,9 +37,12 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         msg_subtype = content.get("subtype", "")
         msg_data = content.get("data", "")
 
-        # disconnect
+        if msg_type == "disconnect":
+            await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
+            await self.session.leave_session()
+            await self.close(code=1000)
 
-        if msg_type == "game" and msg_subtype == "key_down":
+        elif msg_type == "game" and msg_subtype == "key_down":
             key_set = msg_data["key_set"]
             self.session.set_match_key_set(self.nickname, key_set)
 
@@ -62,6 +65,11 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
 
     async def send_data(self, event):
         await self.send_json(event["data"])
+
+    async def player_leave(self, event):
+        OnlineSessionManager.delete_session(self.session_number)
+        await self.send_json(event["data"])
+        await self.close(code=1000)
 
     async def broadcast(self, msg_type, msg_body):
         await self.channel_layer.group_send(

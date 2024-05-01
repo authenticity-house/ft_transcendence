@@ -29,6 +29,10 @@ class OnlineSessionManager:
         return session
 
     @classmethod
+    def delete_session(cls, session_number):
+        cls._sessions.pop(session_number, None)
+
+    @classmethod
     def __next_room_number(cls) -> int:
         cls._last_session_number += 1
         return cls._last_session_number
