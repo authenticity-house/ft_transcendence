@@ -30,7 +30,7 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         await self.send_message("connection_established", "You are now connected!")
 
-        self.session = await OnlineSessionManager.join_session(self.session_number, self.nickname)
+        self.session = await OnlineSessionManager.join_session(self.session_number, self.nickname, self.pk)
 
     async def receive_json(self, content, **kwargs):
         msg_type = content.get("type", "invalid")
