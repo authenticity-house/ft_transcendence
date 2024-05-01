@@ -27,11 +27,10 @@ export const Winner = {
 Object.freeze(Winner);
 
 export const registrationMessages = {
-	DEFAULT_ERROR:
-		'오류가 발생하여 회원가입에 실패했습니다.<br />다시 시도해주세요.',
+	DEFAULT_ERROR: '회원가입에 실패했습니다.<br />다시 시도해주세요.',
 	PASSWORD_SIMILAR_TO_USERNAME:
 		'비밀번호가 아이디와 유사합니다.<br />다시 작성해주세요.',
-	PASSWORD_TOO_COMMON: '비밀번호가 너무 일반적입니다.<br />다시 작성해주세요.'
+	PASSWORD_TOO_COMMON: '비밀번호가 일반적입니다.<br />다시 작성해주세요.'
 };
 
 export const registrationError = {

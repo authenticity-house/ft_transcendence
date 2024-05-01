@@ -18,7 +18,7 @@ export function registerFailModal() {
 							id="register-fail-modal"
 							style="line-height:180%; text-align: center; margin: 2rem;"
 						>
-							오류가 발생하여 회원가입에 실패했습니다.<br />다시 시도해주세요.
+							회원가입에 실패했습니다.<br />다시 시도해주세요.
 						</div>
 						<div class="horizontal-button-container" style="gap:4rem">
 							<button
