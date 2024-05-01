@@ -4,7 +4,7 @@ import GamePage from './GamePage.js';
 
 import { GameMessages as msg } from './Gamemessages.js';
 
-import { MessageType, SubType, Winner } from '../constants/constants.js';
+import { MessageType, SubType } from '../constants/constants.js';
 
 export class MessageManager {
 	constructor(websocket) {
@@ -96,11 +96,11 @@ export class MessageManager {
 			);
 			this.gamepage.camera.lookAt(0, 0, 0);
 
-			this.toggleFinalAnimation();
+			this.toggleAnimation();
 		}
 	}
 
-	toggleFinalAnimation() {
+	toggleAnimation() {
 		const readyText = this.gamepage.scene.getObjectByName('readyText');
 
 		if (readyText) {
@@ -111,16 +111,6 @@ export class MessageManager {
 		} else {
 			console.error('Ready text not found');
 		}
-	}
-	// -----------------------------------------------------------------------------
-
-	checkWinner() {
-		const finalScore = this.websocket.initial.total_score;
-
-		if (Number(this.player1Score.textContent) === finalScore)
-			this.winner = Winner.PLAYER_1;
-		if (Number(this.player2Score.textContent) === finalScore)
-			this.winner = Winner.PLAYER_2;
 	}
 
 	// -----------------------------------------------------------------------------
@@ -142,13 +132,13 @@ export class MessageManager {
 		}
 	}
 
-	displayWinner() {
-		if (this.winner === 0) return;
-		const winnerPosition = this.winner === Winner.PLAYER_1 ? -4 : 4;
-		const targetPaddle =
-			this.winner === Winner.PLAYER_1
-				? this.gamepage.paddleMesh1
-				: this.gamepage.paddleMesh2;
+	displayWinner(score) {
+		console.log('점수', score, score.player1, score.player2);
+		const winner = score.player1 > score.player2;
+		const winnerPosition = winner ? -4 : 4;
+		const targetPaddle = winner
+			? this.gamepage.paddleMesh1
+			: this.gamepage.paddleMesh2;
 
 		this.gamepage.camera.position.x = winnerPosition;
 		this.gamepage.camera.lookAt(targetPaddle.position);
@@ -158,12 +148,6 @@ export class MessageManager {
 	// -----------------------------------------------------------------------------
 
 	renderThreeJs(data) {
-		this.frame += 1;
-
-		this.updateCameraPosition();
-		this.checkWinner();
-
-		// object destructuring
 		const { ball, paddle1, paddle2, score } = data;
 
 		this.gamepage.ballMesh.position.x = ball.x;
@@ -175,7 +159,6 @@ export class MessageManager {
 		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
 
 		this.updateScores(score);
-		this.displayWinner();
 
 		this.gamepage.renderer.render(this.gamepage.scene, this.gamepage.camera);
 	}
@@ -229,6 +212,7 @@ export class MessageManager {
 				// 게임 초기 정보 전송
 				this.sendGameSessionInfo(this.websocket.initial);
 				break;
+
 			case SubType.TOURNAMENT_TREE:
 				// 대진표 출력 및 게임 매치 초기화 요청
 				changeUrlData(
@@ -240,6 +224,7 @@ export class MessageManager {
 					false
 				);
 				break;
+
 			case SubType.MATCH_INIT_SETTING:
 				// 매치 초기화 정보 저장
 				this.setGameSetting(message.data);
@@ -253,10 +238,17 @@ export class MessageManager {
 				this.resetGameData(); // score 정보 초기화
 				this.sendGameStartRequest(); // 게임 시작 요청
 				break;
+
 			case SubType.MATCH_RUN:
 				// 수신한 매치 데이터로 rendering
+				if (message.message === 'ready animation') {
+					this.frame += 1;
+					this.updateCameraPosition();
+				} else if (message.message === 'winner animation')
+					this.displayWinner(message.data.score);
 				this.renderThreeJs(message.data);
 				break;
+
 			case SubType.MATCH_END:
 				console.log('match_end');
 				removeModalBackdrop(); // modal-fade 비활성화
@@ -283,9 +275,11 @@ export class MessageManager {
 					);
 
 				break;
+
 			case SubType.ERROR:
 				console.log(`server: ${message.message}`);
 				break;
+
 			default:
 				console.log('default');
 				break;

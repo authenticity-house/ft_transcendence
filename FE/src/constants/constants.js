@@ -20,12 +20,6 @@ export const SubType = {
 };
 Object.freeze(SubType);
 
-export const Winner = {
-	PLAYER_1: 1,
-	PLAYER_2: 2
-};
-Object.freeze(Winner);
-
 export const registrationMessages = {
 	DEFAULT_ERROR: '회원가입에 실패했습니다.<br />다시 시도해주세요.',
 	PASSWORD_SIMILAR_TO_USERNAME:
