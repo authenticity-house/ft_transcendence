@@ -8,13 +8,25 @@ class MyInfoContent {
 					<div class="my-info-content-image-name-container">
 						<div class="my-info-content-image-container">
 							<div class="my-info-content-image"></div>
-							<div class="my-info-content-image-edit">
+							<button class="my-info-content-image-edit">
 								<img class="edit-icon" src="image/edit.svg" alt="edit" />
-							</div>
+							</button>
 						</div>
+						<!-- 유저 프로필 이미지 수정  -->
+						<form
+							id="image-upload-form"
+							enctype="multipart/form-data"
+							style="display:none;"
+						>
+							<input type="file" id="modify-profile-image" accept="image/*" />
+							<input type="submit" value="Upload Image" />
+						</form>
+
 						<div class="my-info-content-name">
 							<span class="display-light28">이름</span>
-							<img class="edit-icon" src="image/edit.svg" alt="edit" />
+							<button class="my-info-content-name-edit">
+								<img class="edit-icon" src="image/edit.svg" alt="edit" />
+							</button>
 						</div>
 					</div>
 					<div class="my-info-content-id-password-container">
@@ -94,6 +106,51 @@ class MyInfoContent {
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
 		}
+	}
+
+	addEventListener() {
+		// 프로필 변경 이미지 클릭
+		const modifyProfilButton = document.querySelector(
+			'.my-info-content-image-edit'
+		);
+		modifyProfilButton.addEventListener('click', () =>
+			document.getElementById('modify-profile-image').click()
+		);
+		// 유저 프로필 변경 (서버 X)
+		document
+			.getElementById('modify-profile-image')
+			.addEventListener('change', (e) => {
+				const file = e.target.files[0];
+				const imageUrl = URL.createObjectURL(file);
+				document.querySelector('.my-info-user-profile-image').src = imageUrl;
+			});
+
+		/*  // 유저 프로필 이미지 변경  
+			document.getElementById('image-upload-form').onsubmit = (e) => {
+			e.preventDefault();
+			const formData = new FormData(this);
+			fetch('/upload-image', {
+				method: 'POST',
+				body: formData
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log('Success:', data);
+					document.querySelector('.my-info-user-profile-image').src =
+						data.imageUrl;
+				})
+				.catch((error) => {
+					console.error('Error:', error);
+				});
+			};
+		*/
+		// 닉네임 변경
+		// const modifyNicknameButton = document.querySelector(
+		// 	'.my-info-content-name-edit'
+		// );
+		// modifyNicknameButton.addEventListener('click', () => {
+		// 	console.log('hi');
+		// });
 	}
 }
 

@@ -133,7 +133,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 		.info-modal-button
 	):not(.user-profile-button):not(.room-list-refresh-button):not(
 		.single-room-button
-	) {
+	):not(.my-info-content-image-edit) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -1973,6 +1973,14 @@ td {
 	border-radius: 100rem;
 	border: 0.1rem solid #fff;
 	background: var(--yellow, #ffd164);
+}
+
+.my-info-content-image-edit:hover {
+	background-color: #ffd164;
+	box-shadow:
+		0rem 0rem 1.5rem 0rem #ff5d84,
+		0rem 0rem 1.5rem 0rem #ff5d84;
+	cursor: pointer;
 }
 
 .edit-icon {
