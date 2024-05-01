@@ -424,9 +424,20 @@ class UpdateUserView(RetrieveUpdateAPIView):
     def patch(self, request, *args, **kwargs):
         serializer_data = request.data
 
+        if not serializer_data:
+            return Response(
+                {"detail": "Please enter the information you want to change."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
 
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            detail = serializer.save()
+            return Response(detail, status=status.HTTP_200_OK)
+        except Exception:  # pylint: disable=broad-exception-caught
+            return Response(
+                {"detail": "The nickname is already in use."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
