@@ -265,8 +265,6 @@ export class MessageManager {
 				});
 				changeUrlInstance('game', this.gamepage);
 
-				this.websocket.setupInputMapping(); // 플레이어 위치 설정
-
 				this.resetGameData(); // score 정보 초기화
 				this.sendGameStartRequest(); // 게임 시작 요청
 
