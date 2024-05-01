@@ -202,67 +202,11 @@ export function getContent(id, userPk) {
 		myRecordContent.addEventListeners();
 	} else if (id === 'user-search') {
 		// user-search 탭을 클릭했을 때 유저 검색을 렌더링
-		// userSearchContent.addEventListeners();
 	} else if (id === 'my-friend') {
 		// my-friend 탭을 클릭했을 때 친구 목록을 렌더링
-		// mock-data
-		const data = {
-			friends: [
-				{
-					profile_url: 'image/default-profile.png',
-					nickname: 'jeongrol'
-				},
-				{
-					profile_url: 'image/default-profile.png',
-					nickname: 'wonyang'
-				},
-				{
-					profile_url: 'image/default-profile.png',
-					nickname: 'jihylim'
-				},
-				{
-					profile_url: 'image/default-profile.png',
-					nickname: 'jeongmin'
-				},
-				{
-					profile_url: 'image/default-profile.png',
-					nickname: 'joyoo'
-				}
-			],
-			friendRequestsSent: [
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jeongrol',
-				'wonyang',
-				'jihylim'
-			],
-			friendRequestsReceived: ['jeongmin', 'joyoo']
-		};
-
-		myFriendContent.mount(data);
-		myFriendContent.addEventListeners();
+		myFriendContent.fetchFriends();
+		myFriendContent.fetchFriendRequestsSent();
+		myFriendContent.fetchFriendRequestsReceived();
 	} else if (id === 'stats') {
 		const data = {
 			ratingChange: [

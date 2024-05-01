@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from django.db import transaction
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -103,6 +104,7 @@ class ConfirmEmailView(APIView):
 
 
 class CustomRegisterView(RegisterView):
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -359,6 +361,7 @@ class UserProfileView(APIView):
 
 
 class OAuthView(APIView):
+    @transaction.atomic
     def get(self, request):
         query_params = request.query_params
         code = query_params.get("code")
