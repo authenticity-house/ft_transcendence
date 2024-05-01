@@ -104,7 +104,6 @@ export function getContent(id, userPk) {
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
-						console.log(data);
 						friendRecordContent.mount(data);
 						friendRecordContent.addEventListeners();
 					});

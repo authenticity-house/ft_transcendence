@@ -82,11 +82,9 @@ class FriendRecordContent {
 	}
 
 	addEventListeners() {
-		console.log('addEventListeners');
 		const friendRecordContainer = document.querySelector(
 			'.friend-record-container'
 		);
-		console.log(friendRecordContainer);
 		const toggleButtons = friendRecordContainer.querySelectorAll(
 			'.duel-toggle-button'
 		);
