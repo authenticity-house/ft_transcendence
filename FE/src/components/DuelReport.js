@@ -1,11 +1,13 @@
 const html = String.raw;
 
-function duelResultElement(data) {
+function duelResultElement(data, playerData) {
 	return html`
 		<div class="duel-user-container justify-content-start">
-			<div class="user-image-container"></div>
+			<div class="user-image-container">
+				<img src=${playerData.player1.profile_url} alt="profile" />
+			</div>
 			<div class="user-blank-container"></div>
-			<div class="user-nickname-container">${data.leftPlayer}</div>
+			<div class="user-nickname-container">${playerData.player1.nickname}</div>
 		</div>
 		<div class="duel-score-container pink_neon_10">
 			<div class="duel-score-wrapper">${data.leftScore}</div>
@@ -14,10 +16,12 @@ function duelResultElement(data) {
 		</div>
 		<div class="duel-user-container justify-content-end">
 			<div class="user-nickname-container justify-content-end">
-				${data.rightPlayer}
+				${playerData.player2.nickname}
 			</div>
 			<div class="user-blank-container"></div>
-			<div class="user-image-container"></div>
+			<div class="user-image-container">
+				<img src=${playerData.player2.profile_url} alt="profile" />
+			</div>
 		</div>
 	`;
 }
@@ -56,6 +60,7 @@ function duelCollapseElement(
 }
 
 function duelReportWrapper(
+	playerData,
 	data,
 	matchRallyHtml,
 	specialStatsHtml,
@@ -63,7 +68,7 @@ function duelReportWrapper(
 	scorePositionHtml,
 	unique
 ) {
-	const resultElement = duelResultElement(data);
+	const resultElement = duelResultElement(data, playerData);
 	const dataTimeElement = duelDateTimeElement(data);
 	const collapseElement = duelCollapseElement(
 		matchRallyHtml,

@@ -23,13 +23,18 @@ class MyRecordContent {
 		let duelReports = '';
 
 		for (let i = 0; i < content.length; i += 1) {
-			const resultData = DuelStatsData.getDuelStatsData(content[i]);
+			const playerData = {
+				player1: content[i].player1,
+				player2: content[i].player2
+			};
+			const resultData = DuelStatsData.getDuelStatsData(content[i].data);
 			const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(resultData);
 			const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(resultData);
 			const scoreTrendHtml = DuelGraphStats.getScoreTrendHTML(resultData);
 			const scorePositionHtml = DuelGraphStats.getScorePositionHTML(resultData);
 
 			duelReports += duelReportWrapper(
+				playerData,
 				resultData,
 				matchRallyHtml,
 				specialStatsHtml,
@@ -47,7 +52,7 @@ class MyRecordContent {
 			myRecordContainer.querySelectorAll('.graph-container');
 
 		graphContainers.forEach((container) => {
-			const matchData = DuelStatsData.getMountDuelStatsData(content[i]);
+			const matchData = DuelStatsData.getMountDuelStatsData(content[i].data);
 
 			DuelGraphStats.appendScoresToYAxis(matchData.maxScore, container);
 			DuelGraphStats.appendScoreTrendGraph(
