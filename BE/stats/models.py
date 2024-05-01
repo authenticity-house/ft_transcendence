@@ -50,6 +50,22 @@ class UserStat(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
+    def update_stat(self, match_data: dict):
+        self.rating = match_data.get("rating", self.rating)
+        self.online_play_time += match_data.get("play_time", timedelta(seconds=0))
+        self.max_ball_speed = max(self.max_ball_speed, match_data.get("max_ball_speed", 0))
+        self.max_rally_cnt = max(self.max_rally_cnt, match_data.get("max_rally_cnt", 0))
+
+        is_winner = match_data.get("is_winner", False)
+        if is_winner:
+            self.wins_count += 1
+        else:
+            self.losses_count += 1
+
     def save(self, *args, **kwargs):
+        if "match_data" in kwargs:
+            match_data = kwargs.pop("match_data")
+            self.update_stat(match_data)
+
         self.max_rating = max(self.rating, self.max_rating)
-        super().save(*args, **kwargs)
+        super().save()
