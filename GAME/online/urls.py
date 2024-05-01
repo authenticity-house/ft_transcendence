@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import TestView
+from .views import online_oneonone_view
 
 urlpatterns = [
-    path("", TestView),
+    path("", online_oneonone_view),
 ]
