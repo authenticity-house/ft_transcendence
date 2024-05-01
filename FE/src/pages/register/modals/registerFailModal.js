@@ -14,8 +14,9 @@ export function registerFailModal() {
 				<div class="modal-content modal-content-style head_white_neon_15">
 					<div class="modal-body">
 						<div
-							class="display-light24 modal-content-body-text"
-							style="line-height:180%"
+							class="display-light24"
+							id="register-fail-modal"
+							style="line-height:180%; text-align: center; margin: 2rem;"
 						>
 							오류가 발생하여 회원가입에 실패했습니다.<br />다시 시도해주세요.
 						</div>
