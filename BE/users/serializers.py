@@ -45,10 +45,9 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     old_password = serializers.CharField(write_only=True, required=False)
     password = serializers.CharField(write_only=True, required=False)
 
-
     class Meta:
         model = User
-        fields = ["nickname", "password", "old_password", "profile_url"]
+        fields = ["nickname", "password", "old_password"]
 
     def validate(self, attrs):
         if "password" in attrs:
@@ -64,10 +63,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
     def update(self, instance, validated_data):
-        profile_url = validated_data.get("profile_url", instance.profile_url)
         nickname = validated_data.get("nickname", instance.nickname)
-
-        instance.profile_url = profile_url
         instance.nickname = nickname
 
         if "password" in validated_data:
