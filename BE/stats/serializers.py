@@ -4,7 +4,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 
 from users.models import User
 from users.serializers import UserProfileSerializer
-from .models import Match
+from .models import Match, UserStat
 
 attack_type_mapping = {
     0: "TYPE0",
@@ -64,3 +64,24 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = ["player1", "player2", "data"]
+
+
+class UserStatSummarySerializer(serializers.ModelSerializer):
+    total_count = serializers.SerializerMethodField(method_name="get_total_count")
+    winning_rate = serializers.SerializerMethodField(method_name="get_winning_rate")
+    wins_count = IntegerField(read_only=True)
+    losses_count = IntegerField(read_only=True)
+    rating = IntegerField(read_only=True)
+
+    def get_total_count(self, obj) -> int:
+        return obj.wins_count + obj.losses_count
+
+    def get_winning_rate(self, obj) -> float:
+        if obj.wins_count + obj.losses_count == 0:
+            return 0
+
+        return round(obj.wins_count / (obj.wins_count + obj.losses_count), 2)
+
+    class Meta:
+        model = UserStat
+        fields = ["total_count", "wins_count", "losses_count", "winning_rate", "rating"]
