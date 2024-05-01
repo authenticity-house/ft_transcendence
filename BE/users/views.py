@@ -15,6 +15,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
+from stats.models import UserStat
 from users.models import User, Friendship
 from users.serializers import UserProfileSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
@@ -382,7 +383,9 @@ class OAuthView(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
-            user, _ = get_or_create_user(user_data)
+            user, is_created = get_or_create_user(user_data)
+            if is_created:
+                UserStat.objects.create(user=user)
             perform_login(request, user, email_verification="none")
             return HttpResponseRedirect("/")
 
