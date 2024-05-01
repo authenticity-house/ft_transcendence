@@ -38,3 +38,5 @@ Twisted==24.3.0
 txaio==23.1.1
 typing_extensions==4.10.0
 zope.interface==6.2
+requests==2.31.0
+types-requests==2.31.0
