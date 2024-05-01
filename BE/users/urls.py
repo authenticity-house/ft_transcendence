@@ -43,5 +43,5 @@ urlpatterns = [
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
     path("oauth/", OAuthView.as_view(), name="oauth"),
     path("check-login/", CheckLoginStatusAPIView.as_view(), name="check_login_status"),
-    path("session/", SessionAPIView.as_view(), name="session")
+    path("session/", SessionAPIView.as_view(), name="session"),
 ]

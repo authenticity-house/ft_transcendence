@@ -411,15 +411,17 @@ class CheckLoginStatusAPIView(APIView):
 
 class SessionAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        session_id = request.query_params.get('sessionid')
+        session_id = request.query_params.get("sessionid")
         if not session_id:
             return Response({"error": "Session ID is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             session = Session.objects.get(session_key=session_id)
-            user_id = session.get_decoded().get('_auth_user_id')
+            user_id = session.get_decoded().get("_auth_user_id")
             user = get_user_model().objects.get(id=user_id)
-            user_data = {'pk': user_id, 'nickname': user.nickname}
+            user_data = {"pk": user_id, "nickname": user.nickname}
             return Response(user_data)
         except (Session.DoesNotExist, get_user_model().DoesNotExist):
-            return Response({"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST
+            )
