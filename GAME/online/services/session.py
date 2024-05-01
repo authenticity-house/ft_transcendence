@@ -2,7 +2,6 @@ import asyncio
 
 from channels.layers import get_channel_layer
 
-from online.services import OnlineSessionManager
 from session.session_manager import DuelManager, ASessionManager
 
 
@@ -73,20 +72,13 @@ class Session:
         self._manager.set_match_key_set(mapping_key_set)
 
     async def leave_session(self):
-        if self.game_session:
-            self.game_session.cancel()
+        if self._match_session:
+            self._match_session.cancel()
             try:
-                await self.game_session
+                await self._match_session
             except asyncio.CancelledError:
-                msg = {
-                  "type": "game",
-                  "subtype": "player_leave",
-                  "message": "",
-                  "mode": "online"
-                }
+                msg = {"type": "game", "subtype": "player_leave", "message": "", "mode": "online"}
                 await self.__broadcast("player.leave", msg)
-        else:
-            OnlineSessionManager.delete_session(self._session_number)
 
     async def __send_message(self, subtype, message, data=None, msg_type="game"):
         msg = {
