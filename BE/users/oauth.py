@@ -1,7 +1,13 @@
 import requests
 from requests.exceptions import RequestException
-
-from backend.settings import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+from django.utils.crypto import get_random_string
+from backend.settings import (
+    CLIENT_ID,
+    CLIENT_SECRET,
+    REDIRECT_URI,
+    UNUSABLE_PASSWORD_PREFIX,
+    UNUSABLE_PASSWORD_SUFFIX_LENGTH,
+)
 
 from .models import User
 
@@ -80,6 +86,7 @@ def get_or_create_user(data):
         },
     )
     if created:
-        user.set_unusable_password()
+        password = UNUSABLE_PASSWORD_PREFIX + get_random_string(UNUSABLE_PASSWORD_SUFFIX_LENGTH)
+        user.set_password(password)
         user.save()
     return user, created
