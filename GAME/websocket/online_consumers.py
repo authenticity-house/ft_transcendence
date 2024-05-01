@@ -10,6 +10,7 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
 
         self.session_number = -1
         self.session_group_name = "session"
+        self.session = None
 
         self.pk = -1
         self.nickname = None
@@ -29,7 +30,24 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         await self.send_message("connection_established", "You are now connected!")
 
-        await OnlineSessionManager.join_session(self.session_number, self.nickname)
+        self.session = await OnlineSessionManager.join_session(self.session_number, self.nickname)
+
+    async def receive_json(self, content, **kwargs):
+        msg_type = content.get("type", "invalid")
+        msg_subtype = content.get("subtype", "")
+        msg_data = content.get("data", "")
+
+        # disconnect
+
+        if msg_type == "game" and msg_subtype == "key_down":
+            key_set = msg_data["key_set"]
+            self.session.set_match_key_set(self.nickname, key_set)
+
+        elif msg_type == "game" and msg_subtype == "match_start":
+            # self.game_session = asyncio.create_task(self.run_game_session())
+            pass
+        print(msg_type)
+        print(msg_data)
 
     async def send_message(self, subtype, message, data=None, msg_type="game"):
         msg = {
@@ -42,11 +60,14 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
 
         await self.send_json(msg)
 
-    async def receive_json(self, content, **kwargs):
-        msg_type = content.get("type", "invalid")
-        msg_body = content.get("data", "")
-        print(msg_type)
-        print(msg_body)
-
     async def send_data(self, event):
         await self.send_json(event["data"])
+
+    async def broadcast(self, msg_type, msg_body):
+        await self.channel_layer.group_send(
+            self.session_group_name,
+            {
+                "type": msg_type,
+                "data": msg_body,
+            },
+        )

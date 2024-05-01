@@ -26,6 +26,7 @@ class OnlineSessionManager:
     async def join_session(cls, session_number, nickname):
         session = cls._sessions[session_number]
         await session.add_user(nickname)
+        return session
 
     @classmethod
     def __next_room_number(cls) -> int:
