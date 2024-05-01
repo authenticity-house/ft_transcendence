@@ -48,5 +48,5 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
         print(msg_type)
         print(msg_body)
 
-    async def match_init_setting(self, event):
+    async def send_data(self, event):
         await self.send_json(event["data"])
