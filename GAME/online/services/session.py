@@ -43,7 +43,7 @@ class Session:
             self._player_key_sets = {self._users[0]: set(), self._users[1]: set()}
 
             msg = self._manager.get_send_data("match_init_setting")
-            await self.__broadcast("send.data", msg)
+            await self.__send_message(*msg)
 
             self._match_session = asyncio.create_task(self.__run_game_session())
 
