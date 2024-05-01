@@ -16,7 +16,7 @@ async function handleResponse(response) {
 
 	let message = registrationMessages.DEFAULT_ERROR;
 
-	if (!ok && (status === 400 || status === 403)) {
+	if (!ok && status === 400) {
 		if (
 			data.non_field_errors &&
 			data.non_field_errors[0] === registrationError.PASSWORD_SIMILAR_ERROR
