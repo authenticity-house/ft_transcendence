@@ -21,7 +21,8 @@ def TestView(request):
         session_number = OnlineSessionManager.add_session(info)
 
         return JsonResponse(
-            {"detail": "Data processed successfully", "url": f"/online/oneonone/{session_number}/"}, status=200
+            {"detail": "Data processed successfully", "url": f"/online/oneonone/{session_number}/"},
+            status=200,
         )
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)

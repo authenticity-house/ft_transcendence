@@ -32,6 +32,7 @@ class OnlineSessionManager:
         cls._last_session_number += 1
         return cls._last_session_number
 
+
 """
 
     @classmethod
