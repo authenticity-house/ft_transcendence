@@ -212,19 +212,29 @@ export class MessageManager {
 	handleGameTypeMessage(message) {
 		switch (message.subtype) {
 			case SubType.CONNECTION_ESTABLISHED:
-				if (message.mode === 'online') {
-					showModalWithContent(
-						'loadingModal',
-						'loding-modal-text',
-						'다른 유저를 기다리는 중입니다.'
-					);
-					break;
-				}
+				//if (message.mode === 'online') {
+				//	showModalWithContent(
+				//		'loadingModal',
+				//		'loding-modal-text',
+				//		'다른 유저를 기다리는 중입니다.'
+				//	);
+				//	break;
+				//}
 				// 게임 초기 정보 전송
 				this.sendGameSessionInfo(this.websocket.initial);
 				break;
 
 			case SubType.TOURNAMENT_TREE:
+				if (message.mode === 'online') {
+					hideModal('loadingModal');
+					changeUrlData(
+						'tournament',
+						{
+							...message.data
+						},
+						false
+					);
+				}
 				// 대진표 출력 및 게임 매치 초기화 요청
 				changeUrlData(
 					'tournament',
@@ -237,7 +247,7 @@ export class MessageManager {
 				break;
 
 			case SubType.MATCH_INIT_SETTING:
-				hideModal('loadingModal');
+				if (message.data.battle_mode === 1) hideModal('loadingModal');
 				// 매치 초기화 정보 저장
 				this.setGameSetting(message.data);
 				// 게임 페이지 생성 및 실행
