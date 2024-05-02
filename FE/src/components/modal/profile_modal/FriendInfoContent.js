@@ -47,7 +47,6 @@ class FriendInfoContent {
 			'.friend-info-content-name'
 		);
 
-		console.log('data: ', data);
 		if (data.profile_url !== '/profile/default.png') {
 			friendInfoContentImage.innerHTML = `
 				<img
@@ -101,13 +100,23 @@ class FriendInfoContent {
 					friend_pk: data.pk
 				})
 			})
+				.then((res) => res.json())
 				.then((res) => {
-					console.log(res);
-					return res.json();
+					if (res.detail === 'success') {
+						alert('친구 추가 요청을 보냈습니다.');
+					} else if (res.code === 'FRIEND_ERROR_0') {
+						alert('자기 자신을 친구로 추가할 수 없습니다.');
+					} else if (res.code === 'FRIEND_ERROR_1') {
+						alert('이미 친구인 사용자입니다.');
+					} else if (res.code === 'FRIEND_ERROR_2') {
+						alert('이미 친구 요청을 보낸 사용자입니다.');
+					} else if (res.code === 'PARSE_ERROR') {
+						alert('잘못된 요청입니다.');
+					} else {
+						alert('친구 추가 요청을 보내는데 실패했습니다.');
+					}
 				})
-				.then((res) => {
-					console.log(res);
-				});
+				.catch((err) => console.log(err));
 		});
 	}
 }

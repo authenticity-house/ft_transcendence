@@ -20,7 +20,6 @@ import { registerDupModal } from './modals/registerDupModal.js';
 import { registerModal } from './modals/registerModal.js';
 import { registerLoadingModal } from './modals/registerLoadingModal.js';
 import { registerFailModal } from './modals/registerFailModal.js';
-
 // -----------------------------------------------------------------------------
 const html = String.raw;
 
