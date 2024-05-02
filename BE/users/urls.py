@@ -1,4 +1,7 @@
+from django.conf.urls.static import static
 from django.urls import path, include, re_path
+
+from backend.settings import MEDIA_URL, MEDIA_ROOT
 from .views import (
     ConfirmEmailView,
     CustomRegisterView,
@@ -14,8 +17,8 @@ from .views import (
     ReceivedFriendRequestDetailAPIView,
     SentFriendRequestDetailAPIView,
     UpdateUserView,
+    FileUploadAPIView,
 )
-
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
@@ -47,4 +50,6 @@ urlpatterns = [
     path("check-login/", CheckLoginStatusAPIView.as_view(), name="check_login_status"),
     path("update/", UpdateUserView.as_view(), name="update_user_profile"),
     path("session/", SessionAPIView.as_view(), name="session"),
+    path("upload-image/", FileUploadAPIView.as_view(), name="upload-image"),
 ]
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

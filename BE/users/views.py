@@ -21,7 +21,7 @@ from dj_rest_auth.registration.views import RegisterView
 
 from stats.models import UserStat
 from users.models import User, Friendship
-from users.serializers import UserProfileSerializer, UpdateUserSerializer
+from users.serializers import UserProfileSerializer, UpdateUserSerializer, ImageUploadSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
@@ -416,6 +416,7 @@ class CheckLoginStatusAPIView(APIView):
             }
         )
 
+
 class UpdateUserView(RetrieveUpdateAPIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -447,6 +448,7 @@ class UpdateUserView(RetrieveUpdateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+
 class SessionAPIView(APIView):
     def get(self, request, *args, **kwargs):
         session_id = request.query_params.get("sessionid")
@@ -463,3 +465,22 @@ class SessionAPIView(APIView):
             return Response(
                 {"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class FileUploadAPIView(APIView):
+    serializer_class = ImageUploadSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            # you can access the file like this from serializer
+            image = serializer.validated_data["image"]
+            # user_serializer = self.serializer_class(request.user, data=image, partial=True)
+            # user_serializer.is_valid(raise_exception=True)
+            # user_serializer.save()
+            #
+            # print(image)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

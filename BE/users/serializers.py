@@ -3,7 +3,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 
 from backend.settings import SERVER_IP, SERVER_PORT
 
-from .models import User
+from .models import User, UploadedImage
 
 
 def transform_profile_url(profile_url):
@@ -106,3 +106,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return detail
+
+
+class ImageUploadSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = UploadedImage
+        fields = ("image", "uploaded_on")
