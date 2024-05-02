@@ -150,26 +150,34 @@ class TournamentSession:
         msg = self._manager.get_send_data("tournament_tree")
         await self.__send_message(*msg)
 
-        await asyncio.sleep(3)
+        while True:
+            await asyncio.sleep(3)  # 대진표 출력 후 3초간 대기
 
-        msg = self._manager.get_send_data("match_init_setting")
-        await self.__send_message(*msg)
+            msg = self._manager.get_send_data("match_init_setting")
+            await self.__send_message(*msg)
 
-        """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
-        sm: ASessionManager = self._manager
+            """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
+            sm: ASessionManager = self._manager
 
-        # 매치 프레임 전송
-        for message in sm.get_match_frame():
-            await self.__send_message(*message)
-            await asyncio.sleep(1 / 60)
+            # 매치 프레임 전송
+            for message in sm.get_match_frame():
+                await self.__send_message(*message)
+                await asyncio.sleep(1 / 60)
 
-        # 매치 통계 전송
-        send_msg = sm.get_send_data("match_end")
+            # 매치 통계 전송
+            send_msg = sm.get_send_data("match_end")
 
-        msg = {"player1": self._pks[0], "player2": self._pks[1], "data": send_msg[2]}
-        await send_match_result(msg)  # 백엔드 서버로 매치 결과 전송
+            msg = {"player1": self._pks[0], "player2": self._pks[1], "data": send_msg[2]}
+            await send_match_result(msg)  # 백엔드 서버로 매치 결과 전송
 
-        await self.__send_message(*send_msg)
+            await self.__send_message(*send_msg)
+
+            await asyncio.sleep(3)  # 매치 결과 출력 후 3초간 대기
+
+            msg = self._manager.get_send_data("next_match")
+            await self.__send_message(*msg)
+            if msg[-1] == "game_over":
+                break
 
     def set_match_key_set(self, nickname, key_set):
         if nickname not in self._users:
