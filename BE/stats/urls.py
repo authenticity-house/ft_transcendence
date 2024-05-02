@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MatchAPIView, MatchListAPIView, UserStatSummaryAPIView
+from .views import MatchAPIView, MatchListAPIView, UserStatSummaryAPIView, UserStatAPIView
 
 urlpatterns = [
     path("match/list/<int:user_pk>/", MatchListAPIView.as_view(), name="another_user_match_list"),
@@ -11,4 +11,5 @@ urlpatterns = [
         name="another_user_game_stat_summary",
     ),
     path("summary/", UserStatSummaryAPIView.as_view(), name="my_game_stat_summary"),
+    path("", UserStatAPIView.as_view(), name="my_game_stat"),
 ]

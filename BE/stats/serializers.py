@@ -134,3 +134,54 @@ class UserStatSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStat
         fields = ["total_count", "wins_count", "losses_count", "winning_rate", "rating"]
+
+
+class PlayTimeField(serializers.DurationField):
+    def to_representation(self, value):
+        duration_string = super().to_representation(value)
+        duration_string = duration_string.replace(" ", ":")
+        components = list(map(int, duration_string.split(":")))
+
+        hours, minutes, seconds = components[-3:]
+        if len(components) == 4:
+            hours += 24 * components[0]
+
+        formatted_duration = self._format_duration(hours, minutes, seconds)
+        return formatted_duration
+
+    def _format_duration(self, hours, minutes, seconds):
+        duration_parts = []
+
+        if hours:
+            duration_parts.append(f"{hours}h")
+        if minutes:
+            duration_parts.append(f"{minutes}m")
+        if seconds:
+            duration_parts.append(f"{seconds}s")
+
+        return " ".join(duration_parts)
+
+
+class UserStatSerializer(UserStatSummarySerializer):
+    nickname = serializers.SerializerMethodField(method_name="get_nickname")
+    local_play_time = PlayTimeField(read_only=True)
+    online_play_time = PlayTimeField(read_only=True)
+    max_rating = serializers.IntegerField(read_only=True)
+    max_ball_speed = serializers.FloatField(read_only=True)
+    max_rally_cnt = serializers.IntegerField(read_only=True)
+
+    def get_user_pk(self, obj) -> int:
+        return obj.user.pk
+
+    def get_nickname(self, obj) -> str:
+        return obj.user.nickname
+
+    class Meta(UserStatSummarySerializer.Meta):
+        fields = [
+            "nickname",
+            "local_play_time",
+            "online_play_time",
+            "max_rating",
+            "max_ball_speed",
+            "max_rally_cnt",
+        ] + UserStatSummarySerializer.Meta.fields
