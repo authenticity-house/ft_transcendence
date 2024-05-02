@@ -13,7 +13,9 @@ from .views import (
     ReceivedFriendRequestsAPIView,
     ReceivedFriendRequestDetailAPIView,
     SentFriendRequestDetailAPIView,
+    UpdateUserView,
 )
+
 
 urlpatterns = [
     path("", include("dj_rest_auth.urls")),
@@ -43,5 +45,6 @@ urlpatterns = [
     path("detail/<int:user_pk>/", UserProfileView.as_view(), name="another_user_profile"),
     path("oauth/", OAuthView.as_view(), name="oauth"),
     path("check-login/", CheckLoginStatusAPIView.as_view(), name="check_login_status"),
+    path("update/", UpdateUserView.as_view(), name="update_user_profile"),
     path("session/", SessionAPIView.as_view(), name="session")
 ]

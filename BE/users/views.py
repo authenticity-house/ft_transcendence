@@ -8,6 +8,7 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import NotFound, ParseError, APIException
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -20,7 +21,7 @@ from dj_rest_auth.registration.views import RegisterView
 
 from stats.models import UserStat
 from users.models import User, Friendship
-from users.serializers import UserProfileSerializer
+from users.serializers import UserProfileSerializer, UpdateUserSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
@@ -415,6 +416,36 @@ class CheckLoginStatusAPIView(APIView):
             }
         )
 
+class UpdateUserView(RetrieveUpdateAPIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UpdateUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        serializer_data = request.data
+
+        if not serializer_data:
+            return Response(
+                {"detail": "Please enter the information you want to change."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        try:
+            detail = serializer.save()
+            return Response(detail, status=status.HTTP_200_OK)
+        except Exception:  # pylint: disable=broad-exception-caught
+            return Response(
+                {"detail": "The nickname is already in use."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 class SessionAPIView(APIView):
     def get(self, request, *args, **kwargs):
