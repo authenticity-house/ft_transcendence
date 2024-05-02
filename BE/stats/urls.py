@@ -1,10 +1,17 @@
 from django.urls import path
-from .views import MatchAPIView, MatchListAPIView, UserStatSummaryAPIView, UserStatAPIView
+from .views import (
+    MatchAPIView,
+    LocalMatchAPIView,
+    MatchListAPIView,
+    UserStatSummaryAPIView,
+    UserStatAPIView,
+)
 
 urlpatterns = [
     path("match/list/<int:user_pk>/", MatchListAPIView.as_view(), name="another_user_match_list"),
     path("match/list/", MatchListAPIView.as_view(), name="my_match_list"),
-    path("match/online/", MatchAPIView.as_view(), name="match"),
+    path("match/online/", MatchAPIView.as_view(), name="online_match_data"),
+    path("match/local/", LocalMatchAPIView.as_view(), name="local_match_data"),
     path(
         "summary/<int:user_pk>/",
         UserStatSummaryAPIView.as_view(),

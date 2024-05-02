@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
@@ -11,24 +9,13 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from users.models import User
 from users.serializers import UserProfileSerializer
 from .models import Match, UserStat
+from .time_utils import parse_timedelta
 
 attack_type_mapping: dict = {
     0: "TYPE0",
     1: "TYPE1",
     2: "TYPE2",
 }
-
-
-def parse_timedelta(time_str):
-    parts = time_str.split(":")
-    if len(parts) == 3:
-        hours, minutes, seconds = map(int, parts)
-        return timedelta(hours=hours, minutes=minutes, seconds=seconds)
-    if len(parts) == 2:
-        hours, minutes = map(int, parts)
-        return timedelta(hours=hours, minutes=minutes)
-
-    return timedelta(seconds=0)
 
 
 class MatchListSerializer(serializers.ModelSerializer):

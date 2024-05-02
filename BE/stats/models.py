@@ -66,6 +66,9 @@ class UserStat(models.Model):
         if "online_match_data" in kwargs:
             match_data = kwargs.pop("online_match_data")
             self.online_update_stat(match_data)
+        elif "local_match_data" in kwargs:
+            match_data = kwargs.pop("local_match_data")
+            self.local_play_time += match_data.get("play_time", timedelta(seconds=0))
 
         self.max_rating = max(self.rating, self.max_rating)
         super().save()
