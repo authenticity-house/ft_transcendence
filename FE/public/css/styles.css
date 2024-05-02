@@ -1993,6 +1993,7 @@ td {
 .edit-icon {
 	width: 3rem;
 	height: 3rem;
+	cursor: pointer;
 }
 
 .my-info-content-name {
@@ -2002,6 +2003,12 @@ td {
 	align-items: center;
 	gap: 1rem;
 	padding-left: 4rem;
+}
+
+.my-info-content-name-modify-input {
+	width: 20rem;
+	height: 3rem;
+	display: none;
 }
 
 .friend-info-content-name {

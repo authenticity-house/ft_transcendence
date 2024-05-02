@@ -24,9 +24,7 @@ class MyInfoContent {
 
 						<div class="my-info-content-name">
 							<span class="display-light28">이름</span>
-							<button class="my-info-content-name-edit">
-								<img class="edit-icon" src="image/edit.svg" alt="edit" />
-							</button>
+							<img class="edit-icon" src="image/edit.svg" alt="edit" />
 						</div>
 					</div>
 					<div class="my-info-content-id-password-container">
@@ -82,6 +80,8 @@ class MyInfoContent {
 
 		myInfoContentName.innerHTML = `
 			<span class="display-light28">${data.nickname}</span>
+			<input type="text" class="display-light20 my-info-content-name-modify-input"
+				placeholder="새로운 닉네임" maxlength="12" />
 			<img class="edit-icon" src="image/edit.svg" alt="edit" />
 		`;
 
@@ -125,12 +125,12 @@ class MyInfoContent {
 				document.querySelector('.my-info-user-profile-image').src = imageUrl;
 			});
 
-		/*  // 유저 프로필 이미지 변경  
+		/*  // 유저 프로필 이미지 변경 (서버 연결)
 			document.getElementById('image-upload-form').onsubmit = (e) => {
 			e.preventDefault();
 			const formData = new FormData(this);
-			fetch('/upload-image', {
-				method: 'POST',
+			fetch('/users/update/', {
+				method: 'PATCH',
 				body: formData
 			})
 				.then((response) => response.json())
@@ -144,13 +144,29 @@ class MyInfoContent {
 				});
 			};
 		*/
-		// 닉네임 변경
-		// const modifyNicknameButton = document.querySelector(
-		// 	'.my-info-content-name-edit'
-		// );
-		// modifyNicknameButton.addEventListener('click', () => {
-		// 	console.log('hi');
-		// });
+
+		// 닉네임 변경 UI
+		const modifyNickname = document.querySelector('.my-info-content-name');
+		const modifyNicknameButton = modifyNickname.querySelector('img');
+		// 현재 닉네임 : 나중에 newNickname 실패 시, 다시 불러 올때 사용 or newNicknmae과 똑같은지 확인 할때 사용
+		const nickName = modifyNickname.querySelector('span').innerText;
+		modifyNicknameButton.addEventListener('click', () => {
+			if (modifyNicknameButton.classList.contains('modify')) {
+				// 수정하기 (+ 닉네임 vaild 검사 / + 닉네임 수정 요청 코드 추가)
+				const newNickname = modifyNickname.querySelector('input').value;
+				// + 새로운 닉네임 valid 검사 코드 추가 ?
+
+				// + 닉네임 수정 요청 코드 추가 후, res.ok이면
+				modifyNickname.querySelector('span').innerText = newNickname;
+				modifyNickname.querySelector('span').style.display = 'block';
+				modifyNickname.querySelector('input').style.display = 'none';
+				modifyNicknameButton.classList.remove('modify');
+			} else {
+				modifyNickname.querySelector('span').style.display = 'none';
+				modifyNickname.querySelector('input').style.display = 'block';
+				modifyNicknameButton.classList.add('modify');
+			}
+		});
 	}
 }
 
