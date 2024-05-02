@@ -9,6 +9,8 @@ import { RoomWebsocket } from '../roomManager.js';
 import { roomModal } from '../roomModal.js';
 import ModifyGameSetting from './ModifyGameSetting.js';
 
+import { loadingModal } from '../../../register/modals/loadingModal.js';
+
 const html = String.raw;
 
 function checkReadyStates(data) {
@@ -23,6 +25,7 @@ function checkReadyStates(data) {
 	});
 	return readyCount === maxHeadcount - 1;
 }
+
 class WaitingRoomPage {
 	constructor() {
 		this.modifyPage = ModifyGameSetting;
@@ -44,7 +47,7 @@ class WaitingRoomPage {
 				<div class="waiting-room-footer">${this.readyButton.template()}</div>
 				<div class="button-back-in-window">${backButton.template()}</div>
 			</div>
-			${roomModal()}
+			${roomModal()}${loadingModal()}
 		`;
 		return this.page;
 	}
@@ -138,19 +141,16 @@ class WaitingRoomPage {
 	addEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
+			console.log('click');
 			if (!this.isHost) {
 				const newText = !this.readyState ? '대기' : '준비';
 				const newColor = !this.readyState ? 'pink' : 'blue';
 				this.readyState = !this.readyState;
 				this.readyButton.updateTextAndColor(newText, newColor);
 				this.roomWsManager.sendReadyState();
+			} else {
+				this.roomWsManager.sendStartRequest();
 			}
-			// else {
-			//	this.roomWsManager.close();
-			//	// gamewsmanager.unregister();
-			//	const gamewebsocket = new Gamewebsocket(this.msg.room_info);
-			//	gamewsmanager.register(gamewebsocket);
-			// }
 		});
 
 		const backButton = document.querySelector('.button-back-in-window');

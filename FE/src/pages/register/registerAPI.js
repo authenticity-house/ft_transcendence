@@ -36,7 +36,7 @@ async function handleResponse(response) {
 export function registerAPI(formData, reset) {
 	const payload = formDataToJson(formData);
 
-	showModal('registerLoadingModal');
+	showModal('loadingModal');
 
 	fetch(apiEndpoints.REGISTRATION_URL, {
 		method: 'POST',

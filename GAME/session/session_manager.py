@@ -159,6 +159,9 @@ class DuelManager(ASessionManager):
 
         self._nickname = data.get("nickname", ["player1", "player2"])
 
+    def set_nickname(self, nicknames):
+        self._nickname = nicknames
+
     # 소켓에서 전송할 데이터 반환
     def get_send_data(self, subtype: str):
         if subtype == "match_init_setting":

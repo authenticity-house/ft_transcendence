@@ -1,5 +1,9 @@
 import { changeUrlInstance, changeUrlData } from '../index.js';
-import { removeModalBackdrop } from '../components/modal/modalUtils.js';
+import {
+	removeModalBackdrop,
+	showModalWithContent,
+	hideModal
+} from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
 
 import { GameMessages as msg } from './Gamemessages.js';
@@ -208,6 +212,14 @@ export class MessageManager {
 	handleGameTypeMessage(message) {
 		switch (message.subtype) {
 			case SubType.CONNECTION_ESTABLISHED:
+				if (message.mode === 'online') {
+					showModalWithContent(
+						'loadingModal',
+						'loding-modal-text',
+						'다른 유저를 기다리는 중입니다.'
+					);
+					break;
+				}
 				// 게임 초기 정보 전송
 				this.sendGameSessionInfo(this.websocket.initial);
 				break;
@@ -225,6 +237,7 @@ export class MessageManager {
 				break;
 
 			case SubType.MATCH_INIT_SETTING:
+				hideModal('loadingModal');
 				// 매치 초기화 정보 저장
 				this.setGameSetting(message.data);
 				// 게임 페이지 생성 및 실행
@@ -234,11 +247,16 @@ export class MessageManager {
 				});
 				changeUrlInstance('game', this.gamepage);
 
+				this.websocket.setupInputMapping(); // 플레이어 위치 설정
+
 				this.resetGameData(); // score 정보 초기화
 				this.sendGameStartRequest(); // 게임 시작 요청
+
+				// !!! match_run이 오기 전까지 빈 보드판에 로딩
 				break;
 
 			case SubType.MATCH_RUN:
+				// 로딩 중 지우기
 				// 수신한 매치 데이터로 rendering
 				if (message.message === 'ready animation') {
 					this.frame += 1;
