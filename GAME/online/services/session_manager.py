@@ -1,4 +1,4 @@
-from .session import Session
+from .session import Session, TournamentSession
 
 
 class OnlineSessionManager:
@@ -17,7 +17,8 @@ class OnlineSessionManager:
     def add_session(cls, game_info) -> int:
         session_number = cls.__next_room_number()
 
-        session = Session(session_number, game_info)
+        # session = Session(session_number, game_info)
+        session = TournamentSession(session_number, game_info)
         cls._sessions[session_number] = session
 
         return session_number
