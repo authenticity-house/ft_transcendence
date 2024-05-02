@@ -20,11 +20,11 @@ export const SubType = {
 };
 Object.freeze(SubType);
 
-export const Winner = {
-	PLAYER_1: 1,
-	PLAYER_2: 2
+export const GameMessages = {
+	READY: 'ready animation',
+	WIN: 'winner animation'
 };
-Object.freeze(Winner);
+Object.freeze(GameMessages);
 
 export const registrationMessages = {
 	DEFAULT_ERROR: '회원가입에 실패했습니다.<br />다시 시도해주세요.',
