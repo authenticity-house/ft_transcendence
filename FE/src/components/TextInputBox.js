@@ -25,7 +25,7 @@ class TextInputBox {
 						name=${this.name}
 						type=${this.type}
 						class="modify-input-size"
-						required
+						autocomplete="off"
 					/>
 				</div>
 			`;
@@ -36,7 +36,12 @@ class TextInputBox {
 					<div class="text-container">
 						<p class="display-medium20">${this.text}</p>
 					</div>
-					<input name=${this.name} type=${this.type} class="input-size" />
+					<input
+						name=${this.name}
+						type=${this.type}
+						autocomplete="off"
+						class="input-size"
+					/>
 				</div>
 			`;
 		}
@@ -46,7 +51,12 @@ class TextInputBox {
 					<p class="display-medium20">${this.text}</p>
 				</div>
 				<div class="input-button-container">
-					<input name=${this.name} type=${this.type} class="input-size" />
+					<input
+						name=${this.name}
+						type=${this.type}
+						autocomplete="off"
+						class="input-size"
+					/>
 					<button
 						class="input-button head_blue_neon_15"
 						id="check-${this.name}"
