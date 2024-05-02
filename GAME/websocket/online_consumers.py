@@ -86,3 +86,29 @@ class OnlineDuelConsumer(OnlineConsumer):
             pass
         print(msg_type)
         print(msg_data)
+
+
+class OnlineTournamentConsumer(OnlineConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    async def receive_json(self, content, **kwargs):
+        msg_type = content.get("type", "invalid")
+        msg_subtype = content.get("subtype", "")
+        msg_data = content.get("data", "")
+
+        if msg_type == "disconnect":
+            await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
+            await self.session.leave_session()
+            OnlineSessionManager.delete_session(self.session_number)
+            await self.close(code=1000)
+
+        elif msg_type == "game" and msg_subtype == "key_down":
+            key_set = msg_data["key_set"]
+            self.session.set_match_key_set(self.nickname, key_set)
+
+        elif msg_type == "game" and msg_subtype == "match_start":
+            # self.game_session = asyncio.create_task(self.run_game_session())
+            pass
+        print(msg_type)
+        print(msg_data)
