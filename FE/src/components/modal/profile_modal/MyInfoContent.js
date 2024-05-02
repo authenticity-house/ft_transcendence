@@ -219,12 +219,17 @@ class MyInfoContent {
 			modifyPasswordContainer.style.display = 'flex';
 		});
 		// 비밀번호 변경 취소 버튼
-		modifySubmitPasswordButton.addEventListener('click', () => {
+		modifyCancelPasswordButton.addEventListener('click', () => {
+			const inputElementAll = modifyPasswordContainer.querySelectorAll('input');
+			inputElementAll.forEach((input) => {
+				const inputField = input;
+				inputField.value = '';
+			});
 			passwordContainer.style.display = 'flex';
 			modifyPasswordContainer.style.display = 'none';
 		});
 		// + 비밀번호 변경 확인 API 추가 할 곳
-		modifyCancelPasswordButton.addEventListener('click', () => {
+		modifySubmitPasswordButton.addEventListener('click', () => {
 			// 변경이 가능하면, res.ok 해당 코드 실행
 			passwordContainer.style.display = 'flex';
 			modifyPasswordContainer.style.display = 'none';
