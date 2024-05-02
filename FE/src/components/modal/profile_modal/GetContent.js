@@ -47,6 +47,7 @@ export function getContent(id, userPk) {
 					});
 				} else if (res.status === 403) {
 					alert('로그인이 필요합니다.');
+					window.location.reload();
 				} else if (res.status === 404) {
 					myInfoContent.mountStats({
 						total_count: 0,
@@ -138,6 +139,7 @@ export function getContent(id, userPk) {
 					});
 				} else if (res.status === 403) {
 					alert('로그인이 필요합니다.');
+					window.location.reload();
 				} else if (res.status === 404) {
 					friendInfoContent.mountStats({
 						total_count: 0,
