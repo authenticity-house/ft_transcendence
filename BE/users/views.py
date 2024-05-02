@@ -8,6 +8,7 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import NotFound, ParseError, APIException
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -18,8 +19,9 @@ from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
+from stats.models import UserStat
 from users.models import User, Friendship
-from users.serializers import UserProfileSerializer
+from users.serializers import UserProfileSerializer, UpdateUserSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
 
 
@@ -132,6 +134,7 @@ class CustomRegisterView(RegisterView):
 
     def perform_create(self, serializer):
         user = serializer.save(self.request)
+        UserStat.objects.create(user=user)
 
         # 이메일 인증 진행
         send_email_confirmation(
@@ -387,7 +390,9 @@ class OAuthView(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
-            user, _ = get_or_create_user(user_data)
+            user, is_created = get_or_create_user(user_data)
+            if is_created:
+                UserStat.objects.create(user=user)
             perform_login(request, user, email_verification="none")
             return HttpResponseRedirect("/")
 
@@ -411,18 +416,50 @@ class CheckLoginStatusAPIView(APIView):
             }
         )
 
+class UpdateUserView(RetrieveUpdateAPIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = UpdateUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def patch(self, request, *args, **kwargs):
+        serializer_data = request.data
+
+        if not serializer_data:
+            return Response(
+                {"detail": "Please enter the information you want to change."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        try:
+            detail = serializer.save()
+            return Response(detail, status=status.HTTP_200_OK)
+        except Exception:  # pylint: disable=broad-exception-caught
+            return Response(
+                {"detail": "The nickname is already in use."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 class SessionAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        session_id = request.query_params.get('sessionid')
+        session_id = request.query_params.get("sessionid")
         if not session_id:
             return Response({"error": "Session ID is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             session = Session.objects.get(session_key=session_id)
-            user_id = session.get_decoded().get('_auth_user_id')
+            user_id = session.get_decoded().get("_auth_user_id")
             user = get_user_model().objects.get(id=user_id)
-            user_data = {'pk': user_id, 'nickname': user.nickname}
+            user_data = {"pk": user_id, "nickname": user.nickname}
             return Response(user_data)
         except (Session.DoesNotExist, get_user_model().DoesNotExist):
-            return Response({"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST
+            )
