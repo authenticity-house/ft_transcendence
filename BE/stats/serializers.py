@@ -60,7 +60,7 @@ class MatchSerializer(serializers.ModelSerializer):
             "is_winner": winner_id == player_stat.user_id,
         }
 
-        player_stat.save(match_data=update_match_data)
+        player_stat.save(online_match_data=update_match_data)
 
     def get_additional_data(self, data: dict, player1_pk: int, player2_pk: int) -> dict:
         player1_data: dict = dict(data["player1"])
