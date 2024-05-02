@@ -4,7 +4,7 @@ from online.services import OnlineSessionManager
 from websocket.backend_api import fetch_nickname
 
 
-class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
+class OnlineConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -34,27 +34,6 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
             self.session_number, self.nickname, self.pk
         )
 
-    async def receive_json(self, content, **kwargs):
-        msg_type = content.get("type", "invalid")
-        msg_subtype = content.get("subtype", "")
-        msg_data = content.get("data", "")
-
-        if msg_type == "disconnect":
-            await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
-            await self.session.leave_session()
-            OnlineSessionManager.delete_session(self.session_number)
-            await self.close(code=1000)
-
-        elif msg_type == "game" and msg_subtype == "key_down":
-            key_set = msg_data["key_set"]
-            self.session.set_match_key_set(self.nickname, key_set)
-
-        elif msg_type == "game" and msg_subtype == "match_start":
-            # self.game_session = asyncio.create_task(self.run_game_session())
-            pass
-        print(msg_type)
-        print(msg_data)
-
     async def send_message(self, subtype, message, data=None, msg_type="game"):
         msg = {
             "type": msg_type,
@@ -81,3 +60,29 @@ class OnlineDuelConsumer(AsyncJsonWebsocketConsumer):
                 "data": msg_body,
             },
         )
+
+
+class OnlineDuelConsumer(OnlineConsumer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    async def receive_json(self, content, **kwargs):
+        msg_type = content.get("type", "invalid")
+        msg_subtype = content.get("subtype", "")
+        msg_data = content.get("data", "")
+
+        if msg_type == "disconnect":
+            await self.channel_layer.group_discard(self.session_group_name, self.channel_name)
+            await self.session.leave_session()
+            OnlineSessionManager.delete_session(self.session_number)
+            await self.close(code=1000)
+
+        elif msg_type == "game" and msg_subtype == "key_down":
+            key_set = msg_data["key_set"]
+            self.session.set_match_key_set(self.nickname, key_set)
+
+        elif msg_type == "game" and msg_subtype == "match_start":
+            # self.game_session = asyncio.create_task(self.run_game_session())
+            pass
+        print(msg_type)
+        print(msg_data)
