@@ -31,6 +31,25 @@ export function getContent(id, userPk) {
 			.catch((err) => {
 				console.log(err);
 			});
+
+		fetch(apiEndpoints.STATS_SUMMARY_URL, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						myInfoContent.mountStats(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
 		fetch(apiEndpoints.MATCH_RECORD_URL, {
