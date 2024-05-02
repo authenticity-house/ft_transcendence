@@ -262,7 +262,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	align-items: center;
 	width: 30rem;
 	gap: 1rem;
-	margin: 1.5rem 0;
+	margin: 1rem 0;
 }
 
 .modify-text-container {
@@ -2064,14 +2064,24 @@ td {
 
 .my-info-content-password {
 	display: flex;
+	width: 100%;
+}
+
+.password-button-container {
+	display: flex;
+	width: 100%;
 	justify-content: space-between;
 	align-items: center;
 	align-self: stretch;
 }
 
 .my-info-content-modify-password-container {
-	display: none;
 	flex-direction: column;
+}
+
+.modify-password-form {
+	flex-direction: column;
+	display: none;
 }
 
 .modify-password-button-container {

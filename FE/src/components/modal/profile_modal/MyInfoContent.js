@@ -132,10 +132,12 @@ class MyInfoContent {
 			`;
 
 			myInfoContentPassword.innerHTML = `
-				<span class="display-light24">비밀번호</span>
-				<button type="button" class="display-light24 head_blue_neon_15">
-					변경
-				</button>
+				<div class="password-button-container">
+					<span class="display-light24">비밀번호</span>
+					<button type="button" class="display-light24 head_blue_neon_15">
+						변경
+					</button>
+				</div>
 			`;
 
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
@@ -205,10 +207,10 @@ class MyInfoContent {
 
 		// 비밀번호 변경 UI
 		const passwordContainer = document.querySelector(
-			'.my-info-content-password'
+			'.password-button-container'
 		);
 		const modifyPasswordContainer = document.querySelector(
-			'.my-info-content-modify-password-container'
+			'.modify-password-form'
 		);
 		const modifyPasswordButton = passwordContainer.querySelector('button');
 		const modifyCancelPasswordButton = document.getElementById('cancel-pw');
