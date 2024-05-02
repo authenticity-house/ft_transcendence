@@ -122,8 +122,6 @@ class TournamentSession:
         self._session_group_name = f"session_{self._session_number}"
         self._match_session = None
 
-
-
     async def add_user(self, nickname, pk):
         self._users.append(nickname)
         self._pks.append(pk)
@@ -146,17 +144,17 @@ class TournamentSession:
             }
             self._player_key_sets = {self._users[0]: set(), self._users[1]: set()}
 
-            msg = self._manager.get_send_data("tournament_tree")
-            await self.__send_message(*msg)
-
-            await asyncio.sleep(3)
-
-            msg = self._manager.get_send_data("match_init_setting")
-            await self.__send_message(*msg)
-
             self._match_session = asyncio.create_task(self.__run_game_session())
 
     async def __run_game_session(self):
+        msg = self._manager.get_send_data("tournament_tree")
+        await self.__send_message(*msg)
+
+        await asyncio.sleep(3)
+
+        msg = self._manager.get_send_data("match_init_setting")
+        await self.__send_message(*msg)
+
         """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
         sm: ASessionManager = self._manager
 
