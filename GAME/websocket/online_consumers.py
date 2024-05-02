@@ -84,8 +84,6 @@ class OnlineDuelConsumer(OnlineConsumer):
         elif msg_type == "game" and msg_subtype == "match_start":
             # self.game_session = asyncio.create_task(self.run_game_session())
             pass
-        print(msg_type)
-        print(msg_data)
 
 
 class OnlineTournamentConsumer(OnlineConsumer):
@@ -110,5 +108,7 @@ class OnlineTournamentConsumer(OnlineConsumer):
         elif msg_type == "game" and msg_subtype == "match_start":
             # self.game_session = asyncio.create_task(self.run_game_session())
             pass
-        print(msg_type)
-        print(msg_data)
+
+        elif msg_type == "game_over" and msg_subtype == "summary":
+            data = self.session.get_summary_stat()
+            await self.send_message("summary", "6-4 최종 정보 전송", data, "game_over_response")

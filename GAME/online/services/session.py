@@ -179,6 +179,9 @@ class TournamentSession:
             if msg[-1] == "game_over":
                 break
 
+    def get_summary_stat(self):
+        return self._manager.get_summary_stat()
+
     def set_match_key_set(self, nickname, key_set):
         if nickname not in self._users:
             return
