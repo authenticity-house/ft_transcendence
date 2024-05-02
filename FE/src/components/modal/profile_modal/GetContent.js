@@ -6,22 +6,13 @@ import { myInfoContent } from './MyInfoContent.js';
 import apiEndpoints from '../../../constants/apiConfig.js';
 import { getCookie } from '../../../utils/getCookie.js';
 import { friendInfoContent } from './FriendInfoContent.js';
+import { friendRecordContent } from './FriendRecordContent.js';
 
 const csrfToken = getCookie('csrftoken');
 
 export function getContent(id, userPk) {
 	if (id === 'my-info') {
 		// my-info 탭을 클릭했을 때 내 정보를 렌더링
-		// mock-data
-		// const data = {
-		// 	pk: 1,
-		// 	username: 'superjeongmin',
-		// 	email: 'jeongmin@student.42seoul.kr',
-		// 	nickname: '',
-		// 	provider: 'PONG',
-		// 	profile_url: ''
-		// };
-
 		fetch(apiEndpoints.MY_INFO_URL, {
 			method: 'GET',
 			headers: {
@@ -43,164 +34,25 @@ export function getContent(id, userPk) {
 			});
 	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
-		// mock-data
-		const data = [
-			{
-				date: '2024-04-03',
-				play_time: '00:00:24',
-				rally: [2, 0.4, 0],
-				max_ball_speed: [0.059, 0.0438, 0.04],
-				player1: {
-					nickname: 'jeongrol',
-					score: 0,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 0.2,
-					attack_pos: 0
-				},
-				player2: {
-					nickname: 'wonyang',
-					score: 5,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 0,
-					attack_pos: 0
-				},
-				graph: {
-					player1: {
-						score_trend: [0, 0, 0, 0, 0, 0],
-						score_pos: []
-					},
-					player2: {
-						score_trend: [0, 1, 2, 3, 4, 5],
-						score_pos: [
-							[-2.982, -1.161],
-							[-2.983, 0.585],
-							[-2.975, -0.94],
-							[-2.969, 0.821],
-							[-2.978, 0.691]
-						]
-					}
-				}
+		fetch(apiEndpoints.MATCH_RECORD_URL, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
 			},
-			{
-				date: '2024-04-03',
-				play_time: '00:00:14',
-				rally: [0, 0, 0],
-				max_ball_speed: [0.04, 0.04, 0.04],
-				player1: {
-					nickname: 'jihylim',
-					score: 0,
-					attack_type: 2,
-					power_up_cnt: 0,
-					key_cnt: 0.6,
-					attack_pos: 3
-				},
-				player2: {
-					nickname: 'jeongmin',
-					score: 5,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 0,
-					attack_pos: 3
-				},
-				graph: {
-					player1: {
-						score_trend: [0, 0, 0, 0, 0, 0],
-						score_pos: []
-					},
-					player2: {
-						score_trend: [0, 1, 2, 3, 4, 5],
-						score_pos: [
-							[-2.998, 0.112],
-							[-2.971, 1.293],
-							[-2.964, 1.405],
-							[-2.964, 0.461],
-							[-2.997, -0.126]
-						]
-					}
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						myRecordContent.mount(data);
+						myRecordContent.addEventListeners();
+					});
 				}
-			},
-			{
-				date: '2024-04-03',
-				play_time: '00:00:19',
-				rally: [2, 0.8, 0],
-				max_ball_speed: [0.059, 0.0476, 0.04],
-				player1: {
-					nickname: 'joyoo',
-					score: 0,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 3.2,
-					attack_pos: 1
-				},
-				player2: {
-					nickname: 'wonyang',
-					score: 5,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 15.6,
-					attack_pos: 1
-				},
-				graph: {
-					player1: {
-						score_trend: [0, 0, 0, 0, 0, 0],
-						score_pos: []
-					},
-					player2: {
-						score_trend: [0, 1, 2, 3, 4, 5],
-						score_pos: [
-							[-2.98, -0.266],
-							[-2.963, -0.469],
-							[-2.975, 1.383],
-							[-2.997, -0.125],
-							[-3, 0.053]
-						]
-					}
-				}
-			},
-			{
-				date: '2024-04-03',
-				play_time: '00:00:23',
-				rally: [1, 0.16666666666666666, 0],
-				max_ball_speed: [0.055, 0.0425, 0.04],
-				player1: {
-					nickname: 'wonyang',
-					score: 1,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 8.5,
-					attack_pos: 3
-				},
-				player2: {
-					nickname: 'jeongmin',
-					score: 5,
-					attack_type: 0,
-					power_up_cnt: 0,
-					key_cnt: 32.666666666666664,
-					attack_pos: 1
-				},
-				graph: {
-					player1: {
-						score_trend: [0, 1, 1, 1, 1, 1, 1],
-						score_pos: [[2.965, 0.552]]
-					},
-					player2: {
-						score_trend: [0, 0, 1, 2, 3, 4, 5],
-						score_pos: [
-							[-2.99, -1.857],
-							[-2.978, 1.171],
-							[-2.96, -1.07],
-							[-2.997, -0.144],
-							[-2.985, -1.261]
-						]
-					}
-				}
-			}
-		];
-
-		myRecordContent.mount(data);
-		myRecordContent.addEventListeners();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	} else if (id === 'user-search') {
 		// user-search 탭을 클릭했을 때 유저 검색을 렌더링
 	} else if (id === 'my-friend') {
@@ -236,6 +88,28 @@ export function getContent(id, userPk) {
 						friendInfoContent.mount(data);
 						friendInfoContent.addEventListeners(data);
 					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	} else if (id === 'friend-match-record') {
+		fetch(`${apiEndpoints.MATCH_RECORD_URL}${userPk}/`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						friendRecordContent.mount(data);
+						friendRecordContent.addEventListeners();
+					});
+				} else if (res.status === 204) {
+					friendRecordContent.mount([]);
 				}
 			})
 			.catch((err) => {

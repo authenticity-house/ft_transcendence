@@ -12,6 +12,7 @@ import apiEndpoints from '../../../constants/apiConfig.js';
 
 import { statsContent } from './StatsContent.js';
 import { friendInfoContent } from './FriendInfoContent.js';
+import { friendRecordContent } from './FriendRecordContent.js';
 
 const html = String.raw;
 
@@ -282,7 +283,7 @@ class ProfileModal {
 												role="tabpanel"
 												aria-labelledby="friend-match-record-tab"
 											>
-												${myRecordContent.template()}
+												${friendRecordContent.template()}
 											</div>
 										</div>
 									</div>

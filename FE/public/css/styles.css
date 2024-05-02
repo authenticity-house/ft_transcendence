@@ -1288,6 +1288,13 @@ td {
 	background-color: aliceblue;
 }
 
+.user-image-container img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
 .user-blank-container {
 	width: 3rem;
 }
@@ -2103,9 +2110,10 @@ td {
 	align-self: stretch;
 }
 
-/* MyRecordContent.js */
+/* MyRecordContent.js, FriendRecordContent.js */
 
-.my-record-content-container {
+.my-record-content-container,
+.friend-record-content-container {
 	display: flex;
 	width: 85rem;
 	height: 76rem;
@@ -2116,7 +2124,8 @@ td {
 	margin-top: 6rem;
 }
 
-.my-record-container {
+.my-record-container,
+.friend-record-container {
 	display: flex;
 	padding: 0rem 3rem;
 	width: 85rem;

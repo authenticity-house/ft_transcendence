@@ -8,7 +8,7 @@ import GamePage from './GamePage.js';
 
 import { GameMessages as msg } from './Gamemessages.js';
 
-import { MessageType, SubType, Winner } from '../constants/constants.js';
+import { MessageType, SubType, GameMessages } from '../constants/constants.js';
 
 export class MessageManager {
 	constructor(websocket) {
@@ -100,11 +100,11 @@ export class MessageManager {
 			);
 			this.gamepage.camera.lookAt(0, 0, 0);
 
-			this.toggleFinalAnimation();
+			this.toggleAnimation();
 		}
 	}
 
-	toggleFinalAnimation() {
+	toggleAnimation() {
 		const readyText = this.gamepage.scene.getObjectByName('readyText');
 
 		if (readyText) {
@@ -115,16 +115,6 @@ export class MessageManager {
 		} else {
 			console.error('Ready text not found');
 		}
-	}
-	// -----------------------------------------------------------------------------
-
-	checkWinner() {
-		const finalScore = this.websocket.initial.total_score;
-
-		if (Number(this.player1Score.textContent) === finalScore)
-			this.winner = Winner.PLAYER_1;
-		if (Number(this.player2Score.textContent) === finalScore)
-			this.winner = Winner.PLAYER_2;
 	}
 
 	// -----------------------------------------------------------------------------
@@ -146,13 +136,12 @@ export class MessageManager {
 		}
 	}
 
-	displayWinner() {
-		if (this.winner === 0) return;
-		const winnerPosition = this.winner === Winner.PLAYER_1 ? -4 : 4;
-		const targetPaddle =
-			this.winner === Winner.PLAYER_1
-				? this.gamepage.paddleMesh1
-				: this.gamepage.paddleMesh2;
+	displayWinner(score) {
+		const winner = score.player1 > score.player2;
+		const winnerPosition = winner ? -4 : 4;
+		const targetPaddle = winner
+			? this.gamepage.paddleMesh1
+			: this.gamepage.paddleMesh2;
 
 		this.gamepage.camera.position.x = winnerPosition;
 		this.gamepage.camera.lookAt(targetPaddle.position);
@@ -162,12 +151,6 @@ export class MessageManager {
 	// -----------------------------------------------------------------------------
 
 	renderThreeJs(data) {
-		this.frame += 1;
-
-		this.updateCameraPosition();
-		this.checkWinner();
-
-		// object destructuring
 		const { ball, paddle1, paddle2, score } = data;
 
 		this.gamepage.ballMesh.position.x = ball.x;
@@ -179,7 +162,6 @@ export class MessageManager {
 		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
 
 		this.updateScores(score);
-		this.displayWinner();
 
 		this.gamepage.renderer.render(this.gamepage.scene, this.gamepage.camera);
 	}
@@ -276,6 +258,11 @@ export class MessageManager {
 			case SubType.MATCH_RUN:
 				// 로딩 중 지우기
 				// 수신한 매치 데이터로 rendering
+				if (message.message === GameMessages.READY) {
+					this.frame += 1;
+					this.updateCameraPosition();
+				} else if (message.message === GameMessages.WIN)
+					this.displayWinner(message.data.score);
 				this.renderThreeJs(message.data);
 				break;
 

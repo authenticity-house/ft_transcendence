@@ -1,6 +1,8 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import user_field
 
+from backend.settings import SERVER_IP, SERVER_PORT
+
 
 class CustomUserAccountAdapter(DefaultAccountAdapter):
 
@@ -20,5 +22,9 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         Changing the confirmation URL to fit the domain that we are working on
         """
 
-        url = "http://127.0.0.1:8080/api/users/users-confirm-email/" + emailconfirmation.key + "/"
+        url = (
+            f"http://{SERVER_IP}:{SERVER_PORT}/api/users/users-confirm-email/"
+            + emailconfirmation.key
+            + "/"
+        )
         return url

@@ -8,6 +8,7 @@ import ButtonBackArrow from '../../../../components/ButtonBackArrow.js';
 import { RoomWebsocket } from '../roomManager.js';
 import { roomModal } from '../roomModal.js';
 import ModifyGameSetting from './ModifyGameSetting.js';
+
 import { loadingModal } from '../../../register/modals/loadingModal.js';
 
 const html = String.raw;
@@ -56,7 +57,6 @@ class WaitingRoomPage {
 
 		try {
 			this.msg = await this.roomWsManager.receiveMessages(this.render);
-			console.log(this.msg);
 
 			this.updateReadyButton(this.msg);
 			this.addModifyEventListener();
@@ -113,7 +113,6 @@ class WaitingRoomPage {
 	addModifyEventListener() {
 		const roomInfoContainer = document.getElementById('roomInfoElement');
 		roomInfoContainer.addEventListener('click', (event) => {
-			console.log('클릭됨');
 			const modifyButton = event.target.closest('.room-info-modify-button');
 
 			if (modifyButton) {
