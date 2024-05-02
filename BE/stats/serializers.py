@@ -57,7 +57,7 @@ class MatchSerializer(serializers.ModelSerializer):
             "play_time": play_time,
             "max_rally_cnt": max(rally) if len(rally) > 0 else 0,
             "max_ball_speed": max(ball_speed) if len(ball_speed) > 0 else 0,
-            "winner_id": winner_id == player_stat.user_id,
+            "is_winner": winner_id == player_stat.user_id,
         }
 
         player_stat.save(match_data=update_match_data)
