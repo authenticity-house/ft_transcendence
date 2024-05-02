@@ -40,7 +40,8 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if data["provider"] == "PONG":
+        profile_url: str = data["profile_url"]
+        if profile_url.startswith("/profile/"):
             data["profile_url"] = transform_profile_url(data["profile_url"])
         return data
 
@@ -48,14 +49,14 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("pk", "nickname", "profile_url", "provider")
-        read_only_fields = ("pk", "nickname", "profile_url", "provider")
+        fields = ("pk", "nickname", "profile_url")
+        read_only_fields = ("pk", "nickname", "profile_url")
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if data["provider"] == "PONG":
+        profile_url: str = data["profile_url"]
+        if profile_url.startswith("/profile/"):
             data["profile_url"] = transform_profile_url(data["profile_url"])
-        data.pop("provider")
         return data
 
 
