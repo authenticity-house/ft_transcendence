@@ -133,7 +133,6 @@ export class MessageManager {
 	}
 
 	displayWinner(score) {
-		console.log('점수', score, score.player1, score.player2);
 		const winner = score.player1 > score.player2;
 		const winnerPosition = winner ? -4 : 4;
 		const targetPaddle = winner
