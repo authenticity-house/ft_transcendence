@@ -20,6 +20,12 @@ export const SubType = {
 };
 Object.freeze(SubType);
 
+export const GameMessages = {
+	READY: 'ready animation',
+	WIN: 'winner animation'
+};
+Object.freeze(GameMessages);
+
 export const registrationMessages = {
 	DEFAULT_ERROR: '회원가입에 실패했습니다.<br />다시 시도해주세요.',
 	PASSWORD_SIMILAR_TO_USERNAME:

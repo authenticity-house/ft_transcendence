@@ -8,7 +8,7 @@ import GamePage from './GamePage.js';
 
 import { GameMessages as msg } from './Gamemessages.js';
 
-import { MessageType, SubType } from '../constants/constants.js';
+import { MessageType, SubType, GameMessages } from '../constants/constants.js';
 
 export class MessageManager {
 	constructor(websocket) {
@@ -258,10 +258,10 @@ export class MessageManager {
 			case SubType.MATCH_RUN:
 				// 로딩 중 지우기
 				// 수신한 매치 데이터로 rendering
-				if (message.message === 'ready animation') {
+				if (message.message === GameMessages.READY) {
 					this.frame += 1;
 					this.updateCameraPosition();
-				} else if (message.message === 'winner animation')
+				} else if (message.message === GameMessages.WIN)
 					this.displayWinner(message.data.score);
 				this.renderThreeJs(message.data);
 				break;
