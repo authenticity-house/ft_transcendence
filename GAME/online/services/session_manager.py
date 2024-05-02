@@ -23,9 +23,14 @@ class OnlineSessionManager:
         return session_number
 
     @classmethod
-    async def join_session(cls, session_number, nickname):
+    async def join_session(cls, session_number, nickname, pk):
         session = cls._sessions[session_number]
-        await session.add_user(nickname)
+        await session.add_user(nickname, pk)
+        return session
+
+    @classmethod
+    def delete_session(cls, session_number):
+        cls._sessions.pop(session_number, None)
 
     @classmethod
     def __next_room_number(cls) -> int:
