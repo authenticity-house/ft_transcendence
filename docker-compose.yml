@@ -32,6 +32,7 @@ services:
       - postgresql
     volumes:
       - ./BE:/code
+      - profile-image-volume:/code/profile
     env_file:
       - ./.env
     environment:
