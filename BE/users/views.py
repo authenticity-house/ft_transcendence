@@ -1,6 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.models import Session
+from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.db import transaction
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -103,6 +106,7 @@ class ConfirmEmailView(APIView):
 
 
 class CustomRegisterView(RegisterView):
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -359,6 +363,7 @@ class UserProfileView(APIView):
 
 
 class OAuthView(APIView):
+    @transaction.atomic
     def get(self, request):
         query_params = request.query_params
         code = query_params.get("code")
@@ -408,3 +413,19 @@ class CheckLoginStatusAPIView(APIView):
                 "is_authenticated": True,
             }
         )
+
+
+class SessionAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        session_id = request.query_params.get('sessionid')
+        if not session_id:
+            return Response({"error": "Session ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            session = Session.objects.get(session_key=session_id)
+            user_id = session.get_decoded().get('_auth_user_id')
+            user = get_user_model().objects.get(id=user_id)
+            user_data = {'pk': user_id, 'nickname': user.nickname}
+            return Response(user_data)
+        except (Session.DoesNotExist, get_user_model().DoesNotExist):
+            return Response({"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST)

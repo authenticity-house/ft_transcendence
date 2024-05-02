@@ -2,7 +2,7 @@ import asyncio
 import json
 from json.decoder import JSONDecodeError
 
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 from channels.exceptions import StopConsumer
 from session.session_manager import ASessionManager, DuelManager, TournamentManager
 
@@ -135,3 +135,10 @@ class GameConsumer(AsyncWebsocketConsumer):
             await self.disconnect(1002)
             await self.close()
             raise StopConsumer()
+
+
+class DefaultConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+        self.send(text_data="잘못된 웹소켓 경로입니다.")
+        self.close(code=4001)

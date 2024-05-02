@@ -14,10 +14,11 @@ export function registerFailModal() {
 				<div class="modal-content modal-content-style head_white_neon_15">
 					<div class="modal-body">
 						<div
-							class="display-light28 modal-content-body-text"
-							style="line-height:180%"
+							class="display-light24"
+							id="register-fail-modal"
+							style="line-height:180%; text-align: center; margin: 2rem;"
 						>
-							비밀번호가 아이디와 유사합니다.<br />다시 작성해주세요.
+							회원가입에 실패했습니다.<br />다시 시도해주세요.
 						</div>
 						<div class="horizontal-button-container" style="gap:4rem">
 							<button
