@@ -93,8 +93,8 @@ class MatchSerializer(serializers.ModelSerializer):
         player2_pk = validated_data["player2"].pk
 
         try:
-            player1_stat = UserStat.objects.get(user_id=player1_pk)
-            player2_stat = UserStat.objects.get(user_id=player2_pk)
+            player1_stat, _ = UserStat.objects.get_or_create(user_id=player1_pk)
+            player2_stat, _ = UserStat.objects.get_or_create(user_id=player2_pk)
         except ObjectDoesNotExist as exc:
             raise NotFound(
                 detail=f"UserStat does not exist: pk={player1_pk} or {player2_pk}"
