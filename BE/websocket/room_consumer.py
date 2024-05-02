@@ -3,6 +3,7 @@ from channels.generic.websocket import JsonWebsocketConsumer
 
 from rooms.services import RoomManager
 from rooms.services.exceptions import RoomError
+from .game_server import request_game_session
 
 
 class RoomConsumer(JsonWebsocketConsumer):
@@ -35,6 +36,11 @@ class RoomConsumer(JsonWebsocketConsumer):
             self.change_state()
         elif msg_type == "room.change.info":
             self.change_info(msg_body)
+        elif msg_type == "room.start.request":
+            room = self.__get_room()
+            room_info = room.room_info()
+            url = request_game_session(room_info)
+            self.game_start(url)
 
     def room_exit(self):
         room = self.__get_room()
@@ -61,6 +67,11 @@ class RoomConsumer(JsonWebsocketConsumer):
         info["type"] = "room.info"
         self.send_json(info)
 
+    def room_game_start(self, event):
+        msg = {"type": "room.game.start", "url": event["data"]}
+        self.send_json(msg)
+        self.close()
+
     def change_state(self):
         room = self.__get_room()
         room.change_state(self.user)
@@ -70,6 +81,10 @@ class RoomConsumer(JsonWebsocketConsumer):
         room = self.__get_room()
         room.change_info(data)
         self.broadcast("room.info", "get room info")
+
+    def game_start(self, url):
+        RoomManager.delete_room(self.room_number)
+        self.broadcast("room.game.start", url)
 
     def broadcast(self, msg_type, msg_body):
         async_to_sync(self.channel_layer.group_send)(

@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("GAME_SECRET_KEY")
 # False if not in os.environ because of casting above
 DEBUG = os.getenv("GAME_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]", "game"]
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "daphne",
     "channels",
     "websocket",
+    "online",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -78,6 +79,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "game_server.wsgi.application"
 ASGI_APPLICATION = "game_server.asgi.application"
+
+CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

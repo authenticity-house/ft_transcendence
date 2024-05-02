@@ -36,7 +36,7 @@ async function handleResponse(response) {
 export function registerAPI(formData, reset) {
 	const payload = formDataToJson(formData);
 
-	showModal('registerLoadingModal');
+	showModal('loadingModal');
 
 	fetch(apiEndpoints.REGISTRATION_URL, {
 		method: 'POST',
@@ -47,7 +47,7 @@ export function registerAPI(formData, reset) {
 	})
 		.then(handleResponse)
 		.then(({ ok, status, message }) => {
-			hideModal('registerLoadingModal');
+			hideModal('loadingModal');
 
 			if (ok && status === 201) {
 				showModal('registerModal');
@@ -62,5 +62,8 @@ export function registerAPI(formData, reset) {
 		})
 		.catch((error) => {
 			showModal('registerFailModal', error);
+		})
+		.finally(() => {
+			hideModal('loadingModal');
 		});
 }

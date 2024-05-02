@@ -1,5 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
+from django.contrib.sessions.models import Session
+from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.db import transaction
 
@@ -17,6 +19,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 
 from dj_rest_auth.registration.views import RegisterView
 
+from stats.models import UserStat
 from users.models import User, Friendship
 from users.serializers import UserProfileSerializer, UpdateUserSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
@@ -131,6 +134,7 @@ class CustomRegisterView(RegisterView):
 
     def perform_create(self, serializer):
         user = serializer.save(self.request)
+        UserStat.objects.create(user=user)
 
         # 이메일 인증 진행
         send_email_confirmation(
@@ -386,7 +390,9 @@ class OAuthView(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
-            user, _ = get_or_create_user(user_data)
+            user, is_created = get_or_create_user(user_data)
+            if is_created:
+                UserStat.objects.create(user=user)
             perform_login(request, user, email_verification="none")
             return HttpResponseRedirect("/")
 
@@ -409,7 +415,6 @@ class CheckLoginStatusAPIView(APIView):
                 "is_authenticated": True,
             }
         )
-
 
 class UpdateUserView(RetrieveUpdateAPIView):
     authentication_classes = [SessionAuthentication]
@@ -440,4 +445,21 @@ class UpdateUserView(RetrieveUpdateAPIView):
             return Response(
                 {"detail": "The nickname is already in use."},
                 status=status.HTTP_400_BAD_REQUEST,
+            )
+
+class SessionAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        session_id = request.query_params.get("sessionid")
+        if not session_id:
+            return Response({"error": "Session ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            session = Session.objects.get(session_key=session_id)
+            user_id = session.get_decoded().get("_auth_user_id")
+            user = get_user_model().objects.get(id=user_id)
+            user_data = {"pk": user_id, "nickname": user.nickname}
+            return Response(user_data)
+        except (Session.DoesNotExist, get_user_model().DoesNotExist):
+            return Response(
+                {"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST
             )
