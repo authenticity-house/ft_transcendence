@@ -1,8 +1,9 @@
 import createRoomAPI from './createRoomAPI.js';
 import joinRoomAPI from './joinRoomAPI.js';
 import { getWebsocketUrl } from '../../../utils/getWebsocketUrl.js';
-import { changeUrlData } from '../../../index.js';
+import { changeUrlData, gamewsmanager } from '../../../index.js';
 import { showModal } from '../../../components/modal/modalUtils.js';
+import { Gamewebsocket } from '../../../game/Gamewebsocket.js';
 
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
@@ -45,7 +46,7 @@ export class RoomWebsocket {
 
 	joinRoomWebsocket(roomNumber) {
 		try {
-			const url = getWebsocketUrl(`room/${roomNumber}`);
+			const url = getWebsocketUrl(`/room/${roomNumber}/`);
 			this.ws = new WebSocket(url);
 
 			this.ws.onopen = () => {
@@ -83,7 +84,9 @@ export class RoomWebsocket {
 						resolve(message);
 						this.info = message;
 						break;
-
+					case 'room.game.start':
+						this.reconnectWebsocket(message.url);
+						break;
 					case 'room.end':
 						showModal('roomModal');
 						break;
@@ -93,6 +96,12 @@ export class RoomWebsocket {
 				}
 			};
 		});
+	}
+
+	reconnectWebsocket(url) {
+		this.close();
+		const gamewebsocket = new Gamewebsocket(url);
+		gamewsmanager.register(gamewebsocket);
 	}
 
 	sendChangeInfo(change) {
@@ -106,6 +115,13 @@ export class RoomWebsocket {
 	sendReadyState() {
 		const message = {
 			type: 'room.change.state'
+		};
+		this.send(message);
+	}
+
+	sendStartRequest() {
+		const message = {
+			type: 'room.start.request'
 		};
 		this.send(message);
 	}

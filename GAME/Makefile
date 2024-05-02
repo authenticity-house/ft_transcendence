@@ -13,7 +13,7 @@ format:
 
 lint:
 	@echo "Linting code with pylint"
-	@venv/bin/pylint game_server match websocket session
+	@venv/bin/pylint game_server match websocket session online
 
 type:
 	@echo "Typechecking with mypy"
