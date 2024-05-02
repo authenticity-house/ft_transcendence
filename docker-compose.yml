@@ -11,6 +11,7 @@ services:
       - backend
     volumes:
       - ./FE:/usr/share/nginx/html/FE
+      - profile-image-volume:/usr/share/nginx/profile
     networks:
       - pong_net
 
@@ -58,6 +59,13 @@ volumes:
     driver_opts:
       type: none
       device: ${PWD}/data/postgresql
+      o: bind
+  
+  profile-image-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/profile
       o: bind
 
 networks:
