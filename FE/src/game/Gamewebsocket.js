@@ -5,7 +5,8 @@ export class Gamewebsocket {
 	constructor(initial) {
 		this.initial = initial;
 
-		this.ws = new WebSocket(getWebsocketUrl('game-server'));
+		this.url = typeof this.initial === 'object' ? '/game-server/' : initial;
+		this.ws = new WebSocket(getWebsocketUrl(this.url));
 
 		this.messageManager = new MessageManager(this);
 
@@ -20,19 +21,17 @@ export class Gamewebsocket {
 			console.log('connected');
 			this.receiveMessages();
 		};
-		this.initializeEventListeners();
 
-		// this.initial.mode = 'right';
-		this.setupInputMapping();
+		this.initializeEventListeners();
 	}
 
-	setupInputMapping() {
-		if (this.initial.mode === 'left') {
+	setupInputMapping(type) {
+		if (type === 'left') {
 			this.inputMapping = {
 				ArrowUp: 'KeyW',
 				ArrowDown: 'KeyS'
 			};
-		} else if (this.initial.mode === 'right') {
+		} else if (type === 'right') {
 			this.inputMapping = {
 				KeyW: 'ArrowUp',
 				KeyS: 'ArrowDown'
@@ -99,6 +98,7 @@ export class Gamewebsocket {
 			type: 'game',
 			subtype: 'key_down',
 			message: 'key!',
+			// ?????? match_id 변경 필요
 			match_id: 1,
 			data: {
 				key_set: Array.from(this.keyDownList)
