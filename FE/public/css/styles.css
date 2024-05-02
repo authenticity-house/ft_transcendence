@@ -260,8 +260,9 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 1rem;
 	width: 30rem;
+	gap: 1rem;
+	margin: 1.5rem 0;
 }
 
 .modify-text-container {
@@ -2071,22 +2072,20 @@ td {
 .my-info-content-modify-password-container {
 	display: none;
 	flex-direction: column;
-	gap: 1rem;
-	margin-top: 2rem;
 }
 
 .modify-password-button-container {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	width: 100%;
-	margin-top: 1rem;
+	margin-top: 1.5rem;
 }
 
 .modify-password-button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 30rem;
+	width: 14rem;
 	height: 4rem;
 }
 

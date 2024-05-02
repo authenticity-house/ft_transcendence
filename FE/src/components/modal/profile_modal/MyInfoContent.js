@@ -118,12 +118,17 @@ class MyInfoContent {
 
 			const textInputBoxes = this.createTextInputBoxes();
 			modifyPassword.innerHTML = `
-				${textInputBoxes.map((input) => input.template()).join('')}
-				<div class="modify-password-button-container">
-					<button type="button" class="display-light18 head_blue_neon_15 modify-password-button">
-						비밀번호 변경
-					</button>
-				</div>
+				<form class="modify-password-form">
+						${textInputBoxes.map((input) => input.template()).join('')}
+					<div class="modify-password-button-container">
+						<button type="button" id="cancel-pw" class="display-light18 head_blue_neon_15 modify-password-button">
+							취소
+						</button>
+						<button type="button" id="submit-pw" class="display-light18 head_blue_neon_15 modify-password-button">
+							확인
+						</button>
+					</div>
+				</form>
 			`;
 
 			myInfoContentPassword.innerHTML = `
@@ -206,15 +211,20 @@ class MyInfoContent {
 			'.my-info-content-modify-password-container'
 		);
 		const modifyPasswordButton = passwordContainer.querySelector('button');
-		const modifyPasswordCompleteButton =
-			modifyPasswordContainer.querySelector('button');
-		// 비밀번호 변경 클릭
+		const modifyCancelPasswordButton = document.getElementById('cancel-pw');
+		const modifySubmitPasswordButton = document.getElementById('submit-pw');
+		// 비밀번호 변경 클릭 버튼
 		modifyPasswordButton.addEventListener('click', () => {
 			passwordContainer.style.display = 'none';
 			modifyPasswordContainer.style.display = 'flex';
 		});
+		// 비밀번호 변경 취소 버튼
+		modifySubmitPasswordButton.addEventListener('click', () => {
+			passwordContainer.style.display = 'flex';
+			modifyPasswordContainer.style.display = 'none';
+		});
 		// + 비밀번호 변경 확인 API 추가 할 곳
-		modifyPasswordCompleteButton.addEventListener('click', () => {
+		modifyCancelPasswordButton.addEventListener('click', () => {
 			// 변경이 가능하면, res.ok 해당 코드 실행
 			passwordContainer.style.display = 'flex';
 			modifyPasswordContainer.style.display = 'none';

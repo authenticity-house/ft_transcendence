@@ -25,6 +25,7 @@ class TextInputBox {
 						name=${this.name}
 						type=${this.type}
 						class="modify-input-size"
+						required
 					/>
 				</div>
 			`;
