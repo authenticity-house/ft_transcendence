@@ -28,6 +28,10 @@ class ASessionManager(metaclass=ABCMeta):
     def get_first_message(self):
         pass
 
+    @abstractmethod
+    def set_nickname(self, nicknames):
+        pass
+
     def get_match_frame(self):
         yield from self._match_manager.get_match_frame()
 
@@ -91,9 +95,10 @@ class TournamentManager(ASessionManager):
         self._summary_stat = []
         self._latest_winner = ""
 
-        nickname = data["nickname"]
-        headcount = data.get("headcount", len(nickname))
-        self._bracket: Bracket = Bracket(nickname, headcount)
+        self._bracket: Bracket = None
+
+    def set_nickname(self, nicknames):
+        self._bracket: Bracket = Bracket(nicknames, len(nicknames))
 
     # 소켓에서 전송할 데이터 반환
     def get_send_data(self, subtype: str):

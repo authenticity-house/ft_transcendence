@@ -57,9 +57,12 @@ class GameConsumer(AsyncWebsocketConsumer):
         except KeyError:
             await self.send_error("battle_mode not provided")
 
-        self.session_manager = (
-            TournamentManager(msg_data) if battle_mode == 2 else DuelManager(msg_data)
-        )
+        if battle_mode == 2:
+            self.session_manager = TournamentManager(msg_data)
+            self.session_manager.set_nickname(msg_data["nickname"])
+        else:
+            self.session_manager = DuelManager(msg_data)
+
         send_msg = self.session_manager.get_first_message()
         await self.send_message(*send_msg)
 
