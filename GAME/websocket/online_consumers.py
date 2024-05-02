@@ -102,6 +102,9 @@ class OnlineTournamentConsumer(OnlineConsumer):
             await self.close(code=1000)
 
         elif msg_type == "game" and msg_subtype == "key_down":
+            if self.nickname not in self.session.get_current_match_player():
+                return
+
             key_set = msg_data["key_set"]
             self.session.set_match_key_set(self.nickname, key_set)
 

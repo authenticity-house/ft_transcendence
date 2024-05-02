@@ -122,28 +122,15 @@ class TournamentSession:
         self._session_group_name = f"session_{self._session_number}"
         self._match_session = None
 
+        self._current_match_player1 = "Player1"
+        self._current_match_player2 = "Player1"
+
     async def add_user(self, nickname, pk):
         self._users.append(nickname)
         self._pks.append(pk)
 
         if len(self._users) == self._total_user:
             self._manager.set_nickname(self._users)
-            self._key_maps = {
-                self._users[0]: {
-                    "KeyW": "KeyW",
-                    "ArrowUp": "KeyW",
-                    "KeyS": "KeyS",
-                    "ArrowDown": "KeyS",
-                },
-                self._users[1]: {
-                    "KeyW": "ArrowUp",
-                    "ArrowUp": "ArrowUp",
-                    "KeyS": "ArrowDown",
-                    "ArrowDown": "ArrowDown",
-                },
-            }
-            self._player_key_sets = {self._users[0]: set(), self._users[1]: set()}
-
             self._match_session = asyncio.create_task(self.__run_game_session())
 
     async def __run_game_session(self):
@@ -154,6 +141,7 @@ class TournamentSession:
             await asyncio.sleep(3)  # 대진표 출력 후 3초간 대기
 
             msg = self._manager.get_send_data("match_init_setting")
+            self.__update_player_info(msg[-1]["nickname"]["player1"], msg[-1]["nickname"]["player2"])
             await self.__send_message(*msg)
 
             """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
@@ -179,8 +167,31 @@ class TournamentSession:
             if msg[-1] == "game_over":
                 break
 
+    def __update_player_info(self, player1_nickname, player2_nickname):
+        self._current_match_player1 = player1_nickname
+        self._current_match_player2 = player2_nickname
+
+        self._key_maps = {
+            player1_nickname: {
+                "KeyW": "KeyW",
+                "ArrowUp": "KeyW",
+                "KeyS": "KeyS",
+                "ArrowDown": "KeyS",
+            },
+            player2_nickname: {
+                "KeyW": "ArrowUp",
+                "ArrowUp": "ArrowUp",
+                "KeyS": "ArrowDown",
+                "ArrowDown": "ArrowDown",
+            },
+        }
+        self._player_key_sets = {player1_nickname: set(), player2_nickname: set()}
+
     def get_summary_stat(self):
         return self._manager.get_summary_stat()
+
+    def get_current_match_player(self):
+        return set([self._current_match_player1, self._current_match_player2])
 
     def set_match_key_set(self, nickname, key_set):
         if nickname not in self._users:
