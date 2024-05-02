@@ -40,9 +40,8 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        print(data)
         if data["provider"] == "PONG":
-            data['profile_url'] = transform_profile_url(data['profile_url'])
+            data["profile_url"] = transform_profile_url(data["profile_url"])
         return data
 
 
@@ -55,7 +54,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         if data["provider"] == "PONG":
-            data['profile_url'] = transform_profile_url(data['profile_url'])
+            data["profile_url"] = transform_profile_url(data["profile_url"])
         data.pop("provider")
         return data
 
