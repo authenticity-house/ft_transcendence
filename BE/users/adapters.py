@@ -1,13 +1,9 @@
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.utils import user_field
-from django.db import transaction
-
-from stats.models import UserStat
 
 
 class CustomUserAccountAdapter(DefaultAccountAdapter):
 
-    @transaction.atomic
     def save_user(self, request, user, form, commit=True):
         """
         Saves a new `User` instance using information provided in the
@@ -17,8 +13,6 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         user = super().save_user(request, user, form, False)
         user_field(user, "nickname", request.data.get("nickname"))
         user.save()
-        UserStat.objects.create(user=user)
-
         return user
 
     def get_email_confirmation_url(self, request, emailconfirmation):
