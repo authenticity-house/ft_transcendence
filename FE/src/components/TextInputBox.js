@@ -2,7 +2,7 @@ const html = String.raw;
 
 // {text: 'string', button: true}
 class TextInputBox {
-	constructor({ text, button, name, type = 'text' }) {
+	constructor({ text, button, name, type = 'text', modify }) {
 		this.text = text;
 		this.button = button;
 		this.name = name;
@@ -10,9 +10,25 @@ class TextInputBox {
 		this.type = ['password', 'password1', 'password2'].includes(name)
 			? 'password'
 			: type;
+
+		this.modify = modify;
 	}
 
 	template() {
+		if (this.modify) {
+			return html`
+				<div class="modify-text-inputbox-container">
+					<div class="modify-text-container">
+						<p class="display-medium16">${this.text}</p>
+					</div>
+					<input
+						name=${this.name}
+						type=${this.type}
+						class="modify-input-size"
+					/>
+				</div>
+			`;
+		}
 		if (this.button === false) {
 			return html`
 				<div class="text-inputbox-container">
