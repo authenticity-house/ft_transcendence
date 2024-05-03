@@ -469,6 +469,9 @@ class SessionAPIView(APIView):
 
 
 class ImageUploadAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = ImageUploadSerializer
 
     def post(self, request, *args, **kwargs):
