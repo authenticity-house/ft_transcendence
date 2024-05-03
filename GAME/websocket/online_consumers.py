@@ -14,10 +14,11 @@ class OnlineConsumer(AsyncJsonWebsocketConsumer):
 
         self.pk = -1
         self.nickname = None
+        self.profile_url = None
 
     async def connect(self):
         session_key = self.scope["cookies"].get("sessionid", None)
-        self.pk, self.nickname = await fetch_nickname(session_key)
+        self.pk, self.nickname, self.profile_url = await fetch_nickname(session_key)
 
         # 세션 값이 없는 경우 연결 거부
         if not session_key or not self.nickname:

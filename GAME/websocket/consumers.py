@@ -19,7 +19,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         session_key = self.scope["cookies"].get("sessionid", None)
         if session_key is not None:
-            self.pk, _ = await fetch_nickname(session_key)
+            self.pk, _, _ = await fetch_nickname(session_key)
 
         await self.accept()
         self.connected = True
