@@ -11,15 +11,6 @@ function appendChildSpan(parentClass, text) {
 }
 
 function fetchProfileDataAndDisplay() {
-	// MOCK DATA
-	const profileData = {
-		image: '',
-		nickName: '종석',
-		winLossRecord: [100, 50, 50],
-		winRate: 50,
-		rating: 4242
-	};
-
 	fetch(apiEndpoints.MY_INFO_URL, {
 		method: 'GET',
 		headers: {
