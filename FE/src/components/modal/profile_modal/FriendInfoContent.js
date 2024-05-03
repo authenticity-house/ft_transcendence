@@ -84,6 +84,34 @@ class FriendInfoContent {
 		friendInfoContentAddFriendContainer.appendChild(friendInfoContentAddButton);
 	}
 
+	mountStats(data) {
+		const friendInfoContentWinLoseContainer = document.querySelector(
+			'.friend-info-content-win-lose-container'
+		);
+		const friendInfoContentWinRateContainer = document.querySelector(
+			'.friend-info-content-win-rate-container'
+		);
+		const friendInfoContentRatingContainer = document.querySelector(
+			'.friend-info-content-rating-container'
+		);
+
+		friendInfoContentWinLoseContainer.innerHTML = `
+			<span>${data.total_count}전</span>
+			<span>${data.wins_count}승</span>
+			<span>${data.losses_count}패</span>
+		`;
+
+		friendInfoContentWinRateContainer.innerHTML = `
+			<span>승률</span>
+			<span>${data.winning_rate}%</span>
+		`;
+
+		friendInfoContentRatingContainer.innerHTML = `
+			<span>레이팅</span>
+			<span>${data.rating}점</span>
+		`;
+	}
+
 	addEventListeners(data) {
 		const friendInfoContentAddButton = document.querySelector(
 			'.friend-info-content-add-button'
