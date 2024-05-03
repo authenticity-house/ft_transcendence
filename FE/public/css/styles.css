@@ -2036,6 +2036,11 @@ td {
 	cursor: pointer;
 }
 
+.edit-icon-cancel {
+	width: 2.5rem;
+	height: 2.5rem;
+	cursor: pointer;
+}
 .my-info-content-name {
 	display: flex;
 	justify-content: center;

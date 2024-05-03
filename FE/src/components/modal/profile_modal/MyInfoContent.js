@@ -102,7 +102,7 @@ class MyInfoContent {
 			<input type="text" class="display-light20 my-info-content-name-modify-input"
 				placeholder="새로운 닉네임" maxlength="12" />
 			<img id="edit-name" class="edit-icon" src="image/edit.svg" alt="edit" />
-			<img id="edit-name-cancel" class="edit-icon display-none" src="image/close.svg" alt="cancel" />
+			<img id="edit-name-cancel" class="edit-icon-cancel display-none" src="image/close.svg" alt="cancel" />
 		`;
 
 		if (data.provider === 'PONG') {
