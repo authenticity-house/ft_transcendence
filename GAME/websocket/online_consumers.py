@@ -105,7 +105,3 @@ class OnlineTournamentConsumer(OnlineConsumer):
 
             key_set = msg_data["key_set"]
             self.session.set_match_key_set(self.nickname, key_set)
-
-        # elif msg_type == "game_over" and msg_subtype == "summary":
-        #     data = self.session.get_summary_stat()
-        #     await self.send_message("summary", "6-4 최종 정보 전송", data, "game_over_response")
