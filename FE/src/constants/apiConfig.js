@@ -25,7 +25,8 @@ function getApiEndpoints() {
 		MY_FRIEND_REQUEST_SENT_URL: `${USERS_URL}friends/sent/`,
 		MY_FRIEND_REQUEST_RECEIVED_URL: `${USERS_URL}friends/received/`,
 		MATCH_RECORD_URL: `${STATS_URL}match/list/`,
-		STATS_SUMMARY_URL: `${STATS_URL}summary/`
+		STATS_SUMMARY_URL: `${STATS_URL}summary/`,
+		MY_STATS_URL: `${STATS_URL}`
 	};
 }
 

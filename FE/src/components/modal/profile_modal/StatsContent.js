@@ -10,66 +10,71 @@ class StatsContent {
 	template() {
 		// MOCK data - modal stats
 		const mockData = {
-			nickName: '종식',
-			playTime: { local: '36m 24s', online: '1h 36m 50s' },
-			matchCount: { all: 1000, win: 500, lose: 500, winRate: 50 },
+			nickName: '닉네임',
+			playTime: { local: '0h 0m 0s', online: '0h 0m 0s' },
+			matchCount: { all: 0, win: 0, lose: 0, winRate: 0 },
 			rating: 1500,
 			top: {
 				topRating: 1800,
 				topBallSpeed: 100,
 				topRallyCount: 55
-			},
-			ratingChange: [
-				1000, 1050, 1100, 1050, 1100, 1150, 1200, 1250, 1300, 1250, 1200, 1250
-			]
+			}
 		};
-
-		const ratingChangeText = appendRatingText(mockData.ratingChange);
 
 		return html`
 			<div class="modal-stats-container">
 				<div class="play-time-container">
-					<span class="display-medium36 text_yellow_neon">
-						${mockData.nickName}
-					</span>
+					<span id="stats-nickname" class="display-medium36 text_yellow_neon"
+						>${mockData.nickName}</span
+					>
 					<div class="play-time-wrapper">
 						<span class="display-light24">총 플레이 타임</span>
 						<div class="modal-stats-divider"></div>
 						<div class="play-time-input-container display-light20">
 							<div class="play-time-input-wrapper">
 								<span>로컬</span>
-								<span>${mockData.playTime.local}</span>
+								<span id="stats-playtime-local"
+									>${mockData.playTime.local}</span
+								>
 							</div>
 							<div class="play-time-input-wrapper">
 								<span>온라인</span>
-								<span>${mockData.playTime.online}</span>
+								<span id="stats-playtime-online"
+									>${mockData.playTime.online}</span
+								>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="stats-text-container display-light20">
 					<div class="play-count-container">
-						<span
+						<span id="stats-match-count"
 							>${mockData.matchCount.all}전 ${mockData.matchCount.win}승
 							${mockData.matchCount.lose}패</span
 						>
-						<span>승률: ${mockData.matchCount.winRate}%</span>
-						<span>레이팅: ${mockData.rating}점</span>
+						<span id="stats-win-rating"
+							>승률: ${mockData.matchCount.winRate}%</span
+						>
+						<span id="stats-rating">레이팅: ${mockData.rating}점</span>
 					</div>
 					<div class="top-stats-container">
 						<span class="display-light24">TOP</span>
 						<div class="modal-stats-divider"></div>
 						<div class="top-stats-wrapper">
 							<span>최고 레이팅</span>
-							<span>${mockData.top.topRating}점</span>
+							<span id="stats-max-rating">${mockData.top.topRating}점</span>
 						</div>
 						<div class="top-stats-wrapper">
 							<span>최고 공 속도</span>
-							<span>${mockData.top.topBallSpeed}km</span>
+							<span id="stats-max-ball-speed"
+								>${mockData.top.topBallSpeed}km</span
+							>
 						</div>
 						<div class="top-stats-wrapper">
 							<span>최고 렐리 횟수</span>
-							<span>${mockData.top.topRallyCount}번</span>
+							<span id="stats-max-rally-count"
+								>${mockData.top.topRallyCount}번</span
+							>
 						</div>
 					</div>
 				</div>
@@ -77,9 +82,7 @@ class StatsContent {
 					<div class="rating-change-container">
 						<div class="rating-change-title"><span>레이팅 변화율</span></div>
 						<div class="rating-change-wrapper display-light20">
-							<div class="rating-change-text-container display-light14">
-								${ratingChangeText}
-							</div>
+							<div class="rating-change-text-container display-light14"></div>
 							<div class="rating-change-canvas-wrapper">
 								<canvas class="rating-change-canvas"></canvas>
 								<div id="rating-tooltip" class="display-light16"></div>
@@ -97,9 +100,35 @@ class StatsContent {
 		`;
 	}
 
+	displayApiTextData(id, textData) {
+		if (textData) document.getElementById(id).textContent = textData;
+	}
+
 	mount(data) {
-		const toolTip = drawRatingChange(data.ratingChange);
-		drawAttackTendency(data.attackTendency);
+		this.displayApiTextData('stats-nickname', data.nickname);
+		this.displayApiTextData('stats-playtime-local', data.local_play_time);
+		this.displayApiTextData('stats-playtime-online', data.online_play_time);
+		this.displayApiTextData(
+			'stats-match-count',
+			`${data.total_count}전 ${data.wins_count}승 ${data.losses_count}패`
+		);
+		this.displayApiTextData(
+			'stats-win-rating',
+			`승률 : ${data.winning_rate * 100}%`
+		);
+		this.displayApiTextData('stats-rating', `레이팅: ${data.rating}점`);
+		this.displayApiTextData('stats-max-rating', `${data.max_rating}점`);
+		this.displayApiTextData('stats-max-ball-speed', data.max_ball_speed);
+		this.displayApiTextData('stats-max-rally-count', `${data.max_rally_cnt}번`);
+
+		const ratingChangeTextContainer = document.querySelector(
+			'.rating-change-text-container'
+		);
+		const ratingChangeText = appendRatingText(data.graph.rating_change);
+		ratingChangeTextContainer.innerHTML = ratingChangeText;
+		const toolTip = drawRatingChange(data.graph.rating_change);
+
+		drawAttackTendency(data.graph.attack_type);
 		return toolTip;
 	}
 

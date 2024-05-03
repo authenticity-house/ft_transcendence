@@ -90,18 +90,27 @@ export function getContent(id, userPk) {
 		myFriendContent.fetchFriendRequestsSent();
 		myFriendContent.fetchFriendRequestsReceived();
 	} else if (id === 'stats') {
-		const data = {
-			ratingChange: [
-				1000, 1050, 1100, 1050, 1100, 1150, 1100, 1150, 1200, 1150, 1200, 1250
-			],
-			attackTendency: [
-				{ title: '공격형', value: 50, color: '#ff5d84' },
-				{ title: '혼합형', value: 30, color: '#ffd164' },
-				{ title: '방어형', value: 20, color: '#5ad7ff' }
-			]
-		};
-		const toolTip = statsContent.mount(data);
-		statsContent.addEventListeners(toolTip);
+		fetch(`${apiEndpoints.MY_STATS_URL}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		}).then((res) => {
+			if (res.status === 200) {
+				res
+					.json()
+					.then((data) => {
+						console.log(data);
+						const toolTip = statsContent.mount(data);
+						statsContent.addEventListeners(toolTip);
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}
+		});
 	} else if (id === 'friend-info') {
 		fetch(`${apiEndpoints.FRIEND_PROFILE_URL}${userPk}/`, {
 			method: 'GET',
