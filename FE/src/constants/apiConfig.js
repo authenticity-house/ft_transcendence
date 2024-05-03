@@ -13,17 +13,24 @@ function getApiEndpoints() {
 
 	return {
 		LOGIN_URL: `${USERS_URL}login/`,
+		LOGOUT_URL: `${USERS_URL}logout/`,
+
 		LOGIN_CHECK_URL: `${USERS_URL}check-login/`,
 		REGISTRATION_URL: `${USERS_URL}registration/`,
-		LOGOUT_URL: `${USERS_URL}logout/`,
 		REGISTER_CHECK_URL: `${USERS_URL}check/?`,
-		ROOMS_URL: `${ROOMS_URL}`,
+
 		MY_INFO_URL: `${USERS_URL}user/`,
+		UPDATE_USER_URL: `${USERS_URL}update/`,
+		UPLOAD_IMAGE_URL: `${USERS_URL}upload-image/`,
 		SEARCH_USER_URL: `${USERS_URL}search/?prefix=`,
+
 		FRIEND_PROFILE_URL: `${USERS_URL}detail/`,
 		MY_FRIEND_URL: `${USERS_URL}friends/`,
 		MY_FRIEND_REQUEST_SENT_URL: `${USERS_URL}friends/sent/`,
 		MY_FRIEND_REQUEST_RECEIVED_URL: `${USERS_URL}friends/received/`,
+
+		ROOMS_URL: `${ROOMS_URL}`,
+
 		MATCH_RECORD_URL: `${STATS_URL}match/list/`,
 		STATS_SUMMARY_URL: `${STATS_URL}summary/`
 	};

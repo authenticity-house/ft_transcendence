@@ -1,4 +1,6 @@
 import TextInputBox from '../../TextInputBox.js';
+import apiEndpoints from '../../../constants/apiConfig.js';
+import { getCookie } from '../../../utils/getCookie.js';
 
 const html = String.raw;
 
@@ -20,7 +22,12 @@ class MyInfoContent {
 							enctype="multipart/form-data"
 							style="display:none;"
 						>
-							<input type="file" id="modify-profile-image" accept="image/*" />
+							<input
+								type="file"
+								name="image"
+								id="modify-profile-image"
+								accept="image/*"
+							/>
 							<input type="submit" value="Upload Image" />
 						</form>
 
@@ -187,34 +194,41 @@ class MyInfoContent {
 		modifyProfilButton.addEventListener('click', () =>
 			document.getElementById('modify-profile-image').click()
 		);
+
 		// 유저 프로필 변경 (서버 X)
 		document
 			.getElementById('modify-profile-image')
-			.addEventListener('change', (e) => {
-				const file = e.target.files[0];
-				const imageUrl = URL.createObjectURL(file);
-				document.querySelector('.my-info-user-profile-image').src = imageUrl;
-			});
+			.addEventListener('change', async (e) => {
+				// async 키워드 추가
+				const image = e.target.files[0];
+				if (!image) return;
 
-		/*  // 유저 프로필 이미지 변경 (서버 연결)
-			document.getElementById('image-upload-form').onsubmit = (e) => {
-			e.preventDefault();
-			const formData = new FormData(this);
-			fetch('/users/update/', {
-				method: 'PATCH',
-				body: formData
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log('Success:', data);
-					document.querySelector('.my-info-user-profile-image').src =
-						data.imageUrl;
-				})
-				.catch((error) => {
+				const formData = new FormData();
+				formData.append('image', image);
+				const csrfToken = getCookie('csrftoken');
+
+				try {
+					const response = await fetch(apiEndpoints.UPLOAD_IMAGE_URL, {
+						method: 'POST',
+						headers: {
+							'X-CSRFToken': csrfToken
+						},
+						body: formData
+					});
+
+					const data = await response.json();
+					const { status, ok } = response;
+
+					if (ok) {
+						document.querySelector('.my-info-user-profile-image').src =
+							data.url;
+					} else if (status === 400) {
+						console.log('Image not found');
+					}
+				} catch (error) {
 					console.error('Error:', error);
-				});
-			};
-		*/
+				}
+			});
 
 		// 닉네임 변경 UI
 		const modifyNickname = document.querySelector('.my-info-content-name');
