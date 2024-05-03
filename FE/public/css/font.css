@@ -83,6 +83,15 @@
 	letter-spacing: 0.36rem;
 }
 
+.display-medium27 {
+	font-family: 'GongGothicMedium';
+	font-size: 2.7rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.27rem;
+}
+
 .display-medium20 {
 	font-family: 'GongGothicMedium';
 	font-size: 2rem;
@@ -90,6 +99,15 @@
 	font-style: normal;
 	line-height: normal;
 	letter-spacing: 0.2rem;
+}
+
+.display-medium16 {
+	font-family: 'GongGothicMedium';
+	font-size: 1.6rem;
+	font-weight: normal;
+	font-style: normal;
+	line-height: normal;
+	letter-spacing: 0.16rem;
 }
 
 .display-light48 {

@@ -28,14 +28,17 @@ class Ball:
 
         self._max_speed_list: list = []
 
-        self.reset()
+        self.reset(1)
 
-    def reset(self) -> None:
+    def reset(self, player: int) -> None:
         self._x = 0
         self._y = 0
         self._speed = Ball.INIT_BALL_SPEED
 
-        angle: float = math.pi * (3 / 4) + (random.random() * math.pi) / 2
+        if player == 1:
+            angle: float = math.pi * (3 / 4) + (random.random() * math.pi) / 2
+        else:
+            angle: float = math.pi * (7 / 4) + (random.random() * math.pi) / 2
         self._dx = math.cos(angle) * self._speed
         self._dy = math.sin(angle) * self._speed
 

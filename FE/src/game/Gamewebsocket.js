@@ -25,21 +25,6 @@ export class Gamewebsocket {
 		this.initializeEventListeners();
 	}
 
-	setupInputMapping(type) {
-		if (type === 'left') {
-			this.inputMapping = {
-				ArrowUp: 'KeyW',
-				ArrowDown: 'KeyS'
-			};
-		} else if (type === 'right') {
-			this.inputMapping = {
-				KeyW: 'ArrowUp',
-				KeyS: 'ArrowDown'
-			};
-		} else {
-			this.inputMapping = {};
-		}
-	}
 	// -----------------------------------------------------------------------------
 
 	send(message) {
@@ -64,12 +49,7 @@ export class Gamewebsocket {
 	handleKeyDown(event) {
 		if (!this.isOpen()) return;
 
-		let eventCode = event.code;
-
-		if (this.inputMapping[eventCode]) {
-			eventCode = this.inputMapping[eventCode];
-		}
-
+		const eventCode = event.code;
 		const relevantKeys = ['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown'];
 
 		if (relevantKeys.includes(eventCode) && !this.keyDownList.has(eventCode)) {
@@ -81,11 +61,7 @@ export class Gamewebsocket {
 	handleKeyUp(event) {
 		if (!this.isOpen()) return;
 
-		let eventCode = event.code;
-
-		if (this.inputMapping[eventCode]) {
-			eventCode = this.inputMapping[eventCode];
-		}
+		const eventCode = event.code;
 
 		if (this.keyDownList.has(eventCode)) {
 			this.keyDownList.delete(eventCode);

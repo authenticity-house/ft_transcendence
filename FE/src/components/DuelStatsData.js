@@ -4,6 +4,8 @@ class DuelStatsData {
 		const rightPlayer = data ? data.player2.nickname : '플레이어2';
 		const leftScore = data ? data.player1.score : 0;
 		const rightScore = data ? data.player2.score : 0;
+		const leftPlayerImage = data ? data.player1.image : '';
+		const rightPlayerImage = data ? data.player2.image : '';
 
 		const winPlayer =
 			leftScore > rightScore ? `${leftPlayer} WIN!` : `${rightPlayer} WIN!`;
@@ -41,6 +43,8 @@ class DuelStatsData {
 			rightPlayer,
 			leftScore,
 			rightScore,
+			leftPlayerImage,
+			rightPlayerImage,
 			winPlayer,
 			matchDate,
 			matchTime,

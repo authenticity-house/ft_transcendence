@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 
@@ -11,24 +9,13 @@ from rest_framework.relations import PrimaryKeyRelatedField
 from users.models import User
 from users.serializers import UserProfileSerializer
 from .models import Match, UserStat
+from .time_utils import parse_timedelta
 
 attack_type_mapping: dict = {
     0: "TYPE0",
     1: "TYPE1",
     2: "TYPE2",
 }
-
-
-def parse_timedelta(time_str):
-    parts = time_str.split(":")
-    if len(parts) == 3:
-        hours, minutes, seconds = map(int, parts)
-        return timedelta(hours=hours, minutes=minutes, seconds=seconds)
-    if len(parts) == 2:
-        hours, minutes = map(int, parts)
-        return timedelta(hours=hours, minutes=minutes)
-
-    return timedelta(seconds=0)
 
 
 class MatchListSerializer(serializers.ModelSerializer):
@@ -60,7 +47,7 @@ class MatchSerializer(serializers.ModelSerializer):
             "is_winner": winner_id == player_stat.user_id,
         }
 
-        player_stat.save(match_data=update_match_data)
+        player_stat.save(online_match_data=update_match_data)
 
     def get_additional_data(self, data: dict, player1_pk: int, player2_pk: int) -> dict:
         player1_data: dict = dict(data["player1"])
@@ -129,7 +116,7 @@ class UserStatSummarySerializer(serializers.ModelSerializer):
         if obj.wins_count + obj.losses_count == 0:
             return 0
 
-        return round(obj.wins_count / (obj.wins_count + obj.losses_count), 2)
+        return round(obj.wins_count / (obj.wins_count + obj.losses_count) * 100, 2)
 
     class Meta:
         model = UserStat

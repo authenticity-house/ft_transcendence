@@ -37,3 +37,11 @@ class Friendship(models.Model):
     are_we_friend = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+
+
+class UploadedImage(models.Model):
+    image = models.ImageField()
+    uploaded_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.uploaded_on.date()

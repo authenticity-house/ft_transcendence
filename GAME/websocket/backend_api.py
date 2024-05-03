@@ -9,3 +9,17 @@ async def fetch_nickname(session_id):
                 data = await response.json()
                 return data.get("pk"), data.get("nickname")  # 'nickname' 키로 닉네임 반환
             return None  # 응답 상태 코드가 200이 아닌 경우
+
+
+async def send_match_result(data, mode="online"):
+    url = f"http://backend:8000/stats/match/{mode}/"
+    success_status_code = 204 if mode == "local" else 201
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=data) as response:
+            if response.status != success_status_code:
+                try:
+                    response_data = await response.json()
+                    print(f"Error: {response_data}")
+                except aiohttp.ContentTypeError:
+                    print(f"Error: Received status code {response.status}")

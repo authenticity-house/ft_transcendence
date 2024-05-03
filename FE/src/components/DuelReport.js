@@ -1,13 +1,25 @@
 const html = String.raw;
 
-function duelResultElement(data, playerData) {
+function nicknameSize(nickname) {
+	if (nickname.length > 10) {
+		return 'display-light14';
+	}
+	if (nickname.length > 6) {
+		return 'display-light18';
+	}
+	return 'display-light28';
+}
+
+function duelResultElement(data) {
 	return html`
 		<div class="duel-user-container justify-content-start">
 			<div class="user-image-container">
-				<img src=${playerData.player1.profile_url} alt="profile" />
+				<img src="${data.leftPlayerImage}" alt="user" />
 			</div>
 			<div class="user-blank-container"></div>
-			<div class="user-nickname-container">${playerData.player1.nickname}</div>
+			<div class="user-nickname-container ${nicknameSize(data.leftPlayer)}">
+				${data.leftPlayer}
+			</div>
 		</div>
 		<div class="duel-score-container pink_neon_10">
 			<div class="duel-score-wrapper">${data.leftScore}</div>
@@ -15,12 +27,16 @@ function duelResultElement(data, playerData) {
 			<div class="duel-score-wrapper">${data.rightScore}</div>
 		</div>
 		<div class="duel-user-container justify-content-end">
-			<div class="user-nickname-container justify-content-end">
-				${playerData.player2.nickname}
+			<div
+				class="user-nickname-container user-nickname-right justify-content-end ${nicknameSize(
+					data.rightPlayer
+				)}"
+			>
+				${data.rightPlayer}
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-image-container">
-				<img src=${playerData.player2.profile_url} alt="profile" />
+				<img src="${data.rightPlayerImage}" alt="user" />
 			</div>
 		</div>
 	`;
@@ -60,7 +76,6 @@ function duelCollapseElement(
 }
 
 function duelReportWrapper(
-	playerData,
 	data,
 	matchRallyHtml,
 	specialStatsHtml,
@@ -68,7 +83,7 @@ function duelReportWrapper(
 	scorePositionHtml,
 	unique
 ) {
-	const resultElement = duelResultElement(data, playerData);
+	const resultElement = duelResultElement(data);
 	const dataTimeElement = duelDateTimeElement(data);
 	const collapseElement = duelCollapseElement(
 		matchRallyHtml,

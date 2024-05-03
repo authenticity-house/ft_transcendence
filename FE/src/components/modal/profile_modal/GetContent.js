@@ -25,6 +25,7 @@ export function getContent(id, userPk) {
 				if (res.status === 200) {
 					res.json().then((data) => {
 						myInfoContent.mount(data);
+						myInfoContent.addEventListener();
 					});
 				}
 			})
@@ -143,7 +144,6 @@ export function getContent(id, userPk) {
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
-						console.log(data);
 						friendInfoContent.mountStats(data);
 					});
 				} else if (res.status === 403) {

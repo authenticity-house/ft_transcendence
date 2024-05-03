@@ -2,6 +2,7 @@ import { changeUrl } from '../index.js';
 import ButtonLarge from '../components/ButtonLarge.js';
 import ButtonBackArrow from '../components/ButtonBackArrow.js';
 import apiEndpoints from '../constants/apiConfig.js';
+import { getCookie } from '../utils/getCookie.js';
 
 const html = String.raw;
 
@@ -59,10 +60,28 @@ class PlayModePage {
 					userProfile.innerHTML = '';
 					const userImgElement = document.createElement('img');
 					// (+) 유저 이미지 URL 받아서 넣을 예정
-					userImgElement.src = 'image/default-profile.png';
-					userImgElement.alt = 'user';
-					userImgElement.classList.add('user-profile-img');
-					userProfile.appendChild(userImgElement);
+					fetch(apiEndpoints.MY_INFO_URL, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-CSRFToken': getCookie('csrftoken')
+						},
+						mode: 'same-origin'
+					}).then((infoRes) => {
+						if (infoRes.status === 200) {
+							infoRes.json().then((data) => {
+								userImgElement.src = data.profile_url;
+								userImgElement.alt = 'user';
+								userImgElement.classList.add('user-profile-img');
+								userProfile.appendChild(userImgElement);
+							});
+						} else {
+							userImgElement.src = 'image/default-profile.png';
+							userImgElement.alt = 'user';
+							userImgElement.classList.add('user-profile-img');
+							userProfile.appendChild(userImgElement);
+						}
+					});
 				}
 			})
 			.catch((error) => {

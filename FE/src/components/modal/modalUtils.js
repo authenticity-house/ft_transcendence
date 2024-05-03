@@ -30,16 +30,16 @@ export function hideModal(element, callback) {
 }
 
 function handleBackHomeClick(event) {
-	if (event.target && event.target.id === 'back-home-button') {
+	const idToUrl = {
+		'back-home-button': '',
+		'back-list-button': 'onlineMainScreen',
+		'back-online-button': 'onlineMainScreen'
+	};
+
+	const url = idToUrl[event.target.id];
+	if (url !== undefined) {
 		removeModalBackdrop();
-		changeUrl('');
-		// 이벤트 리스너 제거
-		document.removeEventListener('click', handleBackHomeClick);
-	}
-	if (event.target && event.target.id === 'back-list-button') {
-		removeModalBackdrop();
-		changeUrl('onlineMainScreen');
-		// 이벤트 리스너 제거
+		changeUrl(url);
 		document.removeEventListener('click', handleBackHomeClick);
 	}
 }
