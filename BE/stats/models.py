@@ -50,7 +50,7 @@ class UserStat(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
-    def update_stat(self, match_data: dict):
+    def online_update_stat(self, match_data: dict):
         self.rating = match_data.get("rating", self.rating)
         self.online_play_time += match_data.get("play_time", timedelta(seconds=0))
         self.max_ball_speed = max(self.max_ball_speed, match_data.get("max_ball_speed", 0))
@@ -63,9 +63,12 @@ class UserStat(models.Model):
             self.losses_count += 1
 
     def save(self, *args, **kwargs):
-        if "match_data" in kwargs:
-            match_data = kwargs.pop("match_data")
-            self.update_stat(match_data)
+        if "online_match_data" in kwargs:
+            match_data = kwargs.pop("online_match_data")
+            self.online_update_stat(match_data)
+        elif "local_match_data" in kwargs:
+            match_data = kwargs.pop("local_match_data")
+            self.local_play_time += match_data.get("play_time", timedelta(seconds=0))
 
         self.max_rating = max(self.rating, self.max_rating)
         super().save()

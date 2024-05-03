@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-from django.db.models import Q
 from django.contrib.sessions.models import Session
 from django.contrib.auth import get_user_model
 from django.db.models import Q
