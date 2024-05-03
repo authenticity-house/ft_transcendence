@@ -196,6 +196,7 @@ export class MessageManager {
 					'tournamentResult',
 					{
 						content: message.data,
+						mode: message.mode,
 						sendMsg: this.sendGameDisconnect.bind(this)
 					},
 					false
@@ -213,14 +214,14 @@ export class MessageManager {
 	handleGameTypeMessage(message) {
 		switch (message.subtype) {
 			case SubType.CONNECTION_ESTABLISHED:
-				//if (message.mode === 'online') {
-				//	showModalWithContent(
-				//		'loadingModal',
-				//		'loding-modal-text',
-				//		'다른 유저를 기다리는 중입니다.'
-				//	);
-				//	break;
-				//}
+				if (message.mode === 'online') {
+					showModalWithContent(
+						'loadingModal',
+						'loding-modal-text',
+						'다른 유저를 기다리는 중입니다.'
+					);
+					break;
+				}
 				// 게임 초기 정보 전송
 				this.sendGameSessionInfo(this.websocket.initial);
 				break;
