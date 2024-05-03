@@ -8,7 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from stats.models import Match, UserStat
-from stats.serializers import MatchSerializer, MatchListSerializer, UserStatSummarySerializer
+from stats.serializers import (
+    MatchSerializer,
+    MatchListSerializer,
+    UserStatSummarySerializer,
+    UserStatSerializer,
+)
 
 
 class MatchListAPIView(APIView):
@@ -49,8 +54,46 @@ class UserStatSummaryAPIView(APIView):
             user_pk: int = request.user.pk
 
         try:
-            stat_summary = UserStat.objects.get(user_id=user_pk)
+            stat_summary, _ = UserStat.objects.get_or_create(user=request.user)
             serializer = UserStatSummarySerializer(stat_summary)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist as exc:
             raise NotFound(detail=f"UserStat does not exist: pk={user_pk}") from exc
+
+
+class UserStatAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_pk: int = request.user.pk
+
+        try:
+            user_stat, _ = UserStat.objects.get_or_create(user=request.user)
+            serializer = UserStatSerializer(user_stat)
+            data = serializer.data
+            data["graph"] = self._get_graph_data(user_pk)
+            return Response(data, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist as exc:
+            raise NotFound(detail=f"UserStat does not exist: pk={user_pk}") from exc
+
+    def _get_graph_data(self, user_pk):
+        rating_change: list = []
+        attack_type: dict = {key: 0 for key in ["TYPE0", "TYPE1", "TYPE2"]}
+
+        match_list = Match.objects.filter(Q(player1_id=user_pk) | Q(player2_id=user_pk)).order_by(
+            "-create_date"
+        )[:12]
+        for match in reversed(match_list):
+            if user_pk == match.player1_id:
+                rating_change.append(match.player1_rating)
+                attack_type[match.player1_attack_type] += 1
+            else:
+                rating_change.append(match.player2_rating)
+                attack_type[match.player2_attack_type] += 1
+
+        return {
+            "match_cnt": len(match_list),
+            "rating_change": rating_change,
+            "attack_type": attack_type,
+        }
