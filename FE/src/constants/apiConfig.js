@@ -9,6 +9,7 @@ function getApiEndpoints() {
 	const BASE_URL = getApiBaseUrl();
 	const USERS_URL = `${BASE_URL}users/`;
 	const ROOMS_URL = `${BASE_URL}rooms/`;
+	const STATS_URL = `${BASE_URL}stats/`;
 
 	return {
 		LOGIN_URL: `${USERS_URL}login/`,
@@ -22,7 +23,9 @@ function getApiEndpoints() {
 		FRIEND_PROFILE_URL: `${USERS_URL}detail/`,
 		MY_FRIEND_URL: `${USERS_URL}friends/`,
 		MY_FRIEND_REQUEST_SENT_URL: `${USERS_URL}friends/sent/`,
-		MY_FRIEND_REQUEST_RECEIVED_URL: `${USERS_URL}friends/received/`
+		MY_FRIEND_REQUEST_RECEIVED_URL: `${USERS_URL}friends/received/`,
+		MATCH_RECORD_URL: `${STATS_URL}match/list/`,
+		STATS_SUMMARY_URL: `${STATS_URL}summary/`
 	};
 }
 

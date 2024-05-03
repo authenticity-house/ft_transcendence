@@ -27,11 +27,14 @@ load_dotenv(dotenv_path=BASE_DIR.parent / ".env")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("GAME_SECRET_KEY")
 
+SERVER_IP = os.getenv("SERVER_IP", "127.0.0.1")
+SERVER_PORT = os.getenv("SERVER_PORT", "8080")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # False if not in os.environ because of casting above
 DEBUG = os.getenv("GAME_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]", "game"]
+ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]", "game", SERVER_IP]
 
 
 # Application definition
