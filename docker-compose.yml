@@ -37,6 +37,7 @@ services:
       - ./.env
     environment:
       POSTGRES_HOST: ${POSTGRES_DOCKER_HOST}
+      DJANGO_SETTINGS_MODULE: ${BE_DJANGO_SETTINGS_MODULE}
     networks:
       - pong_net
 
