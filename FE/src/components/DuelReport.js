@@ -67,30 +67,6 @@ function duelReportWrapper(
 	scorePositionHtml,
 	unique
 ) {
-	// data
-	// {
-	// 	"leftPlayer": "2",
-	// 	"rightPlayer": "3",
-	// 	"leftScore": 5,
-	// 	"rightScore": 4,
-	// 	"winPlayer": "2 WIN!",
-	// 	"matchDate": "2024-05-03",
-	// 	"matchTime": "00:00:24",
-	// 	"maxRally": 1,
-	// 	"maxMaxBallSpeed": 0.055,
-	// 	"avgRally": 0.1111111111111111,
-	// 	"avgMaxBallSpeed": 0.04166666666666666,
-	// 	"minRally": 0,
-	// 	"minMaxBallSpeed": 0.04,
-	// 	"leftAttackType": "공격형",
-	// 	"rightAttackType": "공격형",
-	// 	"leftAttackPos": "전체",
-	// 	"rightAttackPos": "상단",
-	// 	"powerUpCnt1": 0,
-	// 	"powerUpCnt2": 0,
-	// 	"keyCnt1": 0,
-	// 	"keyCnt2": 0
-	// }
 	const resultElement = duelResultElement(data);
 	const dataTimeElement = duelDateTimeElement(data);
 	const collapseElement = duelCollapseElement(
