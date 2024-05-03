@@ -17,7 +17,7 @@ from .views import (
     ReceivedFriendRequestDetailAPIView,
     SentFriendRequestDetailAPIView,
     UpdateUserView,
-    FileUploadAPIView,
+    ImageUploadAPIView,
 )
 
 urlpatterns = [
@@ -50,6 +50,6 @@ urlpatterns = [
     path("check-login/", CheckLoginStatusAPIView.as_view(), name="check_login_status"),
     path("update/", UpdateUserView.as_view(), name="update_user_profile"),
     path("session/", SessionAPIView.as_view(), name="session"),
-    path("upload-image/", FileUploadAPIView.as_view(), name="upload-image"),
+    path("upload-image/", ImageUploadAPIView.as_view(), name="upload-image"),
 ]
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

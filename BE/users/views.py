@@ -467,20 +467,21 @@ class SessionAPIView(APIView):
             )
 
 
-class FileUploadAPIView(APIView):
+class ImageUploadAPIView(APIView):
     serializer_class = ImageUploadSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
+
         if serializer.is_valid():
-            # you can access the file like this from serializer
             image = serializer.validated_data["image"]
-            # user_serializer = self.serializer_class(request.user, data=image, partial=True)
-            # user_serializer.is_valid(raise_exception=True)
-            # user_serializer.save()
-            #
-            # print(image)
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            image_url = "/profile/" + str(image)
+
+            request.user.profile_url = image_url
+            request.user.save()
+
+            return Response({"url": image_url}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
