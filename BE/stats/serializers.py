@@ -116,7 +116,7 @@ class UserStatSummarySerializer(serializers.ModelSerializer):
         if obj.wins_count + obj.losses_count == 0:
             return 0
 
-        return round(obj.wins_count / (obj.wins_count + obj.losses_count), 2)
+        return round(obj.wins_count / (obj.wins_count + obj.losses_count) * 100, 2)
 
     class Meta:
         model = UserStat
