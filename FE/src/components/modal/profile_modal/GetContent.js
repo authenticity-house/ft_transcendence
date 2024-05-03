@@ -25,6 +25,7 @@ export function getContent(id, userPk) {
 				if (res.status === 200) {
 					res.json().then((data) => {
 						myInfoContent.mount(data);
+						myInfoContent.addEventListener();
 					});
 				}
 			})

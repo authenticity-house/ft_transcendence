@@ -2,6 +2,7 @@ import { changeUrlInstance, changeUrlData } from '../index.js';
 import {
 	removeModalBackdrop,
 	showModalWithContent,
+	showModal,
 	hideModal
 } from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
@@ -253,6 +254,7 @@ export class MessageManager {
 				// 게임 페이지 생성 및 실행
 				this.gamepage = new GamePage({
 					...message.data,
+					mode: message.mode,
 					sendMsg: this.sendGameDisconnect.bind(this)
 				});
 				changeUrlInstance('game', this.gamepage);
@@ -284,6 +286,7 @@ export class MessageManager {
 						'duelstats',
 						{
 							...message.data,
+							mode: message.mode,
 							sendMsg: this.sendGameDisconnect.bind(this)
 						},
 						false
@@ -299,6 +302,10 @@ export class MessageManager {
 						false
 					);
 
+				break;
+
+			case SubType.PLAYER_LEAVE:
+				showModal('gameEndModal');
 				break;
 
 			case SubType.ERROR:

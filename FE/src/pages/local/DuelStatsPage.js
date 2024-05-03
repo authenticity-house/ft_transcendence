@@ -75,7 +75,9 @@ class DuelStatsPage {
 			this.data.sendMsg();
 			if (this.data.sendMsg.name === 'bound sendGameDisconnect') {
 				history.pushState(null, null, 'gameBlock');
-				changeUrl('matchMode');
+				if (this.data.mode === 'online')
+					changeUrl('onlineMainScreen'); // online
+				else changeUrl('playMode'); // local
 			}
 		});
 	}
