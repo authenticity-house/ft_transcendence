@@ -2,6 +2,7 @@ import { changeUrlInstance, changeUrlData } from '../index.js';
 import {
 	removeModalBackdrop,
 	showModalWithContent,
+	showModal,
 	hideModal
 } from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
@@ -289,6 +290,10 @@ export class MessageManager {
 						false
 					);
 
+				break;
+
+			case SubType.PLAYER_LEAVE:
+				showModal('gameEndModal');
 				break;
 
 			case SubType.ERROR:

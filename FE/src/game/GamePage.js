@@ -5,6 +5,7 @@ import { TextGeometry } from '../../node_modules/three/examples/jsm/geometries/T
 import { changeUrl } from '../index.js';
 import { exitModal } from '../components/modal/exitModal.js';
 import * as utils from './gamePageUtils.js';
+import { gameEndModal } from './gameEndModal.js';
 
 const html = String.raw;
 
@@ -54,7 +55,7 @@ class GamePage {
 				</button>
 			</div>
 			<!-- 나가기 모달 -->
-			${exitModal()}
+			${exitModal()} ${gameEndModal()}
 		`;
 	}
 
