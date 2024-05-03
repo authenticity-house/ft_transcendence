@@ -416,6 +416,7 @@ class CheckLoginStatusAPIView(APIView):
             }
         )
 
+
 class UpdateUserView(RetrieveUpdateAPIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -446,6 +447,7 @@ class UpdateUserView(RetrieveUpdateAPIView):
                 {"detail": "The nickname is already in use."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
 
 class SessionAPIView(APIView):
     def get(self, request, *args, **kwargs):
