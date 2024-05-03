@@ -1952,7 +1952,6 @@ td {
 	gap: 6rem;
 }
 
-.my-info-content-left,
 .friend-info-content-left {
 	display: flex;
 	flex-direction: column;
@@ -1960,7 +1959,21 @@ td {
 	gap: 10rem;
 }
 
-.my-info-content-image-name-container,
+.my-info-content-left {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5rem;
+}
+
+.my-info-content-image-name-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
 .friend-info-content-image-name-container {
 	display: flex;
 	flex-direction: column;
@@ -2031,12 +2044,22 @@ td {
 	gap: 1rem;
 	height: 3.5rem;
 	padding-left: 4rem;
+	margin-top: 4rem;
 }
 
 .my-info-content-name-modify-input {
 	width: 20rem;
 	height: 3rem;
 	display: none;
+}
+
+.modify-name-error-msg {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30rem;
+	height: 4rem;
+	color: #ff5d84;
 }
 
 .friend-info-content-name {
