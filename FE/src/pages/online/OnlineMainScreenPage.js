@@ -27,7 +27,7 @@ class OnlineMainScreenPage {
 				<div class="user-profile-container">
 					<div class="user-profile-img-wrapper"></div>
 					<span
-						class="user-profile-nickname display-medium48 yellow_neon_10"
+						class="user-profile-nickname display-medium27 yellow_neon_10"
 					></span>
 					<div class="user-profile-summary display-light24"></div>
 					<button class="create-room-button head_blue_neon_15">

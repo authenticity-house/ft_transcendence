@@ -56,13 +56,13 @@ class MatchManager:
         if self.is_player2_score():
             print("player2 win!")
             self._rally_count_list.append(self._rally_cnt)
-            self.handle_scoring(self.player2, self.player1)
+            self.handle_scoring(self.player2, self.player1, 1)
 
         # 왼쪽 득점
         if self.is_player1_score():
             print("player1 win!")
             self._rally_count_list.append(self._rally_cnt)
-            self.handle_scoring(self.player1, self.player2)
+            self.handle_scoring(self.player1, self.player2, 2)
 
     def get_animation_frame(self) -> dict:
         self.local_move_paddles()
@@ -122,7 +122,7 @@ class MatchManager:
         other.update_attack_pos(self.ball.y)
         self._rally_cnt += 1
 
-    def handle_scoring(self, winner: Player, other: Player):
+    def handle_scoring(self, winner: Player, other: Player, side: int):
         self.update_score(winner)
         winner.update_attack_type(self.ball.y)
         winner.update_score_pos(self.ball.x, self.ball.y)
@@ -131,8 +131,8 @@ class MatchManager:
 
         other.store_key_cnt()
         other.update_score_trend()
-
-        self.reset()
+        
+        self.reset(side)
 
     def update_score(self, player) -> None:
         player.increase_score()
@@ -183,8 +183,8 @@ class MatchManager:
 
         return [max_value, avg_value, min_value]
 
-    def reset(self) -> None:
-        self.ball.reset()
+    def reset(self, side: int) -> None:
+        self.ball.reset(side)
         self._rally_cnt = 0
 
     @property
