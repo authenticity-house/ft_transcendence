@@ -1,5 +1,6 @@
 import apiEndpoints from '../constants/apiConfig.js';
 import { changeUrl } from '../index.js';
+import { getCookie } from '../utils/getCookie.js';
 
 const html = String.raw;
 
@@ -19,24 +20,64 @@ function fetchProfileDataAndDisplay() {
 		rating: 4242
 	};
 
-	const ImgSrc = profileData.image || 'image/default-profile.png';
-	const record = profileData.winLossRecord;
-	// 1. img
-	const imgElement = document.createElement('img');
-	imgElement.src = ImgSrc;
-	imgElement.alt = 'user';
-	imgElement.className = 'user-profile-summary-img';
-	document.querySelector('.user-profile-img-wrapper').appendChild(imgElement);
-	// 2. nickName
-	const nickNameElement = document.querySelector('.user-profile-nickname');
-	nickNameElement.textContent = profileData.nickName;
-	// 3. profile summary
-	appendChildSpan(
-		'.user-profile-summary',
-		`${record[0]}전 ${record[1]}승 ${record[2]}패`
-	);
-	appendChildSpan('.user-profile-summary', `승률 ${profileData.winRate}%`);
-	appendChildSpan('.user-profile-summary', `레이팅 ${profileData.rating}점`);
+	fetch(apiEndpoints.MY_INFO_URL, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': getCookie('csrftoken')
+		},
+		mode: 'same-origin'
+	})
+		.then((res) => {
+			if (res.status === 200) {
+				res.json().then((data) => {
+					const ImgSrc = data.profile_url;
+					// 1. img
+					const imgElement = document.createElement('img');
+					imgElement.src = ImgSrc;
+					imgElement.alt = 'user';
+					imgElement.className = 'user-profile-summary-img';
+					document
+						.querySelector('.user-profile-img-wrapper')
+						.appendChild(imgElement);
+					// 2. nickName
+					const nickNameElement = document.querySelector(
+						'.user-profile-nickname'
+					);
+					nickNameElement.textContent = data.nickname;
+				});
+			}
+		})
+		.catch((error) => {
+			console.log('Error fetching profile data:', error);
+		});
+
+	fetch(apiEndpoints.STATS_SUMMARY_URL, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-CSRFToken': getCookie('csrftoken')
+		},
+		mode: 'same-origin'
+	})
+		.then((res) => {
+			if (res.status === 200) {
+				res.json().then((data) => {
+					appendChildSpan(
+						'.user-profile-summary',
+						`${data.total_count}전 ${data.wins_count}승 ${data.losses_count}패`
+					);
+					appendChildSpan(
+						'.user-profile-summary',
+						`승률 ${data.winning_rate}%`
+					);
+					appendChildSpan('.user-profile-summary', `레이팅 ${data.rating}점`);
+				});
+			}
+		})
+		.catch((error) => {
+			console.log('Error fetching profile data:', error);
+		});
 }
 
 function getRoomElementAll(roomList) {
