@@ -12,36 +12,6 @@ function appendRatingText(ratingChange) {
 	`;
 }
 
-function getWidthHeight(widthRem, heightRem) {
-	const windowWidth = window.innerWidth;
-
-	let canvasWidth = 0;
-	let canvasHeight = 0;
-	if (windowWidth > 2560) {
-		canvasWidth = widthRem * 16;
-		canvasHeight = heightRem * 16;
-	} else if (windowWidth > 1920) {
-		canvasWidth = widthRem * 10;
-		canvasHeight = heightRem * 10;
-	} else if (windowWidth > 1440) {
-		canvasWidth = widthRem * 8;
-		canvasHeight = heightRem * 8;
-	} else if (windowWidth > 1024) {
-		canvasWidth = widthRem * 6;
-		canvasHeight = heightRem * 6;
-	} else if (windowWidth > 768) {
-		canvasWidth = widthRem * 4;
-		canvasHeight = heightRem * 4;
-	} else if (windowWidth > 425) {
-		canvasWidth = widthRem * 3;
-		canvasHeight = heightRem * 3;
-	} else {
-		canvasWidth = widthRem * 2;
-		canvasHeight = heightRem * 2;
-	}
-	return [canvasWidth, canvasHeight];
-}
-
 function getTextPosition() {
 	const textParent = document.querySelector('.rating-change-text-container');
 	const scoreParentRect = textParent.getBoundingClientRect();
@@ -88,9 +58,9 @@ function drawLine(ctx, x1, y1, x2, y2, color) {
 function drawRatingChange(ratingChange) {
 	const canvas = document.querySelector('.rating-change-canvas');
 	// canvas width 32rem, height 24rem을 px단위로 변환
-	const [canvasWidth, canvasHeight] = getWidthHeight(32, 24);
-	canvas.width = canvasWidth;
-	canvas.height = canvasHeight;
+	// const [canvasWidth, canvasHeight] = getWidthHeight(32, 24);
+	canvas.width = 320;
+	canvas.height = 240;
 	// 레이팅 최대 최소 좌표 가져오기 (canvas y좌표 활용)
 	const [maxNumber, maxNumberY, ratingGapY] = getTextPosition();
 	// 레이팅 최대 최소 좌표 이용해서 ratingChange 데이터 값들 canvas에 그리기
@@ -115,14 +85,17 @@ function drawRatingChange(ratingChange) {
 	return toolTip;
 }
 
-function drawAttackTendency(attackTendency) {
+function drawAttackTendency(type) {
+	const attackTendency = [
+		{ title: '공격형', value: type.TYPE0, color: '#ff5d84' },
+		{ title: '혼합형', value: type.TYPE1, color: '#ffd164' },
+		{ title: '방어형', value: type.TYPE2, color: '#5ad7ff' }
+	];
 	const canvas = document.querySelector('.attack-tendency-canvas');
-	// canvas width 20rem, height 20rem을 px단위로 변환
-	const [canvasWidth, canvasHeight] = getWidthHeight(20, 20);
-	canvas.width = canvasWidth;
-	canvas.height = canvasHeight;
+	canvas.width = 200;
+	canvas.height = 200;
 
-	const fontSize = canvasWidth / 20 + 6;
+	const fontSize = 16;
 
 	const ctx = canvas.getContext('2d');
 	let totalValue = 0;
@@ -159,3 +132,36 @@ function drawAttackTendency(attackTendency) {
 }
 
 export { appendRatingText, drawRatingChange, drawAttackTendency };
+
+/*
+// 반응형 처리 코드
+function getWidthHeight(widthRem, heightRem) {
+	const windowWidth = window.innerWidth;
+
+	let canvasWidth = 0;
+	let canvasHeight = 0;
+	if (windowWidth > 2560) {
+		canvasWidth = widthRem * 16;
+		canvasHeight = heightRem * 16;
+	} else if (windowWidth > 1920) {
+		canvasWidth = widthRem * 10;
+		canvasHeight = heightRem * 10;
+	} else if (windowWidth > 1440) {
+		canvasWidth = widthRem * 8;
+		canvasHeight = heightRem * 8;
+	} else if (windowWidth > 1024) {
+		canvasWidth = widthRem * 6;
+		canvasHeight = heightRem * 6;
+	} else if (windowWidth > 768) {
+		canvasWidth = widthRem * 4;
+		canvasHeight = heightRem * 4;
+	} else if (windowWidth > 425) {
+		canvasWidth = widthRem * 3;
+		canvasHeight = heightRem * 3;
+	} else {
+		canvasWidth = widthRem * 2;
+		canvasHeight = heightRem * 2;
+	}
+	return [canvasWidth, canvasHeight];
+}
+*/
