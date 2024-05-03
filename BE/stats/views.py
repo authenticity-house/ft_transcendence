@@ -108,6 +108,11 @@ class UserStatAPIView(APIView):
         match_list = Match.objects.filter(Q(player1_id=user_pk) | Q(player2_id=user_pk)).order_by(
             "-create_date"
         )[:12]
+
+        match_cnt = len(match_list)
+        if match_cnt < 12:
+            rating_change.append(2000)
+
         for match in reversed(match_list):
             if user_pk == match.player1_id:
                 rating_change.append(match.player1_rating)
@@ -117,7 +122,7 @@ class UserStatAPIView(APIView):
                 attack_type[match.player2_attack_type] += 1
 
         return {
-            "match_cnt": len(match_list),
+            "match_cnt": match_cnt,
             "rating_change": rating_change,
             "attack_type": attack_type,
         }
