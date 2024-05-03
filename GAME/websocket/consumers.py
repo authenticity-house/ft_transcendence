@@ -5,6 +5,7 @@ from json.decoder import JSONDecodeError
 from channels.generic.websocket import AsyncWebsocketConsumer, WebsocketConsumer
 from channels.exceptions import StopConsumer
 from session.session_manager import ASessionManager, DuelManager, TournamentManager
+from websocket.backend_api import fetch_nickname, send_match_result
 
 
 class GameConsumer(AsyncWebsocketConsumer):
@@ -13,8 +14,13 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.session_manager: ASessionManager = None
         self.game_session = None
         self.connected = False
+        self.pk = -1
 
     async def connect(self):
+        session_key = self.scope["cookies"].get("sessionid", None)
+        if session_key is not None:
+            self.pk, _ = await fetch_nickname(session_key)
+
         await self.accept()
         self.connected = True
         await self.send_message("connection_established", "You are now connected!")
@@ -81,9 +87,6 @@ class GameConsumer(AsyncWebsocketConsumer):
             send_msg = self.session_manager.get_send_data(msg_subtype)
             await self.send_message(*send_msg)
 
-        # elif msg_subtype == "session_info":
-        #     await self.initialize_session(msg_data)
-
     async def run_game_session(self):
         """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
         sm: ASessionManager = self.session_manager
@@ -94,8 +97,10 @@ class GameConsumer(AsyncWebsocketConsumer):
             await asyncio.sleep(1 / 60)
 
         # 매치 통계 전송
-        send_msg = sm.get_send_data("match_end")
-        await self.send_message(*send_msg)
+        subtype, message, data = sm.get_send_data("match_end")
+        if self.pk != -1:
+            await self.send_local_match_data(data["play_time"])
+        await self.send_message(subtype, message, data)
 
     async def disconnect(self, code):
         self.connected = False
@@ -107,6 +112,10 @@ class GameConsumer(AsyncWebsocketConsumer):
             except asyncio.CancelledError:
                 pass  # 게임 세션 취소 성공
         await super().disconnect(code)
+
+    async def send_local_match_data(self, play_time="00:00:00"):
+        data = {"player": self.pk, "play_time": play_time}
+        await send_match_result(data, mode="local")  # 백엔드 서버로 매치 결과 전송
 
     async def send_message(self, subtype, message, data=None, msg_type="game"):
         if not self.connected:

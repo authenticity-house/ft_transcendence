@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +14,8 @@ from stats.serializers import (
     UserStatSummarySerializer,
     UserStatSerializer,
 )
+from stats.time_utils import parse_timedelta
+from users.models import User
 
 
 class MatchListAPIView(APIView):
@@ -41,6 +43,28 @@ class MatchAPIView(APIView):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LocalMatchAPIView(APIView):
+    def post(self, request):
+        data = request.data
+        if list(data.keys()) != ["player", "play_time"]:
+            raise ParseError("Include both 'player' and 'play_time' keys in body")
+
+        user_pk = int(data["player"])
+        play_time = parse_timedelta(data.get("play_time", "00:00"))
+        try:
+            user = User.objects.get(pk=user_pk)
+        except ObjectDoesNotExist as exc:
+            raise NotFound(detail=f"UserStat does not exist: pk={user_pk}") from exc
+
+        try:
+            user_stat, _ = UserStat.objects.get_or_create(user=user)
+            user_stat.save(local_match_data={"play_time": play_time})
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
         except Exception as e:  # pylint: disable=broad-exception-caught
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
