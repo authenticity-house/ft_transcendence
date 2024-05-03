@@ -144,6 +144,8 @@ class TournamentSession:
             self.__update_player_info(msg[-1]["nickname"]["player1"], msg[-1]["nickname"]["player2"])
             await self.__send_message(*msg)
 
+            await asyncio.sleep(1)
+
             """매치 시작 후 1초당 60프레임으로 클라이언트에게 현재 상태 전송"""
             sm: ASessionManager = self._manager
 
