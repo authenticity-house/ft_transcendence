@@ -146,6 +146,34 @@ class MyInfoContent {
 		}
 	}
 
+	mountStats(data) {
+		const myInfoContentWinLoseContainer = document.querySelector(
+			'.my-info-content-win-lose-container'
+		);
+		const myInfoContentWinRateContainer = document.querySelector(
+			'.my-info-content-win-rate-container'
+		);
+		const myInfoContentRatingContainer = document.querySelector(
+			'.my-info-content-rating-container'
+		);
+
+		myInfoContentWinLoseContainer.innerHTML = `
+			<span>${data.total_count}전</span>
+			<span>${data.wins_count}승</span>
+			<span>${data.losses_count}패</span>
+		`;
+
+		myInfoContentWinRateContainer.innerHTML = `
+			<span>승률</span>
+			<span>${data.winning_rate}%</span>
+		`;
+
+		myInfoContentRatingContainer.innerHTML = `
+			<span>레이팅</span>
+			<span>${data.rating}점</span>
+		`;
+	}
+
 	addEventListener() {
 		// 프로필 변경 이미지 클릭
 		const modifyProfilButton = document.querySelector(
