@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-from backend.settings import SERVER_IP, SERVER_PORT
+from backend.settings import SERVER_IP, SERVER_PORT, MEDIA_URL
 
-from .models import User
+from .models import User, UploadedImage
 
 
 def transform_profile_url(profile_url):
@@ -40,7 +40,8 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if data["provider"] == "PONG":
+        profile_url: str = data["profile_url"]
+        if profile_url.startswith(MEDIA_URL):
             data["profile_url"] = transform_profile_url(data["profile_url"])
         return data
 
@@ -48,14 +49,14 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("pk", "nickname", "profile_url", "provider")
-        read_only_fields = ("pk", "nickname", "profile_url", "provider")
+        fields = ("pk", "nickname", "profile_url")
+        read_only_fields = ("pk", "nickname", "profile_url")
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if data["provider"] == "PONG":
+        profile_url: str = data["profile_url"]
+        if profile_url.startswith(MEDIA_URL):
             data["profile_url"] = transform_profile_url(data["profile_url"])
-        data.pop("provider")
         return data
 
 
@@ -106,3 +107,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return detail
+
+
+class ImageUploadSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = UploadedImage
+        fields = ("image", "uploaded_on")
