@@ -10,14 +10,14 @@ class StatsContent {
 	template() {
 		// MOCK data - modal stats
 		const mockData = {
-			nickName: '닉네임',
+			nickName: 'Default',
 			playTime: { local: '0h 0m 0s', online: '0h 0m 0s' },
 			matchCount: { all: 0, win: 0, lose: 0, winRate: 0 },
-			rating: 1500,
+			rating: 0,
 			top: {
-				topRating: 1800,
-				topBallSpeed: 100,
-				topRallyCount: 55
+				topRating: 0,
+				topBallSpeed: 0,
+				topRallyCount: 0
 			}
 		};
 
@@ -84,7 +84,11 @@ class StatsContent {
 						<div class="rating-change-wrapper display-light20">
 							<div class="rating-change-text-container display-light14"></div>
 							<div class="rating-change-canvas-wrapper">
-								<canvas class="rating-change-canvas"></canvas>
+								<canvas
+									class="rating-change-canvas"
+									width="320"
+									height="240"
+								></canvas>
 								<div id="rating-tooltip" class="display-light16"></div>
 							</div>
 						</div>
@@ -92,7 +96,11 @@ class StatsContent {
 					<div class="attack-tendency-container">
 						<span>공격 성향</span>
 						<div class="attack-tendency-wrapper">
-							<canvas class="attack-tendency-canvas"></canvas>
+							<canvas
+								class="attack-tendency-canvas"
+								width="200"
+								height="200"
+							></canvas>
 						</div>
 					</div>
 				</div>

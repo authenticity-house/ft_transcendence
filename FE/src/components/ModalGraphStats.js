@@ -59,8 +59,6 @@ function drawRatingChange(ratingChange) {
 	const canvas = document.querySelector('.rating-change-canvas');
 	// canvas width 32rem, height 24rem을 px단위로 변환
 	// const [canvasWidth, canvasHeight] = getWidthHeight(32, 24);
-	canvas.width = 320;
-	canvas.height = 240;
 	// 레이팅 최대 최소 좌표 가져오기 (canvas y좌표 활용)
 	const [maxNumber, maxNumberY, ratingGapY] = getTextPosition();
 	// 레이팅 최대 최소 좌표 이용해서 ratingChange 데이터 값들 canvas에 그리기
@@ -92,9 +90,6 @@ function drawAttackTendency(type) {
 		{ title: '방어형', value: type.TYPE2, color: '#5ad7ff' }
 	];
 	const canvas = document.querySelector('.attack-tendency-canvas');
-	canvas.width = 200;
-	canvas.height = 200;
-
 	const fontSize = 16;
 
 	const ctx = canvas.getContext('2d');

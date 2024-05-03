@@ -103,7 +103,6 @@ export function getContent(id, userPk) {
 				res
 					.json()
 					.then((data) => {
-						console.log(data);
 						const toolTip = statsContent.mount(data);
 						statsContent.addEventListeners(toolTip);
 					})
