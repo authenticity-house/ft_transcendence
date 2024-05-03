@@ -1,11 +1,11 @@
 const html = String.raw;
 
 function appendRatingText(ratingChange) {
-	if (ratingChange.length < 10) return html``;
+	if (ratingChange.length < 2) return html``;
 
-	// 레이팅 점수 최대값 100자리 정수로 올림, 최솟값 100자리 정수로 내림
-	const ratingMax = Math.ceil(Math.max(...ratingChange) / 100) * 100;
-	const ratingMin = Math.floor(Math.min(...ratingChange) / 100) * 100;
+	// 레이팅 점수 최대값 10자리 정수로 올림, 최솟값 10자리 정수로 내림
+	const ratingMax = Math.ceil(Math.max(...ratingChange) / 10) * 10;
+	const ratingMin = Math.floor(Math.min(...ratingChange) / 10) * 10;
 	return html`
 		<div class="rating-change-text-wrapper">${ratingMax}</div>
 		<div class="rating-change-text-wrapper">${ratingMin}</div>
