@@ -146,6 +146,8 @@ class MyInfoContent {
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
 			myInfoContentIdPasswordContainer.appendChild(modifyPassword);
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
+
+			document.querySelector('.modify-name-error-msg').innerHTML = '';
 		}
 	}
 
@@ -220,6 +222,7 @@ class MyInfoContent {
 		const modifyCancelButton = document.getElementById('edit-name-cancel');
 		// 현재 닉네임 : 나중에 newNickname 실패 시, 다시 불러 올때 사용 or newNicknmae과 똑같은지 확인 할때 사용
 		let nickName = modifyNickname.querySelector('span').innerText;
+		const modifyErrorMsg = document.querySelector('.modify-name-error-msg');
 		modifyNicknameButton.addEventListener('click', () => {
 			if (modifyNicknameButton.classList.contains('modify')) {
 				// 수정하기 (+ 닉네임 vaild 검사 / + 닉네임 수정 요청 코드 추가)
@@ -228,9 +231,6 @@ class MyInfoContent {
 
 				if (newNickname === '') {
 					// + 닉네임 수정 error 표시
-					const modifyErrorMsg = document.querySelector(
-						'.modify-name-error-msg'
-					);
 					modifyErrorMsg.innerHTML = '여기에 에러 메시지를 써주세요!';
 				} else {
 					// + 닉네임 수정 요청 코드 추가 후, res.ok이면 밑의 코드 실행
@@ -240,6 +240,7 @@ class MyInfoContent {
 					modifyNickname.querySelector('input').style.display = 'none';
 					modifyNicknameButton.classList.remove('modify');
 					modifyCancelButton.style.display = 'none';
+					modifyErrorMsg.innerHTML = '';
 				}
 			} else {
 				modifyNickname.querySelector('span').style.display = 'none';
@@ -255,6 +256,7 @@ class MyInfoContent {
 			modifyNickname.querySelector('input').style.display = 'none';
 			modifyNicknameButton.classList.remove('modify');
 			modifyCancelButton.style.display = 'none';
+			modifyErrorMsg.innerHTML = '';
 		});
 
 		// 비밀번호 변경 UI
