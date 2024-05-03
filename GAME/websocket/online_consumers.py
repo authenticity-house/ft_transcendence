@@ -32,7 +32,7 @@ class OnlineConsumer(AsyncJsonWebsocketConsumer):
         await self.send_message("connection_established", "You are now connected!")
 
         self.session = await OnlineSessionManager.join_session(
-            self.session_number, self.nickname, self.pk
+            self.session_number, self.nickname, self.pk, self.profile_url
         )
 
     async def send_message(self, subtype, message, data=None, msg_type="game"):

@@ -25,9 +25,9 @@ class OnlineSessionManager:
         return session_number
 
     @classmethod
-    async def join_session(cls, session_number, nickname, pk):
+    async def join_session(cls, session_number, nickname, pk, profile_url):
         session = cls._sessions[session_number]
-        await session.add_user(nickname, pk)
+        await session.add_user(nickname, pk, profile_url)
         return session
 
     @classmethod

@@ -12,6 +12,7 @@ class Session:
         self._manager = None
         self._users = []
         self._pks = dict()
+        self._profile_urls = dict()
         self._total_user = game_info["current_headcount"]
 
         self._key_maps = None
@@ -20,9 +21,10 @@ class Session:
         self._session_group_name = f"session_{self._session_number}"
         self._match_session = None
 
-    async def add_user(self, nickname, pk):
+    async def add_user(self, nickname, pk, profile_url):
         self._users.append(nickname)
         self._pks[nickname] = pk
+        self._profile_urls[nickname] = profile_url
 
         if len(self._users) == self._total_user:
             self._manager.set_nickname(self._users)
