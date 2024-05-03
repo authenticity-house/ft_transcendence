@@ -31,6 +31,36 @@ export function getContent(id, userPk) {
 			.catch((err) => {
 				console.log(err);
 			});
+
+		fetch(apiEndpoints.STATS_SUMMARY_URL, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						myInfoContent.mountStats(data);
+					});
+				} else if (res.status === 403) {
+					alert('로그인이 필요합니다.');
+					window.location.reload();
+				} else if (res.status === 404) {
+					myInfoContent.mountStats({
+						total_count: 0,
+						wins_count: 0,
+						losses_count: 0,
+						winning_rate: 0,
+						rating: 0
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
 		fetch(apiEndpoints.MATCH_RECORD_URL, {
@@ -86,6 +116,37 @@ export function getContent(id, userPk) {
 					res.json().then((data) => {
 						friendInfoContent.mount(data);
 						friendInfoContent.addEventListeners(data);
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		fetch(`${apiEndpoints.STATS_SUMMARY_URL}${userPk}/`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': csrfToken
+			},
+			mode: 'same-origin'
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						console.log(data);
+						friendInfoContent.mountStats(data);
+					});
+				} else if (res.status === 403) {
+					alert('로그인이 필요합니다.');
+					window.location.reload();
+				} else if (res.status === 404) {
+					friendInfoContent.mountStats({
+						total_count: 0,
+						wins_count: 0,
+						losses_count: 0,
+						winning_rate: 0,
+						rating: 0
 					});
 				}
 			})
