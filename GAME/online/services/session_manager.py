@@ -1,4 +1,4 @@
-from .session import Session, TournamentSession
+from .session import TournamentSession, DuelSession
 
 
 class OnlineSessionManager:
@@ -14,12 +14,13 @@ class OnlineSessionManager:
         return cls._instance
 
     @classmethod
-    def add_session(cls, game_info) -> int:
+    def add_session(cls, game_info, battle_mode) -> int:
         session_number = cls.__next_room_number()
 
-        # session = Session(session_number, game_info)
-        session = TournamentSession(session_number, game_info)
-        cls._sessions[session_number] = session
+        if battle_mode == 1:
+            cls._sessions[session_number] = DuelSession(session_number, game_info)
+        else:
+            cls._sessions[session_number] = TournamentSession(session_number, game_info)
 
         return session_number
 

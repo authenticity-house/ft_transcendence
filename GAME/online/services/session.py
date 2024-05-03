@@ -114,7 +114,7 @@ class DuelSession(Session):
         # 매치 통계 전송
         send_msg = sm.get_send_data("match_end")
 
-        msg = {"player1": self._pks[0], "player2": self._pks[1], "data": send_msg[2]}
+        msg = {"player1": self._pks[self._current_match_player1], "player2": self._pks[self._current_match_player2], "data": send_msg[2]}
         await send_match_result(msg)  # 백엔드 서버로 매치 결과 전송
 
         await self._send_message(*send_msg)

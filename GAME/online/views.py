@@ -14,7 +14,7 @@ def online_game_view(request):
         # JSON 데이터 파싱
         data = json.loads(request.body)
         info = data["info"]
-        session_number = OnlineSessionManager.add_session(info)
+        session_number = OnlineSessionManager.add_session(info, info["battle_mode"])
 
         mode = "oneonone" if info["battle_mode"] == 1 else "tournament"
         return JsonResponse(
