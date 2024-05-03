@@ -29,6 +29,8 @@ class FriendRecordContent {
 			};
 			content[i].data.player1.nickname = playerData.player1.nickname;
 			content[i].data.player2.nickname = playerData.player2.nickname;
+			content[i].data.player1.image = playerData.player1.profile_url;
+			content[i].data.player2.image = playerData.player2.profile_url;
 			const resultData = DuelStatsData.getDuelStatsData(content[i].data);
 			const matchRallyHtml = DuelBasicStats.getMatchRallyHTML(resultData);
 			const specialStatsHtml = DuelSpecialStats.getSpecialStatsHTML(resultData);
@@ -36,7 +38,6 @@ class FriendRecordContent {
 			const scorePositionHtml = DuelGraphStats.getScorePositionHTML(resultData);
 
 			duelReports += duelReportWrapper(
-				playerData,
 				resultData,
 				matchRallyHtml,
 				specialStatsHtml,

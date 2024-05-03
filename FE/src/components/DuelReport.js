@@ -4,10 +4,10 @@ function duelResultElement(data) {
 	return html`
 		<div class="duel-user-container justify-content-start">
 			<div class="user-image-container">
-				<img src=${data.player1.profile_url} alt="profile" />
+				<img src="${data.leftPlayerImage}" alt="user" />
 			</div>
 			<div class="user-blank-container"></div>
-			<div class="user-nickname-container">${data.player1.nickname}</div>
+			<div class="user-nickname-container">${data.leftPlayer}</div>
 		</div>
 		<div class="duel-score-container pink_neon_10">
 			<div class="duel-score-wrapper">${data.leftScore}</div>
@@ -16,11 +16,11 @@ function duelResultElement(data) {
 		</div>
 		<div class="duel-user-container justify-content-end">
 			<div class="user-nickname-container justify-content-end">
-				${data.player2.nickname}
+				${data.rightPlayer}
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-image-container">
-				<img src=${data.player2.profile_url} alt="profile" />
+				<img src="${data.rightPlayerImage}" alt="user" />
 			</div>
 		</div>
 	`;
@@ -67,6 +67,30 @@ function duelReportWrapper(
 	scorePositionHtml,
 	unique
 ) {
+	// data
+	// {
+	// 	"leftPlayer": "2",
+	// 	"rightPlayer": "3",
+	// 	"leftScore": 5,
+	// 	"rightScore": 4,
+	// 	"winPlayer": "2 WIN!",
+	// 	"matchDate": "2024-05-03",
+	// 	"matchTime": "00:00:24",
+	// 	"maxRally": 1,
+	// 	"maxMaxBallSpeed": 0.055,
+	// 	"avgRally": 0.1111111111111111,
+	// 	"avgMaxBallSpeed": 0.04166666666666666,
+	// 	"minRally": 0,
+	// 	"minMaxBallSpeed": 0.04,
+	// 	"leftAttackType": "공격형",
+	// 	"rightAttackType": "공격형",
+	// 	"leftAttackPos": "전체",
+	// 	"rightAttackPos": "상단",
+	// 	"powerUpCnt1": 0,
+	// 	"powerUpCnt2": 0,
+	// 	"keyCnt1": 0,
+	// 	"keyCnt2": 0
+	// }
 	const resultElement = duelResultElement(data);
 	const dataTimeElement = duelDateTimeElement(data);
 	const collapseElement = duelCollapseElement(
