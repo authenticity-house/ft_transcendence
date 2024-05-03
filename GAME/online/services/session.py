@@ -167,12 +167,18 @@ class TournamentSession(Session):
             await self._send_message(*msg)
             if msg[-1] == "game_over":
                 await asyncio.sleep(5)
-                data = self._manager.get_summary_stat()
+                data = self.__get_summary_stat()
                 await self._send_message("summary", "6-4 최종 정보 전송", data, "game_over_response")
                 break
 
-    def get_summary_stat(self):
-        return self._manager.get_summary_stat()
+    def __get_summary_stat(self):
+        data = self._manager.get_summary_stat()
+        images = self._profile_urls
+        for match in data:
+            match["player1"]["image"] = images[match["player1"]["nickname"]]
+            match["player2"]["image"] = images[match["player2"]["nickname"]]
+
+        return data
 
     def get_current_match_player(self):
         return set([self._current_match_player1, self._current_match_player2])
