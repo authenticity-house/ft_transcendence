@@ -60,7 +60,7 @@ function fetchProfileDataAndDisplay() {
 					);
 					appendChildSpan(
 						'.user-profile-summary',
-						`승률 ${data.winning_rate}%`
+						`승률 ${data.winning_rate * 100}%`
 					);
 					appendChildSpan('.user-profile-summary', `레이팅 ${data.rating}점`);
 				});

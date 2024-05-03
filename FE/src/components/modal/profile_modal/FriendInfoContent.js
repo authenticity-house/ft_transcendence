@@ -103,7 +103,7 @@ class FriendInfoContent {
 
 		friendInfoContentWinRateContainer.innerHTML = `
 			<span>승률</span>
-			<span>${data.winning_rate}%</span>
+			<span>${data.winning_rate * 100}%</span>
 		`;
 
 		friendInfoContentRatingContainer.innerHTML = `
