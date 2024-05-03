@@ -2,6 +2,7 @@ import { changeUrlInstance, changeUrlData } from '../index.js';
 import {
 	removeModalBackdrop,
 	showModalWithContent,
+	showModal,
 	hideModal
 } from '../components/modal/modalUtils.js';
 import GamePage from './GamePage.js';
@@ -243,11 +244,10 @@ export class MessageManager {
 				// 게임 페이지 생성 및 실행
 				this.gamepage = new GamePage({
 					...message.data,
+					mode: message.mode,
 					sendMsg: this.sendGameDisconnect.bind(this)
 				});
 				changeUrlInstance('game', this.gamepage);
-
-				this.websocket.setupInputMapping(); // 플레이어 위치 설정
 
 				this.resetGameData(); // score 정보 초기화
 				this.sendGameStartRequest(); // 게임 시작 요청
@@ -276,6 +276,7 @@ export class MessageManager {
 						'duelstats',
 						{
 							...message.data,
+							mode: message.mode,
 							sendMsg: this.sendGameDisconnect.bind(this)
 						},
 						false
@@ -291,6 +292,10 @@ export class MessageManager {
 						false
 					);
 
+				break;
+
+			case SubType.PLAYER_LEAVE:
+				showModal('gameEndModal');
 				break;
 
 			case SubType.ERROR:
