@@ -164,6 +164,9 @@ class TournamentSession(Session):
             msg = self._manager.get_send_data("next_match")
             await self._send_message(*msg)
             if msg[-1] == "game_over":
+                await asyncio.sleep(5)
+                data = self._manager.get_summary_stat()
+                await self._send_message("summary", "6-4 최종 정보 전송", data, "game_over_response")
                 break
 
     def get_summary_stat(self):
