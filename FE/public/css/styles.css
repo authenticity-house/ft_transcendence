@@ -2340,11 +2340,17 @@ td {
 	align-items: center;
 	width: 72rem;
 	height: 20rem;
-	padding: 3.7rem 6rem;
+	padding: 3.7rem 3rem;
 	border: 0.2rem solid #fff;
 	border-radius: 3rem;
 }
 
+#stats-nickname {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25rem;
+}
 .play-time-wrapper {
 	display: flex;
 	flex-direction: column;

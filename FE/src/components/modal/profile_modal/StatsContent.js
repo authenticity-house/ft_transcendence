@@ -24,9 +24,9 @@ class StatsContent {
 		return html`
 			<div class="modal-stats-container">
 				<div class="play-time-container">
-					<span id="stats-nickname" class="display-medium36 text_yellow_neon"
-						>${mockData.nickName}</span
-					>
+					<div id="stats-nickname" class="display-light28 text_yellow_neon">
+						${mockData.nickName}
+					</div>
 					<div class="play-time-wrapper">
 						<span class="display-light24">총 플레이 타임</span>
 						<div class="modal-stats-divider"></div>
