@@ -22,6 +22,7 @@ import {
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 import { hideModal } from './components/modal/modalUtils.js';
 import { browserInfo } from './utils/browserInfo.js';
+import { removeModalBackdrop } from './components/modal/modalUtils.js';
 
 const html = String.raw;
 

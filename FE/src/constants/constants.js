@@ -16,6 +16,7 @@ export const SubType = {
 	MATCH_INIT_SETTING: 'match_init_setting',
 	MATCH_RUN: 'match_run',
 	MATCH_END: 'match_end',
+	PLAYER_LEAVE: 'player_leave',
 	ERROR: 'error'
 };
 Object.freeze(SubType);

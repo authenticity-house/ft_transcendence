@@ -11,11 +11,11 @@ from .views import (
     UserProfileView,
     OAuthView,
     CheckLoginStatusAPIView,
-    SessionAPIView,
     SentFriendRequestsAPIView,
     ReceivedFriendRequestsAPIView,
     ReceivedFriendRequestDetailAPIView,
     SentFriendRequestDetailAPIView,
+    SessionAPIView,
     UpdateUserView,
     ImageUploadAPIView,
 )
