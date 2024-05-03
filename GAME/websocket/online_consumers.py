@@ -39,6 +39,7 @@ class OnlineConsumer(AsyncJsonWebsocketConsumer):
             "type": msg_type,
             "subtype": subtype,
             "mode": "online",
+            "my_nickname": self.nickname,
             "message": message,
             "data": data or {},
         }
