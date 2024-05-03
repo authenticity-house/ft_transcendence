@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-from backend.settings import SERVER_IP, SERVER_PORT
+from backend.settings import SERVER_IP, SERVER_PORT, MEDIA_URL
 
 from .models import User, UploadedImage
 
@@ -41,7 +41,7 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         profile_url: str = data["profile_url"]
-        if profile_url.startswith("/profile/"):
+        if profile_url.startswith(MEDIA_URL):
             data["profile_url"] = transform_profile_url(data["profile_url"])
         return data
 
@@ -55,7 +55,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         data = super().to_representation(instance)
         profile_url: str = data["profile_url"]
-        if profile_url.startswith("/profile/"):
+        if profile_url.startswith(MEDIA_URL):
             data["profile_url"] = transform_profile_url(data["profile_url"])
         return data
 
