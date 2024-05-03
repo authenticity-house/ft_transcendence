@@ -1,6 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
-from django.db.models import Q
 from django.contrib.sessions.models import Session
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -478,9 +477,10 @@ class ImageUploadAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            image = serializer.validated_data["image"]
             serializer.save()
 
+            instance = serializer.instance
+            image = instance.image
             image_url = "/profile/" + str(image)
 
             request.user.profile_url = image_url
