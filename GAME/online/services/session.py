@@ -87,7 +87,9 @@ class Session:
                 msg = {"type": "game", "subtype": "player_leave", "message": "", "mode": "online"}
                 await self.__broadcast("player.leave", msg)
 
-    async def __send_message(self, subtype, message, data=None, msg_type="game"):
+    async def __send_message(
+        self, subtype, message, data=None, msg_type="game"
+    ):  # pylint: disable=duplicate-code
         msg = {
             "type": msg_type,
             "subtype": subtype,
