@@ -28,11 +28,9 @@ const html = String.raw;
 // Shows loading message for 2 seconds
 const loadingContainer = document.querySelector('.loading-container');
 
-// setTimeout(() => {
-// 	loadingContainer.classList.add('hidden');
-// }, 1500);
-
-loadingContainer.classList.add('hidden');
+setTimeout(() => {
+	loadingContainer.classList.add('hidden');
+}, 1500);
 
 // header에 프로필 버튼 추가
 const profileButtonComponent = profileButton();
