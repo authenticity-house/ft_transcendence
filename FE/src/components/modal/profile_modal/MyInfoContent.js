@@ -99,7 +99,8 @@ class MyInfoContent {
 			<span class="display-light28">${data.nickname}</span>
 			<input type="text" class="display-light20 my-info-content-name-modify-input"
 				placeholder="새로운 닉네임" maxlength="12" />
-			<img class="edit-icon" src="image/edit.svg" alt="edit" />
+			<img id="edit-name" class="edit-icon" src="image/edit.svg" alt="edit" />
+			<img id="edit-name-cancel" class="edit-icon display-none" src="image/close.svg" alt="cancel" />
 		`;
 
 		if (data.provider === 'PONG') {
@@ -213,24 +214,36 @@ class MyInfoContent {
 
 		// 닉네임 변경 UI
 		const modifyNickname = document.querySelector('.my-info-content-name');
-		const modifyNicknameButton = modifyNickname.querySelector('img');
-		// const nickName = modifyNickname.querySelector('span').innerText; // 현재 닉네임 : 나중에 newNickname 실패 시, 다시 불러 올때 사용 or newNicknmae과 똑같은지 확인 할때 사용
+		const modifyNicknameButton = document.getElementById('edit-name');
+		const modifyCancelButton = document.getElementById('edit-name-cancel');
+		let nickName = modifyNickname.querySelector('span').innerText; // 현재 닉네임 : 나중에 newNickname 실패 시, 다시 불러 올때 사용 or newNicknmae과 똑같은지 확인 할때 사용
 		modifyNicknameButton.addEventListener('click', () => {
 			if (modifyNicknameButton.classList.contains('modify')) {
 				// 수정하기 (+ 닉네임 vaild 검사 / + 닉네임 수정 요청 코드 추가)
 				const newNickname = modifyNickname.querySelector('input').value;
-				// + 새로운 닉네임 valid 검사 코드 추가 ?
+				// + 새로운 닉네임 valid 검사 코드 추가 할 곳!
 
-				// + 닉네임 수정 요청 코드 추가 후, res.ok이면
+				// + 닉네임 수정 요청 코드 추가 후, res.ok이면 밑의 코드 실행
+				nickName = newNickname;
 				modifyNickname.querySelector('span').innerText = newNickname;
 				modifyNickname.querySelector('span').style.display = 'block';
 				modifyNickname.querySelector('input').style.display = 'none';
 				modifyNicknameButton.classList.remove('modify');
+				modifyCancelButton.style.display = 'none';
 			} else {
 				modifyNickname.querySelector('span').style.display = 'none';
 				modifyNickname.querySelector('input').style.display = 'block';
+				modifyCancelButton.style.display = 'block';
 				modifyNicknameButton.classList.add('modify');
 			}
+		});
+		// 닉네임 변경 취소 버튼 누를 시
+		modifyCancelButton.addEventListener('click', () => {
+			modifyNickname.querySelector('span').innerText = nickName;
+			modifyNickname.querySelector('span').style.display = 'block';
+			modifyNickname.querySelector('input').style.display = 'none';
+			modifyNicknameButton.classList.remove('modify');
+			modifyCancelButton.style.display = 'none';
 		});
 
 		// 비밀번호 변경 UI
