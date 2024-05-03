@@ -113,7 +113,7 @@ class TournamentSession:
         self._session_number = session_number
         self._manager = TournamentManager(game_info)
         self._users = []
-        self._pks = []
+        self._pks = dict()
         self._total_user = game_info["current_headcount"]
 
         self._key_maps = None
@@ -127,7 +127,7 @@ class TournamentSession:
 
     async def add_user(self, nickname, pk):
         self._users.append(nickname)
-        self._pks.append(pk)
+        self._pks[nickname] = pk
 
         if len(self._users) == self._total_user:
             self._manager.set_nickname(self._users)
@@ -155,7 +155,7 @@ class TournamentSession:
             # 매치 통계 전송
             send_msg = sm.get_send_data("match_end")
 
-            msg = {"player1": self._pks[0], "player2": self._pks[1], "data": send_msg[2]}
+            msg = {"player1": self._pks[self._current_match_player1], "player2": self._pks[self._current_match_player2], "data": send_msg[2]}
             await send_match_result(msg)  # 백엔드 서버로 매치 결과 전송
 
             await self.__send_message(*send_msg)
