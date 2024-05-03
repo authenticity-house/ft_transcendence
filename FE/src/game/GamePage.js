@@ -178,8 +178,9 @@ class GamePage {
 
 			console.log('match_end');
 			history.pushState(null, null, 'gameBlock');
-			changeUrl('matchMode'); // local
-			// online
+			if (this.initial.mode === 'online') {
+				changeUrl('onlineMainScreen'); // online
+			} else changeUrl('playMode'); // local
 		});
 	}
 }
