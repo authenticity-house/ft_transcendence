@@ -1,5 +1,15 @@
 const html = String.raw;
 
+function nicknameSize(nickname) {
+	if (nickname.length > 10) {
+		return 'display-light14';
+	}
+	if (nickname.length > 6) {
+		return 'display-light18';
+	}
+	return 'display-light28';
+}
+
 function duelResultElement(data) {
 	return html`
 		<div class="duel-user-container justify-content-start">
@@ -7,7 +17,9 @@ function duelResultElement(data) {
 				<img src="${data.leftPlayerImage}" alt="user" />
 			</div>
 			<div class="user-blank-container"></div>
-			<div class="user-nickname-container">${data.leftPlayer}</div>
+			<div class="user-nickname-container ${nicknameSize(data.leftPlayer)}">
+				${data.leftPlayer}
+			</div>
 		</div>
 		<div class="duel-score-container pink_neon_10">
 			<div class="duel-score-wrapper">${data.leftScore}</div>
@@ -15,7 +27,11 @@ function duelResultElement(data) {
 			<div class="duel-score-wrapper">${data.rightScore}</div>
 		</div>
 		<div class="duel-user-container justify-content-end">
-			<div class="user-nickname-container justify-content-end">
+			<div
+				class="user-nickname-container user-nickname-right justify-content-end ${nicknameSize(
+					data.rightPlayer
+				)}"
+			>
 				${data.rightPlayer}
 			</div>
 			<div class="user-blank-container"></div>
