@@ -15,6 +15,7 @@ from .views import (
     ReceivedFriendRequestsAPIView,
     ReceivedFriendRequestDetailAPIView,
     SentFriendRequestDetailAPIView,
+    UpdateUserView,
     SessionAPIView,
     UpdateUserView,
     ImageUploadAPIView,

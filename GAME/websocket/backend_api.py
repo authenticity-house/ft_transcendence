@@ -7,7 +7,7 @@ async def fetch_nickname(session_id):
         async with session.get(url) as response:
             if response.status == 200:
                 data = await response.json()
-                return data.get("pk"), data.get("nickname")  # 'nickname' 키로 닉네임 반환
+                return data.get("pk"), data.get("nickname"), data.get("profile_url")
             return None  # 응답 상태 코드가 200이 아닌 경우
 
 

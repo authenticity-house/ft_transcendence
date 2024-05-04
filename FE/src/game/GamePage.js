@@ -6,6 +6,7 @@ import { changeUrl } from '../index.js';
 import { exitModal } from '../components/modal/exitModal.js';
 import * as utils from './gamePageUtils.js';
 import { gameEndModal } from './gameEndModal.js';
+import { loadingModal } from '../pages/register/modals/loadingModal.js';
 
 const html = String.raw;
 
@@ -55,7 +56,7 @@ class GamePage {
 				</button>
 			</div>
 			<!-- 나가기 모달 -->
-			${exitModal()} ${gameEndModal()}
+			${exitModal()} ${gameEndModal()} ${loadingModal()}
 		`;
 	}
 

@@ -111,7 +111,9 @@ class TournamentResultPage {
 		exit.addEventListener('click', () => {
 			this.data.sendMsg();
 			history.pushState(null, null, 'gameBlock');
-			changeUrl('matchMode');
+			if (this.data.mode === 'online')
+				changeUrl('onlineMainScreen'); // online
+			else changeUrl('playMode'); // local
 		});
 	}
 }
