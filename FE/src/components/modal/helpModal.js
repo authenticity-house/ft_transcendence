@@ -25,13 +25,23 @@ class HelpModal {
 						</div>
 						<div class="modal-body help-modal-body">
 							<div class="help-modal-content">
-								<div class="help-modal-content-title">
-									<span class="display-light20">게임 방법</span>
-								</div>
-								<div class="help-modal-content-description">
-									<span class="display-light18">1. 게임 시작</span>
-									<span class="display-light18">2. 게임 진행</span>
-									<span class="display-light18">3. 게임 종료</span>
+								<img
+									class="help-modal-image"
+									src="image/in-game-screenshot.png"
+									alt="in-game-screenshot"
+								/>
+								<div class="help-modal-text-container">
+									<div class="help-modal-text">
+										<span class="display-light28">player 1 조작법</span>
+										<span class="display-light18">패들 이동: W, S</span>
+										<span class="display-light18">파워 업: SPACE</span>
+									</div>
+									<div class="help-modal-text"></div>
+									<div class="help-modal-text">
+										<span class="display-light28">player 2 조작법</span>
+										<span class="display-light18">패들 이동: ↑, ↓</span>
+										<span class="display-light18">파워 업: ENTER</span>
+									</div>
 								</div>
 							</div>
 						</div>

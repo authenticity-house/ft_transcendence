@@ -2644,14 +2644,36 @@ td {
 }
 
 .help-modal-header {
-	--bs-modal-header-padding: 2rem;
+	--bs-modal-header-padding: 3rem;
 }
 
 .help-modal-body {
 	--bs-modal-padding: 2rem;
 }
 
-.help-modal-content-description {
+.help-modal-content {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.help-modal-image {
+	width: 80rem;
+}
+
+.help-modal-text-container {
+	display: flex;
+	width: 100rem;
+	height: 15rem;
+}
+
+.help-modal-text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 33.3%;
+	height: 100%;
+	padding: 2rem;
+	gap: 2rem;
 }
