@@ -14,7 +14,7 @@ export default function updatePasswordListener() {
 
 	// 비밀번호 변경 클릭 버튼
 	modifyPasswordButton.addEventListener('click', () => {
-		//passwordContainer.style.display = 'none';
+		// passwordContainer.style.display = 'none';
 		modifyPasswordButton.classList.add('disabled');
 		modifyPasswordContainer.style.display = 'flex';
 	});
@@ -29,18 +29,25 @@ export default function updatePasswordListener() {
 		passwordContainer.style.display = 'flex';
 		modifyPasswordContainer.style.display = 'none';
 		modifyPasswordButton.classList.remove('disabled');
+		document.querySelector('.modify-name-error-msg2').innerHTML = '';
 	});
 	// + 비밀번호 변경 확인 API 추가 할 곳
-	modifySubmitPasswordButton.addEventListener('click', () => {
-		// const confirmForm = document.getElementById('modify-password-form');
-		// const formData = new FormData(confirmForm);
+	modifySubmitPasswordButton.addEventListener('click', async () => {
+		const confirmForm = document.querySelector('.modify-password-form');
 
+		const formData = new FormData(confirmForm);
+
+		const checkPassword = await updateProfileAPI(formData);
+		document.querySelector('.modify-name-error-msg2').innerHTML =
+			'에러에러에러에러';
+		if (checkPassword) {
+			// 변경이 가능하면, res.ok 해당 코드 실행
+			passwordContainer.style.display = 'flex';
+			modifyPasswordContainer.style.display = 'none';
+			modifyPasswordButton.classList.remove('disabled');
+		}
 		// const passCheck = passwordValidCheck(); // 유효하지 않을 경우 에러 메시지 반환
-		//	if (passCheck) {
-
-		// 변경이 가능하면, res.ok 해당 코드 실행
-		passwordContainer.style.display = 'flex';
-		modifyPasswordContainer.style.display = 'none';
-		modifyPasswordButton.classList.remove('disabled');
+		// if (passCheck) {
+		// }
 	});
 }

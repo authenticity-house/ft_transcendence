@@ -72,8 +72,13 @@ class MyInfoContent {
 
 	createTextInputBoxes() {
 		const boxesConfig = [
-			{ text: '기존 비밀번호', button: false, name: 'password', modify: true },
-			{ text: '새 비밀번호', button: false, name: 'password1', modify: true },
+			{
+				text: '기존 비밀번호',
+				button: false,
+				name: 'old_password',
+				modify: true
+			},
+			{ text: '새 비밀번호', button: false, name: 'password', modify: true },
 			{
 				text: '새 비밀번호 확인',
 				button: false,
@@ -164,8 +169,6 @@ class MyInfoContent {
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
 
 			document.querySelector('.modify-name-error-msg').innerHTML = '';
-			document.querySelector('.modify-name-error-msg2').innerHTML =
-				'에러에러에러에러';
 		}
 	}
 

@@ -1,28 +1,31 @@
 import apiEndpoints from '../../../../constants/apiConfig.js';
 import { getCookie } from '../../../../utils/getCookie.js';
+import { formDataToJson } from '../../../../utils/formDataToJson.js';
 
-export async function updateProfileAPI(value) {
+export async function updateProfileAPI(formData) {
 	const csrfToken = getCookie('csrftoken');
-	const formData = new FormData();
 
-	if (typeof value === 'string') {
-		formData.append('nickname', value);
-	}
+	const payload = formDataToJson(formData);
+	console.log('hhhh', payload);
 
 	try {
 		const response = await fetch(apiEndpoints.UPDATE_USER_URL, {
 			method: 'PATCH',
 			headers: {
-				'X-CSRFToken': csrfToken
+				'X-CSRFToken': csrfToken,
+				'Content-Type': 'application/json'
 			},
-			body: formData
+			body: payload
 		});
 
 		const data = await response.json();
+		console.log(data);
 		const { status, ok } = response;
 
 		if (ok) {
-			return data.nickname;
+			if (data.nickname) return data.nickname;
+
+			return true;
 		}
 		if (status === 400) {
 			return null;
