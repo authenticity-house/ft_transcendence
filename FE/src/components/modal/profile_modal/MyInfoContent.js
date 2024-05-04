@@ -152,6 +152,7 @@ class MyInfoContent {
 	}
 
 	mountStats(data) {
+		console.log(data);
 		const myInfoContentWinLoseContainer = document.querySelector(
 			'.my-info-content-win-lose-container'
 		);
@@ -170,7 +171,7 @@ class MyInfoContent {
 
 		myInfoContentWinRateContainer.innerHTML = `
 			<span>승률</span>
-			<span>${data.winning_rate * 100}%</span>
+			<span>${data.winning_rate}%</span>
 		`;
 
 		myInfoContentRatingContainer.innerHTML = `
