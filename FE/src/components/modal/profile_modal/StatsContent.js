@@ -8,10 +8,9 @@ const html = String.raw;
 
 class StatsContent {
 	template() {
-		// MOCK data - modal stats
-		const mockData = {
+		const defaultData = {
 			nickName: 'Default',
-			playTime: { local: '0h 0m 0s', online: '0h 0m 0s' },
+			playTime: { local: '0s', online: '0h 0m 0s' },
 			matchCount: { all: 0, win: 0, lose: 0, winRate: 0 },
 			rating: 0,
 			top: {
@@ -25,7 +24,7 @@ class StatsContent {
 			<div class="modal-stats-container">
 				<div class="play-time-container">
 					<div id="stats-nickname" class="display-light28 text_yellow_neon">
-						${mockData.nickName}
+						${defaultData.nickName}
 					</div>
 					<div class="play-time-wrapper">
 						<span class="display-light24">총 플레이 타임</span>
@@ -34,13 +33,13 @@ class StatsContent {
 							<div class="play-time-input-wrapper">
 								<span>로컬</span>
 								<span id="stats-playtime-local"
-									>${mockData.playTime.local}</span
+									>${defaultData.playTime.local}</span
 								>
 							</div>
 							<div class="play-time-input-wrapper">
 								<span>온라인</span>
 								<span id="stats-playtime-online"
-									>${mockData.playTime.online}</span
+									>${defaultData.playTime.online}</span
 								>
 							</div>
 						</div>
@@ -49,31 +48,31 @@ class StatsContent {
 				<div class="stats-text-container display-light20">
 					<div class="play-count-container">
 						<span id="stats-match-count"
-							>${mockData.matchCount.all}전 ${mockData.matchCount.win}승
-							${mockData.matchCount.lose}패</span
+							>${defaultData.matchCount.all}전 ${defaultData.matchCount.win}승
+							${defaultData.matchCount.lose}패</span
 						>
 						<span id="stats-win-rating"
-							>승률: ${mockData.matchCount.winRate}%</span
+							>승률: ${defaultData.matchCount.winRate}%</span
 						>
-						<span id="stats-rating">레이팅: ${mockData.rating}점</span>
+						<span id="stats-rating">레이팅: ${defaultData.rating}점</span>
 					</div>
 					<div class="top-stats-container">
 						<span class="display-light24">TOP</span>
 						<div class="modal-stats-divider"></div>
 						<div class="top-stats-wrapper">
 							<span>최고 레이팅</span>
-							<span id="stats-max-rating">${mockData.top.topRating}점</span>
+							<span id="stats-max-rating">${defaultData.top.topRating}점</span>
 						</div>
 						<div class="top-stats-wrapper">
 							<span>최고 공 속도</span>
 							<span id="stats-max-ball-speed"
-								>${mockData.top.topBallSpeed}km</span
+								>${defaultData.top.topBallSpeed}km</span
 							>
 						</div>
 						<div class="top-stats-wrapper">
-							<span>최고 렐리 횟수</span>
+							<span>최고 랠리 횟수</span>
 							<span id="stats-max-rally-count"
-								>${mockData.top.topRallyCount}번</span
+								>${defaultData.top.topRallyCount}번</span
 							>
 						</div>
 					</div>
@@ -120,10 +119,7 @@ class StatsContent {
 			'stats-match-count',
 			`${data.total_count}전 ${data.wins_count}승 ${data.losses_count}패`
 		);
-		this.displayApiTextData(
-			'stats-win-rating',
-			`승률 : ${data.winning_rate * 100}%`
-		);
+		this.displayApiTextData('stats-win-rating', `승률 : ${data.winning_rate}%`);
 		this.displayApiTextData('stats-rating', `레이팅: ${data.rating}점`);
 		this.displayApiTextData('stats-max-rating', `${data.max_rating}점`);
 		this.displayApiTextData('stats-max-ball-speed', data.max_ball_speed);
