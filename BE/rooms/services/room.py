@@ -1,3 +1,4 @@
+from stats.models import UserStat
 from .room_user import RoomUser
 from .exceptions import RoomError
 
@@ -37,8 +38,8 @@ class Room:  # pylint: disable=R0902
             raise RoomError("User already joined")
 
         nickname = user.nickname
-        # rating = user.stats.rating
-        rating = 1000
+        user_stat, _ = UserStat.objects.get_or_create(user=user)
+        rating = user_stat.rating
         img_url = user.profile_url
 
         user = RoomUser(nickname, rating, img_url)
@@ -47,8 +48,8 @@ class Room:  # pylint: disable=R0902
         self._total_rating += rating
 
     def delete_user(self, user) -> None:
-        # rating = user.stats.rating
-        rating = 1000
+        user_stat, _ = UserStat.objects.get_or_create(user=user)
+        rating = user_stat.rating
 
         for idx, room_user in enumerate(self._users):
             if room_user.is_same(user):
