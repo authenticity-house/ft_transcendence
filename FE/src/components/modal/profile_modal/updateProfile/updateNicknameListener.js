@@ -44,8 +44,9 @@ export default function updateNicknameListener() {
 					'2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.';
 				return;
 			}
-
-			const returnNickname = await updateProfileAPI(newNickname);
+			const formData = new FormData();
+			formData.append('nickname', newNickname);
+			const returnNickname = await updateProfileAPI(formData);
 			if (returnNickname) {
 				nickName = returnNickname;
 				toggleNicknameEditUI(false, elements, returnNickname);
