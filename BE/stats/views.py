@@ -74,11 +74,14 @@ class UserStatSummaryAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, user_pk=None):
-        if user_pk is None:
-            user_pk: int = request.user.pk
-
         try:
-            stat_summary, _ = UserStat.objects.get_or_create(user=request.user)
+            user = request.user
+            if user_pk is None:
+                user_pk: int = request.user.pk
+            else:
+                user = User.objects.get(pk=user_pk)
+
+            stat_summary, _ = UserStat.objects.get_or_create(user=user)
             serializer = UserStatSummarySerializer(stat_summary)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist as exc:
