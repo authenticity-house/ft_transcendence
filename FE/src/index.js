@@ -20,9 +20,11 @@ import {
 	profileButton
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
-import { hideModal } from './components/modal/modalUtils.js';
+import {
+	hideModal,
+	removeModalBackdrop
+} from './components/modal/modalUtils.js';
 import { browserInfo } from './utils/browserInfo.js';
-import { removeModalBackdrop } from './components/modal/modalUtils.js';
 
 const html = String.raw;
 
@@ -127,12 +129,13 @@ export const gamewsmanager = new GamewebsocketManager();
 // When the user clicks the logo, the page is changed
 const logo = document.querySelector('#logo');
 logo.addEventListener('click', () => {
-	gamewsmanager.unregister();
 	const url = window.location.href.split('/').pop();
 	if (url === 'game') {
-		history.pushState(null, null, 'gameBlock');
+		browserInfo('게임 중에는 접근할 수 없습니다.');
+	} else {
+		gamewsmanager.unregister();
+		window.location.reload(true);
 	}
-	window.location.reload(true);
 });
 
 // When the user presses the back or forward button, the page is changed
