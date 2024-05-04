@@ -33,7 +33,7 @@ async function uploadImageAPI(e) {
 	}
 }
 
-export function uploadImageListener() {
+export default function uploadImageListener() {
 	// 프로필 변경 이미지 클릭
 	const modifyProfilButton = document.querySelector(
 		'.my-info-content-image-edit'

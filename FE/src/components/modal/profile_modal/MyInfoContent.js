@@ -1,6 +1,7 @@
 import TextInputBox from '../../TextInputBox.js';
-import { uploadImageListener } from './updateProfile/uploadImageListener.js';
-import { updateNicknameListener } from './updateProfile/updateProfileAPI.js';
+import uploadImageListener from './updateProfile/uploadImageListener.js';
+import updateNicknameListener from './updateProfile/updateNicknameListener.js';
+import updatePasswordListener from './updateProfile/updatePasswordListener.js';
 
 const html = String.raw;
 
@@ -40,25 +41,29 @@ class MyInfoContent {
 					</div>
 					<div class="my-info-content-id-password-container">
 						<div class="my-info-content-id"></div>
-						<div class="my-info-content-modify-password-container"></div>
 						<div class="my-info-content-password"></div>
 					</div>
 				</div>
-				<div class="my-info-content-right">
-					<div class="my-info-stats-container display-light28">
-						<div class="my-info-content-win-lose-container">
-							<span>N전</span>
-							<span>N승</span>
-							<span>N패</span>
+				<div class="vertical-container" style="gap:6rem">
+					<div class="my-info-content-right">
+						<div class="my-info-stats-container display-light28">
+							<div class="my-info-content-win-lose-container">
+								<span>N전</span>
+								<span>N승</span>
+								<span>N패</span>
+							</div>
+							<div class="my-info-content-win-rate-container">
+								<span>승률</span>
+								<span>NN%</span>
+							</div>
+							<div class="my-info-content-rating-container">
+								<span>레이팅</span>
+								<span>NNN점</span>
+							</div>
 						</div>
-						<div class="my-info-content-win-rate-container">
-							<span>승률</span>
-							<span>NN%</span>
-						</div>
-						<div class="my-info-content-rating-container">
-							<span>레이팅</span>
-							<span>NNN점</span>
-						</div>
+					</div>
+					<div class="my-info-content-id-password-container2">
+						<div class="my-info-content-modify-password-container"></div>
 					</div>
 				</div>
 			</div>
@@ -84,6 +89,9 @@ class MyInfoContent {
 		const myInfoContentName = document.querySelector('.my-info-content-name');
 		const myInfoContentIdPasswordContainer = document.querySelector(
 			'.my-info-content-id-password-container'
+		);
+		const myInfoContentIdPasswordContainer2 = document.querySelector(
+			'.my-info-content-id-password-container2'
 		);
 
 		if (data.profile_url !== '/profile/default.png') {
@@ -138,6 +146,7 @@ class MyInfoContent {
 							확인
 						</button>
 					</div>
+					<div class="modify-name-error-msg2 display-light18"></div>
 				</form>
 			`;
 
@@ -151,10 +160,12 @@ class MyInfoContent {
 			`;
 
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
-			myInfoContentIdPasswordContainer.appendChild(modifyPassword);
+			myInfoContentIdPasswordContainer2.appendChild(modifyPassword);
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
 
 			document.querySelector('.modify-name-error-msg').innerHTML = '';
+			document.querySelector('.modify-name-error-msg2').innerHTML =
+				'에러에러에러에러';
 		}
 	}
 
@@ -188,40 +199,8 @@ class MyInfoContent {
 
 	addEventListener() {
 		uploadImageListener();
-
 		updateNicknameListener();
-
-		// 비밀번호 변경 UI
-		const passwordContainer = document.querySelector(
-			'.password-button-container'
-		);
-		const modifyPasswordContainer = document.querySelector(
-			'.modify-password-form'
-		);
-		const modifyPasswordButton = passwordContainer.querySelector('button');
-		const modifyCancelPasswordButton = document.getElementById('cancel-pw');
-		const modifySubmitPasswordButton = document.getElementById('submit-pw');
-		// 비밀번호 변경 클릭 버튼
-		modifyPasswordButton.addEventListener('click', () => {
-			passwordContainer.style.display = 'none';
-			modifyPasswordContainer.style.display = 'flex';
-		});
-		// 비밀번호 변경 취소 버튼
-		modifyCancelPasswordButton.addEventListener('click', () => {
-			const inputElementAll = modifyPasswordContainer.querySelectorAll('input');
-			inputElementAll.forEach((input) => {
-				const inputField = input;
-				inputField.value = '';
-			});
-			passwordContainer.style.display = 'flex';
-			modifyPasswordContainer.style.display = 'none';
-		});
-		// + 비밀번호 변경 확인 API 추가 할 곳
-		modifySubmitPasswordButton.addEventListener('click', () => {
-			// 변경이 가능하면, res.ok 해당 코드 실행
-			passwordContainer.style.display = 'flex';
-			modifyPasswordContainer.style.display = 'none';
-		});
+		updatePasswordListener();
 	}
 }
 

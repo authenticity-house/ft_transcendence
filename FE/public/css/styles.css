@@ -555,6 +555,13 @@ td {
 	gap: 5rem;
 }
 
+.vertical-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .vertical-button-container {
 	display: flex;
 	height: 15rem;
@@ -2048,7 +2055,7 @@ td {
 	align-items: center;
 	gap: 1rem;
 	height: 3.5rem;
-	padding-left: 4rem;
+	padding-left: 2rem;
 	margin-top: 4rem;
 }
 
@@ -2058,7 +2065,8 @@ td {
 	display: none;
 }
 
-.modify-name-error-msg {
+.modify-name-error-msg,
+.modify-name-error-msg2 {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -2075,7 +2083,8 @@ td {
 	gap: 1rem;
 }
 
-.my-info-content-id-password-container {
+.my-info-content-id-password-container,
+.my-info-content-id-password-container2 {
 	display: flex;
 	width: 30rem;
 	flex-direction: column;
@@ -2108,6 +2117,7 @@ td {
 }
 
 .modify-password-form {
+	width: 30rem;
 	flex-direction: column;
 	display: none;
 }

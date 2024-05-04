@@ -18,7 +18,7 @@ function toggleNicknameEditUI(isEditing, elements, nickname = '') {
 	}
 }
 
-export function updateNicknameListener() {
+export default function updateNicknameListener() {
 	const modifyNickname = document.querySelector('.my-info-content-name');
 	const elements = {
 		modifyNickname,
