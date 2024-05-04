@@ -10,7 +10,7 @@ class StatsContent {
 	template() {
 		const defaultData = {
 			nickName: 'Default',
-			playTime: { local: '0s', online: '0h 0m 0s' },
+			playTime: { local: '0s', online: '0s' },
 			matchCount: { all: 0, win: 0, lose: 0, winRate: 0 },
 			rating: 0,
 			top: {
