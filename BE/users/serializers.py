@@ -91,7 +91,11 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({"detail": "The existing password is incorrect."})
 
         if "nickname" in attrs:
-            if User.objects.exclude(pk=self.instance.pk).filter(nickname=attrs["nickname"]).exists():
+            if (
+                User.objects.exclude(pk=self.instance.pk)
+                .filter(nickname=attrs["nickname"])
+                .exists()
+            ):
                 raise serializers.ValidationError({"nickname": "The nickname is already in use."})
 
         return super().validate(attrs)

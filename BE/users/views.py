@@ -5,7 +5,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.db.models import Q
 from django.db import transaction
 
@@ -442,10 +442,14 @@ class UpdateUserView(RetrieveUpdateAPIView):
 
         try:
             serializer.is_valid(raise_exception=True)
-            detail = serializer.save()
-        except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(detail, status=status.HTTP_200_OK)
+            user = serializer.save()
+
+            if "password" in serializer_data:
+                user = request.user
+                update_session_auth_hash(request, user)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            return Response({str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SessionAPIView(APIView):
