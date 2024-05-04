@@ -1,9 +1,15 @@
+from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import send_email_confirmation, perform_login
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.db import transaction
+
+from dj_rest_auth.registration.views import RegisterView
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -13,16 +19,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import send_email_confirmation, perform_login
-
-from dj_rest_auth.registration.views import RegisterView
-
 from stats.models import UserStat
 from users.models import User, Friendship
-from users.serializers import UserProfileSerializer, UpdateUserSerializer
+from users.serializers import UserProfileSerializer, UpdateUserSerializer, ImageUploadSerializer
 from users.oauth import get_access_token, get_user_data, get_or_create_user
+
+from backend.settings import MEDIA_URL
 
 
 class SelfFriendException(APIException):
@@ -465,3 +467,27 @@ class SessionAPIView(APIView):
             return Response(
                 {"error": "Invalid session or user not found"}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class ImageUploadAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = ImageUploadSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            instance = serializer.instance
+            image = instance.image
+            image_url = MEDIA_URL + str(image)
+
+            request.user.profile_url = image_url
+            request.user.save()
+
+            return Response({"url": image_url}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
