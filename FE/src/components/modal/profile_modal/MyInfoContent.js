@@ -1,6 +1,6 @@
 import TextInputBox from '../../TextInputBox.js';
-import apiEndpoints from '../../../constants/apiConfig.js';
-import { getCookie } from '../../../utils/getCookie.js';
+import { uploadImageListener } from './uploadImageAPI.js';
+import { updateNicknameListener } from './updateProfile.js';
 
 const html = String.raw;
 
@@ -187,91 +187,9 @@ class MyInfoContent {
 	}
 
 	addEventListener() {
-		// 프로필 변경 이미지 클릭
-		const modifyProfilButton = document.querySelector(
-			'.my-info-content-image-edit'
-		);
-		modifyProfilButton.addEventListener('click', () =>
-			document.getElementById('modify-profile-image').click()
-		);
+		uploadImageListener();
 
-		// 유저 프로필 변경 (서버 X)
-		document
-			.getElementById('modify-profile-image')
-			.addEventListener('change', async (e) => {
-				// async 키워드 추가
-				const image = e.target.files[0];
-				if (!image) return;
-
-				const formData = new FormData();
-				formData.append('image', image);
-				const csrfToken = getCookie('csrftoken');
-
-				try {
-					const response = await fetch(apiEndpoints.UPLOAD_IMAGE_URL, {
-						method: 'POST',
-						headers: {
-							'X-CSRFToken': csrfToken
-						},
-						body: formData
-					});
-
-					const data = await response.json();
-					const { status, ok } = response;
-
-					if (ok) {
-						document.querySelector('.my-info-user-profile-image').src =
-							data.url;
-					} else if (status === 400) {
-						console.log('Image not found');
-					}
-				} catch (error) {
-					console.error('Error:', error);
-				}
-			});
-
-		// 닉네임 변경 UI
-		const modifyNickname = document.querySelector('.my-info-content-name');
-		const modifyNicknameButton = document.getElementById('edit-name');
-		const modifyCancelButton = document.getElementById('edit-name-cancel');
-		// 현재 닉네임 : 나중에 newNickname 실패 시, 다시 불러 올때 사용 or newNicknmae과 똑같은지 확인 할때 사용
-		let nickName = modifyNickname.querySelector('span').innerText;
-		const modifyErrorMsg = document.querySelector('.modify-name-error-msg');
-		modifyNicknameButton.addEventListener('click', () => {
-			if (modifyNicknameButton.classList.contains('modify')) {
-				// 수정하기 (+ 닉네임 vaild 검사 / + 닉네임 수정 요청 코드 추가)
-				const newNickname = modifyNickname.querySelector('input').value;
-				// + 새로운 닉네임 valid 검사 코드 추가 할 곳!
-
-				if (newNickname === '') {
-					// + 닉네임 수정 error 표시
-					modifyErrorMsg.innerHTML = '여기에 에러 메시지를 써주세요!';
-				} else {
-					// + 닉네임 수정 요청 코드 추가 후, res.ok이면 밑의 코드 실행
-					nickName = newNickname;
-					modifyNickname.querySelector('span').innerText = newNickname;
-					modifyNickname.querySelector('span').style.display = 'block';
-					modifyNickname.querySelector('input').style.display = 'none';
-					modifyNicknameButton.classList.remove('modify');
-					modifyCancelButton.style.display = 'none';
-					modifyErrorMsg.innerHTML = '';
-				}
-			} else {
-				modifyNickname.querySelector('span').style.display = 'none';
-				modifyNickname.querySelector('input').style.display = 'block';
-				modifyCancelButton.style.display = 'block';
-				modifyNicknameButton.classList.add('modify');
-			}
-		});
-		// 닉네임 변경 취소 버튼 누를 시
-		modifyCancelButton.addEventListener('click', () => {
-			modifyNickname.querySelector('span').innerText = nickName;
-			modifyNickname.querySelector('span').style.display = 'block';
-			modifyNickname.querySelector('input').style.display = 'none';
-			modifyNicknameButton.classList.remove('modify');
-			modifyCancelButton.style.display = 'none';
-			modifyErrorMsg.innerHTML = '';
-		});
+		updateNicknameListener();
 
 		// 비밀번호 변경 UI
 		const passwordContainer = document.querySelector(
