@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+import random
 
 from match.match_manager import MatchManager
 from match.player import Player
@@ -98,6 +99,7 @@ class TournamentManager(ASessionManager):
         self._bracket: Bracket = None
 
     def set_nickname(self, nicknames):
+        random.shuffle(nicknames)
         self._bracket: Bracket = Bracket(nicknames, len(nicknames))
 
     # 소켓에서 전송할 데이터 반환
@@ -165,6 +167,7 @@ class DuelManager(ASessionManager):
         self._nickname = data.get("nickname", ["player1", "player2"])
 
     def set_nickname(self, nicknames):
+        random.shuffle(nicknames)
         self._nickname = nicknames
 
     # 소켓에서 전송할 데이터 반환
