@@ -440,15 +440,12 @@ class UpdateUserView(RetrieveUpdateAPIView):
 
         serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
 
-        serializer.is_valid(raise_exception=True)
         try:
+            serializer.is_valid(raise_exception=True)
             detail = serializer.save()
-            return Response(detail, status=status.HTTP_200_OK)
-        except Exception:  # pylint: disable=broad-exception-caught
-            return Response(
-                {"detail": "The nickname is already in use."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(detail, status=status.HTTP_200_OK)
 
 
 class SessionAPIView(APIView):
