@@ -1,5 +1,5 @@
-import apiEndpoints from '../../../constants/apiConfig.js';
-import { getCookie } from '../../../utils/getCookie.js';
+import apiEndpoints from '../../../../constants/apiConfig.js';
+import { getCookie } from '../../../../utils/getCookie.js';
 
 async function uploadImageAPI(e) {
 	const image = e.target.files[0];

@@ -1,6 +1,6 @@
 import TextInputBox from '../../TextInputBox.js';
-import { uploadImageListener } from './uploadImageAPI.js';
-import { updateNicknameListener } from './updateProfile.js';
+import { uploadImageListener } from './updateProfile/uploadImageListener.js';
+import { updateNicknameListener } from './updateProfile/updateProfileAPI.js';
 
 const html = String.raw;
 
