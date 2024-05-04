@@ -20,10 +20,7 @@ import {
 	profileButton
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
-import {
-	hideModal,
-	removeModalBackdrop
-} from './components/modal/modalUtils.js';
+import { hideModal, modalClickSetting } from './components/modal/modalUtils.js';
 import { browserInfo } from './utils/browserInfo.js';
 
 const html = String.raw;
@@ -92,6 +89,7 @@ export const changeUrlInstance = (url, instance) => {
 	}
 	root.innerHTML = instance.template();
 	instance.addEventListeners();
+	modalClickSetting();
 };
 
 export const changeUrl = (url) => {
@@ -102,6 +100,7 @@ export const changeUrl = (url) => {
 	root.innerHTML = routes[url].template();
 	if (typeof routes[url].mount === 'function') routes[url].mount();
 	routes[url].addEventListeners();
+	modalClickSetting();
 };
 
 export const changeUrlData = (url, data, historyState = true) => {
@@ -122,6 +121,7 @@ export const changeUrlData = (url, data, historyState = true) => {
 	root.innerHTML = routes[url].template(data);
 	if (typeof routes[url].mount === 'function') routes[url].mount(data);
 	routes[url].addEventListeners();
+	modalClickSetting();
 };
 
 export const gamewsmanager = new GamewebsocketManager();
@@ -131,7 +131,7 @@ const logo = document.querySelector('#logo');
 logo.addEventListener('click', () => {
 	const url = window.location.href.split('/').pop();
 	if (url === 'game') {
-		browserInfo('게임 중에는 접근할 수 없습니다.');
+		browserInfo('게임 중에는 해당 기능을 사용할 수 없습니다.');
 	} else {
 		gamewsmanager.unregister();
 		window.location.reload(true);

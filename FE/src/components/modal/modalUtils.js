@@ -72,3 +72,19 @@ export function showModalWithContent(modalId, contentId, content) {
 	updateModalContent(contentId, content);
 	showModal(modalId);
 }
+
+export function modalClickSetting() {
+	const modalElementAll = document.querySelectorAll('.info-modal-button');
+	const url = window.location.href.split('/').pop();
+	if (url === 'game') {
+		modalElementAll.forEach((element) => {
+			element.removeAttribute('data-bs-toggle');
+			element.removeAttribute('data-bs-target');
+		});
+	} else {
+		modalElementAll.forEach((element) => {
+			element.setAttribute('data-bs-toggle', 'modal');
+			element.setAttribute('data-bs-target', '#profile-modal');
+		});
+	}
+}
