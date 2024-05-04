@@ -2126,7 +2126,7 @@ td {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	margin-top: 1.5rem;
+	margin: 1.5rem 0;
 }
 
 .modify-password-button {
