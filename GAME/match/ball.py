@@ -6,6 +6,7 @@ import random
 from .coor_util import Point, line_intersect
 from .constants import SCREEN_HEIGHT
 from .paddle import Paddle
+from .player import Player
 
 
 class Ball:
@@ -58,13 +59,16 @@ class Ball:
         elif self._y <= -ball_y_bound:
             self._y = -ball_y_bound
 
-    def increase_speed(self, paddle: Paddle) -> None:
+    def increase_speed(self, player: Player) -> None:
         if self._speed == Ball.INIT_BALL_SPEED:
             self._speed = self.DEFAULT_BALL_SPEED
             return
         self._speed += self._accel_speed
 
+        paddle = player.paddle
+
         if paddle.power_up is True:
+            player.increase_power_up_cnt()
             if self._power_up is False:
                 self._before_speed = self._speed
                 self._speed = self._speed * 1.5

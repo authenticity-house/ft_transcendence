@@ -119,7 +119,7 @@ class MatchManager:
         return data
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> None:
-        self.ball.increase_speed(owner.paddle)
+        self.ball.increase_speed(owner)
         self.ball.bounce_off_paddle(owner.paddle)
         owner.update_attack_type(self.ball.y)
         other.update_attack_pos(self.ball.y)
@@ -169,9 +169,9 @@ class MatchManager:
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:
-            if key in ["KeyW", "KeyS"]:
+            if key in ["KeyW", "KeyS", "Space"]:
                 self.player1.increase_key_cnt()
-            elif key in ["ArrowUp", "ArrowDown"]:
+            elif key in ["ArrowUp", "ArrowDown", "Enter"]:
                 self.player2.increase_key_cnt()
 
     def get_play_time(self) -> str:
