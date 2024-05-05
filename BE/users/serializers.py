@@ -96,7 +96,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
                 .filter(nickname=attrs["nickname"])
                 .exists()
             ):
-                raise serializers.ValidationError({"nickname": "The nickname is already in use."})
+                raise serializers.ValidationError({"detail": "The nickname is already in use."})
 
         return super().validate(attrs)
 
