@@ -7,7 +7,7 @@ from .models import User, UploadedImage
 
 
 def transform_profile_url(profile_url):
-    return f"http://{SERVER_IP}:{SERVER_PORT}{profile_url}"
+    return f"https://{SERVER_IP}:{SERVER_PORT}{profile_url}"
 
 
 class UserSerializer(serializers.ModelSerializer):

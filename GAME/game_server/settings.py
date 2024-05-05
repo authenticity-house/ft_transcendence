@@ -28,7 +28,7 @@ load_dotenv(dotenv_path=BASE_DIR.parent / ".env")
 SECRET_KEY = os.getenv("GAME_SECRET_KEY")
 
 SERVER_IP = os.getenv("SERVER_IP", "127.0.0.1")
-SERVER_PORT = os.getenv("SERVER_PORT", "8080")
+SERVER_PORT = os.getenv("SERVER_PORT", "443")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # False if not in os.environ because of casting above
