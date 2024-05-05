@@ -28,7 +28,9 @@ export function nicknameValidCheck(id) {
 }
 
 export function passwordValidCheck() {
-	const pass1 = document.querySelector(`input[name="password1"]`);
+	const pass1 = document.querySelector(`input[name="password1"]`)
+		? document.querySelector(`input[name="password1"]`)
+		: document.querySelector(`input[name="password"]`);
 	const pass2 = document.querySelector(`input[name="password2"]`);
 
 	if (pass1.value !== pass2.value)

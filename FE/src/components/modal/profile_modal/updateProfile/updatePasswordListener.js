@@ -1,53 +1,92 @@
 import { updateProfileAPI } from './updateProfileAPI.js';
+import { areAllFieldsFilled } from '../../../../utils/areAllFieldsFilled.js';
+import { passwordValidCheck } from '../../../../pages/register/registerValidCheck.js';
 
-export default function updatePasswordListener() {
-	// 비밀번호 변경 UI
-	const passwordContainer = document.querySelector(
-		'.password-button-container'
-	);
+const Messages = {
+	PASSWORD_CHANGE_CANCELLED: '비밀번호 변경이 취소되었습니다.',
+	PASSWORD_CHANGE_COMPLETED: '비밀번호 변경이 완료되었습니다.',
+	FILL_ALL_FIELDS: '모두 입력해주세요.',
+	INCORRECT_OLD_PASSWORD: '기존 비밀번호가 맞지 않습니다.'
+};
+
+function showMessage(message, duration = 1200) {
+	const text = document.querySelector('.modify-password-msg');
+	text.innerHTML = message;
+	text.style.opacity = 1;
+	text.style.transition = 'opacity 0.5s ease';
+
+	setTimeout(() => {
+		text.style.opacity = 0;
+	}, duration);
+}
+
+function emptyInputFields(container) {
+	const inputElements = container.querySelectorAll('input');
+	inputElements.forEach((input) => {
+		const inputField = input;
+		inputField.value = '';
+	});
+}
+
+function togglePasswordChangeUI(isVisible) {
 	const modifyPasswordContainer = document.querySelector(
 		'.modify-password-form'
 	);
-	const modifyPasswordButton = passwordContainer.querySelector('button');
-	const modifyCancelPasswordButton = document.getElementById('cancel-pw');
-	const modifySubmitPasswordButton = document.getElementById('submit-pw');
+	const modifyPasswordButton = document.querySelector(
+		'.password-button-container button'
+	);
 
-	// 비밀번호 변경 클릭 버튼
-	modifyPasswordButton.addEventListener('click', () => {
-		// passwordContainer.style.display = 'none';
-		modifyPasswordButton.classList.add('disabled');
-		modifyPasswordContainer.style.display = 'flex';
-	});
+	modifyPasswordContainer.style.display = isVisible ? 'none' : 'flex';
+	modifyPasswordButton.classList.toggle('disabled', !isVisible);
+}
 
-	// 비밀번호 변경 취소 버튼
+async function submitPasswordChange() {
+	const confirmForm = document.querySelector('.modify-password-form');
+	const passwordErrorMsg = document.querySelector('.modify-password-error-msg');
+
+	const formData = new FormData(confirmForm);
+
+	if (!areAllFieldsFilled(formData)) {
+		passwordErrorMsg.innerHTML = Messages.FILL_ALL_FIELDS;
+		return;
+	}
+	const invalidPass = passwordValidCheck();
+	if (invalidPass) {
+		passwordErrorMsg.innerHTML = invalidPass;
+		return;
+	}
+
+	const updatePasswordSuccess = await updateProfileAPI(formData);
+
+	if (updatePasswordSuccess) {
+		togglePasswordChangeUI(true);
+		emptyInputFields(confirmForm);
+		showMessage(Messages.PASSWORD_CHANGE_COMPLETED);
+	} else {
+		emptyInputFields(confirmForm);
+		passwordErrorMsg.innerHTML = Messages.INCORRECT_OLD_PASSWORD;
+	}
+}
+
+export default function updatePasswordListener() {
+	const modifyPasswordButton = document.querySelector(
+		'.password-button-container button'
+	);
+	const modifyCancelPasswordButton = document.querySelector('#cancel-pw');
+	const modifySubmitPasswordButton = document.querySelector('#submit-pw');
+	const modifyPasswordContainer = document.querySelector(
+		'.modify-password-form'
+	);
+
+	modifyPasswordButton.addEventListener('click', () =>
+		togglePasswordChangeUI(false)
+	);
+
 	modifyCancelPasswordButton.addEventListener('click', () => {
-		const inputElementAll = modifyPasswordContainer.querySelectorAll('input');
-		inputElementAll.forEach((input) => {
-			const inputField = input;
-			inputField.value = '';
-		});
-		passwordContainer.style.display = 'flex';
-		modifyPasswordContainer.style.display = 'none';
-		modifyPasswordButton.classList.remove('disabled');
-		document.querySelector('.modify-name-error-msg2').innerHTML = '';
+		emptyInputFields(modifyPasswordContainer);
+		showMessage(Messages.PASSWORD_CHANGE_CANCELLED);
+		togglePasswordChangeUI(true);
 	});
-	// + 비밀번호 변경 확인 API 추가 할 곳
-	modifySubmitPasswordButton.addEventListener('click', async () => {
-		const confirmForm = document.querySelector('.modify-password-form');
 
-		const formData = new FormData(confirmForm);
-
-		const checkPassword = await updateProfileAPI(formData);
-		document.querySelector('.modify-name-error-msg2').innerHTML =
-			'에러에러에러에러';
-		if (checkPassword) {
-			// 변경이 가능하면, res.ok 해당 코드 실행
-			passwordContainer.style.display = 'flex';
-			modifyPasswordContainer.style.display = 'none';
-			modifyPasswordButton.classList.remove('disabled');
-		}
-		// const passCheck = passwordValidCheck(); // 유효하지 않을 경우 에러 메시지 반환
-		// if (passCheck) {
-		// }
-	});
+	modifySubmitPasswordButton.addEventListener('click', submitPasswordChange);
 }
