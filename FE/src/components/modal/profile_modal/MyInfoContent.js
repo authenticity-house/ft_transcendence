@@ -151,24 +151,24 @@ class MyInfoContent {
 							확인
 						</button>
 					</div>
-					<div class="modify-name-error-msg2 display-light18"></div>
+					<div class="modify-password-error-msg display-light18"></div>
 				</form>
 			`;
 
 			myInfoContentPassword.innerHTML = `
 				<div class="password-button-container">
 					<span class="display-light24">비밀번호</span>
-					<button type="button" class="display-light24 head_blue_neon_15">
+					<button type="button" class="btn display-light24 head_blue_neon_15 update-button">
 						변경
 					</button>
 				</div>
+
+				<div class="modify-password-msg display-light18"></div>
 			`;
 
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
-			myInfoContentIdPasswordContainer2.appendChild(modifyPassword);
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
-
-			document.querySelector('.modify-name-error-msg').innerHTML = '';
+			myInfoContentIdPasswordContainer2.appendChild(modifyPassword);
 		}
 	}
 

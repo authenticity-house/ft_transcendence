@@ -394,6 +394,20 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	color: #fff;
 }
 
+.update-button {
+	display: flex;
+	font-size: 2.4rem;
+	border-radius: 1rem;
+	font-family: 'GongGothicLight', sans-serif;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	gap: 1rem;
+	border: 0.2rem solid #fff;
+	background-color: transparent;
+	color: #fff;
+}
+
 .medium-window {
 	display: flex;
 	width: 100rem;
@@ -2066,7 +2080,8 @@ td {
 }
 
 .modify-name-error-msg,
-.modify-name-error-msg2 {
+.modify-password-error-msg,
+.modify-password-msg {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -2101,7 +2116,9 @@ td {
 
 .my-info-content-password {
 	display: flex;
+	flex-direction: column;
 	width: 100%;
+	gap: 1rem;
 }
 
 .password-button-container {
