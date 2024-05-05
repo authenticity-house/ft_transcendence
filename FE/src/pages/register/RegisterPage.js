@@ -130,9 +130,9 @@ class RegisterPage {
 		}
 
 		// 비밀번호와 비밀번호 확인 동일한지 체크
-		const passCheck = passwordValidCheck(); // 유효하지 않을 경우 에러 메시지 반환
-		if (passCheck) {
-			showModalWithContent('registerDupModal', 'add-modal-text', passCheck);
+		const invalidPass = passwordValidCheck(); // 유효하지 않을 경우 에러 메시지 반환
+		if (invalidPass) {
+			showModalWithContent('registerDupModal', 'add-modal-text', invalidPass);
 			return false;
 		}
 

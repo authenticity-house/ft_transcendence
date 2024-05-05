@@ -6,7 +6,6 @@ export async function updateProfileAPI(formData) {
 	const csrfToken = getCookie('csrftoken');
 
 	const payload = formDataToJson(formData);
-	console.log('hhhh', payload);
 
 	try {
 		const response = await fetch(apiEndpoints.UPDATE_USER_URL, {
