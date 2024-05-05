@@ -46,10 +46,10 @@ class MatchManager:
 
         # 패들 충돌
         if self.ball.is_collides_with_paddle(self.player1.paddle):
-            print("left --------- paddle reflect!")
+            print(f"left --------- paddle reflect! {self.player1.paddle.power_up}")
             self.handle_paddle_collision(self.player1, self.player2)
         if self.ball.is_collides_with_paddle(self.player2.paddle):
-            print("right ---------- paddle reflect!")
+            print(f"right ---------- paddle reflect! {self.player2.paddle.power_up}")
             self.handle_paddle_collision(self.player2, self.player1)
 
         # 오른쪽 득점
@@ -91,8 +91,8 @@ class MatchManager:
     def get_send_data(self) -> dict:
         data = {
             "ball": self.ball.get_stat_data(),
-            "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
-            "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
+            "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y, "power_up": self.player1.paddle.power_up},
+            "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y, "power_up": self.player2.paddle.power_up},
             "score": {
                 "player1": self.player1.score_point,
                 "player2": self.player2.score_point,
@@ -116,7 +116,7 @@ class MatchManager:
         return data
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> None:
-        self.ball.increase_speed()
+        self.ball.increase_speed(owner.paddle)
         self.ball.bounce_off_paddle(owner.paddle)
         owner.update_attack_type(self.ball.y)
         other.update_attack_pos(self.ball.y)
@@ -155,6 +155,10 @@ class MatchManager:
                 self.player2.paddle.move_paddle_up()
             if key == "ArrowDown":
                 self.player2.paddle.move_paddle_down()
+            if key == "Space":
+                self.player1.paddle.power_up_on()
+            if key == "Enter":
+                self.player2.paddle.power_up_on()
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:

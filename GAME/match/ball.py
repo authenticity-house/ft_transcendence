@@ -26,6 +26,9 @@ class Ball:
         self._dx: float = 0
         self._dy: float = 0
 
+        self._power_up = False
+        self._before_speed = self._speed
+
         self._max_speed_list: list = []
 
         self.reset(1)
@@ -34,6 +37,9 @@ class Ball:
         self._x = 0
         self._y = 0
         self._speed = Ball.INIT_BALL_SPEED
+
+        self._power_up = False
+        self._before_speed = self._speed
 
         if player == 1:
             angle: float = math.pi * (3 / 4) + (random.random() * math.pi) / 2
@@ -52,11 +58,21 @@ class Ball:
         elif self._y <= -ball_y_bound:
             self._y = -ball_y_bound
 
-    def increase_speed(self) -> None:
+    def increase_speed(self, paddle: Paddle) -> None:
         if self._speed == Ball.INIT_BALL_SPEED:
             self._speed = self.DEFAULT_BALL_SPEED
             return
         self._speed += self._accel_speed
+
+        if paddle.power_up is True:
+            if self._power_up is False:
+                self._before_speed = self._speed
+                self._speed = self._speed * 1.5
+                self._power_up = True
+            paddle.power_up_off()
+        else:
+            self._speed = self._before_speed
+            self._power_up = False
 
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
