@@ -54,7 +54,9 @@ async function updateNickname(elements) {
 	if (returnNickname) {
 		toggleNicknameEditUI(false, elements, returnNickname);
 		clearError(elements);
-		document.querySelector('.user-profile-nickname').innerText = returnNickname;
+
+		const onlineNickname = document.querySelector('.user-profile-nickname');
+		if (onlineNickname) onlineNickname.innerHTML = returnNickname;
 	} else {
 		showError(ERROR_MESSAGES.DUPLICATE_NICKNAME, elements);
 	}

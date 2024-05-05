@@ -18,7 +18,7 @@ export async function updateProfileAPI(formData) {
 		});
 
 		const data = await response.json();
-
+		console.log(data);
 		const { status, ok } = response;
 
 		if (ok) {
