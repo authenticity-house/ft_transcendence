@@ -41,7 +41,7 @@ export default function updateNicknameListener() {
 				return;
 			}
 			if (!nicknameValidCheck(newNickname)) {
-				elements.modifyErrorMsg.innerText =
+				elements.modifyErrorMsg.innerHTML =
 					'2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.';
 				return;
 			}
