@@ -74,11 +74,14 @@ class UserStatSummaryAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, user_pk=None):
-        if user_pk is None:
-            user_pk: int = request.user.pk
-
         try:
-            stat_summary, _ = UserStat.objects.get_or_create(user=request.user)
+            user = request.user
+            if user_pk is None:
+                user_pk: int = request.user.pk
+            else:
+                user = User.objects.get(pk=user_pk)
+
+            stat_summary, _ = UserStat.objects.get_or_create(user=user)
             serializer = UserStatSummarySerializer(stat_summary)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist as exc:
@@ -108,6 +111,11 @@ class UserStatAPIView(APIView):
         match_list = Match.objects.filter(Q(player1_id=user_pk) | Q(player2_id=user_pk)).order_by(
             "-create_date"
         )[:12]
+
+        match_cnt = len(match_list)
+        if match_cnt < 12:
+            rating_change.append(2000)
+
         for match in reversed(match_list):
             if user_pk == match.player1_id:
                 rating_change.append(match.player1_rating)
@@ -117,7 +125,7 @@ class UserStatAPIView(APIView):
                 attack_type[match.player2_attack_type] += 1
 
         return {
-            "match_cnt": len(match_list),
+            "match_cnt": match_cnt,
             "rating_change": rating_change,
             "attack_type": attack_type,
         }

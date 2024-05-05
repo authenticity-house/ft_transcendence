@@ -16,7 +16,7 @@ export function gameEndModal() {
 						<div
 							class="display-light28 modal-content-body-text"
 							style="line-height:180%"
-							id="room-modal-text"
+							id="game-end-modal-text"
 						>
 							연결이 종료되었습니다.<br />다른 방에 참가해주세요.
 						</div>

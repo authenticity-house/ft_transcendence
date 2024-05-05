@@ -131,36 +131,6 @@ class DuelGraphStats {
 		ctx.closePath();
 	}
 
-	static getWidthHeight(widthRem, heightRem) {
-		const windowWidth = window.innerWidth;
-
-		let canvasWidth = 0;
-		let canvasHeight = 0;
-		if (windowWidth > 2560) {
-			canvasWidth = widthRem * 16;
-			canvasHeight = heightRem * 16;
-		} else if (windowWidth > 1920) {
-			canvasWidth = widthRem * 10;
-			canvasHeight = heightRem * 10;
-		} else if (windowWidth > 1440) {
-			canvasWidth = widthRem * 8;
-			canvasHeight = heightRem * 8;
-		} else if (windowWidth > 1024) {
-			canvasWidth = widthRem * 6;
-			canvasHeight = heightRem * 6;
-		} else if (windowWidth > 768) {
-			canvasWidth = widthRem * 4;
-			canvasHeight = heightRem * 4;
-		} else if (windowWidth > 425) {
-			canvasWidth = widthRem * 3;
-			canvasHeight = heightRem * 3;
-		} else {
-			canvasWidth = widthRem * 2;
-			canvasHeight = heightRem * 2;
-		}
-		return [canvasWidth, canvasHeight];
-	}
-
 	static appendScoreTrendGraph(
 		leftScoreTrend,
 		rightScoreTrend,
@@ -178,9 +148,9 @@ class DuelGraphStats {
 				);
 
 		// canvas : 33.5rem , 36rem
-		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
-		canvas.width = responsiveWidth;
-		canvas.height = reponsiveHeight;
+		// const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = 335;
+		canvas.height = 360;
 
 		const widthCount = leftScoreTrend.length + 1;
 		const widthDivide = canvas.width / widthCount;
@@ -230,9 +200,9 @@ class DuelGraphStats {
 			? graphContainer.querySelector(`.${uniqueText}score-position-canvas`)
 			: document.querySelector(`.${uniqueText}score-position-canvas`);
 		// canvas : 28rem, 35.6rem
-		const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
-		canvas.width = responsiveWidth;
-		canvas.height = reponsiveHeight;
+		// const [responsiveWidth, reponsiveHeight] = this.getWidthHeight(33.5, 36);
+		canvas.width = 280;
+		canvas.height = 356;
 
 		const ctx = canvas.getContext('2d');
 		const canvasHeight = canvas.height;
@@ -269,3 +239,36 @@ class DuelGraphStats {
 }
 
 export default DuelGraphStats;
+
+/*
+	// 반응형 처리 코드
+	static getWidthHeight(widthRem, heightRem) {
+		const windowWidth = window.innerWidth;
+
+		let canvasWidth = 0;
+		let canvasHeight = 0;
+		if (windowWidth > 2560) {
+			canvasWidth = widthRem * 16;
+			canvasHeight = heightRem * 16;
+		} else if (windowWidth > 1920) {
+			canvasWidth = widthRem * 10;
+			canvasHeight = heightRem * 10;
+		} else if (windowWidth > 1440) {
+			canvasWidth = widthRem * 8;
+			canvasHeight = heightRem * 8;
+		} else if (windowWidth > 1024) {
+			canvasWidth = widthRem * 6;
+			canvasHeight = heightRem * 6;
+		} else if (windowWidth > 768) {
+			canvasWidth = widthRem * 4;
+			canvasHeight = heightRem * 4;
+		} else if (windowWidth > 425) {
+			canvasWidth = widthRem * 3;
+			canvasHeight = heightRem * 3;
+		} else {
+			canvasWidth = widthRem * 2;
+			canvasHeight = heightRem * 2;
+		}
+		return [canvasWidth, canvasHeight];
+	}
+*/

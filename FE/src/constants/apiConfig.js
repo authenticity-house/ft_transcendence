@@ -32,7 +32,8 @@ function getApiEndpoints() {
 		ROOMS_URL: `${ROOMS_URL}`,
 
 		MATCH_RECORD_URL: `${STATS_URL}match/list/`,
-		STATS_SUMMARY_URL: `${STATS_URL}summary/`
+		STATS_SUMMARY_URL: `${STATS_URL}summary/`,
+		MY_STATS_URL: `${STATS_URL}`
 	};
 }
 

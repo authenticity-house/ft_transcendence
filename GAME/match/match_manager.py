@@ -165,7 +165,7 @@ class MatchManager:
 
     def get_play_time(self) -> str:
         if self._end_date is None:
-            self._end_date = dt.datetime.now()
+            self._end_date = timezone.now()
 
         td: dt.timedelta = self._end_date - self._start_date
 

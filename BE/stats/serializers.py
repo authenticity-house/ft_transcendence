@@ -8,6 +8,7 @@ from rest_framework.relations import PrimaryKeyRelatedField
 
 from users.models import User
 from users.serializers import UserProfileSerializer
+from .elo_rating import get_update_rating
 from .models import Match, UserStat
 from .time_utils import parse_timedelta
 
@@ -34,13 +35,15 @@ class MatchSerializer(serializers.ModelSerializer):
     player2 = PrimaryKeyRelatedField(queryset=User.objects.all())
     data = serializers.JSONField()
 
-    def update_stat_online_data(self, player_stat: UserStat, data: dict, winner_id: int):
+    def update_stat_online_data(
+        self, player_stat: UserStat, data: dict, winner_id: int, update_rating: int
+    ):
         play_time = parse_timedelta(data.get("play_time", "00:00"))
         rally = data.get("rally", [])
         ball_speed = data.get("max_ball_speed", [])
 
         update_match_data = {
-            "rating": player_stat.rating,
+            "rating": update_rating,
             "play_time": play_time,
             "max_rally_cnt": max(rally) if len(rally) > 0 else 0,
             "max_ball_speed": max(ball_speed) if len(ball_speed) > 0 else 0,
@@ -49,7 +52,9 @@ class MatchSerializer(serializers.ModelSerializer):
 
         player_stat.save(online_match_data=update_match_data)
 
-    def get_additional_data(self, data: dict, player1_pk: int, player2_pk: int) -> dict:
+    def get_additional_data(
+        self, data: dict, player1_pk: int, player2_pk: int, player1_rating: int, player2_rating: int
+    ) -> dict:
         player1_data: dict = dict(data["player1"])
         player2_data: dict = dict(data["player2"])
 
@@ -61,9 +66,12 @@ class MatchSerializer(serializers.ModelSerializer):
 
         winner_id = player1_pk if player1_score > player2_score else player2_pk
 
-        # 레이팅 업데이트 관련 로직 추가 필요
-        player1_rating = 2001
-        player2_rating = 1999
+        player1_rating = get_update_rating(
+            player1_rating, player2_rating, int(winner_id == player1_pk)
+        )
+        player2_rating = get_update_rating(
+            player2_rating, player1_rating, int(winner_id == player2_pk)
+        )
 
         return {
             "player1_attack_type": player1_attack_type,
@@ -87,13 +95,17 @@ class MatchSerializer(serializers.ModelSerializer):
                 detail=f"UserStat does not exist: pk={player1_pk} or {player2_pk}"
             ) from exc
 
-        additional_data = self.get_additional_data(data, player1_pk, player2_pk)
+        additional_data = self.get_additional_data(
+            data, player1_pk, player2_pk, player1_stat.rating, player2_stat.rating
+        )
         winner_id = additional_data["winner_id"]
+        player1_rating = additional_data["player1_rating"]
+        player2_rating = additional_data["player2_rating"]
 
         validated_data.update(**additional_data)
         match = Match.objects.create(**validated_data)
-        self.update_stat_online_data(player1_stat, data, winner_id)
-        self.update_stat_online_data(player2_stat, data, winner_id)
+        self.update_stat_online_data(player1_stat, data, winner_id, player1_rating)
+        self.update_stat_online_data(player2_stat, data, winner_id, player2_rating)
 
         return match
 
