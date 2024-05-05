@@ -11,10 +11,16 @@ function nicknameSize(nickname) {
 }
 
 function duelResultElement(data) {
+	const leftPlayerImg = data.leftPlayerImage
+		? data.leftPlayerImage
+		: '/image/player.png';
+	const rightPlayerImg = data.rightPlayerImage
+		? data.rightPlayerImage
+		: '/image/player.png';
 	return html`
 		<div class="duel-user-container justify-content-start">
 			<div class="user-image-container">
-				<img src="${data.leftPlayerImage}" alt="user" />
+				<img src="${leftPlayerImg}" alt="user" />
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-nickname-container ${nicknameSize(data.leftPlayer)}">
@@ -36,7 +42,7 @@ function duelResultElement(data) {
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-image-container">
-				<img src="${data.rightPlayerImage}" alt="user" />
+				<img src="${rightPlayerImg}" alt="user" />
 			</div>
 		</div>
 	`;
