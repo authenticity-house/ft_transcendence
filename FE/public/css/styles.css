@@ -435,6 +435,13 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	padding: 0 2rem;
 }
 
+.score-board-leftPlayer,
+.score-board-rightPlayer {
+	display: flex;
+	justify-content: center;
+	width: 20rem;
+}
+
 .score-board-wrapper {
 	display: flex;
 	justify-content: space-between;
@@ -901,12 +908,28 @@ td {
 	margin-top: 2rem;
 }
 
+/* 모달 */
+
 .game-page-container {
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
 }
-/* 모달 */
+
+.player1-name,
+.player2-name {
+	width: 20rem;
+}
+
+.player1-name {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.player2-name {
+	display: flex;
+	justify-content: flex-end;
+}
 
 /* Tournament */
 .tournament-bracket {
@@ -2386,7 +2409,7 @@ td {
 /* MyFriendRequestNode.js */
 .my-friend-request-node-container {
 	display: flex;
-	width: 240px;
+	width: 24rem;
 	justify-content: space-between;
 	align-items: center;
 	flex-shrink: 0;
@@ -2400,8 +2423,8 @@ td {
 .my-friend-request-node-cancel,
 .my-friend-request-node-accept,
 .my-friend-request-node-reject {
-	width: 40px;
-	height: 40px;
+	width: 4rem;
+	height: 4rem;
 	flex-shrink: 0;
 	border: none;
 }

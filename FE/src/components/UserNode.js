@@ -13,9 +13,21 @@ class UserNode {
 					src="${this.data.profile_url}"
 					alt="profile"
 				/>
-				<span class="display-light28">${this.data.nickname}</span>
+				<span class="${this.setFontSize(this.data.nickname)}"
+					>${this.data.nickname}</span
+				>
 			</div>
 		`;
+	}
+
+	setFontSize(nickname) {
+		if (nickname.length > 10) {
+			return 'display-light18';
+		}
+		if (nickname.length > 6) {
+			return 'display-light24';
+		}
+		return 'display-light28';
 	}
 }
 

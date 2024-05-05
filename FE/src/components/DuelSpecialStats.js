@@ -6,11 +6,11 @@ class DuelSpecialStats {
 			<table class="special-stats-table display-light18">
 				<tbody>
 					<tr class="display-light24">
-						<td>${matchData.leftPlayer}</td>
+						<td class="score-board-leftPlayer">${matchData.leftPlayer}</td>
 						<td></td>
 						<td>.</td>
 						<td></td>
-						<td>${matchData.rightPlayer}</td>
+						<td class="score-board-rightPlayer">${matchData.rightPlayer}</td>
 					</tr>
 					<tr class="special-table-tr-spacer"></tr>
 					<tr>
