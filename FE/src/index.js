@@ -22,6 +22,8 @@ import {
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
 import { hideModal, modalClickSetting } from './components/modal/modalUtils.js';
 import { browserInfo } from './utils/browserInfo.js';
+import helpButton from './components/HelpButton.js';
+import { helpModal } from './components/modal/helpModal.js';
 
 const html = String.raw;
 
@@ -35,10 +37,14 @@ setTimeout(() => {
 // header에 프로필 버튼 추가
 const profileButtonComponent = profileButton();
 
+// 사용법 모달 추가
+const helpButtonComponent = helpButton();
+
 const header = document.querySelector('header');
 header.innerHTML = html`
 	<img id="logo" src="./image/logo.svg" alt="logo" style="width: 48rem" />
-	${profileButtonComponent} ${profileModal.template()}
+	${helpButtonComponent}${helpModal.template()} ${profileButtonComponent}
+	${profileModal.template()}
 `;
 
 profileModal.addEventListeners();

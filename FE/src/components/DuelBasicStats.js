@@ -4,13 +4,13 @@ class DuelBasicStats {
 	static getScoreBoardHTML(matchData) {
 		return html`
 			<div class="score-board-container display-light28">
-				<div>${matchData.leftPlayer}</div>
+				<div class="score-board-leftPlayer">${matchData.leftPlayer}</div>
 				<ul class="score-board-wrapper pink_neon_10">
 					<li>${matchData.leftScore}</li>
 					<li>:</li>
 					<li>${matchData.rightScore}</li>
 				</ul>
-				<div>${matchData.rightPlayer}</div>
+				<div class="score-board-rightPlayer">${matchData.rightPlayer}</div>
 			</div>
 		`;
 	}

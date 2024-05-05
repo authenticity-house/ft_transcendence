@@ -133,7 +133,7 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 		.info-modal-button
 	):not(.user-profile-button):not(.room-list-refresh-button):not(
 		.single-room-button
-	):not(.my-info-content-image-edit) {
+	):not(.my-info-content-image-edit):not(.help-button) {
 	background-color: #fff;
 	color: #141343;
 	cursor: pointer;
@@ -433,6 +433,13 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	width: 100%;
 	height: 3.5rem;
 	padding: 0 2rem;
+}
+
+.score-board-leftPlayer,
+.score-board-rightPlayer {
+	display: flex;
+	justify-content: center;
+	width: 20rem;
 }
 
 .score-board-wrapper {
@@ -901,12 +908,28 @@ td {
 	margin-top: 2rem;
 }
 
+/* 모달 */
+
 .game-page-container {
 	display: inline-flex;
 	flex-direction: column;
 	align-items: center;
 }
-/* 모달 */
+
+.player1-name,
+.player2-name {
+	width: 20rem;
+}
+
+.player1-name {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.player2-name {
+	display: flex;
+	justify-content: flex-end;
+}
 
 /* Tournament */
 .tournament-bracket {
@@ -2386,7 +2409,7 @@ td {
 /* MyFriendRequestNode.js */
 .my-friend-request-node-container {
 	display: flex;
-	width: 240px;
+	width: 24rem;
 	justify-content: space-between;
 	align-items: center;
 	flex-shrink: 0;
@@ -2400,8 +2423,8 @@ td {
 .my-friend-request-node-cancel,
 .my-friend-request-node-accept,
 .my-friend-request-node-reject {
-	width: 40px;
-	height: 40px;
+	width: 4rem;
+	height: 4rem;
 	flex-shrink: 0;
 	border: none;
 }
@@ -2592,4 +2615,88 @@ td {
 	width: 100%;
 	height: 100%;
 	border: 0.1rem solid #fff;
+}
+
+/* HelpButton.js */
+
+.help-button-container {
+	position: absolute;
+	top: 9rem;
+	left: 6rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 12rem;
+	height: 12rem;
+	border-radius: 50%;
+	border: none;
+}
+
+.help-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.help-button-img-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 6rem;
+	height: 6rem;
+	border-radius: 50%;
+	border: 0.1rem solid #fff;
+}
+
+.help-img {
+	width: 3rem;
+	height: 3rem;
+}
+
+.help-button-title {
+	width: 100%;
+}
+
+#help-modal {
+	--bs-modal-width: 120rem;
+}
+
+.help-modal-header {
+	--bs-modal-header-padding: 3rem;
+}
+
+.help-modal-body {
+	--bs-modal-padding: 2rem;
+}
+
+.help-modal-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.help-modal-image {
+	width: 80rem;
+}
+
+.help-modal-text-container {
+	display: flex;
+	width: 100rem;
+	height: 15rem;
+}
+
+.help-modal-text {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 33.3%;
+	height: 100%;
+	padding: 2rem;
+	gap: 2rem;
 }
