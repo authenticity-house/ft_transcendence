@@ -464,13 +464,9 @@ class SessionAPIView(APIView):
             serializer = UserProfileSerializer(user)
             return Response(serializer.data)
         except Session.DoesNotExist:
-            return Response(
-                {"error": "Invalid session"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Invalid session"}, status=status.HTTP_400_BAD_REQUEST)
         except get_user_model().DoesNotExist:
-            return Response(
-                {"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ImageUploadAPIView(APIView):
