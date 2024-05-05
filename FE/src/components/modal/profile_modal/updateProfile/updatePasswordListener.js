@@ -11,7 +11,7 @@ const Messages = {
 
 function showMessage(message, duration = 1200) {
 	const text = document.querySelector('.modify-password-msg');
-	text.innerHTML = message;
+	text.innerText = message;
 	text.style.opacity = 1;
 	text.style.transition = 'opacity 0.5s ease';
 
@@ -47,12 +47,12 @@ async function submitPasswordChange() {
 	const formData = new FormData(confirmForm);
 
 	if (!areAllFieldsFilled(formData)) {
-		passwordErrorMsg.innerHTML = Messages.FILL_ALL_FIELDS;
+		passwordErrorMsg.innerText = Messages.FILL_ALL_FIELDS;
 		return;
 	}
 	const invalidPass = passwordValidCheck();
 	if (invalidPass) {
-		passwordErrorMsg.innerHTML = invalidPass;
+		passwordErrorMsg.innerText = invalidPass;
 		return;
 	}
 
@@ -64,7 +64,7 @@ async function submitPasswordChange() {
 		showMessage(Messages.PASSWORD_CHANGE_COMPLETED);
 	} else {
 		emptyInputFields(confirmForm);
-		passwordErrorMsg.innerHTML = Messages.INCORRECT_OLD_PASSWORD;
+		passwordErrorMsg.innerText = Messages.INCORRECT_OLD_PASSWORD;
 	}
 }
 

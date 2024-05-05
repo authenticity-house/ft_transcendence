@@ -36,11 +36,11 @@ export default function updateNicknameListener() {
 			const newNickname = elements.input.value;
 
 			if (newNickname === '') {
-				elements.modifyErrorMsg.innerHTML = '변경할 닉네임을 입력해주세요.';
+				elements.modifyErrorMsg.innerText = '변경할 닉네임을 입력해주세요.';
 				return;
 			}
 			if (!nicknameValidCheck(newNickname)) {
-				elements.modifyErrorMsg.innerHTML =
+				elements.modifyErrorMsg.innerText =
 					'2~12자의 영문 소문자, 숫자와<br />특수기호(_),(-)만 사용 가능합니다.';
 				return;
 			}
@@ -49,10 +49,14 @@ export default function updateNicknameListener() {
 			const returnNickname = await updateProfileAPI(formData);
 			if (returnNickname) {
 				nickName = returnNickname;
+
+				const onlineNickname = document.querySelector('.user-profile-nickname');
+				if (onlineNickname) onlineNickname.innerText = returnNickname;
+
 				toggleNicknameEditUI(false, elements, returnNickname);
-				elements.modifyErrorMsg.innerHTML = '';
+				elements.modifyErrorMsg.innerText = '';
 			} else {
-				elements.modifyErrorMsg.innerHTML = '중복된 닉네임입니다.';
+				elements.modifyErrorMsg.innerText = '중복된 닉네임입니다.';
 			}
 		} else {
 			toggleNicknameEditUI(true, elements);
@@ -60,7 +64,7 @@ export default function updateNicknameListener() {
 	});
 
 	elements.modifyCancelButton.addEventListener('click', () => {
-		elements.modifyErrorMsg.innerHTML = '';
+		elements.modifyErrorMsg.innerText = '';
 		toggleNicknameEditUI(false, elements, nickName);
 	});
 }

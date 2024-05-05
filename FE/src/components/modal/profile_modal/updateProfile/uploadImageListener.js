@@ -23,8 +23,10 @@ async function uploadImageAPI(e) {
 
 		if (ok) {
 			document.querySelector('.my-info-user-profile-image').src = data.url;
-			// document.querySelector('user-profile-img').src = data.url;
-			// document.querySelector('user-profile-summary-img').src = data.url;
+			const headerImg = document.querySelector('.user-profile-img');
+			const OnlineImg = document.querySelector('.user-profile-summary-img');
+			if (headerImg) headerImg.src = data.url;
+			if (OnlineImg) OnlineImg.src = data.url;
 		} else if (status === 400) {
 			console.log('Image not found');
 		}
