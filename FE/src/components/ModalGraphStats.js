@@ -116,13 +116,14 @@ function drawAttackTendency(type) {
 		if (slice.value !== 0) {
 			// 파이차트 크기에 따른 fontSize
 			let fontSize;
-			if (slice.value / totalValue >= 1 / 3) {
+			if (slice.value / totalValue >= 4 / 12) {
 				fontSize = 16;
-			} else if (slice.value / totalValue >= 1 / 6) {
+			} else if (slice.value / totalValue >= 3 / 12) {
 				fontSize = 12;
-			} else if (slice.value / totalValue >= 1 / 12) {
+			} else if (slice.value / totalValue >= 2 / 12) {
 				fontSize = 8;
 			} else {
+				// 1 / 12
 				fontSize = 4;
 			}
 			if (slice.value !== 0) {
@@ -135,6 +136,17 @@ function drawAttackTendency(type) {
 				ctx.fillText(slice.title, textX, textY);
 			}
 		}
+	});
+
+	// attack tendency text
+	const tendencyValueWrapper = document.querySelectorAll(
+		'.attack-tendency-value-wrapper'
+	);
+	tendencyValueWrapper.forEach((wrapper, index) => {
+		const divElement = wrapper.querySelector('div');
+		divElement.style.borderColor = attackTendency[index].color;
+		const spanElement = wrapper.querySelector('span');
+		spanElement.textContent = `${attackTendency[index].title}: ${attackTendency[index].value}`;
 	});
 }
 
