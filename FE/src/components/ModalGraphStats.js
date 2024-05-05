@@ -90,7 +90,6 @@ function drawAttackTendency(type) {
 		{ title: '방어형', value: type.TYPE2, color: '#5ad7ff' }
 	];
 	const canvas = document.querySelector('.attack-tendency-canvas');
-	const fontSize = 16;
 
 	const ctx = canvas.getContext('2d');
 	let totalValue = 0;
@@ -115,13 +114,26 @@ function drawAttackTendency(type) {
 		startAngle += angle;
 		// 텍스트 그리기
 		if (slice.value !== 0) {
-			const textX = centerX + (radius / 2) * Math.cos(sliceMiddleAngle);
-			const textY = centerY + (radius / 2) * Math.sin(sliceMiddleAngle);
-			ctx.fillStyle = '#000';
-			ctx.font = `${fontSize}px GongGothicLight`;
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'middle';
-			ctx.fillText(slice.title, textX, textY);
+			// 파이차트 크기에 따른 fontSize
+			let fontSize;
+			if (slice.value / totalValue >= 1 / 3) {
+				fontSize = 16;
+			} else if (slice.value / totalValue >= 1 / 6) {
+				fontSize = 12;
+			} else if (slice.value / totalValue >= 1 / 12) {
+				fontSize = 8;
+			} else {
+				fontSize = 4;
+			}
+			if (slice.value !== 0) {
+				const textX = centerX + (radius / 2) * Math.cos(sliceMiddleAngle);
+				const textY = centerY + (radius / 2) * Math.sin(sliceMiddleAngle);
+				ctx.fillStyle = '#000';
+				ctx.font = `${fontSize}px GongGothicLight`;
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.fillText(slice.title, textX, textY);
+			}
 		}
 	});
 }
