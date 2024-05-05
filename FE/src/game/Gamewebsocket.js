@@ -50,7 +50,14 @@ export class Gamewebsocket {
 		if (!this.isOpen()) return;
 
 		const eventCode = event.code;
-		const relevantKeys = ['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown'];
+		const relevantKeys = [
+			'KeyW',
+			'KeyS',
+			'ArrowUp',
+			'ArrowDown',
+			'Space',
+			'Enter'
+		];
 
 		if (relevantKeys.includes(eventCode) && !this.keyDownList.has(eventCode)) {
 			this.keyDownList.add(eventCode);
@@ -74,7 +81,6 @@ export class Gamewebsocket {
 			type: 'game',
 			subtype: 'key_down',
 			message: 'key!',
-			// ?????? match_id 변경 필요
 			match_id: 1,
 			data: {
 				key_set: Array.from(this.keyDownList)
