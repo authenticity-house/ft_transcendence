@@ -1324,6 +1324,9 @@ td {
 }
 
 .user-image-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 9rem;
 	height: 9rem;
 	border-radius: 50%;
@@ -1331,11 +1334,19 @@ td {
 	background-color: aliceblue;
 }
 
-.user-image-container img {
+.user-image-container .user-image {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	object-fit: cover;
+}
+
+.user-image-container .user-image-default {
+	width: 80%;
+	height: 80%;
+	object-fit: cover;
+	border-radius: 50%;
+	opacity: 30%;
 }
 
 .user-blank-container {

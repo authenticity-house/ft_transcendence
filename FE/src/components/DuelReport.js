@@ -20,7 +20,11 @@ function duelResultElement(data) {
 	return html`
 		<div class="duel-user-container justify-content-start">
 			<div class="user-image-container">
-				<img src="${leftPlayerImg}" alt="user" />
+				<img
+					class="${data.leftPlayerImage ? 'user-image' : 'user-image-default'}"
+					src="${leftPlayerImg}"
+					alt="user"
+				/>
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-nickname-container ${nicknameSize(data.leftPlayer)}">
@@ -42,7 +46,11 @@ function duelResultElement(data) {
 			</div>
 			<div class="user-blank-container"></div>
 			<div class="user-image-container">
-				<img src="${rightPlayerImg}" alt="user" />
+				<img
+					class="${data.rightPlayerImage ? 'user-image' : 'user-image-default'}"
+					src="${rightPlayerImg}"
+					alt="user"
+				/>
 			</div>
 		</div>
 	`;
