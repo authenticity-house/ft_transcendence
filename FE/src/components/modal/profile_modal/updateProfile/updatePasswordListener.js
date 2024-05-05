@@ -52,7 +52,7 @@ async function submitPasswordChange() {
 	}
 	const invalidPass = passwordValidCheck();
 	if (invalidPass) {
-		passwordErrorMsg.innerText = invalidPass;
+		passwordErrorMsg.innerHTML = invalidPass;
 		return;
 	}
 
