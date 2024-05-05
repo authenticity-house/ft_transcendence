@@ -34,6 +34,9 @@ class MatchManager:
         self._last_scored_time: dt = None
         self._rally_count_list: list = []
 
+        self._player1_can_power_up = True
+        self._player2_can_power_up = True
+
         self._rally_cnt: int = 0
 
     def update_frame(self) -> None:
@@ -156,9 +159,13 @@ class MatchManager:
             if key == "ArrowDown":
                 self.player2.paddle.move_paddle_down()
             if key == "Space":
-                self.player1.paddle.power_up_on()
+                if self._player1_can_power_up is True:
+                    self.player1.paddle.power_up_on()
+                    self._player1_can_power_up = False
             if key == "Enter":
-                self.player2.paddle.power_up_on()
+                if self._player2_can_power_up is True:
+                    self.player2.paddle.power_up_on()
+                    self._player2_can_power_up = False
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:
@@ -188,6 +195,8 @@ class MatchManager:
         return [max_value, avg_value, min_value]
 
     def reset(self, side: int) -> None:
+        self._player1_can_power_up = True
+        self._player2_can_power_up = True
         self.ball.reset(side)
         self._rally_cnt = 0
 
