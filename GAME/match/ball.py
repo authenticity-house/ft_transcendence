@@ -38,6 +38,7 @@ class Ball:
         self._x = 0
         self._y = 0
         self._speed = Ball.INIT_BALL_SPEED
+        print(self._speed)
 
         self._power_up = False
         self._before_speed = self._speed
@@ -75,8 +76,9 @@ class Ball:
                 self._power_up = True
             paddle.power_up_off()
         else:
-            self._speed = self._before_speed
-            self._power_up = False
+            if self._power_up is True:
+                self._speed = self._before_speed
+                self._power_up = False
 
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
