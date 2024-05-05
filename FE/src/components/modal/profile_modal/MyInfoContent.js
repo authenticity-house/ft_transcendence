@@ -30,7 +30,7 @@ class MyInfoContent {
 							/>
 							<input type="submit" value="Upload Image" />
 						</form>
-
+						<div class="modify-image-error-msg display-light18"></div>
 						<div class="my-info-content-name">
 							<span class="display-light28">이름</span>
 							<img class="edit-icon" src="image/edit.svg" alt="edit" />

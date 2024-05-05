@@ -1,5 +1,6 @@
 import apiEndpoints from '../../../../constants/apiConfig.js';
 import { getCookie } from '../../../../utils/getCookie.js';
+import { showMessage } from './updateProfileUtils.js';
 
 async function uploadImageAPI(e) {
 	const image = e.target.files[0];
@@ -20,7 +21,6 @@ async function uploadImageAPI(e) {
 
 		const data = await response.json();
 		const { status, ok } = response;
-
 		if (ok) {
 			document.querySelector('.my-info-user-profile-image').src = data.url;
 			const headerImg = document.querySelector('.user-profile-img');
@@ -28,10 +28,10 @@ async function uploadImageAPI(e) {
 			if (headerImg) headerImg.src = data.url;
 			if (OnlineImg) OnlineImg.src = data.url;
 		} else if (status === 400) {
-			console.log('Image not found');
+			showMessage('.modify-image-error-msg', '이미지 업로드에 실패했습니다.');
 		}
 	} catch (error) {
-		console.error('Error:', error);
+		showMessage('.modify-image-error-msg', '이미지 크기가 큽니다.');
 	}
 }
 

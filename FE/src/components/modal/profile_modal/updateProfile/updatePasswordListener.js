@@ -1,6 +1,7 @@
 import { updateProfileAPI } from './updateProfileAPI.js';
 import { areAllFieldsFilled } from '../../../../utils/areAllFieldsFilled.js';
 import { passwordValidCheck } from '../../../../pages/register/registerValidCheck.js';
+import { showMessage } from './updateProfileUtils.js';
 
 const Messages = {
 	PASSWORD_CHANGE_CANCELLED: '비밀번호 변경이 취소되었습니다.',
@@ -8,17 +9,6 @@ const Messages = {
 	FILL_ALL_FIELDS: '모두 입력해주세요.',
 	INCORRECT_OLD_PASSWORD: '기존 비밀번호가 맞지 않습니다.'
 };
-
-function showMessage(message, duration = 1200) {
-	const text = document.querySelector('.modify-password-msg');
-	text.innerText = message;
-	text.style.opacity = 1;
-	text.style.transition = 'opacity 0.5s ease';
-
-	setTimeout(() => {
-		text.style.opacity = 0;
-	}, duration);
-}
 
 function emptyInputFields(container) {
 	const inputElements = container.querySelectorAll('input');
@@ -62,7 +52,7 @@ async function submitPasswordChange() {
 		togglePasswordChangeUI(true);
 		emptyInputFields(confirmForm);
 		passwordErrorMsg.innerHTML = '';
-		showMessage(Messages.PASSWORD_CHANGE_COMPLETED);
+		showMessage('.modify-password-msg', Messages.PASSWORD_CHANGE_COMPLETED);
 	} else {
 		emptyInputFields(confirmForm);
 		passwordErrorMsg.innerText = Messages.INCORRECT_OLD_PASSWORD;
@@ -87,7 +77,7 @@ export default function updatePasswordListener() {
 	modifyCancelPasswordButton.addEventListener('click', () => {
 		emptyInputFields(modifyPasswordContainer);
 		passwordErrorMsg.innerHTML = '';
-		showMessage(Messages.PASSWORD_CHANGE_CANCELLED);
+		showMessage('.modify-password-msg', Messages.PASSWORD_CHANGE_CANCELLED);
 		togglePasswordChangeUI(true);
 	});
 
