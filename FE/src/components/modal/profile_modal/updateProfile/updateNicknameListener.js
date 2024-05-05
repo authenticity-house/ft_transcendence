@@ -4,6 +4,7 @@ import { updateProfileAPI } from './updateProfileAPI.js';
 function toggleNicknameEditUI(isEditing, elements, nickname = '') {
 	const { modifyNicknameButton, modifyCancelButton, input, span } = elements;
 
+	document.querySelector('.my-info-content-name-modify-input').value = '';
 	if (isEditing) {
 		span.style.display = 'none';
 		input.style.display = 'block';
@@ -65,6 +66,7 @@ export default function updateNicknameListener() {
 
 	elements.modifyCancelButton.addEventListener('click', () => {
 		elements.modifyErrorMsg.innerText = '';
+		document.querySelector('.my-info-content-name-modify-input').value = '';
 		toggleNicknameEditUI(false, elements, nickName);
 	});
 }
