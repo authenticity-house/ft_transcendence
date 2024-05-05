@@ -43,6 +43,7 @@ class GamePage {
 						style="position: relative; display: flex; justify-content: center"
 					>
 						<div class="game-result display-medium48 pink_neon_10">Winner!</div>
+						<div class="game-spectate display-medium80">관 전 모 드</div>
 					</div>
 				</div>
 				<!-- 나가기 버튼 -->
