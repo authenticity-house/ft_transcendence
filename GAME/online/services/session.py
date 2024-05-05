@@ -54,12 +54,16 @@ class Session:
                 "ArrowUp": "KeyW",
                 "KeyS": "KeyS",
                 "ArrowDown": "KeyS",
+                "Space": "Space",
+                "Enter": "Space",
             },
             player2_nickname: {
                 "KeyW": "ArrowUp",
                 "ArrowUp": "ArrowUp",
                 "KeyS": "ArrowDown",
                 "ArrowDown": "ArrowDown",
+                "Space": "Enter",
+                "Enter": "Enter",
             },
         }
         self._player_key_sets = {player1_nickname: set(), player2_nickname: set()}
