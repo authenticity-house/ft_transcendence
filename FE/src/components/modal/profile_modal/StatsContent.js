@@ -137,7 +137,7 @@ class StatsContent {
 		this.displayApiTextData('stats-max-rating', `${data.max_rating}점`);
 		this.displayApiTextData(
 			'stats-max-ball-speed',
-			Number(data.max_ball_speed).toFixed(2)
+			Number(data.max_ball_speed).toFixed(3)
 		);
 		this.displayApiTextData('stats-max-rally-count', `${data.max_rally_cnt}번`);
 
