@@ -23,7 +23,7 @@ class StatsContent {
 		return html`
 			<div class="modal-stats-container">
 				<div class="play-time-container">
-					<div id="stats-nickname" class="display-light28 text_yellow_neon">
+					<div id="stats-nickname" class="text_yellow_neon">
 						${defaultData.nickName}
 					</div>
 					<div class="play-time-wrapper">
@@ -107,12 +107,25 @@ class StatsContent {
 		`;
 	}
 
+	setFontSize(nickname) {
+		if (nickname.length > 10) {
+			return 'display-light20';
+		}
+		if (nickname.length > 6) {
+			return 'display-light24';
+		}
+		return 'display-light28';
+	}
+
 	displayApiTextData(id, textData) {
 		if (textData) document.getElementById(id).textContent = textData;
 	}
 
 	mount(data) {
 		this.displayApiTextData('stats-nickname', data.nickname);
+		document
+			.getElementById('stats-nickname')
+			.classList.add(this.setFontSize(data.nickname));
 		this.displayApiTextData('stats-playtime-local', data.local_play_time);
 		this.displayApiTextData('stats-playtime-online', data.online_play_time);
 		this.displayApiTextData(
@@ -122,7 +135,10 @@ class StatsContent {
 		this.displayApiTextData('stats-win-rating', `승률 : ${data.winning_rate}%`);
 		this.displayApiTextData('stats-rating', `레이팅: ${data.rating}점`);
 		this.displayApiTextData('stats-max-rating', `${data.max_rating}점`);
-		this.displayApiTextData('stats-max-ball-speed', data.max_ball_speed);
+		this.displayApiTextData(
+			'stats-max-ball-speed',
+			Number(data.max_ball_speed).toFixed(2)
+		);
 		this.displayApiTextData('stats-max-rally-count', `${data.max_rally_cnt}번`);
 
 		const ratingChangeTextContainer = document.querySelector(
