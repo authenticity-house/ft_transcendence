@@ -7,12 +7,15 @@ import { exitModal } from '../components/modal/exitModal.js';
 import * as utils from './gamePageUtils.js';
 import { gameEndModal } from './gameEndModal.js';
 import { loadingModal } from '../pages/register/modals/loadingModal.js';
+import apiEndpoints from '../constants/apiConfig.js';
+import { getCookie } from '../utils/getCookie.js';
 
 const html = String.raw;
 
 class GamePage {
 	constructor(initial) {
 		this.initial = initial;
+		console.log(initial);
 
 		this.scene = null;
 		this.camera = null;
@@ -174,6 +177,28 @@ class GamePage {
 			player2Name.classList.add('display-light24');
 		} else {
 			player2Name.classList.add('display-light32');
+		}
+
+		if (this.initial.mode === 'online') {
+			fetch(apiEndpoints.MY_INFO_URL, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCookie('csrftoken')
+				},
+				mode: 'same-origin'
+			}).then((res) => {
+				if (res.status === 200) {
+					res.json().then((data) => {
+						if (
+							data.nickname !== this.initial.nickname.player1 &&
+							data.nickname !== this.initial.nickname.player2
+						) {
+							document.querySelector('.game-spectate').style.display = 'block';
+						}
+					});
+				}
+			});
 		}
 	}
 
