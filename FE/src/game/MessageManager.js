@@ -95,7 +95,7 @@ export class MessageManager {
 			this.gamepage.camera.position.set(
 				0,
 				0,
-				3.5 +
+				2.5 +
 					Math.sin((3 / 2) * Math.PI + ((this.frame - 200) / 100) * Math.PI) *
 						(1 / 2)
 			);
