@@ -1,5 +1,4 @@
 import TextInputBox from '../../TextInputBox.js';
-import uploadImageListener from './updateProfile/uploadImageListener.js';
 import updateNicknameListener from './updateProfile/updateNicknameListener.js';
 import updatePasswordListener from './updateProfile/updatePasswordListener.js';
 
@@ -201,7 +200,6 @@ class MyInfoContent {
 	}
 
 	addEventListener() {
-		uploadImageListener();
 		updateNicknameListener();
 		updatePasswordListener();
 	}
