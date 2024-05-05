@@ -20,7 +20,7 @@ import {
 	profileButton
 } from './components/ProfileButton.js';
 import { profileModal } from './components/modal/profile_modal/ProfileModal.js';
-import { hideModal } from './components/modal/modalUtils.js';
+import { hideModal, modalClickSetting } from './components/modal/modalUtils.js';
 import { browserInfo } from './utils/browserInfo.js';
 import helpButton from './components/HelpButton.js';
 import { helpModal } from './components/modal/helpModal.js';
@@ -95,6 +95,7 @@ export const changeUrlInstance = (url, instance) => {
 	}
 	root.innerHTML = instance.template();
 	instance.addEventListeners();
+	modalClickSetting();
 };
 
 export const changeUrl = (url) => {
@@ -105,6 +106,7 @@ export const changeUrl = (url) => {
 	root.innerHTML = routes[url].template();
 	if (typeof routes[url].mount === 'function') routes[url].mount();
 	routes[url].addEventListeners();
+	modalClickSetting();
 };
 
 export const changeUrlData = (url, data, historyState = true) => {
@@ -125,6 +127,7 @@ export const changeUrlData = (url, data, historyState = true) => {
 	root.innerHTML = routes[url].template(data);
 	if (typeof routes[url].mount === 'function') routes[url].mount(data);
 	routes[url].addEventListeners();
+	modalClickSetting();
 };
 
 export const gamewsmanager = new GamewebsocketManager();
@@ -132,12 +135,13 @@ export const gamewsmanager = new GamewebsocketManager();
 // When the user clicks the logo, the page is changed
 const logo = document.querySelector('#logo');
 logo.addEventListener('click', () => {
-	gamewsmanager.unregister();
 	const url = window.location.href.split('/').pop();
 	if (url === 'game') {
-		history.pushState(null, null, 'gameBlock');
+		browserInfo('게임 중에는 해당 기능을 사용할 수 없습니다.');
+	} else {
+		gamewsmanager.unregister();
+		window.location.reload(true);
 	}
-	window.location.reload(true);
 });
 
 // When the user presses the back or forward button, the page is changed
