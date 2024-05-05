@@ -168,11 +168,11 @@ class MyInfoContent {
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentId);
 			myInfoContentIdPasswordContainer.appendChild(myInfoContentPassword);
 			myInfoContentIdPasswordContainer2.appendChild(modifyPassword);
+			updatePasswordListener();
 		}
 	}
 
 	mountStats(data) {
-		console.log(data);
 		const myInfoContentWinLoseContainer = document.querySelector(
 			'.my-info-content-win-lose-container'
 		);
@@ -202,7 +202,6 @@ class MyInfoContent {
 
 	addEventListener() {
 		updateNicknameListener();
-		updatePasswordListener();
 	}
 }
 
