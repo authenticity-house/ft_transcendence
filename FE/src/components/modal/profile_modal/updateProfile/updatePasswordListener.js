@@ -61,6 +61,7 @@ async function submitPasswordChange() {
 	if (updatePasswordSuccess) {
 		togglePasswordChangeUI(true);
 		emptyInputFields(confirmForm);
+		passwordErrorMsg.innerHTML = '';
 		showMessage(Messages.PASSWORD_CHANGE_COMPLETED);
 	} else {
 		emptyInputFields(confirmForm);
@@ -77,6 +78,7 @@ export default function updatePasswordListener() {
 	const modifyPasswordContainer = document.querySelector(
 		'.modify-password-form'
 	);
+	const passwordErrorMsg = document.querySelector('.modify-password-error-msg');
 
 	modifyPasswordButton.addEventListener('click', () =>
 		togglePasswordChangeUI(false)
@@ -84,6 +86,7 @@ export default function updatePasswordListener() {
 
 	modifyCancelPasswordButton.addEventListener('click', () => {
 		emptyInputFields(modifyPasswordContainer);
+		passwordErrorMsg.innerHTML = '';
 		showMessage(Messages.PASSWORD_CHANGE_CANCELLED);
 		togglePasswordChangeUI(true);
 	});
