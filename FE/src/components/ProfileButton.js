@@ -1,4 +1,5 @@
 import { profileModal } from './modal/profile_modal/ProfileModal.js';
+import { browserInfo } from '../utils/browserInfo.js';
 
 const html = String.raw;
 
@@ -66,6 +67,11 @@ function headerAddEventListeners() {
 	const infoModalButtons = document.querySelectorAll('.info-modal-button');
 	infoModalButtons.forEach((button) => {
 		button.addEventListener('click', () => {
+			const url = window.location.href.split('/').pop();
+			if (url === 'game') {
+				browserInfo('게임 중에는 해당 기능을 사용할 수 없습니다.');
+				return;
+			}
 			if (button.id === 'header-my-friend-button') {
 				profileModal.openModal('my-friend');
 			}

@@ -172,6 +172,7 @@ class MyInfoContent {
 	}
 
 	mountStats(data) {
+		console.log(data);
 		const myInfoContentWinLoseContainer = document.querySelector(
 			'.my-info-content-win-lose-container'
 		);
