@@ -8,7 +8,9 @@ class MyFriendRequestNode {
 	template(pk) {
 		return html`
 			<div class="my-friend-request-node-container">
-				<span class="display-light28">${this.data.nickname}</span>
+				<span class="${this.setFontSize(this.data.nickname)}"
+					>${this.data.nickname}</span
+				>
 				<div class="my-friend-request-node-button-container">
 					${this.data.sent
 						? html`
@@ -36,6 +38,16 @@ class MyFriendRequestNode {
 				</div>
 			</div>
 		`;
+	}
+
+	setFontSize(nickname) {
+		if (nickname.length > 10) {
+			return 'display-light16';
+		}
+		if (nickname.length > 7) {
+			return 'display-light24';
+		}
+		return 'display-light28';
 	}
 
 	sentreceived() {

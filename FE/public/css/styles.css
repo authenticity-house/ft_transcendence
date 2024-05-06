@@ -2434,10 +2434,17 @@ td {
 .my-friend-request-node-cancel,
 .my-friend-request-node-accept,
 .my-friend-request-node-reject {
-	width: 4rem;
-	height: 4rem;
+	width: 3rem;
+	height: 3rem;
 	flex-shrink: 0;
 	border: none;
+}
+
+.my-friend-request-node-cancel img,
+.my-friend-request-node-accept img,
+.my-friend-request-node-reject img {
+	width: 3rem;
+	height: 3rem;
 }
 
 .my-friend-request-node-cancel:hover img,
