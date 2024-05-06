@@ -98,7 +98,7 @@ class Ball:
     def calculate_reflection(self, paddle: Paddle) -> float:
         relative_intersect_y = self._y - paddle.y
         normalized_relative_intersection_y = relative_intersect_y / (paddle.height / 2)
-        bounce_angle = normalized_relative_intersection_y * (math.pi / 3)
+        bounce_angle = max(min(normalized_relative_intersection_y * (math.pi / 3), math.pi / 3), -math.pi / 3)
         return bounce_angle
 
     def bounce_off_paddle(self, paddle: Paddle) -> None:
