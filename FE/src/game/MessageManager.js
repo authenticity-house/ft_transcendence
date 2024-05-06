@@ -166,7 +166,7 @@ export class MessageManager {
 			});
 		} else {
 			this.gamepage.paddleLightGroup1.children.forEach((light) => {
-				light.intensity = 0;
+				light.intensity = 0.1;
 			});
 		}
 		this.gamepage.paddleMesh2.position.y = paddle2.y;
@@ -177,7 +177,7 @@ export class MessageManager {
 			});
 		} else {
 			this.gamepage.paddleLightGroup2.children.forEach((light) => {
-				light.intensity = 0;
+				light.intensity = 0.1;
 			});
 		}
 		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
