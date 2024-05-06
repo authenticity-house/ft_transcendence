@@ -36,6 +36,8 @@ DEBUG = os.getenv("BACKEND_DEBUG", "False") == "True"
 SERVER_IP = os.getenv("SERVER_IP", "127.0.0.1")
 SERVER_PORT = os.getenv("SERVER_PORT", "443")
 
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 AUTH_USER_MODEL = "users.User"
 
 CORS_ALLOWED_ORIGINS = [
