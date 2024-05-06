@@ -71,17 +71,13 @@ class UserSearchContent {
 				.then((res) => {
 					if (res.status === 204) {
 						alert('검색 결과가 없습니다.');
-						throw new Error('검색 결과가 없습니다.');
 					}
 					if (res.status === 200) return res.json();
-					throw new Error('검색 결과를 가져오는데 실패했습니다.');
+					return null;
 				})
 				.then((res) => {
 					this.mount(res);
 					this.addProfileModalEventListeners();
-				})
-				.catch((err) => {
-					console.log(err);
 				});
 		}
 	}

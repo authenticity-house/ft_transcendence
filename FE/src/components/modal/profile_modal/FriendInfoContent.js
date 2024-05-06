@@ -144,7 +144,8 @@ class FriendInfoContent {
 						alert('친구 추가 요청을 보내는데 실패했습니다.');
 					}
 				})
-				.catch((err) => console.log(err));
+				// eslint-disable-next-line no-unused-vars
+				.catch((err) => {});
 		});
 	}
 }

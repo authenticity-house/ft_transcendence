@@ -114,7 +114,6 @@ class LoginPage {
 						if (res.ok) {
 							if (res.status === 204) {
 								// 204 : No Content - json() 호출 불가
-								console.log('login success');
 								changeUrl('playMode');
 								return null;
 							}
@@ -122,8 +121,6 @@ class LoginPage {
 						}
 						// if (res.status === 400) {
 						// 400 : Bad request, 이메일 인증 안 받음
-						console.log('로그인 실패');
-						console.log(res);
 						// }
 						throw new Error('Error');
 					})

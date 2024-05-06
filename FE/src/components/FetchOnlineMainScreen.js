@@ -39,9 +39,8 @@ function fetchProfileDataAndDisplay() {
 				});
 			}
 		})
-		.catch((error) => {
-			console.log('Error fetching profile data:', error);
-		});
+		// eslint-disable-next-line no-unused-vars
+		.catch((error) => {});
 
 	fetch(apiEndpoints.STATS_SUMMARY_URL, {
 		method: 'GET',
@@ -66,9 +65,8 @@ function fetchProfileDataAndDisplay() {
 				});
 			}
 		})
-		.catch((error) => {
-			console.log('Error fetching profile data:', error);
-		});
+		// eslint-disable-next-line no-unused-vars
+		.catch((error) => {});
 }
 
 function getRoomElementAll(roomList) {

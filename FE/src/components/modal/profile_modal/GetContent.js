@@ -29,9 +29,8 @@ export function getContent(id, userPk) {
 					});
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 
 		fetch(apiEndpoints.STATS_SUMMARY_URL, {
 			method: 'GET',
@@ -59,9 +58,8 @@ export function getContent(id, userPk) {
 					});
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 	} else if (id === 'match-record') {
 		// my-record 탭을 클릭했을 때 경기 기록을 렌더링
 		fetch(apiEndpoints.MATCH_RECORD_URL, {
@@ -80,9 +78,8 @@ export function getContent(id, userPk) {
 					});
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 	} else if (id === 'user-search') {
 		// user-search 탭을 클릭했을 때 유저 검색을 렌더링
 	} else if (id === 'my-friend') {
@@ -106,9 +103,8 @@ export function getContent(id, userPk) {
 						const toolTip = statsContent.mount(data);
 						statsContent.addEventListeners(toolTip);
 					})
-					.catch((err) => {
-						console.log(err);
-					});
+					// eslint-disable-next-line no-unused-vars
+					.catch((err) => {});
 			}
 		});
 	} else if (id === 'friend-info') {
@@ -128,9 +124,8 @@ export function getContent(id, userPk) {
 					});
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 
 		fetch(`${apiEndpoints.STATS_SUMMARY_URL}${userPk}/`, {
 			method: 'GET',
@@ -158,9 +153,8 @@ export function getContent(id, userPk) {
 					});
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 	} else if (id === 'friend-match-record') {
 		fetch(`${apiEndpoints.MATCH_RECORD_URL}${userPk}/`, {
 			method: 'GET',
@@ -180,8 +174,7 @@ export function getContent(id, userPk) {
 					friendRecordContent.mount([]);
 				}
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			// eslint-disable-next-line no-unused-vars
+			.catch((err) => {});
 	}
 }

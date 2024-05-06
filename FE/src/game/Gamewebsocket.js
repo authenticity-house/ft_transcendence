@@ -18,7 +18,6 @@ export class Gamewebsocket {
 		this.keyDownList = new Set();
 
 		this.ws.onopen = () => {
-			console.log('connected');
 			this.receiveMessages();
 		};
 
