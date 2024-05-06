@@ -15,7 +15,6 @@ const html = String.raw;
 class GamePage {
 	constructor(initial) {
 		this.initial = initial;
-		console.log(initial);
 
 		this.scene = null;
 		this.camera = null;
