@@ -63,8 +63,8 @@ class Ball:
     def increase_speed(self, player: Player) -> None:
         if self._speed == Ball.INIT_BALL_SPEED:
             self._speed = self.DEFAULT_BALL_SPEED
-            return
-        self._speed += self._accel_speed
+        else:
+            self._speed += self._accel_speed
 
         paddle = player.paddle
 
