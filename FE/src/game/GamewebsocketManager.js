@@ -21,7 +21,7 @@ export class GamewebsocketManager {
 
 	changeInfo() {
 		if (this.ws && this.ws.isOpen()) {
-			if (this.ws.exitRoom && this.ws.changeInfo) {
+			if (this.ws.exitRoom && this.ws.sendChangeProfile) {
 				this.ws.sendChangeProfile();
 			}
 		}

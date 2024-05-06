@@ -1,6 +1,7 @@
 import apiEndpoints from '../../../../constants/apiConfig.js';
 import { getCookie } from '../../../../utils/getCookie.js';
 import { showMessage } from './updateProfileUtils.js';
+import { gamewsmanager } from '../../../../index.js';
 
 async function uploadImageAPI(e) {
 	const image = e.target.files[0];
@@ -27,6 +28,7 @@ async function uploadImageAPI(e) {
 			const OnlineImg = document.querySelector('.user-profile-summary-img');
 			if (headerImg) headerImg.src = data.url;
 			if (OnlineImg) OnlineImg.src = data.url;
+			gamewsmanager.changeInfo();
 		} else if (status === 400) {
 			showMessage('.modify-image-error-msg', '이미지 업로드에 실패했습니다.');
 		}

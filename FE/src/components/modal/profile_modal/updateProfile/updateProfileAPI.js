@@ -23,8 +23,8 @@ export async function updateProfileAPI(formData) {
 		const { status, ok } = response;
 
 		if (ok) {
+			gamewsmanager.changeInfo();
 			if (data.nickname) return data.nickname;
-			gamewsmanager.ws.changeInfo();
 			return true;
 		}
 		if (status === 400) {
