@@ -50,6 +50,9 @@ class Player:
     def increase_key_cnt(self) -> None:
         self._key_cnt += 1
 
+    def increase_power_up_cnt(self) -> None:
+        self._attack_stat.increase_power_up_cnt()
+
     @property
     def paddle(self) -> Paddle:
         return self._paddle

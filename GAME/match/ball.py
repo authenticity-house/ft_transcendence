@@ -6,6 +6,7 @@ import random
 from .coor_util import Point, line_intersect
 from .constants import SCREEN_HEIGHT
 from .paddle import Paddle
+from .player import Player
 
 
 class Ball:
@@ -26,6 +27,9 @@ class Ball:
         self._dx: float = 0
         self._dy: float = 0
 
+        self._power_up = False
+        self._before_speed = self._speed
+
         self._max_speed_list: list = []
 
         self.reset(1)
@@ -34,6 +38,10 @@ class Ball:
         self._x = 0
         self._y = 0
         self._speed = Ball.INIT_BALL_SPEED
+        print(self._speed)
+
+        self._power_up = False
+        self._before_speed = self._speed
 
         if player == 1:
             angle: float = math.pi * (3 / 4) + (random.random() * math.pi) / 2
@@ -52,11 +60,25 @@ class Ball:
         elif self._y <= -ball_y_bound:
             self._y = -ball_y_bound
 
-    def increase_speed(self) -> None:
+    def increase_speed(self, player: Player) -> None:
         if self._speed == Ball.INIT_BALL_SPEED:
             self._speed = self.DEFAULT_BALL_SPEED
-            return
-        self._speed += self._accel_speed
+        else:
+            self._speed += self._accel_speed
+
+        paddle = player.paddle
+
+        if paddle.power_up is True:
+            player.increase_power_up_cnt()
+            if self._power_up is False:
+                self._before_speed = self._speed
+                self._speed = self._speed * 1.5
+                self._power_up = True
+            paddle.power_up_off()
+        else:
+            if self._power_up is True:
+                self._speed = self._before_speed
+                self._power_up = False
 
     def update_direction(self, new_dx: float, new_dy: float) -> None:
         self._dx = new_dx
@@ -76,7 +98,7 @@ class Ball:
     def calculate_reflection(self, paddle: Paddle) -> float:
         relative_intersect_y = self._y - paddle.y
         normalized_relative_intersection_y = relative_intersect_y / (paddle.height / 2)
-        bounce_angle = normalized_relative_intersection_y * (math.pi / 3)
+        bounce_angle = max(min(normalized_relative_intersection_y * (math.pi / 3), math.pi / 3), -math.pi / 3)
         return bounce_angle
 
     def bounce_off_paddle(self, paddle: Paddle) -> None:

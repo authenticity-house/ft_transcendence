@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { changeUrlInstance, changeUrlData } from '../index.js';
 import {
 	removeModalBackdrop,
@@ -158,8 +160,26 @@ export class MessageManager {
 		this.gamepage.ballMesh.position.y = ball.y;
 		this.gamepage.paddleMesh1.position.y = paddle1.y;
 		this.gamepage.paddleLightGroup1.position.y = paddle1.y;
+		if (data.paddle1.power_up) {
+			this.gamepage.paddleLightGroup1.children.forEach((light) => {
+				light.intensity = 1;
+			});
+		} else {
+			this.gamepage.paddleLightGroup1.children.forEach((light) => {
+				light.intensity = 0.1;
+			});
+		}
 		this.gamepage.paddleMesh2.position.y = paddle2.y;
 		this.gamepage.paddleLightGroup2.position.y = paddle2.y;
+		if (data.paddle2.power_up) {
+			this.gamepage.paddleLightGroup2.children.forEach((light) => {
+				light.intensity = 1;
+			});
+		} else {
+			this.gamepage.paddleLightGroup2.children.forEach((light) => {
+				light.intensity = 0.1;
+			});
+		}
 		this.gamepage.ballLight.position.copy(this.gamepage.ballMesh.position);
 
 		this.updateScores(score);
@@ -273,6 +293,7 @@ export class MessageManager {
 			case SubType.MATCH_RUN:
 				// 로딩 중 지우기
 				// 수신한 매치 데이터로 rendering
+
 				if (message.message === GameMessages.READY) {
 					this.frame += 1;
 					this.updateCameraPosition();
