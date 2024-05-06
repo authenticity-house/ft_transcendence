@@ -65,7 +65,6 @@ export class MessageManager {
 	sendGameDisconnect() {
 		this.websocket.send(msg.gameDisconnectMsg());
 		this.websocket.close();
-		console.log('disconnected');
 	}
 
 	// -----------------------------------------------------------------------------
@@ -196,7 +195,6 @@ export class MessageManager {
 				break;
 
 			case MessageType.GAME_OVER:
-				console.log('game over');
 				if (message.subtype === SubType.TOURNAMENT_TREE) {
 					// 최종 대진표
 					changeUrlData(
@@ -225,7 +223,6 @@ export class MessageManager {
 				break;
 
 			default:
-				console.log('default');
 				break;
 		}
 	}
@@ -303,7 +300,6 @@ export class MessageManager {
 				break;
 
 			case SubType.MATCH_END:
-				console.log('match_end');
 				removeModalBackdrop(); // modal-fade 비활성화
 
 				// 1vs1 대전의 경우 disconnect
@@ -337,11 +333,10 @@ export class MessageManager {
 				break;
 
 			case SubType.ERROR:
-				console.log(`server: ${message.message}`);
+				alert(`server: ${message.message}`);
 				break;
 
 			default:
-				console.log('default');
 				break;
 		}
 	}

@@ -216,7 +216,6 @@ class GamePage {
 		returnButton.addEventListener('click', () => {
 			this.initial.sendMsg();
 
-			console.log('match_end');
 			history.pushState(null, null, 'gameBlock');
 			if (this.initial.mode === 'online') {
 				changeUrl('onlineMainScreen'); // online

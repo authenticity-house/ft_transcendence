@@ -47,9 +47,7 @@ export class RoomWebsocket {
 			const url = getWebsocketUrl(`/room/${roomNumber}/`);
 			this.ws = new WebSocket(url);
 
-			this.ws.onopen = () => {
-				console.log('connected');
-			};
+			this.ws.onopen = () => {};
 		} catch (error) {
 			console.error('웹소켓 연결 실패', error);
 			return false;
@@ -63,8 +61,6 @@ export class RoomWebsocket {
 		};
 		this.send(message);
 		this.close();
-
-		console.log('방 나가기');
 	}
 
 	getRoomInfo() {
@@ -89,7 +85,6 @@ export class RoomWebsocket {
 						showModal('roomModal');
 						break;
 					default:
-						console.log('default');
 						break;
 				}
 			};
