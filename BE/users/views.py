@@ -5,7 +5,7 @@ from allauth.account.utils import send_email_confirmation, perform_login
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.contrib.sessions.models import Session
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.db.models import Q
 from django.db import transaction
 
@@ -17,6 +17,7 @@ from rest_framework.exceptions import NotFound, ParseError, APIException
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import serializers
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from stats.models import UserStat
@@ -440,15 +441,16 @@ class UpdateUserView(RetrieveUpdateAPIView):
 
         serializer = self.serializer_class(request.user, data=serializer_data, partial=True)
 
-        serializer.is_valid(raise_exception=True)
         try:
-            detail = serializer.save()
-            return Response(detail, status=status.HTTP_200_OK)
-        except Exception:  # pylint: disable=broad-exception-caught
-            return Response(
-                {"detail": "The nickname is already in use."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+
+            if "password" in serializer_data:
+                user = request.user
+                update_session_auth_hash(request, user)
+        except serializers.ValidationError as exc:
+            return Response(exc.detail, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SessionAPIView(APIView):
@@ -464,13 +466,9 @@ class SessionAPIView(APIView):
             serializer = UserProfileSerializer(user)
             return Response(serializer.data)
         except Session.DoesNotExist:
-            return Response(
-                {"error": "Invalid session"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Invalid session"}, status=status.HTTP_400_BAD_REQUEST)
         except get_user_model().DoesNotExist:
-            return Response(
-                {"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "User not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ImageUploadAPIView(APIView):

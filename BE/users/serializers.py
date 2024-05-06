@@ -90,6 +90,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
             if not user.check_password(attrs["old_password"]):
                 raise serializers.ValidationError({"detail": "The existing password is incorrect."})
 
+        if "nickname" in attrs:
+            if (
+                User.objects.exclude(pk=self.instance.pk)
+                .filter(nickname=attrs["nickname"])
+                .exists()
+            ):
+                raise serializers.ValidationError({"detail": "The nickname is already in use."})
+
         return super().validate(attrs)
 
     def update(self, instance, validated_data):

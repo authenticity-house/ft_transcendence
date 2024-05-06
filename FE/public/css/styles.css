@@ -394,6 +394,20 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	color: #fff;
 }
 
+.update-button {
+	display: flex;
+	font-size: 2.4rem;
+	border-radius: 1rem;
+	font-family: 'GongGothicLight', sans-serif;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	gap: 1rem;
+	border: 0.2rem solid #fff;
+	background-color: transparent;
+	color: #fff;
+}
+
 .medium-window {
 	display: flex;
 	width: 100rem;
@@ -560,6 +574,13 @@ td {
 	flex-direction: column;
 	align-items: center;
 	gap: 5rem;
+}
+
+.vertical-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .vertical-button-container {
@@ -2093,8 +2114,7 @@ td {
 	align-items: center;
 	gap: 1rem;
 	height: 3.5rem;
-	padding-left: 4rem;
-	margin-top: 4rem;
+	padding-left: 2rem;
 }
 
 .my-info-content-name-modify-input {
@@ -2103,12 +2123,15 @@ td {
 	display: none;
 }
 
-.modify-name-error-msg {
+.modify-image-error-msg,
+.modify-name-error-msg,
+.modify-password-error-msg,
+.modify-password-msg {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 30rem;
-	height: 4rem;
+	height: 3rem;
 	color: #ff5d84;
 }
 
@@ -2120,7 +2143,8 @@ td {
 	gap: 1rem;
 }
 
-.my-info-content-id-password-container {
+.my-info-content-id-password-container,
+.my-info-content-id-password-container2 {
 	display: flex;
 	width: 30rem;
 	flex-direction: column;
@@ -2137,7 +2161,9 @@ td {
 
 .my-info-content-password {
 	display: flex;
+	flex-direction: column;
 	width: 100%;
+	gap: 1rem;
 }
 
 .password-button-container {
@@ -2153,6 +2179,7 @@ td {
 }
 
 .modify-password-form {
+	width: 30rem;
 	flex-direction: column;
 	display: none;
 }
@@ -2161,7 +2188,7 @@ td {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	margin-top: 1.5rem;
+	margin: 1.5rem 0;
 }
 
 .modify-password-button {

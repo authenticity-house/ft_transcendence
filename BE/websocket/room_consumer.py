@@ -34,6 +34,8 @@ class RoomConsumer(JsonWebsocketConsumer):
             self.room_exit()
         elif msg_type == "room.change.state":
             self.change_state()
+        elif msg_type == "room.change.profile":
+            self.change_profile()
         elif msg_type == "room.change.info":
             self.change_info(msg_body)
         elif msg_type == "room.start.request":
@@ -75,6 +77,11 @@ class RoomConsumer(JsonWebsocketConsumer):
     def change_state(self):
         room = self.__get_room()
         room.change_state(self.user)
+        self.broadcast("room.info", "get room info")
+
+    def change_profile(self):
+        room = self.__get_room()
+        room.change_profile(self.user)
         self.broadcast("room.info", "get room info")
 
     def change_info(self, data):

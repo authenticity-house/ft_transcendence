@@ -13,6 +13,7 @@ import apiEndpoints from '../../../constants/apiConfig.js';
 import { statsContent } from './StatsContent.js';
 import { friendInfoContent } from './FriendInfoContent.js';
 import { friendRecordContent } from './FriendRecordContent.js';
+import uploadImageListener from './updateProfile/uploadImageListener.js';
 
 const html = String.raw;
 
@@ -394,6 +395,7 @@ class ProfileModal {
 		});
 
 		userSearchContent.addEventListeners();
+		uploadImageListener();
 	}
 
 	// 헤더 버튼을 눌렀을 때 각 버튼에 맞는 탭이 활성화된 상태로 모달이 열리도록 하는 함수
