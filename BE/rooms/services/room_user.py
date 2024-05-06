@@ -1,12 +1,17 @@
 from enum import Enum
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from users.models import User
+
 
 class RoomUser:
     class Status(Enum):
         WAIT = 0
         READY = 1
 
-    def __init__(self, nickname, rating, img_url) -> None:
+    def __init__(self, pk, nickname, rating, img_url) -> None:
+        self._pk: int = pk
         self._nickname: str = nickname
         self._rating: int = rating
         self._img_url: str = img_url
@@ -19,6 +24,14 @@ class RoomUser:
         else:
             self._ready_state = RoomUser.Status.WAIT
 
+    def change_profile(self) -> None:
+        try:
+            user = User.objects.get(pk=self._pk)
+            self._nickname = user.nickname
+            self._img_url = user.profile_url
+        except ObjectDoesNotExist as exc:
+            pass
+
     def info(self) -> dict:
         return {
             "image": self._img_url,
@@ -28,4 +41,4 @@ class RoomUser:
         }
 
     def is_same(self, user) -> bool:
-        return self._nickname == user.nickname
+        return self._pk == user.pk

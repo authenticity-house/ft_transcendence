@@ -141,7 +141,6 @@ class WaitingRoomPage {
 	addEventListeners() {
 		const statusButton = document.querySelector('.button-extra-large');
 		statusButton.addEventListener('click', () => {
-			console.log('click');
 			if (!this.isHost) {
 				const newText = !this.readyState ? '대기' : '준비';
 				const newColor = !this.readyState ? 'pink' : 'blue';

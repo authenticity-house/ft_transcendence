@@ -21,6 +21,8 @@ class Paddle:
         self._x: float = SCREEN_WIDTH / 2 * 0.933 * pos.value
         self._y: float = 0
 
+        self._power_up = False
+
         self.reset()
 
     def reset(self) -> None:
@@ -41,6 +43,12 @@ class Paddle:
 
     def get_stat_data(self) -> dict[str, float]:
         return {"x": self._x, "y": self._y, "width": self.width, "height": self._height}
+
+    def power_up_on(self) -> None:
+        self._power_up = True
+
+    def power_up_off(self) -> None:
+        self._power_up = False
 
     @property
     def x(self) -> float:
@@ -69,3 +77,7 @@ class Paddle:
     @property
     def pos(self) -> int:
         return self._pos.value
+
+    @property
+    def power_up(self) -> bool:
+        return self._power_up

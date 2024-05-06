@@ -394,6 +394,20 @@ button:hover:not(.button-back-arrow-box):not(.duel-toggle-button):not(
 	color: #fff;
 }
 
+.update-button {
+	display: flex;
+	font-size: 2.4rem;
+	border-radius: 1rem;
+	font-family: 'GongGothicLight', sans-serif;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	gap: 1rem;
+	border: 0.2rem solid #fff;
+	background-color: transparent;
+	color: #fff;
+}
+
 .medium-window {
 	display: flex;
 	width: 100rem;
@@ -560,6 +574,13 @@ td {
 	flex-direction: column;
 	align-items: center;
 	gap: 5rem;
+}
+
+.vertical-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .vertical-button-container {
@@ -1106,6 +1127,17 @@ td {
 	display: none;
 }
 
+.game-spectate {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+	opacity: 40%;
+	color: #ffffff;
+	display: none;
+}
+
 /* Graph */
 .graph-container {
 	display: flex;
@@ -1324,6 +1356,9 @@ td {
 }
 
 .user-image-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	width: 9rem;
 	height: 9rem;
 	border-radius: 50%;
@@ -1331,11 +1366,19 @@ td {
 	background-color: aliceblue;
 }
 
-.user-image-container img {
+.user-image-container .user-image {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	object-fit: cover;
+}
+
+.user-image-container .user-image-default {
+	width: 80%;
+	height: 80%;
+	object-fit: cover;
+	border-radius: 50%;
+	opacity: 30%;
 }
 
 .user-blank-container {
@@ -2071,8 +2114,7 @@ td {
 	align-items: center;
 	gap: 1rem;
 	height: 3.5rem;
-	padding-left: 4rem;
-	margin-top: 4rem;
+	padding-left: 2rem;
 }
 
 .my-info-content-name-modify-input {
@@ -2081,12 +2123,15 @@ td {
 	display: none;
 }
 
-.modify-name-error-msg {
+.modify-image-error-msg,
+.modify-name-error-msg,
+.modify-password-error-msg,
+.modify-password-msg {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 30rem;
-	height: 4rem;
+	height: 3rem;
 	color: #ff5d84;
 }
 
@@ -2098,7 +2143,8 @@ td {
 	gap: 1rem;
 }
 
-.my-info-content-id-password-container {
+.my-info-content-id-password-container,
+.my-info-content-id-password-container2 {
 	display: flex;
 	width: 30rem;
 	flex-direction: column;
@@ -2115,7 +2161,9 @@ td {
 
 .my-info-content-password {
 	display: flex;
+	flex-direction: column;
 	width: 100%;
+	gap: 1rem;
 }
 
 .password-button-container {
@@ -2131,6 +2179,7 @@ td {
 }
 
 .modify-password-form {
+	width: 30rem;
 	flex-direction: column;
 	display: none;
 }
@@ -2139,7 +2188,7 @@ td {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	margin-top: 1.5rem;
+	margin: 1.5rem 0;
 }
 
 .modify-password-button {
@@ -2423,10 +2472,17 @@ td {
 .my-friend-request-node-cancel,
 .my-friend-request-node-accept,
 .my-friend-request-node-reject {
-	width: 4rem;
-	height: 4rem;
+	width: 3rem;
+	height: 3rem;
 	flex-shrink: 0;
 	border: none;
+}
+
+.my-friend-request-node-cancel img,
+.my-friend-request-node-accept img,
+.my-friend-request-node-reject img {
+	width: 3rem;
+	height: 3rem;
 }
 
 .my-friend-request-node-cancel:hover img,
@@ -2610,11 +2666,35 @@ td {
 
 .attack-tendency-wrapper {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	width: 100%;
 	height: 100%;
 	border: 0.1rem solid #fff;
+	gap: 1rem;
+}
+
+.attack-tendency-value-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 3rem;
+	gap: 2.5rem;
+}
+
+.attack-tendency-value-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
+
+.color-border {
+	width: 0.8rem;
+	height: 0.8rem;
+	border: 0.4rem solid white;
 }
 
 /* HelpButton.js */

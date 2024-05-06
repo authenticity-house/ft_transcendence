@@ -36,6 +36,10 @@ class TournamentPage {
 
 	mount(data) {
 		this.data = data;
+		if (data.mode === 'online') {
+			const nextButton = document.querySelector('.event-click-match');
+			nextButton.style.display = 'none';
+		}
 		const bracketInfo = this.data.bracket;
 		const winPlayer = this.data.winner;
 		const { position, halfHeight } = getUserPosition();

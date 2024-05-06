@@ -34,6 +34,9 @@ class MatchManager:
         self._last_scored_time: dt = None
         self._rally_count_list: list = []
 
+        self._player1_can_power_up = True
+        self._player2_can_power_up = True
+
         self._rally_cnt: int = 0
 
     def update_frame(self) -> None:
@@ -46,10 +49,10 @@ class MatchManager:
 
         # 패들 충돌
         if self.ball.is_collides_with_paddle(self.player1.paddle):
-            print("left --------- paddle reflect!")
+            print(f"left --------- paddle reflect! {self.player1.paddle.power_up}")
             self.handle_paddle_collision(self.player1, self.player2)
         if self.ball.is_collides_with_paddle(self.player2.paddle):
-            print("right ---------- paddle reflect!")
+            print(f"right ---------- paddle reflect! {self.player2.paddle.power_up}")
             self.handle_paddle_collision(self.player2, self.player1)
 
         # 오른쪽 득점
@@ -91,8 +94,8 @@ class MatchManager:
     def get_send_data(self) -> dict:
         data = {
             "ball": self.ball.get_stat_data(),
-            "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y},
-            "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y},
+            "paddle1": {"x": self.player1.paddle.x, "y": self.player1.paddle.y, "power_up": self.player1.paddle.power_up},
+            "paddle2": {"x": self.player2.paddle.x, "y": self.player2.paddle.y, "power_up": self.player2.paddle.power_up},
             "score": {
                 "player1": self.player1.score_point,
                 "player2": self.player2.score_point,
@@ -116,7 +119,7 @@ class MatchManager:
         return data
 
     def handle_paddle_collision(self, owner: Player, other: Player) -> None:
-        self.ball.increase_speed()
+        self.ball.increase_speed(owner)
         self.ball.bounce_off_paddle(owner.paddle)
         owner.update_attack_type(self.ball.y)
         other.update_attack_pos(self.ball.y)
@@ -155,12 +158,20 @@ class MatchManager:
                 self.player2.paddle.move_paddle_up()
             if key == "ArrowDown":
                 self.player2.paddle.move_paddle_down()
+            if key == "Space":
+                if self._player1_can_power_up is True:
+                    self.player1.paddle.power_up_on()
+                    self._player1_can_power_up = False
+            if key == "Enter":
+                if self._player2_can_power_up is True:
+                    self.player2.paddle.power_up_on()
+                    self._player2_can_power_up = False
 
     def local_update_key_cnt(self, keys: set) -> None:
         for key in keys:
-            if key in ["KeyW", "KeyS"]:
+            if key in ["KeyW", "KeyS", "Space"]:
                 self.player1.increase_key_cnt()
-            elif key in ["ArrowUp", "ArrowDown"]:
+            elif key in ["ArrowUp", "ArrowDown", "Enter"]:
                 self.player2.increase_key_cnt()
 
     def get_play_time(self) -> str:
@@ -184,6 +195,8 @@ class MatchManager:
         return [max_value, avg_value, min_value]
 
     def reset(self, side: int) -> None:
+        self._player1_can_power_up = True
+        self._player2_can_power_up = True
         self.ball.reset(side)
         self._rally_cnt = 0
 

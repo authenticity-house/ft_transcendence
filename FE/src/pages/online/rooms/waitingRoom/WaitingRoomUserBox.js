@@ -6,7 +6,7 @@ function getUserSeatBox(maxHeadcount) {
 	userSeatContainer.className = 'waiting-room-users-container';
 	for (let i = 0; i < 8; i += 1) {
 		const userSeatBox = document.createElement('div');
-		userSeatBox.className = 'user-seat-box head_white_neon_10 display-light18';
+		userSeatBox.className = 'user-seat-box head_white_neon_10 display-light16';
 		if (i >= blockIndex) {
 			const blockContainer = document.createElement('div');
 			blockContainer.className = 'user-seat-box-block-container';

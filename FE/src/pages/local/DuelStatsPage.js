@@ -11,7 +11,6 @@ const html = String.raw;
 class DuelStatsPage {
 	template(data) {
 		this.data = data;
-
 		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
@@ -51,6 +50,10 @@ class DuelStatsPage {
 	}
 
 	mount(data) {
+		if (data.battle_mode === 2 && data.mode === 'online') {
+			const nextButton = document.querySelector('.event-click-match');
+			nextButton.style.display = 'none';
+		}
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
 		DuelGraphStats.appendScoresToYAxis(matchData.maxScore, false, true);
