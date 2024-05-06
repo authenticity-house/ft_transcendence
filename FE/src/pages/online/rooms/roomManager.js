@@ -8,8 +8,6 @@ import { Gamewebsocket } from '../../../game/Gamewebsocket.js';
 export async function createAndJoinRoom(data) {
 	const roomNumber = await createRoomAPI(data);
 
-	console.log('방번호', roomNumber);
-
 	if (!roomNumber)
 		// 방 만들기 실패
 		// ?? 방을 만들지 못할 경우?

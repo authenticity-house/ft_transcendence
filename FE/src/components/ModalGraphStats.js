@@ -67,6 +67,7 @@ function drawRatingChange(ratingChange) {
 	const toolTip = [];
 	if (maxNumber !== -1) {
 		const ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		for (let i = 0; i < ratingChange.length - 1; i += 1) {
 			const x1 = (i + 1) * widthDivide;
 			const x2 = (i + 2) * widthDivide;
@@ -92,6 +93,7 @@ function drawAttackTendency(type) {
 	const canvas = document.querySelector('.attack-tendency-canvas');
 
 	const ctx = canvas.getContext('2d');
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	let totalValue = 0;
 	attackTendency.forEach((tendency) => {
 		totalValue += tendency.value;
@@ -124,7 +126,7 @@ function drawAttackTendency(type) {
 				fontSize = 8;
 			} else {
 				// 1 / 12
-				fontSize = 4;
+				fontSize = 7;
 			}
 			if (slice.value !== 0) {
 				const textX = centerX + (radius / 2) * Math.cos(sliceMiddleAngle);
