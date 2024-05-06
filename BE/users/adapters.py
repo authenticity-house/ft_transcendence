@@ -23,7 +23,7 @@ class CustomUserAccountAdapter(DefaultAccountAdapter):
         """
 
         url = (
-            f"http://{SERVER_IP}:{SERVER_PORT}/api/users/users-confirm-email/"
+            f"https://{SERVER_IP}:{SERVER_PORT}/api/users/users-confirm-email/"
             + emailconfirmation.key
             + "/"
         )

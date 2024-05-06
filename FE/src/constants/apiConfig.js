@@ -1,4 +1,4 @@
-// http://127.0.0.1:8080/api/
+// https://${SERVER_IP}:${SERVER_PORT}/api/
 function getApiBaseUrl() {
 	const { protocol, hostname, port } = window.location;
 	const apiPort = port ? `:${port}` : '';

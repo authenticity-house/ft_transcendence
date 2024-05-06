@@ -2,14 +2,21 @@ version: "3"
 
 services:
   nginx:
-    build: ./nginx
+    build: 
+      context: ./nginx
+      args:
+        SERVER_IP: ${SERVER_IP}
+        CERTS_: ${CERTS_}
+        CERTS_KEY_: ${CERTS_KEY_}
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     container_name: nginx_container
     depends_on:
       - game
       - backend
     volumes:
+      - ./data/ssl:/etc/nginx/ssl/
       - ./FE:/usr/share/nginx/html/FE
       - profile-image-volume:/usr/share/nginx/profile
     networks:

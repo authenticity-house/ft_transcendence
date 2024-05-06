@@ -34,9 +34,39 @@ SECRET_KEY = os.getenv("BACKEND_SECRET_KEY")
 DEBUG = os.getenv("BACKEND_DEBUG", "False") == "True"
 
 SERVER_IP = os.getenv("SERVER_IP", "127.0.0.1")
-SERVER_PORT = os.getenv("SERVER_PORT", "8080")
+SERVER_PORT = os.getenv("SERVER_PORT", "443")
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+AUTH_USER_MODEL = "users.User"
+
+CORS_ALLOWED_ORIGINS = [
+    "https://" + SERVER_IP,
+    "https://backend",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "Referer",
+    "access-control-allow-origin",
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+]
+CORS_ALLOW_METHODS = ["GET", "POST", "DELETE", "OPTIONS", "PATCH"]
 
 ALLOWED_HOSTS: List[str] = ["localhost", "127.0.0.1", "[::1]", "backend", SERVER_IP]
+
+CSRF_COOKIE_SAMESITE = None
+CSRF_COOKIE_SECURE = True  # If your site is served over HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    "https://localhost",
+    "https://127.0.0.1",
+    "https://[::1]",
+    "https://backend",
+    "https://" + SERVER_IP,
+]
+
 
 ACCOUNT_ADAPTER = "users.adapters.CustomUserAccountAdapter"
 
@@ -83,6 +113,8 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "users",
     "stats",
+    "rooms",
+    "corsheaders",
 ]
 
 SITE_ID = 1
@@ -90,6 +122,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -139,7 +172,6 @@ DATABASES = {
 #     )
 # }
 
-AUTH_USER_MODEL = "users.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
