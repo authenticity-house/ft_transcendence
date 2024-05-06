@@ -183,6 +183,7 @@ export class MessageManager {
 						'tournament',
 						{
 							...message.data,
+							mode: message.mode,
 							sendMsg: this.sendGameOver.bind(this)
 						},
 						false
@@ -232,16 +233,19 @@ export class MessageManager {
 					changeUrlData(
 						'tournament',
 						{
-							...message.data
+							...message.data,
+							mode: message.mode
 						},
 						false
 					);
+					break;
 				}
 				// 대진표 출력 및 게임 매치 초기화 요청
 				changeUrlData(
 					'tournament',
 					{
 						...message.data,
+						mode: message.mode,
 						sendMsg: this.sendGameMatchInitSetting.bind(this)
 					},
 					false
@@ -298,6 +302,8 @@ export class MessageManager {
 						'duelstats',
 						{
 							...message.data,
+							battle_mode: this.gamesetting.battle_mode,
+							mode: message.mode,
 							sendMsg: this.sendGameNextMatch.bind(this)
 						},
 						false
