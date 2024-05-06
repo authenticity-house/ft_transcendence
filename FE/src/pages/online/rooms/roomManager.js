@@ -125,4 +125,11 @@ export class RoomWebsocket {
 		};
 		this.send(message);
 	}
+
+	sendChangeProfile() {
+		const message = {
+			type: 'room.change.profile'
+		};
+		this.send(message);
+	}
 }

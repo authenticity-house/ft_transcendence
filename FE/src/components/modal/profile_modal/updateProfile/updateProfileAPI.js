@@ -1,6 +1,7 @@
 import apiEndpoints from '../../../../constants/apiConfig.js';
 import { getCookie } from '../../../../utils/getCookie.js';
 import { formDataToJson } from '../../../../utils/formDataToJson.js';
+import { gamewsmanager } from '../../../../index.js';
 
 export async function updateProfileAPI(formData) {
 	const csrfToken = getCookie('csrftoken');
@@ -23,7 +24,7 @@ export async function updateProfileAPI(formData) {
 
 		if (ok) {
 			if (data.nickname) return data.nickname;
-
+			gamewsmanager.ws.changeInfo();
 			return true;
 		}
 		if (status === 400) {

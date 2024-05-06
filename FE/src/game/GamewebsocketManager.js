@@ -18,4 +18,12 @@ export class GamewebsocketManager {
 		}
 		this.ws = null;
 	}
+
+	changeInfo() {
+		if (this.ws && this.ws.isOpen()) {
+			if (this.ws.exitRoom && this.ws.changeInfo) {
+				this.ws.sendChangeProfile();
+			}
+		}
+	}
 }
