@@ -88,6 +88,8 @@ routes[''].mount();
 routes[''].addEventListeners();
 
 export const changeUrlInstance = (url, instance) => {
+	// 모달창 열려 있을 시, 닫고 진행
+	hideModal('profile-modal');
 	history.pushState(null, null, `${homeLink}gameBlock`);
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
@@ -99,6 +101,8 @@ export const changeUrlInstance = (url, instance) => {
 };
 
 export const changeUrl = (url) => {
+	// 모달창 열려 있을 시, 닫고 진행
+	hideModal('profile-modal');
 	if (url !== window.location.href.split('/').pop()) {
 		history.pushState(null, null, `${homeLink}${url}`);
 		urlState = `${url}`;
@@ -110,6 +114,8 @@ export const changeUrl = (url) => {
 };
 
 export const changeUrlData = (url, data, historyState = true) => {
+	// 모달창 열려 있을 시, 닫고 진행
+	hideModal('profile-modal');
 	if (historyState) {
 		if (url === 'gameSettingTournament') {
 			history.pushState(null, null, `${homeLink}gameSetting`); // url만 gameSetting으로
