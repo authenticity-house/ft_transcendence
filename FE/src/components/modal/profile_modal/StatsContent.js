@@ -97,9 +97,23 @@ class StatsContent {
 						<div class="attack-tendency-wrapper">
 							<canvas
 								class="attack-tendency-canvas"
-								width="200"
-								height="200"
+								width="180"
+								height="180"
 							></canvas>
+							<div class="attack-tendency-value-container display-light14">
+								<div class="attack-tendency-value-wrapper">
+									<div class="color-border"></div>
+									<span></span>
+								</div>
+								<div class="attack-tendency-value-wrapper">
+									<div class="color-border"></div>
+									<span></span>
+								</div>
+								<div class="attack-tendency-value-wrapper">
+									<div class="color-border"></div>
+									<span></span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
