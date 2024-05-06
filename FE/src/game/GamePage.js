@@ -30,13 +30,13 @@ class GamePage {
 			<div class="game-page-container">
 				<div class="game-page-container">
 					<div class="game-header">
-						<div class="player1-name display-light32"></div>
+						<div class="player1-name"></div>
 						<div class="score-container display-medium48">
 							<div class="player1">0</div>
 							<div>:</div>
 							<div class="player2">0</div>
 						</div>
-						<div class="player2-name display-light32"></div>
+						<div class="player2-name"></div>
 					</div>
 					<div
 						class="game-container"
@@ -156,10 +156,24 @@ class GamePage {
 	}
 
 	setNicknames() {
-		document.querySelector('.player1-name').textContent =
-			this.initial.nickname.player1;
-		document.querySelector('.player2-name').textContent =
-			this.initial.nickname.player2;
+		const player1Name = document.querySelector('.player1-name');
+		const player2Name = document.querySelector('.player2-name');
+		player1Name.textContent = this.initial.nickname.player1;
+		player2Name.textContent = this.initial.nickname.player2;
+		if (this.initial.nickname.player1.length > 10) {
+			player1Name.classList.add('display-light18');
+		} else if (this.initial.nickname.player1.length > 7) {
+			player1Name.classList.add('display-light24');
+		} else {
+			player1Name.classList.add('display-light32');
+		}
+		if (this.initial.nickname.player2.length > 10) {
+			player2Name.classList.add('display-light18');
+		} else if (this.initial.nickname.player2.length > 7) {
+			player2Name.classList.add('display-light24');
+		} else {
+			player2Name.classList.add('display-light32');
+		}
 	}
 
 	// --------------------------------------------------------------------------------

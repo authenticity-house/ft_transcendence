@@ -97,7 +97,7 @@ export class MessageManager {
 			this.gamepage.camera.position.set(
 				0,
 				0,
-				3.5 +
+				2.5 +
 					Math.sin((3 / 2) * Math.PI + ((this.frame - 200) / 100) * Math.PI) *
 						(1 / 2)
 			);
@@ -203,6 +203,7 @@ export class MessageManager {
 						'tournament',
 						{
 							...message.data,
+							mode: message.mode,
 							sendMsg: this.sendGameOver.bind(this)
 						},
 						false
@@ -252,16 +253,19 @@ export class MessageManager {
 					changeUrlData(
 						'tournament',
 						{
-							...message.data
+							...message.data,
+							mode: message.mode
 						},
 						false
 					);
+					break;
 				}
 				// 대진표 출력 및 게임 매치 초기화 요청
 				changeUrlData(
 					'tournament',
 					{
 						...message.data,
+						mode: message.mode,
 						sendMsg: this.sendGameMatchInitSetting.bind(this)
 					},
 					false
@@ -319,6 +323,8 @@ export class MessageManager {
 						'duelstats',
 						{
 							...message.data,
+							battle_mode: this.gamesetting.battle_mode,
+							mode: message.mode,
 							sendMsg: this.sendGameNextMatch.bind(this)
 						},
 						false

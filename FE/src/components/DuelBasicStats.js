@@ -4,13 +4,13 @@ class DuelBasicStats {
 	static getScoreBoardHTML(matchData) {
 		return html`
 			<div class="score-board-container display-light28">
-				<div>${matchData.leftPlayer}</div>
+				<div class="score-board-leftPlayer">${matchData.leftPlayer}</div>
 				<ul class="score-board-wrapper pink_neon_10">
 					<li>${matchData.leftScore}</li>
 					<li>:</li>
 					<li>${matchData.rightScore}</li>
 				</ul>
-				<div>${matchData.rightPlayer}</div>
+				<div class="score-board-rightPlayer">${matchData.rightPlayer}</div>
 			</div>
 		`;
 	}
@@ -52,7 +52,7 @@ class DuelBasicStats {
 						<td></td>
 						<td>${matchData.maxRally}</td>
 						<td></td>
-						<td>${matchData.maxMaxBallSpeed.toFixed(2)}</td>
+						<td>${matchData.maxMaxBallSpeed.toFixed(3)}</td>
 					</tr>
 					<tr class="basic-table-tr-spacer"></tr>
 					<tr>
@@ -60,7 +60,7 @@ class DuelBasicStats {
 						<td></td>
 						<td>${matchData.avgRally.toFixed(2)}</td>
 						<td></td>
-						<td>${matchData.avgMaxBallSpeed.toFixed(2)}</td>
+						<td>${matchData.avgMaxBallSpeed.toFixed(3)}</td>
 					</tr>
 					<tr class="basic-table-tr-spacer"></tr>
 					<tr>
@@ -68,7 +68,7 @@ class DuelBasicStats {
 						<td></td>
 						<td>${matchData.minRally}</td>
 						<td></td>
-						<td>${matchData.minMaxBallSpeed.toFixed(2)}</td>
+						<td>${matchData.minMaxBallSpeed.toFixed(3)}</td>
 					</tr>
 				</tbody>
 			</table>

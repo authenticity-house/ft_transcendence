@@ -1,12 +1,18 @@
 const html = String.raw;
 
+function setFontSize(nickname) {
+	if (nickname.length > 10) return 'display-light12';
+	if (nickname.length > 7) return 'display-light16';
+	return 'display-light20';
+}
+
 function bracketTemplate(bracketInfo) {
 	let playerCount = 0;
 	let userWrappers = '';
 	for (let i = 0; i < bracketInfo.length; i += 1) {
 		for (let j = 0; j < bracketInfo[i].length; j += 1) {
 			userWrappers += `<div class="user-wrapper">
-				<p>${bracketInfo[i][j]}</p>
+				<p class="${setFontSize(bracketInfo[i][j])}">${bracketInfo[i][j]}</p>
 				</div>`;
 			playerCount += 1;
 		}
@@ -72,6 +78,10 @@ function addUserBracket(position, halfHeight, child, bracketInfo, winPlayer) {
 				userWrapper.classList.add('pong-animation');
 			if (userWrapperText === winPlayer)
 				textP.classList.add('win-player-animation');
+			if (userWrapperText.length > 10) textP.classList.add('display-light12');
+			else if (userWrapperText.length > 7)
+				textP.classList.add('display-light16');
+			else textP.classList.add('display-light20');
 			userWrapper.appendChild(textP);
 			child.appendChild(userWrapper);
 		}

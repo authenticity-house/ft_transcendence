@@ -11,7 +11,6 @@ const html = String.raw;
 class DuelStatsPage {
 	template(data) {
 		this.data = data;
-
 		const matchData = DuelStatsData.getDuelStatsData(data);
 
 		/* Components */
@@ -51,6 +50,10 @@ class DuelStatsPage {
 	}
 
 	mount(data) {
+		if (data.battle_mode === 2 && data.mode === 'online') {
+			const nextButton = document.querySelector('.event-click-match');
+			nextButton.style.display = 'none';
+		}
 		const matchData = DuelStatsData.getMountDuelStatsData(data);
 		// score-trend
 		DuelGraphStats.appendScoresToYAxis(matchData.maxScore, false, true);
@@ -67,6 +70,34 @@ class DuelStatsPage {
 			false,
 			true
 		);
+
+		const playerData = DuelStatsData.getDuelStatsData(this.data);
+		const scoreboardLeftplayer = document.querySelectorAll(
+			'.score-board-leftPlayer'
+		);
+		const scoreboardRightplayer = document.querySelectorAll(
+			'.score-board-rightPlayer'
+		);
+
+		for (let i = 0; i < scoreboardLeftplayer.length; i += 1) {
+			if (playerData.leftPlayer.length > 10) {
+				scoreboardLeftplayer[i].classList.add('display-light18');
+			} else if (playerData.leftPlayer.length > 7) {
+				scoreboardLeftplayer[i].classList.add('display-light24');
+			} else {
+				scoreboardLeftplayer[i].classList.add('display-light32');
+			}
+		}
+
+		for (let i = 0; i < scoreboardRightplayer.length; i += 1) {
+			if (playerData.rightPlayer.length > 10) {
+				scoreboardRightplayer[i].classList.add('display-light18');
+			} else if (playerData.rightPlayer.length > 7) {
+				scoreboardRightplayer[i].classList.add('display-light24');
+			} else {
+				scoreboardRightplayer[i].classList.add('display-light32');
+			}
+		}
 	}
 
 	addEventListeners() {
