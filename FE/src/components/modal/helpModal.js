@@ -36,7 +36,15 @@ class HelpModal {
 										<span class="display-light18">패들 이동: W, S</span>
 										<span class="display-light18">파워 업: SPACE</span>
 									</div>
-									<div class="help-modal-text"></div>
+									<div class="help-modal-text">
+										<span class="display-light28">파워 업</span>
+										<span class="display-light18"
+											>공을 더 빠르게 쳐낼 수 있습니다.</span
+										>
+										<span class="display-light18"
+											>랠리 당 1회 사용 가능합니다.</span
+										>
+									</div>
 									<div class="help-modal-text">
 										<span class="display-light28">player 2 조작법</span>
 										<span class="display-light18">패들 이동: ↑, ↓</span>
