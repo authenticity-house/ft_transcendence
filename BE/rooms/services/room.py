@@ -37,12 +37,13 @@ class Room:  # pylint: disable=R0902
         if any(usr._nickname == user.nickname for usr in self._users):  # pylint: disable=W0212
             raise RoomError("User already joined")
 
+        pk = user.pk
         nickname = user.nickname
         user_stat, _ = UserStat.objects.get_or_create(user=user)
         rating = user_stat.rating
         img_url = user.profile_url
 
-        user = RoomUser(nickname, rating, img_url)
+        user = RoomUser(pk, nickname, rating, img_url)
         self._users.append(user)
 
         self._total_rating += rating
@@ -106,6 +107,12 @@ class Room:  # pylint: disable=R0902
         for room_user in self._users:
             if room_user.is_same(user):
                 room_user.change_ready_state()
+                break
+
+    def change_profile(self, user):
+        for room_user in self._users:
+            if room_user.is_same(user):
+                room_user.change_profile()
                 break
 
     def change_info(self, info):
