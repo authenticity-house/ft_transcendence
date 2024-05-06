@@ -152,7 +152,6 @@ class MyInfoContent {
 	}
 
 	mountStats(data) {
-		console.log(data);
 		const myInfoContentWinLoseContainer = document.querySelector(
 			'.my-info-content-win-lose-container'
 		);
@@ -196,26 +195,6 @@ class MyInfoContent {
 				const imageUrl = URL.createObjectURL(file);
 				document.querySelector('.my-info-user-profile-image').src = imageUrl;
 			});
-
-		/*  // 유저 프로필 이미지 변경 (서버 연결)
-			document.getElementById('image-upload-form').onsubmit = (e) => {
-			e.preventDefault();
-			const formData = new FormData(this);
-			fetch('/users/update/', {
-				method: 'PATCH',
-				body: formData
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log('Success:', data);
-					document.querySelector('.my-info-user-profile-image').src =
-						data.imageUrl;
-				})
-				.catch((error) => {
-					console.error('Error:', error);
-				});
-			};
-		*/
 
 		// 닉네임 변경 UI
 		const modifyNickname = document.querySelector('.my-info-content-name');
